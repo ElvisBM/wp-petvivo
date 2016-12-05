@@ -1,0 +1,259 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: rehub_translation_child\n"
+"POT-Creation-Date: 2016-07-27 19:55+0200\n"
+"PO-Revision-Date: 2016-07-27 19:55+0200\n"
+"Last-Translator: Sizam themes <sizamtheme@gmail.com>\n"
+"Language-Team: Sizam Design <sizamtheme@gmail.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.10\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n_noop:1,2\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../admin/admin.php:24 ../admin/admin.php:25 ../admin/option/option.php:3
+msgid "Theme Options"
+msgstr ""
+
+#: ../admin/option/option.php:8 ../admin/option/option.php:14
+msgid "General Options"
+msgstr ""
+
+#: ../admin/option/option.php:20
+msgid "Select Blog Layout"
+msgstr ""
+
+#: ../admin/option/option.php:21
+msgid ""
+"Select what kind of post string layout you want to use for blog, archives"
+msgstr ""
+
+#: ../admin/option/option.php:25 ../admin/option/option.php:52
+msgid "Blog Layout"
+msgstr ""
+
+#: ../admin/option/option.php:29 ../admin/option/option.php:56
+#: ../admin/option/option.php:79
+msgid "List Layout with left thumbnails"
+msgstr ""
+
+#: ../admin/option/option.php:33 ../admin/option/option.php:83
+msgid "Grid layout"
+msgstr ""
+
+#: ../admin/option/option.php:37 ../admin/option/option.php:64
+#: ../admin/option/option.php:87
+msgid "Full width Grid layout"
+msgstr ""
+
+#: ../admin/option/option.php:47
+msgid "Select Category Layout"
+msgstr ""
+
+#: ../admin/option/option.php:48
+msgid "Select what kind of post string layout you want to use for categories"
+msgstr ""
+
+#: ../admin/option/option.php:60
+msgid "Grid layout with sidebar"
+msgstr ""
+
+#: ../admin/option/option.php:74
+msgid "Select Search Layout"
+msgstr ""
+
+#: ../admin/option/option.php:75
+msgid "Select what kind of post string layout you want to use for search pages"
+msgstr ""
+
+#: ../admin/option/option.php:98
+msgid "Custom CSS"
+msgstr ""
+
+#: ../admin/option/option.php:99
+msgid "Write your custom CSS here"
+msgstr ""
+
+#: ../admin/option/option.php:106
+msgid "Analytics Code/js code"
+msgstr ""
+
+#: ../admin/option/option.php:107
+msgid "Enter your Analytics code or any html, js code"
+msgstr ""
+
+#: ../admin/option/option.php:114
+msgid "Set sidebar to left side?"
+msgstr ""
+
+#: ../admin/option/option.php:120
+msgid "Enable frontend in visual composer?"
+msgstr ""
+
+#: ../admin/option/option.php:128
+msgid "Appearance/Color"
+msgstr ""
+
+#: ../admin/option/option.php:134
+msgid "Color schema of website"
+msgstr ""
+
+#: ../admin/option/option.php:139
+msgid "Choose color schema"
+msgstr ""
+
+#: ../admin/option/option.php:143
+msgid "Default - orange"
+msgstr ""
+
+#: ../admin/option/option.php:147
+msgid "Blue"
+msgstr ""
+
+#: ../admin/option/option.php:151
+msgid "Green"
+msgstr ""
+
+#: ../admin/option/option.php:155
+msgid "Violet"
+msgstr ""
+
+#: ../admin/option/option.php:159
+msgid "Yellow"
+msgstr ""
+
+#: ../admin/option/option.php:169
+msgid "Custom main color"
+msgstr ""
+
+#: ../admin/option/option.php:170
+msgid "Or you can set any main color (it will be used under white text)"
+msgstr ""
+
+#: ../admin/option/option.php:177
+msgid "Custom secondary color"
+msgstr ""
+
+#: ../admin/option/option.php:178
+msgid "Set secondary color (for search buttons, tabs, etc)."
+msgstr ""
+
+#: ../admin/option/option.php:186
+msgid "Set offer buttons color."
+msgstr ""
+
+#: ../admin/option/option.php:193
+msgid "Custom color for links inside posts"
+msgstr ""
+
+#: ../admin/option/option.php:200
+msgid "Background settings"
+msgstr ""
+
+#: ../admin/option/option.php:205
+msgid "Create flat color for background"
+msgstr ""
+
+#: ../admin/option/option.php:206
+msgid ""
+"This will disable default background image and add flat color. If you want "
+"to add background image, use fields below"
+msgstr ""
+
+#: ../admin/option/option.php:212
+msgid "Background Color"
+msgstr ""
+
+#: ../admin/option/option.php:213
+msgid "Choose the background color"
+msgstr ""
+
+#: ../admin/option/option.php:219
+msgid "Background Image"
+msgstr ""
+
+#: ../admin/option/option.php:220
+msgid "Upload a background image"
+msgstr ""
+
+#: ../admin/option/option.php:226
+msgid "Background Repeat"
+msgstr ""
+
+#: ../admin/option/option.php:230
+msgid "Repeat"
+msgstr ""
+
+#: ../admin/option/option.php:234
+msgid "No Repeat"
+msgstr ""
+
+#: ../admin/option/option.php:238
+msgid "Repeat X"
+msgstr ""
+
+#: ../admin/option/option.php:242
+msgid "Repeat Y"
+msgstr ""
+
+#: ../admin/option/option.php:252
+msgid "Background Position"
+msgstr ""
+
+#: ../admin/option/option.php:271
+msgid "Set offset"
+msgstr ""
+
+#: ../admin/option/option.php:272
+msgid ""
+"Set offset from top for background (without px) for avoid header overlap"
+msgstr ""
+
+#: ../admin/option/option.php:278
+msgid "Fixed Background Image?"
+msgstr ""
+
+#: ../admin/option/option.php:279
+msgid "The background is fixed with regard to the viewport."
+msgstr ""
+
+#: ../admin/option/option.php:284
+msgid "Fit size?"
+msgstr ""
+
+#: ../admin/option/option.php:285
+msgid "Set background image width and height to fit the size of window"
+msgstr ""
+
+#: ../admin/option/option.php:290
+msgid "Url for branded background"
+msgstr ""
+
+#: ../admin/option/option.php:291
+msgid "Insert url that will be display on background"
+msgstr ""
+
+#: ../geo-my-wp/friends/search-results/buddypress-users-3-col/results.php:90
+#: ../geo-my-wp/friends/search-results/buddypress-users/results.php:90
+msgid "Shop owner:"
+msgstr ""
+
+#: ../geo-my-wp/friends/search-results/sellers/results.php:104
+msgid "Shop"
+msgstr ""
+
+#: ../inc/parts/simplepostlist.php:6
+#, php-format
+msgid "%s ago"
+msgstr ""
+
+#~ msgid ""
+#~ "This option panel is built using <a href=\"http://vafpress.com/vafpress-"
+#~ "framework\">Vafpress Framework %s</a> powered by <a href=\"http://"
+#~ "vafpress.com\">Vafpress</a>"
+#~ msgstr " "
