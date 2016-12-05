@@ -1,0 +1,3444 @@
+# Copyright (C) 2016 Content Egg
+# This file is distributed under the same license as the Content Egg package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Content Egg 2.9.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/content-egg\n"
+"POT-Creation-Date: 2016-11-25 12:24:11+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: application/Autoupdate.php:83
+msgid "Новая версия"
+msgstr ""
+
+#: application/admin/AdminNotice.php:23
+msgid "Задание автоблоггинга сохранено."
+msgstr ""
+
+#: application/admin/AdminNotice.php:23 application/admin/AutoblogTable.php:54
+msgid "Запустить сейчас"
+msgstr ""
+
+#: application/admin/AdminNotice.php:24
+msgid "При сохранении задания автоблоггинга возникла ошибка."
+msgstr ""
+
+#: application/admin/AdminNotice.php:25
+msgid "Ошибка при обработке файла с ключевыми словами."
+msgstr ""
+
+#: application/admin/AdminNotice.php:26
+msgid "Заданий автоблоггинга сохранено:"
+msgstr ""
+
+#: application/admin/AdminNotice.php:27
+msgid "Лицензия не может быть откреплена. Обратитесь в поддержку плагина."
+msgstr ""
+
+#: application/admin/AdminNotice.php:28
+msgid "Лицензия была откреплена. Вы должны деактивировать и удалить плагин с текущего домена."
+msgstr ""
+
+#: application/admin/AeIntegrationConfig.php:31
+msgid "AE интеграция"
+msgstr ""
+
+#: application/admin/AeIntegrationConfig.php:42
+msgid "Активировать модули"
+msgstr ""
+
+#: application/admin/AutoblogController.php:75
+#: application/admin/views/autoblog_index.php:37
+msgid "Автоблоггинг"
+msgstr ""
+
+#: application/admin/AutoblogController.php:76
+#: application/admin/views/autoblog_edit.php:9
+#: application/admin/views/autoblog_index.php:38
+msgid "Добавить автоблоггинг"
+msgstr ""
+
+#: application/admin/AutoblogController.php:77
+msgid "Добавить автоблоггинг - пакетный режим"
+msgstr ""
+
+#: application/admin/AutoblogController.php:193
+msgid "Автоблоггинг не найден"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:47
+msgid "(без названия)"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:53
+#: application/admin/AutoblogTable.php:58
+msgid "Редактировать"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:55
+msgid "Дублировать"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:56 application/admin/MyListTable.php:165
+#: application/admin/views/_metabox_results.php:14
+msgid "Удалить"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:65
+#: application/admin/views/_metabox_autoblog.php:24
+msgid "Работает"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:67
+#: application/admin/views/_metabox_autoblog.php:25
+msgid "Остановлен"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:81
+msgid "активных:"
+msgstr ""
+
+#: application/admin/AutoblogTable.php:81
+msgid "всего:"
+msgstr ""
+
+#: application/admin/EggMetabox.php:76
+msgid "Настройте и активируйте модули Content Egg плагин."
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:27
+msgid "На этот Email будет закреплена ваша лицензия на плагин. После активации, вы получите письмо с данными для входа в <a target=\"_blank\" href=\"http://www.keywordrush.com/panel\">панель пользователя</a>, где сможете управлять своими лицензиями."
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:34 application/admin/EnvatoConfig.php:52
+msgid "Поле \"%s\" не может быть пустым."
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:38 application/admin/EnvatoConfig.php:56
+msgid "Поле \"%s\" введено неверно."
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:45
+msgid "Введите ваш Purchase code для плагина. Если вы приобрели плагин в комплекте с темой, введите Purchase code темы. <a target=\"_blank\" href=\"https://help.market.envato.com/hc/en-us/articles/202822600-Where-Is-My-Purchase-Code-\">Где найти?</a>"
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:60
+msgid "Плагин не может быть активирован."
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:65
+msgid "Новости проекта на email"
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:66
+msgid "Очень редко мы можем отослать вам письмо с важными изменениями в работе плагина или новости проекта."
+msgstr ""
+
+#: application/admin/EnvatoConfig.php:72
+msgid "Error."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:31 application/admin/PluginAdmin.php:91
+msgid "Настройки"
+msgstr ""
+
+#: application/admin/GeneralConfig.php:96
+msgid "Язык сайта"
+msgstr ""
+
+#: application/admin/GeneralConfig.php:97
+msgid "Модули, которые имеют поддержку мультиязычности, будут отдавать предпочтение контенту на этом языке. Также эта настройка указывает на язык для локализации шаблонов."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:105
+msgid "К каким типам постов добавить Content Egg metabox?"
+msgstr ""
+
+#: application/admin/GeneralConfig.php:106
+msgid "Эта настройка также показывает к каким типам постов применять автозаполнение на странице \"Заполнить\"."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:113
+msgid "Фильтровать ботов"
+msgstr ""
+
+#: application/admin/GeneralConfig.php:114
+msgid "Боты не могут запускать парсеры."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:115
+msgid "Актуально, если обновление цены или обновление выдачи по ключевому слову происходит при открытии страницы поста. Если мы определим по useragent, что на страницу зашел один из известных ботов, никакие парсеры запускаться не будут."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:122
+#: application/admin/GeneralConfig.php:132
+msgid "История изменения цены"
+msgstr ""
+
+#: application/admin/GeneralConfig.php:123
+msgid "Сколько дней хранить историю изменения цены для товаров. 0 - не сохранять историю."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:132
+msgid "Поле \"%s\" не может быть больше %d."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:138
+msgid "Разрешить посетителям подписываться на уведомления по email о снижении цены."
+msgstr ""
+
+#: application/admin/GeneralConfig.php:139
+msgid "Активных подписок сейчас: <b>%d</b>"
+msgstr ""
+
+#: application/admin/GeneralConfig.php:140
+msgid "Отправлено уведомлений за последнии %d дней: <b>%d</b>"
+msgstr ""
+
+#: application/admin/GeneralConfig.php:141
+msgid "Для работы этой опции \"История изменения цены\" также должна быть включена."
+msgstr ""
+
+#: application/admin/ImportExportController.php:26
+msgid "Импорт/Экспорт"
+msgstr ""
+
+#: application/admin/ImportExportController.php:59
+msgid "Опции были сохранены."
+msgstr ""
+
+#: application/admin/ImportExportController.php:59
+msgid "Страница настроек"
+msgstr ""
+
+#: application/admin/ImportExportController.php:61
+msgid "Неверный формат."
+msgstr ""
+
+#: application/admin/LicConfig.php:33
+msgid "Лицензия"
+msgstr ""
+
+#: application/admin/LicConfig.php:40
+msgid "Ключ лицензии"
+msgstr ""
+
+#: application/admin/LicConfig.php:41
+msgid "Сюда необходимо ввести действующий ключ лицензии. Найти ключ вы можете в своей <a href=\"http://www.keywordrush.com/panel\">панели пользователя</a>. Если у вас еще нет ключа, вы можете приобрести его на <a href=\"http://www.keywordrush.com/contentegg\">официальном сайте</a> плагина."
+msgstr ""
+
+#: application/admin/LicConfig.php:48
+msgid "Поле \"Ключ лицензии\" не может быть пустым."
+msgstr ""
+
+#: application/admin/LicConfig.php:52
+msgid "Неверный ключ лицензии."
+msgstr ""
+
+#: application/admin/LicConfig.php:57
+msgid "Ключ лицензии не принят. Убедитесь, что вы используйте действительный ключ."
+msgstr ""
+
+#: application/admin/LicConfig.php:59
+msgid "Если ключ верный, скорее всего, на вашем сервере заблокированы внешние соединения или по другой причине блокируется доступ к домену keywordrush.com."
+msgstr ""
+
+#: application/admin/LicConfig.php:61
+msgid "Пожалуйста, выясните это у своего хостинг-провайдера."
+msgstr ""
+
+#: application/admin/LicConfig.php:63
+msgid "Если вам нужна наша помощь, обратитесь в <a href=\"http://www.keywordrush.com/contact\">поддержку</a> плагина."
+msgstr ""
+
+#: application/admin/MyListTable.php:127
+msgid " назад"
+msgstr ""
+
+#: application/admin/PluginAdmin.php:77
+msgid "Вы уверены?"
+msgstr ""
+
+#: application/admin/PrefillController.php:49
+#: application/admin/views/prefill.php:11
+msgid "Заполнить"
+msgstr ""
+
+#: application/admin/PrefillController.php:95
+msgid "Данные уже существуют."
+msgstr ""
+
+#: application/admin/PrefillController.php:102
+msgid "Невозможно определить ключевое слово."
+msgstr ""
+
+#: application/admin/PrefillController.php:111
+msgid "Ключевое слово для автоапдейта уже существует."
+msgstr ""
+
+#: application/admin/PrefillController.php:115
+msgid "Ключевое слово для автоапдейта сохранено."
+msgstr ""
+
+#: application/admin/PrefillController.php:124
+msgid "Ошибка:"
+msgstr ""
+
+#: application/admin/PrefillController.php:131
+msgid "Данные не найдены."
+msgstr ""
+
+#: application/admin/PrefillController.php:137
+msgid "Данные сохранены:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:10
+#: application/models/AutoblogModel.php:65
+#: application/modules/Ozon/OzonConfig.php:82
+msgid "Название"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:14
+msgid "Название для автоблоггинга (необязательно)"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:20
+msgid "Статус задания"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:27
+msgid "Aвтоблоггинг можно приостановить."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:33
+msgid "Периодичность запуска"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:37
+msgid "Каждый час"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:38
+msgid "Пять раз в сутки"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:39
+msgid "Два раза в сутки"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:40
+msgid "Один раз в сутки"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:41
+msgid "Каждые три дня"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:42
+msgid "Один раз в неделю"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:43
+msgid "Один раз в две недели"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:45
+msgid "Как часто запускать это задание автоблоггинга."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:51
+#: application/admin/views/_metabox_autoblog.php:139
+#: application/models/AutoblogModel.php:71
+msgid "Ключевые слова"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:59
+msgid "Заглавная Первая Буква Каждого Слова"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:60
+msgid "Заглавная первая буква"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:61
+msgid "Сортировать в алфавитном порядке"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:62
+msgid "Все слова неактивные"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:63
+msgid "Все слова активные"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:64
+msgid "Очистить список"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:68
+msgid "Всего"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:74
+msgid "Подсказки"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:75
+msgid "Тренды"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:76
+msgid "Товары"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:83
+msgid "Яндекс"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:84
+msgid "Я.Маркет"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:87
+msgid "Начните вводить ключевое слово"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:112
+msgid "Загрузить..."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:124
+msgid "Каждое слово - с новой строки."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:125
+msgid "Одно ключевое слово - это один пост."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:126
+msgid "Обработанные слова отмечены [квадратными скобками]."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:127
+msgid "Когда обработка всех слов закончится, задание будет остановлено."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:147
+msgid "Поддерживаются два вида файлов:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:150
+msgid "CSV файлы в формате:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:158
+msgid "Разделитель - \";\" - точка с запятой."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:159
+msgid "Для каждой категории будет создано отдельное задание автоблоггинга."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:161
+msgid "TXT файлы:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:162
+msgid "обычный текстовый файл со списком ключевых слов (каждое слово - с новой строки)."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:164
+msgid "Кодировка файлов должна быть UTF-8."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:173
+msgid "Обрабатывать ключевых слов"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:178
+msgid "Сколько ключевых слов обрабатывать за однин раз. Не рекомендуется устанавливать это значение более 5, чтобы излишне не нагружать сервер."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:184
+msgid "Только выбранные модули"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:195
+msgid "Запускать только выбранные модули для этого задания."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:196
+msgid "Если ничего не выбрано, то подразумевается все активные модули на момент запуска автоблоггинга."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:203
+msgid "Исключить модули"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:214
+msgid "Выбранные модули в этой конфигурации не будут запускаться."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:221
+msgid "Шаблон заголовка"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:228
+msgid "Шаблон для заголовка поста."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:229
+msgid "Используйте теги:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:230
+msgid "Для обображения данных плагина используйте специальные теги, например:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:231
+msgid "Вы также можете задать порядковый индекс для доступа к данным плагина:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:232
+msgid "Вы можете использовать \"формулы\" с перечислением синонимов, из которых будет выбран один случайный вариант, например, {Скидка|Распродажа|Дешево}."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:239
+msgid "Шаблон поста"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:245
+msgid "Шаблон тела поста."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:246
+msgid "Вы можете использовать шорткоды, точно также, как вы делаете это в обычных постах, например: "
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:248
+msgid "\"Форумлы\", а также все теги из шаблона заголовка, также будут работать и здесь."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:256
+msgid "Статус поста"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:268
+msgid "Пользователь"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:275
+msgid "От имени этого пользователя будут публиковаться посты."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:281
+#: application/modules/Aliexpress/AliexpressConfig.php:88
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:87
+#: application/modules/CjLinks/CjLinksConfig.php:125
+#: application/modules/Clickbank/ClickbankConfig.php:67
+#: application/modules/Linkshare/LinkshareConfig.php:104
+#: application/modules/Ozon/OzonConfig.php:91
+#: application/modules/Pixabay/PixabayConfig.php:108
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:57
+msgid "Категория"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:288
+msgid "Создать автоматически"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:294
+msgid "Категория для постов."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:296
+msgid "\"Создать автоматически\" - означает, что категории будут созданы на основании данных CSV файла с ключевыми словами и категориями."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:305
+msgid "Требуется минимум модулей"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:310
+msgid "Пост не будет опубликован, если контент не найден для этого количества модулей. "
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:316
+msgid "Обязательные модули"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:327
+msgid "Пост опубликован не будет, если результаты для этих модулей не найдены."
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:334
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:150
+msgid "Автоматическое обновление"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:345
+msgid "Для выбранных модулей текущее ключевое слово будет задано как ключевое слово для автообновления. Выдача модуля будет переодически обновляться в соотвествии с настройкой времени жизни кэша."
+msgstr ""
+
+#: application/admin/views/_metabox_results.php:9
+#: application/components/ParserModuleConfig.php:57
+#: application/modules/Youtube/YoutubeConfig.php:64
+#: application/modules/Youtube/views/search_panel.php:11
+msgid "Заголовок"
+msgstr ""
+
+#: application/admin/views/_metabox_results.php:10
+msgid "Описание"
+msgstr ""
+
+#: application/admin/views/_metabox_results.php:13
+#: application/admin/views/_promo_box.php:60
+msgid "Перейти"
+msgstr ""
+
+#: application/admin/views/_metabox_search_results.php:11
+#: application/modules/CjLinks/views/search_results.php:16
+msgid "Код купона:"
+msgstr ""
+
+#: application/admin/views/_promo_box.php:4
+msgid "Работай, как профи"
+msgstr ""
+
+#: application/admin/views/_promo_box.php:14
+msgid "Все включено: контент + монетизация."
+msgstr ""
+
+#: application/admin/views/_promo_box.php:56
+msgid "Активируйте плагин"
+msgstr ""
+
+#: application/admin/views/_promo_box.php:57
+#: application/admin/views/envato_activation.php:5
+msgid "Активируйте плагин, чтобы получить срочные автоматические апдейты в админ-панели Wordpress и официальную поддержку от авторов плагина."
+msgstr ""
+
+#: application/admin/views/ae_integration.php:5
+msgid "Интеграция с Affiliate Egg плагин"
+msgstr ""
+
+#: application/admin/views/ae_integration.php:9
+msgid "Вы можете подключить веб-парсеры <a href=\"http://www.keywordrush.com/affiliateegg\">Affiliate Egg плагина</a> в качестве модулей Content Egg."
+msgstr ""
+
+#: application/admin/views/ae_integration.php:10
+msgid "Для поиска по ключевому слову будет использоваться \"родной\" поиск на сайте магазина."
+msgstr ""
+
+#: application/admin/views/ae_integration.php:15
+msgid "Для начала работы выполните следующие действия:"
+msgstr ""
+
+#: application/admin/views/ae_integration.php:17
+msgid "Установите и активируйте <a href=\"http://www.keywordrush.com/affiliateegg\">Affiliate Egg плагин</a>"
+msgstr ""
+
+#: application/admin/views/ae_integration.php:18
+msgid "Версия Affiliate Egg должна быть не ниже"
+msgstr ""
+
+#: application/admin/views/autoblog_edit.php:7
+msgid "Редактировать автоблоггинг"
+msgstr ""
+
+#: application/admin/views/autoblog_edit.php:11
+msgid "пакетное добавление"
+msgstr ""
+
+#: application/admin/views/autoblog_edit.php:15
+msgid "Пакетное добавление"
+msgstr ""
+
+#: application/admin/views/autoblog_edit.php:17
+msgid "Назад к списку"
+msgstr ""
+
+#: application/admin/views/autoblog_edit.php:39
+msgid "Сохранить"
+msgstr ""
+
+#: application/admin/views/autoblog_edit.php:41
+msgid "Будьте терпеливы, если файл с ключевыми словами имеет большой размер. Не закрывайте страницу до завершения процесса."
+msgstr ""
+
+#: application/admin/views/autoblog_index.php:2
+msgid "Работа автоблоггинга"
+msgstr ""
+
+#: application/admin/views/autoblog_index.php:6
+msgid "Пожалуйста, дождитесь окончания работы автоблоггинга."
+msgstr ""
+
+#: application/admin/views/autoblog_index.php:24
+msgid "Удалено заданий автоблоггинга:"
+msgstr ""
+
+#: application/admin/views/autoblog_index.php:26
+msgid "Автоблоггинг закончил работу"
+msgstr ""
+
+#: application/admin/views/autoblog_index.php:44
+msgid "С помощью автоблоггинга вы можете настроить автоматическое создание постов."
+msgstr ""
+
+#: application/admin/views/envato_activation.php:1
+msgid "активация"
+msgstr ""
+
+#: application/admin/views/import_export.php:6
+msgid "Экспорт / Импорт настроек"
+msgstr ""
+
+#: application/admin/views/import_export.php:21
+msgid "Сохранить настройки"
+msgstr ""
+
+#: application/admin/views/import_export.php:22
+msgid "Для переноса настроек плагина и модулей Content Egg скопируйте сожержимое поля (Ctrl+C) и выполните импорт на новом сайте."
+msgstr ""
+
+#: application/admin/views/import_export.php:26
+msgid "Загрузить настройки"
+msgstr ""
+
+#: application/admin/views/import_export.php:27
+msgid "Скопируйте настройки с другого сайта и нажмите кнопку \"Импорт\"."
+msgstr ""
+
+#: application/admin/views/import_export.php:31
+msgid "Импорт"
+msgstr ""
+
+#: application/admin/views/lic_settings.php:3
+msgid "лицензия"
+msgstr ""
+
+#: application/admin/views/lic_settings.php:7
+msgid "Плагин активирован."
+msgstr ""
+
+#: application/admin/views/lic_settings.php:21
+#: application/admin/views/lic_settings.php:29
+msgid "Открепить лицензию"
+msgstr ""
+
+#: application/admin/views/lic_settings.php:22
+msgid "Вы можете перенести лицензию плагина на другой свой домен."
+msgstr ""
+
+#: application/admin/views/lic_settings.php:23
+msgid "После открепления лицензии вы должны деактивировать и удалить Content Egg плагин с текущего домена."
+msgstr ""
+
+#: application/admin/views/metabox_general.php:7
+msgid "Введите ключевое слово"
+msgstr ""
+
+#: application/admin/views/metabox_general.php:9
+msgid "Найти все"
+msgstr ""
+
+#: application/admin/views/metabox_general.php:39
+#: application/admin/views/metabox_module.php:71
+msgid "Добавить все"
+msgstr ""
+
+#: application/admin/views/metabox_general.php:40
+msgid "Вы действительно хотите удалить результаты всех модулей?"
+msgstr ""
+
+#: application/admin/views/metabox_general.php:40
+#: application/admin/views/metabox_module.php:40
+msgid "Удалить все"
+msgstr ""
+
+#: application/admin/views/metabox_module.php:26
+msgid "Шаблон для шорткода"
+msgstr ""
+
+#: application/admin/views/metabox_module.php:36
+msgid "Ключевое слово для автоматического обновления данных"
+msgstr ""
+
+#: application/admin/views/metabox_module.php:40
+msgid "Вы действительно хотите удалить все результаты?"
+msgstr ""
+
+#: application/admin/views/metabox_module.php:45
+msgid "Данные не найдены..."
+msgstr ""
+
+#: application/admin/views/metabox_module.php:49
+msgid "Поиск"
+msgstr ""
+
+#: application/admin/views/metabox_module.php:55
+msgid "Ключевое слово для поиска"
+msgstr ""
+
+#: application/admin/views/metabox_module.php:57
+msgid "Найти"
+msgstr ""
+
+#: application/admin/views/metabox_module.php:79
+msgid "Не найдено..."
+msgstr ""
+
+#: application/admin/views/metabox_module.php:80
+msgid "Ошибка: "
+msgstr ""
+
+#: application/admin/views/prefill.php:15
+msgid "Эта утилита заполняет данные модулей для всех существующих постов."
+msgstr ""
+
+#: application/admin/views/prefill.php:16
+msgid "Существующие данные и ключевые слова для автообновления не перезатираются!"
+msgstr ""
+
+#: application/admin/views/prefill.php:23
+msgid "Добавить данные для модуля"
+msgstr ""
+
+#: application/admin/views/prefill.php:33
+msgid "Источник ключевого слова"
+msgstr ""
+
+#: application/admin/views/prefill.php:36
+msgid "Вычислить на основании плотности ключевых слов поста"
+msgstr ""
+
+#: application/admin/views/prefill.php:37
+msgid "Заголовк поста"
+msgstr ""
+
+#: application/admin/views/prefill.php:38
+msgid "Тэги поста"
+msgstr ""
+
+#: application/admin/views/prefill.php:40
+msgid "Копировать с"
+msgstr ""
+
+#: application/admin/views/prefill.php:47
+msgid "Автообновление"
+msgstr ""
+
+#: application/admin/views/prefill.php:49
+msgid "Добавить ключевое слово для автообновления"
+msgstr ""
+
+#: application/admin/views/prefill.php:50
+msgid "Только для модулей, которые имеют функцию автообновления."
+msgstr ""
+
+#: application/admin/views/prefill.php:55
+msgid "Количество слов"
+msgstr ""
+
+#: application/admin/views/prefill.php:62
+msgid "Максимум слов в поисковом запросе."
+msgstr ""
+
+#: application/admin/views/prefill.php:73
+msgid "Старт"
+msgstr ""
+
+#: application/admin/views/prefill.php:74
+msgid "Начать сначала"
+msgstr ""
+
+#: application/admin/views/prefill.php:75
+msgid "Стоп"
+msgstr ""
+
+#: application/admin/views/settings.php:13
+msgid "Content Egg Настройки"
+msgstr ""
+
+#: application/admin/views/settings.php:23
+#: application/admin/views/settings.php:46
+msgid "Общие настройки"
+msgstr ""
+
+#: application/admin/views/settings.php:70
+msgid "Условия"
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:18
+msgid "Обновление по ключевому слову"
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:19
+msgid "Время жини кэша в секундах, через которое необходимо обновить товары, если задано ключевое слово для обновления. 0 - никогда не обновлять."
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:33
+msgid "Обновление цены"
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:34
+msgid "Время в секундах, через которое необходимо обновить цену, наличие и некоторую другую информацию по товарам. 0 - никогда не обновлять."
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:45
+msgid "Режим обновления"
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:46
+msgid "Если вы используете обновление по расписанию, для более надежной работы замените WordPress cron на реальный cron."
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:49
+msgid "При открытии страницы"
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:50
+msgid "По расписанию (по крону)"
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:51
+msgid "При открытии страницы и по расписанию"
+msgstr ""
+
+#: application/components/AffiliateParserModuleConfig.php:56
+msgid "Ошибка установки cron."
+msgstr ""
+
+#: application/components/ModuleConfig.php:59
+#: application/components/ModuleConfig.php:65
+msgid "настройки"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:19
+msgid "Включить модуль"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:26
+msgid "Добавить"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:27
+msgid "Куда добавить контент этого модуля? Шорткоды работают всегда в независимости от настройки."
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:30
+msgid "В конец поста"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:31
+msgid "В начало поста"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:32
+msgid "Только шорткоды"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:38
+msgid "Приоритет"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:39
+msgid "Приоритет задает порядок включения модулей в пост. 0 - самый высокий приоритет."
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:49
+msgid "Шаблон"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:50
+msgid "Шаблон по-умолчанию."
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:58
+msgid "Шаблоны могут использовать заголовок при выводе данных."
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:68
+msgid "Автоматически установить Featured image для поста."
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:71
+msgid "Не устанавливать"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:72
+msgid "Первый элемент"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:73
+msgid "Второй элемент"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:74
+msgid "Случайный элемент"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:75
+msgid "Последний элемент"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:81
+msgid "Редирект"
+msgstr ""
+
+#: application/components/ParserModuleConfig.php:82
+msgid "Ссылки через локальный 301 редирект."
+msgstr ""
+
+#: application/components/TemplateManager.php:84
+msgid "[пользовательский]"
+msgstr ""
+
+#: application/models/AutoblogModel.php:66
+msgid "Дата создания"
+msgstr ""
+
+#: application/models/AutoblogModel.php:67
+msgid "Последний запуск"
+msgstr ""
+
+#: application/models/AutoblogModel.php:68
+msgid "Статус"
+msgstr ""
+
+#: application/models/AutoblogModel.php:69
+msgid "Всего постов"
+msgstr ""
+
+#: application/models/AutoblogModel.php:70
+msgid "Последняя ошибка"
+msgstr ""
+
+#: application/models/AutoblogModel.php:191
+msgid "Обязательный модуль %s не будет запущен. Модуль не настроен или исключен."
+msgstr ""
+
+#: application/models/AutoblogModel.php:219
+msgid "Не найдены данные для обязательного модуля %s."
+msgstr ""
+
+#: application/models/AutoblogModel.php:226
+msgid "Не достигнуто требуемое количество данных. Минимум требуется модулей: %d."
+msgstr ""
+
+#: application/models/AutoblogModel.php:253
+msgid "Пост не может быть создан. Неизвестная ошибка."
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:20
+msgid "Партнеркая ссылка"
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:21
+msgid "Укажите Deeplink одной из CPA-сетей. Для прямых партнерских программ вы можете использовать параметр вида <em>partner_id=12345</em>, или сформируйте партнерскую ссылку по шаблону, например: <em>{{url}}/partner_id-12345/</em>. Пример ссылки с deeplink: https://ad.admitad.com/g/g8f0qmlavfa/?ulp={{url_encoded}}. {{url}} и {{url_encoded}} - будут заменены на URL текущего товара)."
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:30
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:36
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:56
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:35
+#: application/modules/AffilinetCoupons/AffilinetCouponsConfig.php:50
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:50
+#: application/modules/Aliexpress/AliexpressConfig.php:56
+#: application/modules/Amazon/AmazonConfig.php:77
+#: application/modules/BingImages/BingImagesConfig.php:35
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:35
+#: application/modules/CjLinks/CjLinksConfig.php:50
+#: application/modules/CjProducts/CjProductsConfig.php:50
+#: application/modules/Clickbank/ClickbankConfig.php:35
+#: application/modules/Ebay/EbayConfig.php:87
+#: application/modules/Flickr/FlickrConfig.php:35
+#: application/modules/Flipkart/FlipkartConfig.php:50
+#: application/modules/Freebase/FreebaseConfig.php:35
+#: application/modules/GdeSlon/GdeSlonConfig.php:45
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:35
+#: application/modules/GoogleImages/GoogleImagesConfig.php:35
+#: application/modules/GoogleNews/GoogleNewsConfig.php:20
+#: application/modules/Linkshare/LinkshareConfig.php:35
+#: application/modules/Market/MarketConfig.php:48
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:94
+#: application/modules/Ozon/OzonConfig.php:40
+#: application/modules/PayTM/PayTMConfig.php:30
+#: application/modules/Pixabay/PixabayConfig.php:35
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:35
+#: application/modules/RssFetcher/RssFetcherConfig.php:35
+#: application/modules/Shareasale/ShareasaleConfig.php:65
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:35
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:35
+#: application/modules/Twitter/TwitterConfig.php:80
+#: application/modules/VkNews/VkNewsConfig.php:20
+#: application/modules/Youtube/YoutubeConfig.php:35
+#: application/modules/Zanox/ZanoxConfig.php:46
+msgid "Результатов"
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:31
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:37
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:57
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:36
+#: application/modules/AffilinetCoupons/AffilinetCouponsConfig.php:51
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:51
+#: application/modules/Aliexpress/AliexpressConfig.php:57
+#: application/modules/Amazon/AmazonConfig.php:78
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:36
+#: application/modules/CjLinks/CjLinksConfig.php:51
+#: application/modules/CjProducts/CjProductsConfig.php:51
+#: application/modules/Clickbank/ClickbankConfig.php:36
+#: application/modules/Ebay/EbayConfig.php:88
+#: application/modules/Flipkart/FlipkartConfig.php:51
+#: application/modules/GdeSlon/GdeSlonConfig.php:46
+#: application/modules/Linkshare/LinkshareConfig.php:36
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:95
+#: application/modules/Ozon/OzonConfig.php:41
+#: application/modules/PayTM/PayTMConfig.php:31
+#: application/modules/Shareasale/ShareasaleConfig.php:66
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:36
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:36
+#: application/modules/Zanox/ZanoxConfig.php:47
+msgid "Количество результатов для одного поискового запроса."
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:40
+#: application/modules/AE/AEConfig.php:56
+#: application/modules/Amazon/AmazonConfig.php:88
+#: application/modules/Amazon/AmazonConfig.php:105
+#: application/modules/BingImages/BingImagesConfig.php:45
+#: application/modules/Clickbank/ClickbankConfig.php:45
+#: application/modules/Clickbank/ClickbankConfig.php:61
+#: application/modules/RssFetcher/RssFetcherConfig.php:45
+#: application/modules/Zanox/ZanoxConfig.php:56
+#: application/modules/Zanox/ZanoxConfig.php:72
+msgid "Поле \"Результатов\" не может быть больше 50."
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:46
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:47
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:72
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:46
+#: application/modules/AffilinetCoupons/AffilinetCouponsConfig.php:61
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:61
+#: application/modules/Aliexpress/AliexpressConfig.php:72
+#: application/modules/Amazon/AmazonConfig.php:94
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:51
+#: application/modules/CjLinks/CjLinksConfig.php:61
+#: application/modules/CjProducts/CjProductsConfig.php:61
+#: application/modules/Clickbank/ClickbankConfig.php:51
+#: application/modules/Ebay/EbayConfig.php:103
+#: application/modules/Flipkart/FlipkartConfig.php:66
+#: application/modules/GdeSlon/GdeSlonConfig.php:61
+#: application/modules/Linkshare/LinkshareConfig.php:46
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:110
+#: application/modules/Ozon/OzonConfig.php:51
+#: application/modules/PayTM/PayTMConfig.php:41
+#: application/modules/Shareasale/ShareasaleConfig.php:76
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:46
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:46
+#: application/modules/Zanox/ZanoxConfig.php:62
+msgid "Результатов для обновления"
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:47
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:48
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:73
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:47
+#: application/modules/AffilinetCoupons/AffilinetCouponsConfig.php:62
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:62
+#: application/modules/Aliexpress/AliexpressConfig.php:73
+#: application/modules/Amazon/AmazonConfig.php:95
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:52
+#: application/modules/CjLinks/CjLinksConfig.php:62
+#: application/modules/CjProducts/CjProductsConfig.php:62
+#: application/modules/Clickbank/ClickbankConfig.php:52
+#: application/modules/Ebay/EbayConfig.php:104
+#: application/modules/Flipkart/FlipkartConfig.php:67
+#: application/modules/GdeSlon/GdeSlonConfig.php:62
+#: application/modules/Linkshare/LinkshareConfig.php:47
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:111
+#: application/modules/Ozon/OzonConfig.php:52
+#: application/modules/PayTM/PayTMConfig.php:42
+#: application/modules/Shareasale/ShareasaleConfig.php:77
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:47
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:47
+#: application/modules/Zanox/ZanoxConfig.php:63
+msgid "Количество результатов для автоматического обновления и автоблоггинга."
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:62
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:115
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:126
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:165
+#: application/modules/Aliexpress/AliexpressConfig.php:259
+#: application/modules/Amazon/AmazonConfig.php:289
+#: application/modules/BingImages/BingImagesConfig.php:88
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:215
+#: application/modules/CjProducts/CjProductsConfig.php:216
+#: application/modules/Ebay/EbayConfig.php:334
+#: application/modules/Flickr/FlickrConfig.php:104
+#: application/modules/Flipkart/FlipkartConfig.php:82
+#: application/modules/Freebase/FreebaseConfig.php:67
+#: application/modules/GdeSlon/GdeSlonConfig.php:110
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:67
+#: application/modules/GoogleImages/GoogleImagesConfig.php:142
+#: application/modules/GoogleNews/GoogleNewsConfig.php:52
+#: application/modules/Linkshare/LinkshareConfig.php:114
+#: application/modules/Market/MarketConfig.php:170
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:164
+#: application/modules/Ozon/OzonConfig.php:178
+#: application/modules/PayTM/PayTMConfig.php:103
+#: application/modules/Pixabay/PixabayConfig.php:165
+#: application/modules/Shareasale/ShareasaleConfig.php:107
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:157
+#: application/modules/Twitter/TwitterConfig.php:125
+#: application/modules/VkNews/VkNewsConfig.php:42
+#: application/modules/Zanox/ZanoxConfig.php:153
+msgid "Сохранять картинки"
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:63
+#: application/modules/Amazon/AmazonConfig.php:290
+msgid "Сохранять картинки на сервер."
+msgstr ""
+
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:20
+msgid "URL для получения XML-файла"
+msgstr ""
+
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:21
+msgid "Перейдите в Admitad: Инструменты - Скидки и купоны - Экспорт - Получить ссылку."
+msgstr ""
+
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:22
+msgid "Не забудьте установить галочку \"Только мои программы\" и другие фильтры."
+msgstr ""
+
+#: application/modules/AdmitadCoupons/AdmitadCouponsConfig.php:30
+msgid "Поле \"URL для получения XML-файла\" не может быть пустым."
+msgstr ""
+
+#: application/modules/AdmitadCoupons/AdmitadCouponsModule.php:25
+msgid "Добавляет купоны партнерской сети <a href=\"https://www.admitad.com/ru/promo/?ref=770f943d83\">Admitad</a>."
+msgstr ""
+
+#: application/modules/AdmitadCoupons/AdmitadCouponsModule.php:25
+#: application/modules/AdmitadProducts/AdmitadProductsModule.php:24
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsModule.php:25
+msgid "Вы должны получить аппрув в каждой программе отдельно."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:20
+msgid "ID оффера"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:21
+msgid "Вы можете работать только с офферами, представленными на <a target=\"_blank\" href=\"https://www.admitadgoods.ru/offers.php\">этой странице</a>."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:22
+msgid "ID оффера можно найти в URL, если кликнуть по логотипу оффера."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:30
+msgid "Поле \"ID оффера\" не может быть пустым."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:37
+msgid "Deeplink соотвествующего оффера."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:38
+msgid "<a target=\"_blank\" href=\"http://keywordrush.com/manuals/affegg_manual.pdf\">Мануал</a> по настройке Deeplink для различных CPA-сетей."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:50
+msgid "Поле \"Deeplink\" не может быть пустым."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:66
+msgid "Поле \"Результатов\" не может быть больше 20."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:82
+msgid "Поле \"Результатов для обновления\" не может быть больше 20."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:88
+msgid "Скидка"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:89
+msgid "Только товары со скидкой."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:95
+#: application/modules/Aliexpress/AliexpressConfig.php:191
+#: application/modules/Amazon/AmazonConfig.php:164
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:118
+#: application/modules/CjProducts/CjProductsConfig.php:96
+#: application/modules/Ebay/EbayConfig.php:281
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:136
+#: application/modules/PayTM/PayTMConfig.php:69
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:103
+#: application/modules/Zanox/ZanoxConfig.php:101
+msgid "Минимальная цена"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:105
+#: application/modules/Aliexpress/AliexpressConfig.php:201
+#: application/modules/Amazon/AmazonConfig.php:174
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:128
+#: application/modules/CjProducts/CjProductsConfig.php:106
+#: application/modules/Ebay/EbayConfig.php:271
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:146
+#: application/modules/PayTM/PayTMConfig.php:79
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:113
+#: application/modules/Zanox/ZanoxConfig.php:111
+msgid "Максимальная цена"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:116
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:127
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:166
+#: application/modules/Aliexpress/AliexpressConfig.php:260
+#: application/modules/BingImages/BingImagesConfig.php:89
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:216
+#: application/modules/CjProducts/CjProductsConfig.php:217
+#: application/modules/Ebay/EbayConfig.php:335
+#: application/modules/Flickr/FlickrConfig.php:105
+#: application/modules/Flipkart/FlipkartConfig.php:83
+#: application/modules/Freebase/FreebaseConfig.php:68
+#: application/modules/GdeSlon/GdeSlonConfig.php:111
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:68
+#: application/modules/GoogleImages/GoogleImagesConfig.php:143
+#: application/modules/GoogleNews/GoogleNewsConfig.php:53
+#: application/modules/Linkshare/LinkshareConfig.php:115
+#: application/modules/Market/MarketConfig.php:171
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:165
+#: application/modules/Ozon/OzonConfig.php:179
+#: application/modules/PayTM/PayTMConfig.php:104
+#: application/modules/Shareasale/ShareasaleConfig.php:108
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:158
+#: application/modules/Twitter/TwitterConfig.php:126
+#: application/modules/VkNews/VkNewsConfig.php:43
+#: application/modules/Zanox/ZanoxConfig.php:154
+msgid "Сохранять картинки на сервер"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:122
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:133
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:172
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:222
+#: application/modules/CjProducts/CjProductsConfig.php:223
+#: application/modules/Clickbank/ClickbankConfig.php:158
+#: application/modules/Flickr/FlickrConfig.php:111
+#: application/modules/Flipkart/FlipkartConfig.php:89
+#: application/modules/Freebase/FreebaseConfig.php:74
+#: application/modules/GdeSlon/GdeSlonConfig.php:117
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:74
+#: application/modules/GoogleImages/GoogleImagesConfig.php:149
+#: application/modules/GoogleNews/GoogleNewsConfig.php:59
+#: application/modules/Linkshare/LinkshareConfig.php:121
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:171
+#: application/modules/Ozon/OzonConfig.php:185
+#: application/modules/PayTM/PayTMConfig.php:110
+#: application/modules/Shareasale/ShareasaleConfig.php:114
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:164
+#: application/modules/VkNews/VkNewsConfig.php:49
+#: application/modules/Youtube/YoutubeConfig.php:85
+#: application/modules/Zanox/ZanoxConfig.php:160
+msgid "Обрезать описание"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:123
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:134
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:173
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:223
+#: application/modules/CjProducts/CjProductsConfig.php:224
+#: application/modules/Clickbank/ClickbankConfig.php:159
+#: application/modules/Flickr/FlickrConfig.php:112
+#: application/modules/Flipkart/FlipkartConfig.php:90
+#: application/modules/Freebase/FreebaseConfig.php:75
+#: application/modules/GdeSlon/GdeSlonConfig.php:118
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:75
+#: application/modules/GoogleImages/GoogleImagesConfig.php:150
+#: application/modules/GoogleNews/GoogleNewsConfig.php:60
+#: application/modules/Linkshare/LinkshareConfig.php:122
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:172
+#: application/modules/Ozon/OzonConfig.php:186
+#: application/modules/PayTM/PayTMConfig.php:111
+#: application/modules/Shareasale/ShareasaleConfig.php:115
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:165
+#: application/modules/VkNews/VkNewsConfig.php:50
+#: application/modules/Youtube/YoutubeConfig.php:86
+#: application/modules/Zanox/ZanoxConfig.php:161
+msgid "Размер описания в символах (0 - не обрезать)"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:141
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:150
+msgid "Поле \"%s\" не может быть меньше %d."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsConfig.php:141
+msgid "Обновить товары"
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsModule.php:24
+msgid "Добавляет товары партнерской сети <a href=\"https://www.admitad.com/ru/promo/?ref=770f943d83\">Admitad</a>."
+msgstr ""
+
+#: application/modules/AdmitadProducts/AdmitadProductsModule.php:25
+msgid "Используется API <a href=\"https://www.admitadgoods.ru\" target=\"_blank\">Admitad Goods</a> WP плагин."
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:21
+msgid "Ключ для доступа к Productserve API. Найти можно <a href=\"https://www.affiliatewindow.com/affiliates/shopwindow/productserve-info.php\">здесь</a>."
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:29
+#: application/modules/Aliexpress/AliexpressConfig.php:30
+#: application/modules/Flickr/FlickrConfig.php:29
+#: application/modules/Freebase/FreebaseConfig.php:29
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:29
+#: application/modules/Market/MarketConfig.php:29
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:29
+#: application/modules/Youtube/YoutubeConfig.php:29
+msgid "Поле \"API Key\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:57
+#: application/modules/Aliexpress/AliexpressConfig.php:231
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:178
+#: application/modules/CjProducts/CjProductsConfig.php:156
+#: application/modules/Clickbank/ClickbankConfig.php:100
+#: application/modules/Ebay/EbayConfig.php:119
+#: application/modules/Flickr/FlickrConfig.php:57
+#: application/modules/GdeSlon/GdeSlonConfig.php:77
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:85
+#: application/modules/Linkshare/LinkshareConfig.php:79
+#: application/modules/Ozon/OzonConfig.php:62
+#: application/modules/PayTM/PayTMConfig.php:89
+#: application/modules/Pixabay/PixabayConfig.php:153
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:143
+#: application/modules/Twitter/TwitterConfig.php:112
+#: application/modules/Youtube/YoutubeConfig.php:57
+msgid "Сортировка"
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:61
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:101
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:182
+#: application/modules/GdeSlon/GdeSlonConfig.php:81
+#: application/modules/PayTM/PayTMConfig.php:93
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:147
+msgid "По-умолчанию"
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:75
+msgid "Вы можете задать несколько Merchant IDs через запятую."
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:97
+msgid "Режим поиска"
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowConfig.php:98
+msgid "Подробнее про различные режимы поиска <a href=\"http://wiki.affiliatewindow.com/index.php/GetProductList\">здесь</a>."
+msgstr ""
+
+#: application/modules/Affiliatewindow/AffiliatewindowModule.php:27
+msgid "Добавляет товары партнерской сети Affiliatewindow."
+msgstr ""
+
+#: application/modules/AffilinetCoupons/AffilinetCouponsConfig.php:29
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:29
+msgid "Поле \"Publisher ID\" не может быть пустым."
+msgstr ""
+
+#: application/modules/AffilinetCoupons/AffilinetCouponsConfig.php:36
+msgid "Ключ для доступа к Publisher Webservice. Найти можно <a href=\"https://publisher.affili.net/Account/techSettingsPublisherWS.aspx\">здесь</a>."
+msgstr ""
+
+#: application/modules/AffilinetCoupons/AffilinetCouponsConfig.php:44
+msgid "Поле \"Publisher Webservice Password\" не может быть пустым."
+msgstr ""
+
+#: application/modules/AffilinetCoupons/AffilinetCouponsModule.php:25
+msgid "Добавляет купоны партнерской сети Affili.net. Вы должны получить аппрув в каждой программе отдельно."
+msgstr ""
+
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:36
+msgid "Ключ для доступа к Product Webservice. Найти можно <a href=\"https://publisher.affili.net/Account/techSettingsPublisherWS.aspx\">здесь</a>."
+msgstr ""
+
+#: application/modules/AffilinetProducts/AffilinetProductsConfig.php:44
+msgid "Поле \"Product Webservice Password\" не может быть пустым."
+msgstr ""
+
+#: application/modules/AffilinetProducts/AffilinetProductsModule.php:26
+msgid "Добавляет товары партнерской сети Affili.net. Вы должны получить аппрув в каждой программе отдельно."
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:22
+msgid "Специальный ключ для доступа к Aliexpress API. Получить можно <a target=\"_blank\" href=\"http://portals.aliexpress.com/adcenter/api_setting.htm\">здесь</a>."
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:37
+msgid "Укажите, если хотите посылать трафик через оригинальную партнерку Aliexpress. Найти можно <a target=\"_blank\" href=\"http://portals.aliexpress.com/track_id_manage.htm\">здесь</a>. Опция должна быть задана до сохранения товаров в базу данных."
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:47
+msgid "Укажите этот параметр, если хотите посылать трафик через одну из CPA-сетей с поддержкой aliexpress и deeplink. Опция должна быть задана до сохранения товаров в базу данных."
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:66
+#: application/modules/Aliexpress/AliexpressConfig.php:82
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:45
+msgid "Поле \"Результатов\" не может быть больше 40."
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:89
+msgid "Ограничить поиск товаров этой категорией."
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:92
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:61
+msgid "Все категории"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:127
+msgid "Товары высокого качества"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:128
+msgid "Только товары с хорошим оформлением, высокими продажами и положительными отзывами покупателей."
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:134
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:138
+msgid "Валюта"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:156
+#: application/modules/Clickbank/ClickbankConfig.php:127
+msgid "Язык"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:181
+msgid "Минимальная комиссия"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:182
+msgid "Минимальная комиссия в процентах. Например, 3"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:192
+msgid "Должна быть указана в USD. Например, 12.34"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:202
+msgid "Должна быть указана в USD. Например, 56.78"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:211
+msgid "Минимальные продажи"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:212
+msgid "Минимальное число партнерских продаж за последний месяц. Например, 123"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:221
+msgid "Максимальные продажи"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:222
+msgid "Максимальное число партнерских продаж за последний месяц. Например, 456"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:235
+#: application/modules/Linkshare/LinkshareConfig.php:83
+msgid "По умолчанию"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:236
+msgid "Цена от низкой к выскокой"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:237
+msgid "Цена от высокой к низкой"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:238
+#: application/modules/Aliexpress/AliexpressConfig.php:248
+msgid "Рейтинг продавца"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:239
+msgid "Комиссия от низкой к высокой"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:240
+msgid "Комиссия от высокой к низкой"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:241
+msgid "Продажи"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:242
+msgid "Время жизни от низкого к высокому"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:243
+msgid "Время жизни от высокого к низкому"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressConfig.php:249
+msgid "Минимальный рейтинг продавца, например, 12"
+msgstr ""
+
+#: application/modules/Aliexpress/AliexpressModule.php:28
+msgid "Добавляет товары aliexpress.com"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:22
+msgid "Специальный ключ для доступа к Amazon API."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:30
+msgid "Поле \"Access Key ID\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:37
+msgid "Еще один специальный ключ для доступа к Amazon API."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:45
+msgid "Поле \"Secret Access Key\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:51
+msgid "Tracking ID по-умолчанию"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:52
+msgid "Связь с вашим аккаунтом в партнерской программе. Чтобы получать комиссию от продаж, правильно укажите этот параметр."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:53
+msgid "Tracking ID должен соотвествовать установке локали по-умолчанию."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:54
+msgid "Ниже вы можете задать значения Tracking ID для остальных локалей, если хотите добавить товары более чем с одной локали."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:62
+msgid "Поле \"Tracking ID\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:69
+msgid "Локаль по-умолчанию"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:70
+msgid "Локаль/сайт amazon. Для каждой локали необходима отдельная регистрация в соответствующей партнерской программе."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:79
+#: application/modules/Amazon/AmazonConfig.php:96
+msgid "Получение более 10 результатов потребует дополнительное время на запрос данных."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:111
+msgid "Вид ссылок"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:112
+msgid "Вид партнерских ссылок. Узнайте больше про amazon <a target=\"_blank\" href=\"https://affiliate-program.amazon.com/gp/associates/help/t2/a11\">90 day cookie</a>."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:122
+msgid "Категория для поиска"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:123
+msgid "Список категорий для US Amazon. Для локальных филиалов некоторые категории могут быть недоступны. Если Вы не зададите категорию для поиска, то никакие другие опции фильтрации кроме поиска по ключевому слову (например, минимальная цена или сортировка) работать не будут."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:130
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:197
+#: application/modules/CjProducts/CjProductsConfig.php:175
+#: application/modules/Linkshare/LinkshareConfig.php:93
+msgid "Порядок сортировки"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:131
+msgid "Варианты сортировки зависят от locale и выбранной категории. Список доступных значений можно найти <a href=\"http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?APPNDX_SortValuesArticle.html\">здесь</a>."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:140
+msgid "Brouse node"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:141
+msgid "Целочисленное ID \"узла\" на amazon. Поиск будет произведен только в этом \"узле\"."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:150
+msgid "Поиск в названии"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:151
+msgid "Поиск будет произведет только по названиям товаров."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:157
+msgid "Только Amazon"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:158
+msgid "Выбрать товары, которые продает Amazon. Другие продавцы исключаются из поиска."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:165
+msgid "Например, 8.99"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:175
+msgid "Например, 98.50"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:184
+msgid "Минимальная скидка"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:185
+msgid "Выбрать товары со скидкой. Обязательно должна быть задана категория. Обратите внимание, эта опция работает не для всех категорий."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:188
+msgid "Неважно"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:210
+#: application/modules/Ozon/OzonConfig.php:121
+msgid "Отзывы покупателей"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:211
+msgid "Получить отзывы покупателей. Отзывы будут показаны в iframe. iframe URL валидный 24 часа, используйте функцию автообноления, чтобы держать URL в актуальном состоянии."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:226
+#: application/modules/Market/MarketConfig.php:138
+#: application/modules/Ozon/OzonConfig.php:155
+msgid "Обрезать отзывы"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:227
+msgid "Количество символов для одного отзыва. 0 - максимально возможная длина текста."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:251
+msgid "Парсить отписание"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:252
+msgid "Парсить описание товаров от продавца."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:258
+msgid "Вид описания"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:262
+msgid "Как на Amazon"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:263
+msgid "Безопасный HTML"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:264
+msgid "Только разрешенные теги HTML"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:265
+msgid "Только текст"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:271
+#: application/modules/Ebay/EbayConfig.php:323
+msgid "Размер описания"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:272
+#: application/modules/Ebay/EbayConfig.php:324
+msgid "Максимальный размер описания товара. 0 - не обрезать."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:282
+msgid "Картинки через https"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:283
+msgid "Перезаписать адреса картинок через https протокол. Включите эту опцию, если вы используете SSL сертификат на своем домене."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:290
+msgid "Включение этой опции возможно нарушает правила API. Используйте на свой страх и риск."
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:300
+msgid "Tracking ID для %s локали"
+msgstr ""
+
+#: application/modules/Amazon/AmazonConfig.php:301
+msgid "Задайте, если хотите добавлять товары с соответствующего amazon сайта (локали)."
+msgstr ""
+
+#: application/modules/Amazon/AmazonModule.php:28
+msgid "Добавляет товары amazon."
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:17
+msgid "Мин. скидка"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:18
+msgid "5%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:19
+msgid "10%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:20
+msgid "15%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:21
+msgid "20%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:22
+msgid "25%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:23
+msgid "30%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:24
+msgid "35%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:25
+msgid "40%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:26
+msgid "50%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:27
+msgid "60%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:28
+msgid "70%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:29
+msgid "80%"
+msgstr ""
+
+#: application/modules/Amazon/views/search_panel.php:30
+msgid "90%"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:21
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:21
+msgid "Ключ доступа к Bing API. Получить можно <a href=\"https://datamarket.azure.com/account/keys\">здесь</a> (потребуется аккаунт в bing)."
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:29
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:29
+#: application/modules/Twitter/TwitterConfig.php:29
+#: application/modules/Twitter/TwitterConfig.php:44
+#: application/modules/Twitter/TwitterConfig.php:59
+#: application/modules/Twitter/TwitterConfig.php:74
+msgid "Поле \"Account Key\" не может быть пустым."
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:36
+#: application/modules/Pixabay/PixabayConfig.php:36
+msgid "Количество результатов для одного запроса."
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:51
+#: application/modules/Flickr/FlickrConfig.php:46
+#: application/modules/Freebase/FreebaseConfig.php:51
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:51
+#: application/modules/GoogleImages/GoogleImagesConfig.php:51
+#: application/modules/GoogleNews/GoogleNewsConfig.php:36
+#: application/modules/Market/MarketConfig.php:64
+#: application/modules/Pixabay/PixabayConfig.php:51
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:51
+#: application/modules/RssFetcher/RssFetcherConfig.php:51
+#: application/modules/Twitter/TwitterConfig.php:96
+#: application/modules/VkNews/VkNewsConfig.php:31
+#: application/modules/Youtube/YoutubeConfig.php:46
+msgid "Результатов для автоблоггинга"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:52
+#: application/modules/Flickr/FlickrConfig.php:47
+#: application/modules/Freebase/FreebaseConfig.php:52
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:52
+#: application/modules/GoogleImages/GoogleImagesConfig.php:52
+#: application/modules/GoogleNews/GoogleNewsConfig.php:37
+#: application/modules/Market/MarketConfig.php:65
+#: application/modules/Pixabay/PixabayConfig.php:52
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:52
+#: application/modules/RssFetcher/RssFetcherConfig.php:52
+#: application/modules/Twitter/TwitterConfig.php:97
+#: application/modules/VkNews/VkNewsConfig.php:32
+#: application/modules/Youtube/YoutubeConfig.php:47
+msgid "Количество результатов для автоблоггинга."
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:61
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:61
+#: application/modules/RssFetcher/RssFetcherConfig.php:61
+msgid "Поле \"Результатов для автоблоггинга\" не может быть больше 50."
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:67
+msgid "Фильтр"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:71
+#: application/modules/BingImages/views/search_panel.php:2
+msgid "Без фильтра"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:72
+#: application/modules/BingImages/views/search_panel.php:3
+msgid "Маленькие изображения"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:73
+#: application/modules/BingImages/views/search_panel.php:4
+msgid "Средние изображения"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:74
+#: application/modules/BingImages/views/search_panel.php:5
+msgid "Большие изображения"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:75
+#: application/modules/BingImages/views/search_panel.php:6
+#: application/modules/GoogleImages/GoogleImagesConfig.php:73
+msgid "Цветные"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:76
+#: application/modules/BingImages/views/search_panel.php:7
+#: application/modules/GoogleImages/GoogleImagesConfig.php:72
+msgid "Черно-белые"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:77
+#: application/modules/BingImages/views/search_panel.php:8
+#: application/modules/GoogleImages/GoogleImagesConfig.php:122
+msgid "Фотографии"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:78
+#: application/modules/BingImages/views/search_panel.php:9
+msgid "Графика и иллюстрации"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:79
+#: application/modules/BingImages/views/search_panel.php:10
+msgid "Содержит лица"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:80
+#: application/modules/BingImages/views/search_panel.php:11
+msgid "Портреты"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:81
+#: application/modules/BingImages/views/search_panel.php:12
+msgid "Не содержит лиц"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:95
+#: application/modules/GoogleImages/GoogleImagesConfig.php:160
+msgid "Поиск по сайту"
+msgstr ""
+
+#: application/modules/BingImages/BingImagesConfig.php:96
+msgid "Ограничить поиск только этим доменом. Например, задайте: wikimedia.org"
+msgstr ""
+
+#: application/modules/BingImages/templates/data_simple.php:5
+msgid "Simple"
+msgstr ""
+
+#: application/modules/BingImages/templates/data_simple.php:18
+#: application/modules/GoogleImages/templates/data_simple.php:20
+msgid "Source: %s"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:20
+msgid "Remote_auth"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:21
+msgid "Ваш ключ для доступа к API. Войдите в систему -> \"Личный кабинет\" -> \"API\"."
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:29
+msgid "Поле \"Remote_auth\" не может быть пустым."
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:45
+#: application/modules/Ebay/EbayConfig.php:97
+#: application/modules/GdeSlon/GdeSlonConfig.php:55
+msgid "Поле \"Результатов\" не может быть больше 100."
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:61
+#: application/modules/Ebay/EbayConfig.php:113
+#: application/modules/GdeSlon/GdeSlonConfig.php:71
+msgid "Поле \"Результатов для обновления\" не может быть больше 100."
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:77
+#: application/modules/GdeSlon/GdeSlonConfig.php:100
+msgid "ID магазина"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:78
+msgid "Фильтр по магазинам. Целочисленные идентификаторы магазинов перечисляются через запятую."
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:91
+#: application/modules/Ozon/OzonConfig.php:95
+#: application/modules/Pixabay/PixabayConfig.php:85
+#: application/modules/Pixabay/PixabayConfig.php:99
+#: application/modules/Pixabay/PixabayConfig.php:112
+#: application/modules/Zanox/ZanoxConfig.php:146
+msgid "Все"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:92
+msgid "Товары для строительства и ремонта"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:93
+#: application/modules/Ozon/OzonConfig.php:102
+msgid "Музыка"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:94
+msgid "Одежда, обувь и аксессуары"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:95
+msgid "Товары для авто- и мототехники "
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:96
+msgid "Подарки, сувениры, цветы"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:97
+msgid "Путешествия, туризм"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:98
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:101
+#: application/modules/Ozon/OzonConfig.php:97
+msgid "Книги"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:99
+msgid "Животные и растения"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:100
+msgid "Товары для здоровья"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:101
+msgid "Оборудование"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:102
+msgid "Товары для дома и дачи"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:103
+msgid "Продукты, напитки, табак"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:104
+msgid "Интим товары"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:105
+msgid "Электроника и Фото"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:106
+#: application/modules/Ozon/OzonConfig.php:99
+msgid "Бытовая техника"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:107
+msgid "Спортивные товары "
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:108
+msgid "Компьютеры"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:109
+msgid "Товары для детей"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:110
+msgid "Товары для офиса"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:111
+msgid "Телефоны"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:112
+msgid "Мебель"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:119
+msgid "Минимальная цена товара. Например, 10."
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:129
+msgid "Минимальная цена товара. Например, 100."
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:142
+#: application/modules/CjLinks/CjLinksConfig.php:129
+msgid "Любая"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:208
+#: application/modules/PayTM/PayTMConfig.php:62
+msgid "Наличие"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsConfig.php:209
+msgid "Только доступные товары"
+msgstr ""
+
+#: application/modules/CityadsProducts/CityadsProductsModule.php:26
+msgid "Добавляет товары партнерской сети cityads.com"
+msgstr ""
+
+#: application/modules/CjLinks/CjLinksConfig.php:21
+#: application/modules/CjProducts/CjProductsConfig.php:21
+msgid "Ключ для доступа к CJ API. Получить нужно <a href=\"https://api.cj.com/sign_up.cj\">здесь</a>."
+msgstr ""
+
+#: application/modules/CjLinks/CjLinksConfig.php:29
+#: application/modules/CjProducts/CjProductsConfig.php:29
+msgid "Поле \"Developer Key\" не может быть пустым."
+msgstr ""
+
+#: application/modules/CjLinks/CjLinksConfig.php:44
+#: application/modules/CjProducts/CjProductsConfig.php:44
+msgid "Поле \"Website ID\" не может быть пустым."
+msgstr ""
+
+#: application/modules/CjLinks/CjLinksConfig.php:72
+#: application/modules/CjProducts/CjProductsConfig.php:72
+msgid "Рекламодатели"
+msgstr ""
+
+#: application/modules/CjLinks/CjLinksConfig.php:86
+#: application/modules/CjLinks/CjLinksConfig.php:111
+#: application/modules/Clickbank/ClickbankConfig.php:131
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:71
+msgid "Любой"
+msgstr ""
+
+#: application/modules/CjLinks/CjLinksModule.php:27
+msgid "Добавляет текстовые ссылки, купоны и баннеры партнерской сети Commission Junction. Вы должны получить аппрув в каждой программы отдельно."
+msgstr ""
+
+#: application/modules/CjProducts/CjProductsConfig.php:36
+msgid "PID - идентификатор сайта в CJ. Войдите в свой аккаунт CJ и следуйте: \"Account -> Websites\""
+msgstr ""
+
+#: application/modules/CjProducts/CjProductsConfig.php:73
+msgid "Вы можете задать Adverticer ID (CID) через запятую для ограничения поиска только по этим рекламодателям. Введите \"joined\", чтобы искать по всем вашим рекламодателям."
+msgstr ""
+
+#: application/modules/CjProducts/CjProductsConfig.php:116
+msgid "Минимальная цена распродажи"
+msgstr ""
+
+#: application/modules/CjProducts/CjProductsConfig.php:126
+msgid "Максимальная цена распродажи"
+msgstr ""
+
+#: application/modules/CjProducts/CjProductsModule.php:27
+msgid "Добавляет товары партнерской сети Commission Junction. Вы должны получить аппрув в каждой программы отдельно."
+msgstr ""
+
+#: application/modules/Clickbank/ClickbankConfig.php:21
+msgid "Ваш nickname на ClickBank."
+msgstr ""
+
+#: application/modules/Clickbank/ClickbankConfig.php:29
+msgid "Поле \"ClickBank nickname\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Clickbank/ClickbankConfig.php:117
+msgid "Минимум Gravity"
+msgstr ""
+
+#: application/modules/Clickbank/ClickbankModule.php:26
+msgid "Добавляет офферы партнерской сети clickbank.com."
+msgstr ""
+
+#: application/modules/Clickbank/ClickbankModule.php:26
+msgid "Модуль работает в тестовом режиме."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:22
+msgid "Ваш ID для доступа к eBay API. Поучить ключ вы можете в <a href=\"http://developer.ebay.com/join\">eBay Developers Program</a>."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:30
+msgid "Поле \"Application ID (AppID)\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:37
+msgid "Это связь с партнерской программой EPN. Campaign ID валидный для всех программ, в которые вы были приняты на EPN. Если не задано - комиссия за продажи начисляться не будет."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:46
+msgid "EPN Custom ID (канал)"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:47
+msgid "Любое слово, например, имя домена. Custom ID будет включен в отчеты по продажам на EPN, таким образом, вы сможете дополнительно отслеживать трафик."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:58
+msgid "Skimlinks Site ID"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:59
+msgid "Указывайте, если хотите слать трафик через <a href=\"http://www.keywordrush.com/go/skimlinks\">Skimlinks</a>. ID для соотвествущего домена можно найти <a href=\"https://hub.skimlinks.com/account\">здесь</a>."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:69
+msgid "Viglink ID"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:70
+msgid "Указывайте, если хотите слать трафик через <a href=\"http://www.keywordrush.com/go/viglink\">Viglink</a>. Ваш ID можно найти <a href=\"http://www.viglink.com/install\">здесь</a>, он одинаковый для всех доменов."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:79
+msgid "Locale"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:80
+msgid "Локальный сайт eBay. Для каждого локального филиала необходима отдельная регистрация в соответствующей партнерской программе."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:127
+msgid "Время завершения"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:128
+msgid "Срок жизни лотов в секундах. Будут выбраны только лоты, которые закроются не позже указанного времени."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:137
+msgid "Категориия"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:138
+msgid "ID категории для поиска. ID категорий можно найти в URL категорий на <a href=\"http://www.ebay.com/sch/allcategories/all-categories\">этой странице</a>. Можно задать до трех категорий через запятую, например, \"2195,2218,20094\"."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:147
+msgid "Искать в описании"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:148
+msgid "Включить поиск по описание товара в дополнение к названию товара. Это займет больше времени, чем поиск только по названию."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:154
+#: application/modules/Linkshare/LinkshareConfig.php:67
+msgid "Логика поиска"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:162
+msgid "Состояние товара"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:170
+msgid "Исключить категорию"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:171
+msgid "ID категории, которую необходимо исключить при поиске. ID категорий можно найти в URL категорий на <a href=\"http://www.ebay.com/sch/allcategories/all-categories\">этой странице</a>. Можно задать до 25 категорий через запятую, например, \"2195,2218,20094\"."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:180
+msgid "Минимальный ретинг продавца"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:188
+msgid "Best Offer"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:189
+msgid "Только \"Best Offer\" лоты."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:195
+msgid "Featured"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:196
+msgid "Только \"Featured\" лоты."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:202
+msgid "Free Shipping"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:203
+msgid "Только лоты с бесплатной доставкой."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:209
+msgid "Local Pickup"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:210
+msgid "Только лоты с опцией \"local pickup\"."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:216
+msgid "Get It Fast"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:217
+msgid "Только \"Get It Fast\" лоты."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:223
+msgid "Top-rated seller"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:224
+msgid "Только товары от \"Top-rated\" продавцов."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:230
+msgid "Спрятать дубли"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:231
+msgid "Отфильтровать похожие лоты."
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:237
+msgid "Тип аукциона"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:251
+msgid "Максимум ставок"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:252
+msgid "Например, 10"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:261
+msgid "Минимум ставок"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:262
+msgid "Например, 3"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:272
+msgid "Например, 300.50"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:282
+msgid "Например, 10.98"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:291
+msgid "Варианты оплаты"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:316
+msgid "Получить описание"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:317
+msgid "Получить описание товара. Требует дополнительных запросов к eBay API, это замедляет работу поиска. Описание будет запрошено не более чем для 20 первых товаров за один поиск."
+msgstr ""
+
+#: application/modules/Ebay/EbayModule.php:30
+msgid "Добавляет товары eBay. Поддерживает различные локальные сайты. Несколько вариантов монетизации трафика."
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:21
+msgid "Ключ для использования Flickr API.  Получить можно <a href=\"http://www.flickr.com/services/api/misc.api_keys.html\">здесь</a>."
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:36
+#: application/modules/Freebase/FreebaseConfig.php:36
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:36
+#: application/modules/GoogleNews/GoogleNewsConfig.php:21
+#: application/modules/Market/MarketConfig.php:49
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:36
+#: application/modules/RssFetcher/RssFetcherConfig.php:36
+#: application/modules/Twitter/TwitterConfig.php:81
+#: application/modules/VkNews/VkNewsConfig.php:21
+#: application/modules/Youtube/YoutubeConfig.php:36
+msgid "Количество результатов для одного запроса"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:61
+#: application/modules/Flickr/views/search_panel.php:10
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:89
+#: application/modules/Ozon/OzonConfig.php:66
+#: application/modules/Youtube/YoutubeConfig.php:63
+#: application/modules/Youtube/views/search_panel.php:10
+msgid "Релевантность"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:62
+#: application/modules/Flickr/views/search_panel.php:11
+msgid "Дата поста"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:63
+#: application/modules/Flickr/views/search_panel.php:12
+msgid "Дата съемки"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:64
+#: application/modules/Flickr/views/search_panel.php:13
+msgid "Сначала интересные"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:71
+#: application/modules/GoogleImages/GoogleImagesConfig.php:20
+#: application/modules/Youtube/YoutubeConfig.php:72
+msgid "Тип лицензии"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:72
+msgid "Многие фотографии на Flickr загружены с лицензией Creative Commons. Подробнее <a href=\"http://www.flickr.com/creativecommons/\">здесь</a>."
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:75
+#: application/modules/Flickr/views/search_panel.php:2
+#: application/modules/GoogleImages/GoogleImagesConfig.php:24
+#: application/modules/GoogleImages/views/search_panel.php:2
+#: application/modules/Youtube/YoutubeConfig.php:76
+#: application/modules/Youtube/views/search_panel.php:2
+msgid "Любая лицензия"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:76
+#: application/modules/Flickr/views/search_panel.php:3
+#: application/modules/GoogleImages/GoogleImagesConfig.php:25
+#: application/modules/GoogleImages/views/search_panel.php:3
+msgid "Любая Сreative Сommons"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:77
+#: application/modules/Flickr/views/search_panel.php:4
+#: application/modules/GoogleImages/GoogleImagesConfig.php:26
+#: application/modules/GoogleImages/views/search_panel.php:4
+msgid "Разрешено коммерческое использование"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:78
+#: application/modules/Flickr/views/search_panel.php:5
+#: application/modules/GoogleImages/GoogleImagesConfig.php:27
+#: application/modules/GoogleImages/views/search_panel.php:5
+msgid "Разрешено изменение"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:79
+#: application/modules/Flickr/views/search_panel.php:6
+#: application/modules/GoogleImages/GoogleImagesConfig.php:28
+#: application/modules/GoogleImages/views/search_panel.php:6
+msgid "Коммерческое использование и изменение"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:86
+#: application/modules/GoogleImages/GoogleImagesConfig.php:101
+#: application/modules/Pixabay/PixabayConfig.php:67
+msgid "Размер"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:90
+msgid "75x75 пикселов"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:91
+msgid "150x150 пикселов"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:92
+msgid "100 пикселов по длинной стороне"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:93
+msgid "240 пикселов по длинной стороне"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:94
+msgid "320 пикселов по длинной стороне"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:95
+msgid "500  пикселов по длинной стороне"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:96
+msgid "640 пикселов по длинной стороне"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:97
+msgid "800 пикселов по длинной стороне"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:98
+msgid "1024 пикселов по длинной стороне"
+msgstr ""
+
+#: application/modules/Flickr/FlickrConfig.php:123
+msgid "Ограничить поиск только этим пользователем Flickr"
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:20
+msgid "Affiliate Tracking ID"
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:21
+msgid "Войдите в систему -> \"API\" -> \"API Token\""
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:29
+msgid "Поле \"Affiliate Tracking ID\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:35
+msgid "Token"
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:36
+msgid "Ваш ключ для доступа к API. Войдите в систему -> \"API\" -> \"API Token\""
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:44
+#: application/modules/Shareasale/ShareasaleConfig.php:44
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:29
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:29
+msgid "Поле \"Token\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:60
+#: application/modules/Freebase/FreebaseConfig.php:45
+#: application/modules/GoogleNews/GoogleNewsConfig.php:30
+#: application/modules/Market/MarketConfig.php:58
+#: application/modules/Twitter/TwitterConfig.php:90
+msgid "Поле \"Результатов\" не может быть больше 10."
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartConfig.php:76
+msgid "Поле \"Результатов для обновления\" не может быть больше 10."
+msgstr ""
+
+#: application/modules/Flipkart/FlipkartModule.php:24
+msgid "Добавляет товары flipkart.com"
+msgstr ""
+
+#: application/modules/Freebase/FreebaseConfig.php:21
+msgid "Ключ для доступа к API. Получить можно в Google <a href=\"http://code.google.com/apis/console\">API консоли</a>."
+msgstr ""
+
+#: application/modules/Freebase/FreebaseConfig.php:61
+#: application/modules/GoogleNews/GoogleNewsConfig.php:46
+#: application/modules/Market/MarketConfig.php:74
+msgid "Поле \"Результатов для автоблоггинга\" не может быть больше 10."
+msgstr ""
+
+#: application/modules/Freebase/FreebaseModule.php:28
+msgid "Этот модуль больше не работает по причине закрытия Freebase API. Модуль оставлен в целях совместимости с предыдущими версиями плагина."
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:20
+msgid "API ключ"
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:21
+msgid "Ваш ключ для доступа к API. Войдите в систему -> \"Инструменты\" -> \"XML API\""
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:29
+msgid "Поле \"API ключ\" не может быть пустым."
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:36
+msgid "Буквенный или цифровой идентификатор, чтобы сегментировать данные о трафике."
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:82
+msgid "Цена"
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:83
+msgid "Конверт"
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:84
+msgid "Новинки"
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:90
+msgid "Категории для поиска"
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:91
+msgid "Ограничить поиск задаными категориями. Найти ID категорий можно Найти ID магазинов можно <a target=\"_blank\" href=\"http://api.gdeslon.ru/merchants\">здесь</a>. Можно задать несколько ID через запятую."
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonConfig.php:101
+msgid "Ограничить поиск по выбранному магазину. Найти ID магазинов можно <a target=\"_blank\" href=\"http://api.gdeslon.ru/merchants\">здесь</a>. Можно задать несколько ID через запятую."
+msgstr ""
+
+#: application/modules/GdeSlon/GdeSlonModule.php:26
+msgid "Добавляет товары партнерской сети gdeslon.ru"
+msgstr ""
+
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:21
+#: application/modules/Youtube/YoutubeConfig.php:21
+msgid "Ключ для доступа к API. Получить можно в Google <a href=\"http://code.google.com/apis/console\">API консоли</a>"
+msgstr ""
+
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:61
+msgid "Поле \"Результатов для автоблоггинга\" не может быть больше 40."
+msgstr ""
+
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:90
+msgid "Новизна"
+msgstr ""
+
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:96
+msgid "Тип издания"
+msgstr ""
+
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:100
+msgid "Любые"
+msgstr ""
+
+#: application/modules/GoogleBooks/GoogleBooksConfig.php:102
+msgid "Журналы"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:21
+msgid "Поиск изображений, которые можно использовать. Подробнее <a href=\"https://support.google.com/websearch/answer/29508\">здесь</a>."
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:36
+msgid "Количество результатов для одного запроса. Не может быть больше 8."
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:45
+msgid "Поле \"Результатов\" не может быть больше 8."
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:61
+msgid "Поле \"Результатов для автоблоггинга\" не может быть больше 8."
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:67
+msgid "Цвет"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:71
+msgid "Любого цвета"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:79
+msgid "Преобладание цвета"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:83
+msgid "Любой цвет"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:84
+msgid "Черный"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:85
+msgid "Синий"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:86
+msgid "Коричневый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:87
+msgid "Серый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:88
+msgid "Зеленый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:89
+msgid "Оранжевый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:90
+msgid "Розовый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:91
+msgid "Фиолетовый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:92
+msgid "Красный"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:93
+msgid "Бирюзовый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:94
+msgid "Белый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:95
+msgid "Желтый"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:105
+#: application/modules/GoogleImages/GoogleImagesConfig.php:120
+#: application/modules/GoogleImages/views/search_panel.php:11
+msgid "Любого размера"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:106
+#: application/modules/GoogleImages/views/search_panel.php:12
+msgid "Маленькие"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:107
+#: application/modules/GoogleImages/views/search_panel.php:13
+msgid "Средние"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:108
+#: application/modules/GoogleImages/views/search_panel.php:14
+msgid "Большие"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:109
+#: application/modules/GoogleImages/views/search_panel.php:15
+msgid "Огромные"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:116
+#: application/modules/Ozon/OzonConfig.php:78
+msgid "Тип"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:121
+msgid "Лица"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:123
+msgid "Клип-арт"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:124
+msgid "Ч/б рисунки"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:130
+#: application/modules/Pixabay/PixabayConfig.php:146
+msgid "Безопасный поиск"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:134
+msgid "Включен"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:135
+msgid "Модерация"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:136
+msgid "Отключен"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesConfig.php:161
+msgid "Ограничить поиск только этим доменом. Например, задайте: photobucket.com"
+msgstr ""
+
+#: application/modules/GoogleImages/GoogleImagesModule.php:25
+msgid "<span style=\"color:red;\">Этот модуль больше не работает по причине закрытия Google Image Search API. Модуль оставлен в целях совместимости с предыдущими версиями плагина.</span>"
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareConfig.php:21
+msgid "Ключ для доступа к LinkShare API. Войдите в аккаунт Linkshare и следуйте: \"LINKS -> Web Service\"."
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareConfig.php:29
+msgid "Поле \"Web Services Token\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareConfig.php:58
+msgid "Ограничить поиск по Advertiser ID. Войдите в аккаунт LinkShare и следуйте: PROGRAMS -> My Advertisers -> Выбираете рекламодателя -> Advertiser Info."
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareConfig.php:71
+msgid "Искать по всем слова - AND"
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareConfig.php:72
+msgid "Любое из слов - OR"
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareConfig.php:73
+msgid "Точное вхождение - EXACT"
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareConfig.php:105
+msgid "Ограничить поиск по заданной категории. Каждый присоединенный продавец имеет свои категории."
+msgstr ""
+
+#: application/modules/Linkshare/LinkshareModule.php:26
+msgid "Добавляет товары партнерской сети Rakuten Linkshare. Вы должны получить аппрув в каждой программы отдельно."
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:21
+msgid "Ключ для доступа к Яндекс Маркет API. Отправить запрос на получение можно <a href=\"http://feedback2.yandex.ru/api-market-content/key/\">здесь</a>."
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:35
+#: application/modules/Zanox/ZanoxConfig.php:90
+msgid "Регион"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:39
+msgid "Россия"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:40
+msgid "Украина"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:41
+msgid "Казахстан"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:42
+msgid "Беларусь"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:80
+msgid "Предложения"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:81
+msgid "Получить список предложений на модель."
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:87
+msgid "Количество предложений"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:97
+msgid "Поле \"Количество предложений\" не может быть больше 30."
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:103
+msgid "Отзывы"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:104
+msgid "Получить отзывы о модели."
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:110
+#: application/modules/Ozon/OzonConfig.php:144
+msgid "Количество отзывов"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:120
+msgid "Поле \"Количество отзывов\" не может быть больше 30."
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:126
+#: application/modules/Ozon/OzonConfig.php:166
+msgid "Сортировка отзывов"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:130
+msgid "Сортировка по оценке пользователем модели"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:131
+msgid "Сортировка по дате написания отзыва"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:132
+msgid "Сортировка по полезности отзыва"
+msgstr ""
+
+#: application/modules/Market/MarketConfig.php:139
+msgid "Размер отзывов в символах (0 - не обрезать)"
+msgstr ""
+
+#: application/modules/Market/MarketModule.php:28
+msgid "Добавляет товары из русскоязычного каталога Яндекс.Маркет"
+msgstr ""
+
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:21
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:36
+msgid "Следуйте: My Details -> Accout Details -> API Key"
+msgstr ""
+
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:44
+msgid "Поле Private Key\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:59
+#: application/modules/Shareasale/ShareasaleConfig.php:29
+msgid "Поле \"Affiliate ID\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:65
+msgid "Agency"
+msgstr ""
+
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:88
+msgid "Поле \"Currency\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:104
+#: application/modules/Optimisemedia/OptimisemediaConfig.php:120
+msgid "Поле \"Результатов\" не может быть больше 500."
+msgstr ""
+
+#: application/modules/Optimisemedia/OptimisemediaModule.php:27
+msgid "Добавляет товары партнерской сети Optimise Network."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:20
+msgid "Партнерский идентификатор"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:21
+msgid "Укажите, если хотите посылать трафик на \"родную\" партнерскую программу ozon. Найти идентификатор можно <a href=\"https://www.ozon.ru/?context=partner_data\">здесь</a>."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:30
+msgid "Deeplink"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:31
+msgid "Deeplink одной из CPA-сетей с поддержкой ozon. Укажите, если хотите посылать трафик через CPA-сеть."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:67
+msgid "Обратная релевантность"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:68
+msgid "Ozon Special По умолчанию"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:69
+msgid "Ozon Special Имя"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:70
+msgid "Ozon Special Бестселлеры"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:71
+msgid "Ozon Special Рейтинг"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:72
+msgid "Ozon Special Год выхода"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:73
+msgid "Ozon Special Цена"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:74
+msgid "Доступность"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:75
+msgid "Обратная доступность"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:76
+msgid "Год"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:77
+msgid "Год в обратном порядке"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:79
+msgid "Тип в обратном порядке"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:80
+msgid "Увеличение цены"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:81
+msgid "Уменьшение цены"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:83
+msgid "Название в обратном порядке"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:84
+msgid "Автор"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:85
+msgid "Автор в обратном порядке"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:96
+msgid "Детям и мамам"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:98
+msgid "Электроника"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:100
+msgid "Софт и игры"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:101
+msgid "DVD и Blu-ray"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:103
+msgid "Дом, сад, зоотовары"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:104
+msgid "Спорт и отдых"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:105
+msgid "Красота и здоровье"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:106
+msgid "Одежда, обувь, аксессуары"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:107
+msgid "Подарки и сувениры"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:108
+msgid "Антиквариат, винтаж, искусство"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:114
+msgid "Характеристики"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:115
+msgid "Парсить характеристики товаров (максимум для 3-х товаров)."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:122
+msgid "Парсить отзывы покупателей."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:128
+msgid "Количество товаров с отзывами"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:129
+msgid "Парсить отзывы только для заданного количества товаров. Максимум - 3."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:138
+msgid "Поле \"Количество товаров с отзывами\" не может быть больше 3."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:145
+msgid "Сколько отзывов парсить для одного товара."
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:156
+msgid "Размер отзыва в символах (0 - не обрезать)"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:170
+msgid "Полезность"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:171
+msgid "Дата публикации"
+msgstr ""
+
+#: application/modules/Ozon/OzonConfig.php:172
+#: application/modules/Youtube/YoutubeConfig.php:62
+#: application/modules/Youtube/views/search_panel.php:9
+msgid "Рейтинг"
+msgstr ""
+
+#: application/modules/Ozon/OzonModule.php:26
+msgid "Добавляет товары OZON.ru"
+msgstr ""
+
+#: application/modules/PayTM/PayTMConfig.php:21
+msgid "Deeplink одной из CPA-сетей с поддержкой PayTM. Обязательно указывайте этот параметр, чтобы получать партнерское вознаграждение."
+msgstr ""
+
+#: application/modules/PayTM/PayTMConfig.php:53
+msgid "Искать только в указаной категории. Параметр category можно найти в URL на сайте paytm при использовании поиска по категории."
+msgstr ""
+
+#: application/modules/PayTM/PayTMConfig.php:63
+msgid "Только товары в наличии."
+msgstr ""
+
+#: application/modules/PayTM/PayTMModule.php:24
+msgid "Добавляет товары paytm.com"
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:21
+msgid "Ключ доступа к Pixabay API. Найти можно <a href=\"https://pixabay.com/api/docs/\">здесь</a> (сначала залогиньтесь в свой аккаунт pixabay)."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:29
+msgid "Поле \"Key\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:45
+msgid "Поле \"Результатов\" не может быть больше 200."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:61
+msgid "Поле \"Результатов для автоблоггинга\" не может быть больше 200."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:68
+msgid "Размер изображения по высоте."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:81
+msgid "Тип изображения"
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:95
+msgid "Ориентация"
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:139
+msgid "Выбор редактора"
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:140
+msgid "Select images that have received an Editor's Choice award."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:147
+msgid "A flag indicating that only images suitable for all ages should be returned."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayConfig.php:166
+msgid "Сохранять картинки на сервер. Hotlinking не разрешен правилами pixabay API. Ссылки на картинки pixabay будут валидны 24 часа."
+msgstr ""
+
+#: application/modules/Pixabay/PixabayModule.php:24
+msgid "Поиск фотографий и иллюстраций со свободной лицензией CC0 Public Domain на pixabay.com."
+msgstr ""
+
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:45
+msgid "Поле \"Результатов\" не может быть больше 5ы0."
+msgstr ""
+
+#: application/modules/RelatedKeywords/RelatedKeywordsModule.php:26
+msgid "Находит родственные ключевые слова и выводит их в посте."
+msgstr ""
+
+#: application/modules/RssFetcher/RssFetcherConfig.php:21
+msgid "Для подстановки текущего ключевого слова используйте <em>%KEYWORD%</em>."
+msgstr ""
+
+#: application/modules/RssFetcher/RssFetcherConfig.php:29
+msgid "Поле \"RSS URL\" не может быть пустым."
+msgstr ""
+
+#: application/modules/RssFetcher/RssFetcherConfig.php:67
+msgid "Разрешенные теги"
+msgstr ""
+
+#: application/modules/RssFetcher/RssFetcherConfig.php:68
+msgid "Теги, которые разрешены в title и description."
+msgstr ""
+
+#: application/modules/RssFetcher/RssFetcherModule.php:25
+msgid "Парсит любую RSS-ленту."
+msgstr ""
+
+#: application/modules/RssFetcher/RssFetcherModule.php:26
+msgid "Важно, чтобы в URL была возможность использовать ключевое слово, т.е. лента должна содержать результаты поиска по ключевому слову."
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleConfig.php:21
+msgid "Ваш Affiliate ID."
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleConfig.php:36
+msgid "Token в комбинации с IP адресом используется для версификации запросов к API. Найти можно <a target=\"_blank\" href=\"https://account.shareasale.com/a-apimanager.cfm\">здесь</a>."
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleConfig.php:51
+msgid "Secret Key для доступа к API. Найти можно <a target=\"_blank\" href=\"https://account.shareasale.com/a-apimanager.cfm\">здесь</a>."
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleConfig.php:59
+msgid "Поле \"Secret Key\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleConfig.php:88
+msgid "Вернуть продукты только этого мерчанта."
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleConfig.php:97
+msgid "Исключить мерчанта"
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleConfig.php:98
+msgid "Задайте ID мерчанта, товары которого необходимо исключить из поиска."
+msgstr ""
+
+#: application/modules/Shareasale/ShareasaleModule.php:26
+msgid "Добавляет товары партнерской сети Shareasale.com. Вы должны получить аппрув от каждой программы отдельно."
+msgstr ""
+
+#: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:21
+msgid "Ключ для доступа к Tradedoubler Coupons API. Найти можно <a href=\"https://login.tradedoubler.com/publisher/aManageTokens.action\">здесь</a>."
+msgstr ""
+
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:21
+msgid "Ключ для доступа к Tradedoubler Products API. Найти можно <a href=\"https://login.tradedoubler.com/publisher/aManageTokens.action\">здесь</a>."
+msgstr ""
+
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:92
+msgid "Feed ID"
+msgstr ""
+
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:93
+msgid "Вы можете задать несколько Feed IDs через запятую."
+msgstr ""
+
+#: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:94
+msgid "Список ваших фидов можно найти <a href=\"http://api.tradedoubler.com/1.0/productFeeds;pretty=true?token={token}\">здесь</a> (замените в URL {token} на ваш Token)."
+msgstr ""
+
+#: application/modules/TradedoublerProducts/TradedoublerProductsModule.php:26
+msgid "Добавляет товары партнерской сети Tradedoubler. Вы должны получить аппрув в каждой программы отдельно."
+msgstr ""
+
+#: application/modules/Twitter/TwitterConfig.php:21
+#: application/modules/Twitter/TwitterConfig.php:36
+#: application/modules/Twitter/TwitterConfig.php:51
+#: application/modules/Twitter/TwitterConfig.php:66
+msgid "Получить можно <a href=\"https://dev.twitter.com/apps/\">здесь</a>."
+msgstr ""
+
+#: application/modules/Twitter/TwitterConfig.php:106
+msgid "Поле \"Результатов для автоблоггинга\" не может быть больше 100."
+msgstr ""
+
+#: application/modules/Twitter/TwitterConfig.php:116
+#: application/modules/Twitter/views/search_panel.php:2
+msgid "Новые"
+msgstr ""
+
+#: application/modules/Twitter/TwitterConfig.php:117
+#: application/modules/Twitter/views/search_panel.php:3
+msgid "Популярные"
+msgstr ""
+
+#: application/modules/Twitter/TwitterConfig.php:118
+#: application/modules/Twitter/views/search_panel.php:4
+msgid "Микс"
+msgstr ""
+
+#: application/modules/VkNews/VkNewsModule.php:25
+msgid "Добавляет новости из русскоязычной социальной сети vk.com"
+msgstr ""
+
+#: application/modules/Youtube/YoutubeConfig.php:61
+#: application/modules/Youtube/views/search_panel.php:8
+msgid "Дата"
+msgstr ""
+
+#: application/modules/Youtube/YoutubeConfig.php:65
+#: application/modules/Youtube/views/search_panel.php:12
+msgid "Просмотры"
+msgstr ""
+
+#: application/modules/Youtube/YoutubeConfig.php:73
+msgid "Многие видео на Youtube загружены с лицензией Creative Commons. <a href=\"http://www.google.com/support/youtube/bin/answer.py?answer=1284989\">Узнать больше</a>."
+msgstr ""
+
+#: application/modules/Youtube/YoutubeConfig.php:77
+msgid "Сreative Сommons лицензия"
+msgstr ""
+
+#: application/modules/Youtube/YoutubeConfig.php:78
+#: application/modules/Youtube/views/search_panel.php:4
+msgid "Стандартная лицензия"
+msgstr ""
+
+#: application/modules/Youtube/views/search_panel.php:3
+msgid "Сreative Сommons"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:22
+msgid "Специальный ключ для доступа к Zanox API, а также ваша связь с партнерской программой."
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:30
+msgid "Поле \"Connect ID\" не может быть пустым."
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:37
+msgid "Вернуть партнерские ссылки для этого ad space."
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:78
+msgid "Тип поиска"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:79
+msgid "\"Автоматически\" означает, что тип поиска будет выбран в зависимости от длины поисковой фразы."
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:82
+msgid "Автоматически"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:83
+msgid "Фраза"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:84
+msgid "Контекстный"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:91
+msgid "Ограничить результаты поиска выбранным регионом."
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:94
+msgid "Любой регион"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:121
+msgid "ID программы"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:122
+msgid "Ограничить результаты поиска конкретной программой. Вы можете указать несколько ID через запятую. Например: \"1234\", \"1234,5678,9123\". Если не указано, поиск будет произведен по всем вашим подключенным программам."
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:142
+msgid "Партнерство"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:143
+msgid "Если выбрано \"Все\", партнерские ссылки не будут включены в результат. Используйте только для оценки доступных товаров."
+msgstr ""
+
+#: application/modules/Zanox/ZanoxConfig.php:147
+msgid "Подтвержденные"
+msgstr ""
+
+#: application/modules/Zanox/ZanoxModule.php:28
+msgid "Добавляет товары партнерской сети zanox.com. Вы должны получить аппрув от каждой программы отдельно."
+msgstr ""
+#. Plugin Name of the plugin/theme
+msgid "Content Egg"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.keywordrush.com/contentegg"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Easily adding auto updating products from affiliate systems and additional content to posts."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "keywordrush.com"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.keywordrush.com"
+msgstr ""

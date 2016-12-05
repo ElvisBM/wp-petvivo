@@ -1,0 +1,16 @@
+.mdf_shortcode_skin_whitesidebar {margin-bottom: 15px;  font-family: Arial; font-size: 13px; }
+.mdf_shortcode_skin_whitesidebar h4.data-filter-section-title { color: #111; margin: 0 0 10px 0 !important;padding: 10px 0; }
+.mdf_shortcode_skin_whitesidebar h5.data-filter-section-title { color: #333}
+.mdf_shortcode_skin_whitesidebar .mdf_widget_found_count {color: black; margin-bottom: 10px; width: 100%; text-align: center; padding: 10px 0 }
+.mdf_input_container_block.mdf_input_container_block_0 { clear: both; }
+.mdf_shortcode_skin_whitesidebar .mdf_input_container_block {  width: 100%; padding: 0; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+.mdf_shortcode_skin_whitesidebar .mdf_one_moment_txt { height: auto; }
+.mdf_shortcode_skin_whitesidebar .mdf_input_container_taxonomies .mdf_input_container { float: none; width: 99%; height: auto !important; }
+.mdf_shortcode_skin_whitesidebar .mdf_shortcode_submit_button { float: left; clear: both; margin: 18px 10px 10px 10px; }
+.mdf_shortcode_skin_whitesidebar .mdf_shortcode_submit_button input { width: 95px !important; }
+.mdf_shortcode_skin_whitesidebar .mdf_shortcode_reset_button { float: left; margin: 18px 10px 0 0; }
+.mdf_shortcode_skin_whitesidebar .mdf_shortcode_reset_button input { width: 95px !important; }
+.mdf_shortcode_skin_whitesidebar select { width: 100% !important; line-height: 21px !important; margin-bottom: 3px !important; padding: 7px !important; height: auto !important; border: 1px solid #ccc; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+.mdf_shortcode_skin_whitesidebar .mdf_textinput { border: 1px solid #fff; padding: 5px }
+.mdf_shortcode_skin_whitesidebar .mdf_button{}
+.sidebar .widget_text .mdf_input_container a.chosen-single{font: 13px/23px Arial; text-decoration: none;}

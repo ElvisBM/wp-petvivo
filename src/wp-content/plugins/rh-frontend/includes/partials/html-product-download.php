@@ -1,0 +1,6 @@
+<tr>
+	<td class="file_name" width="30%"><input type="text" class="wpfepp-<?php echo $field_key; ?>-name-field wpfepp-form-field" name="<?php echo $field_key; ?>_file_names[]" value="<?php echo esc_attr( $file_value['name'] ); ?>" placeholder="<?php esc_attr_e( 'File Name', 'woocommerce' ); ?>" /></td>
+	<td class="file_url"><input type="text" class="wpfepp-<?php echo $field_key; ?>-url-field wpfepp-form-field" name="<?php echo $field_key; ?>_file_urls[]" value="<?php echo esc_attr( $file_value['file'] ); ?>" placeholder="<?php esc_attr_e( "http://", 'woocommerce' ); ?>" /></td>
+	<td class="file_url_choose" width="17%"><button type="button" class="wpfepp-button wpfepp-file-url-button" data-choose="<?php esc_attr_e( 'Choose file', 'woocommerce' ); ?>" data-update="<?php esc_attr_e( 'Insert file URL', 'woocommerce' ); ?>"><?php echo str_replace( ' ', '&nbsp;', __( 'Choose file', 'woocommerce' ) ); ?></button></td>
+	<td width="1%"><a href="#" class="delete"><?php _e('Delete', 'woocommerce') ?></a></td>
+</tr>
