@@ -1,0 +1,24 @@
+Tuesday, 13-Dec-2016 20:23:30 - restore started
+Tuesday, 13-Dec-2016 20:23:30 - wp version     : 4.6.1
+Tuesday, 13-Dec-2016 20:23:30 - php version    : 5.6.8
+Tuesday, 13-Dec-2016 20:23:30 - mysql version  : 5.6.24
+Tuesday, 13-Dec-2016 20:23:30 - memory limit   : 1024M
+Tuesday, 13-Dec-2016 20:23:30 - execution time : 600
+Tuesday, 13-Dec-2016 20:23:30 - mysql timeout  : 600
+Tuesday, 13-Dec-2016 20:23:30 - socket timeout : 600
+Tuesday, 13-Dec-2016 20:23:30 - file download started
+Tuesday, 13-Dec-2016 20:24:10 - download finished, filesize - 70.27 MB
+Tuesday, 13-Dec-2016 20:24:11 - extracting database using ziparchive
+Tuesday, 13-Dec-2016 20:24:11 - changing prefix from "wp_" to "wp82_"
+Tuesday, 13-Dec-2016 20:24:11 - database import started
+Tuesday, 13-Dec-2016 20:24:12 - updating mysql query with current site's url - new query : "INSERT INTO wp82_options VALUES("1", "siteurl", "http://localhost/petvivo/src/", "yes")"
+Tuesday, 13-Dec-2016 20:24:15 - mysql query failed. error : 1065 Query was empty - query : ""
+Tuesday, 13-Dec-2016 20:24:15 - database import finished
+Tuesday, 13-Dec-2016 20:24:15 - search and replace started
+Tuesday, 13-Dec-2016 20:24:15 - there are 49 tables to scan
+Tuesday, 13-Dec-2016 20:24:15 - search and replace finished
+Tuesday, 13-Dec-2016 20:24:15 - extracting archive using ziparchive
+Tuesday, 13-Dec-2016 20:24:23 - copying files..
+Tuesday, 13-Dec-2016 20:24:35 - deleting temp directory..
+Tuesday, 13-Dec-2016 20:24:43 - deleting downloaded zip file..
+Tuesday, 13-Dec-2016 20:24:43 - restore finished
