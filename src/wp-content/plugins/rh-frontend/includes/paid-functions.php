@@ -236,5 +236,3 @@ function eject_ordered_number_post( $ID, $post ) {
 	}
 }
 add_action( 'publish_post', 'eject_ordered_number_post', 10, 2 );
-
-

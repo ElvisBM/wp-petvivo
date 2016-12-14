@@ -8,7 +8,12 @@
 	$per_page 		= isset($list_settings['post_list_page_len']) ? $list_settings['post_list_page_len'] : 10 ;
 	$tabs 			= isset($list_settings['post_list_tabs']) ? $list_settings['post_list_tabs'] : array('live' => '1', 'pending' => '1', 'draft' => '1') ;
 	$columns 		= isset($list_settings['post_list_cols']) ? $list_settings['post_list_cols'] : array('link' => '1', 'edit' => '1', 'delete' => '1') ;
-	$author_posts 	= new WP_Query( array( 'post_type' => $this->post_type, 'posts_per_page' => $per_page, 'paged'=>$paged, 'orderby'=> 'DESC', 'author' => $current_user->ID, 'post_status' => $status ));
+	$args = array( 'post_type' => $this->post_type, 'posts_per_page' => $per_page, 'paged'=>$paged, 'orderby'=> 'DESC', 'author' => $current_user->ID, 'post_status' => $status);
+	if ($show_all !=1){
+		$args['meta_key'] = 'wpfepp_submit_with_form_id';
+		$args['meta_value'] = $check_form_id;
+	}
+	$author_posts 	= new WP_Query($args);
     $old_exist 		= ($paged * $per_page) < $author_posts->found_posts;
     $new_exist 		= $paged > 1;
 
@@ -19,6 +24,7 @@
     else
     	$blog_page 	= '';
 ?>
+
 <div class="wpfepp-posts">
 
 	<div class="wpfepp-message"></div>

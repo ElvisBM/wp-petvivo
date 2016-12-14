@@ -51,7 +51,7 @@ class WPFEPP_DB_Table
 	 *
 	 * @return WPFEPP_DB_Table An instance of the WPFEPP_DB_Table class.
 	 **/
-	public static function get_instance(){
+	public static function get_instance() {
 		static $instance = null;
 		if($instance == null){
 			$instance = new WPFEPP_DB_Table();
@@ -62,8 +62,8 @@ class WPFEPP_DB_Table
 	/**
 	 * Creates the database table. It is also responsible for recreating the table if it is not up-to-date.
 	 **/
-	public function create_table(){
-		$current_version = get_option('wpfepp_db_table_version');
+	public function create_table() {
+		$current_version = get_option( 'wpfepp_db_table_version' );
 		if($current_version && $current_version == $this->db_version && $this->db->get_var("SHOW TABLES LIKE '$this->table_name'") == $this->table_name){
 			return;
 		}
@@ -131,7 +131,7 @@ class WPFEPP_DB_Table
 	 * @param int $id Database id of the row.
 	 * @return array An associative array with column names as keys.
 	 **/
-	public function get($id){
+	public function get( $id ){
 		$form = $this->db->get_row("SELECT * FROM $this->table_name WHERE id=$id", ARRAY_A);
 		if($form){
 			$form["fields"] 	= $this->unserialize($form["fields"]);
@@ -183,10 +183,10 @@ class WPFEPP_DB_Table
 	 * @param array $ids An array of row ids.
 	 * @return mixed Number of rows affected or false in case of failure.
 	 **/
-	public function delete_multiple($ids){
-		$id_string = join(',', $ids);
+	public function delete_multiple( $ids ) {
+		$id_string = join( ',', $ids );
 		$query = "DELETE FROM $this->table_name WHERE id IN ($id_string)";
-		return $this->db->query($query);
+		return $this->db->query( $query );
 	}
 
 	/**
@@ -195,7 +195,7 @@ class WPFEPP_DB_Table
 	 * @param int $id Id of the row whose existence we want to check.
 	 * @return int Number of rows that have the provided id as primary key.
 	 **/
-	public function form_exists($id){
+	public function form_exists( $id ){
 		return $this->db->get_var("SELECT COUNT(*) FROM $this->table_name WHERE id=$id");
 	}
 
@@ -240,7 +240,7 @@ class WPFEPP_DB_Table
 	 * @param array $default_custom_field An array containing the default custom field settings.
 	 * @param array $post_type The post type for which we want to upgrade the forms.
 	 **/
-	public function upgrade_forms($default_fields, $default_settings, $default_emails, $default_extended, $default_custom_field, $post_type){
+	public function upgrade_forms( $default_fields, $default_settings, $default_emails, $default_extended, $default_custom_field, $post_type ) {
 		$forms = $this->get_forms(1, 1000, $post_type);
 		if(is_array($forms) && count($forms)){
 			foreach ($forms as $key => $form) {
@@ -270,7 +270,7 @@ class WPFEPP_DB_Table
 		return unserialize($item);
 	}
 
-	public function delete_post_meta($meta_key) {
+	public function delete_post_meta( $meta_key ) {
 		$table = $this->db->postmeta;
 		return $this->db->query("DELETE * FROM $table WHERE meta_key = $meta_key");
 	}

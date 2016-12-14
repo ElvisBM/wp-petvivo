@@ -1,7 +1,6 @@
 <?php
 
-class WPFEPP_Post_Previews
-{
+class WPFEPP_Post_Previews {
 	public static $nonce_name = '_preview_nonce';
 
 	function add_actions(){
@@ -16,9 +15,13 @@ class WPFEPP_Post_Previews
 		return $qv;
 	}
 
-	public static function make_preview_link($post_id){
-		$nonce = wp_create_nonce('wpfepp-post-preview-' . $post_id);
-		return sprintf('%s?p=%s&preview=true&%s=%s', home_url(), $post_id, self::$nonce_name, $nonce);
+	public static function make_preview_link( $post_id ) {
+		$nonce = wp_create_nonce( 'wpfepp-post-preview-' . $post_id );
+		if( get_post_type( $post_id  ) != 'product' ) {
+			return sprintf( '%s?p=%s&preview=true&%s=%s', home_url(), $post_id, self::$nonce_name, $nonce );
+		} else {
+			return sprintf( '%s?post_type=product&p=%s&preview=true&%s=%s', home_url(), $post_id, self::$nonce_name, $nonce );
+		}
 	}
 
 	public function show_public_preview( $query ) {

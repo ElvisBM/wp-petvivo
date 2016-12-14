@@ -105,36 +105,33 @@ class WPFEPP_Form
 	 * 
 	 * @param int $form_id The row ID of this form from the database table.
 	 **/
-	public function __construct($version, $form_id = -1, $paid_form)
-	{
+	public function __construct( $version, $form_id = -1, $paid_form ) {
 		$this->load_dependencies();
-
 		$this->version = $version;
 
-		if($form_id < 0){
+		if( $form_id < 0 ) {
 			$this->valid = false;
 			return;
 		}
 		
-		if($paid_form == 1){
+		if( $paid_form == 1 ) {
 			$this->paid_on = true;
 		} else {
 			$this->paid_on = false;
 		}
 
 		require_once plugin_dir_path( dirname(__FILE__) ) . 'includes/class-wpfepp-db-table.php';
-		$this->id 	= $form_id;
-		$this->db 	= WPFEPP_DB_Table::get_instance();
-		$row 		= $this->db->get($form_id);
+		$this->id = $form_id;
+		$this->db = WPFEPP_DB_Table::get_instance();
+		$row = $this->db->get( $form_id );
+		$this->captcha = new WPFEPP_Captcha( $this->version );
 
-		$this->captcha = new WPFEPP_Captcha($this->version);
-
-		if($row)
+		if( $row )
 			$this->valid = true;
 		else
 			$this->valid = false;
 
-		if($this->valid){
+		if( $this->valid ) {
 			$this->name 		= $row['name'];
 			$this->description 	= $row['description'];
 			$this->post_type 	= $row['post_type'];
@@ -144,7 +141,7 @@ class WPFEPP_Form
 			$this->extended 	= $row['extended'];
 
 			//Necessary because we need to check if the post type is public before showing any links to the end user.
-			$this->post_type_obj = get_post_type_object($this->post_type);
+			$this->post_type_obj = get_post_type_object( $this->post_type );
 		}
 	}
 
@@ -155,7 +152,6 @@ class WPFEPP_Form
 		
 	}
 
-	
 	/**
 	 * The main function of this class. It is responsible for calling other functions for outputting the form and handling submissions.
 	 * 
@@ -182,14 +178,14 @@ class WPFEPP_Form
 		$result = false;
 
 		//If a post id was passed to this function then load its content
-		if($post_id != -1){
-			$current = $this->get_post($post_id);
+		if( $post_id != -1 ) {
+			$current = $this->get_post( $post_id );
 		}
 
 		//If the form has been submitted, handle the submission and populate the $current variable with either the inserted post or the $_POST array
-		if(isset($_POST['wpfepp-form-'.$this->id.'-submit'])){
-			$result  = $this->handle_submission($_POST, 'html');
-			$current = ($result['success']) ? ($this->get_post($result['post_id'])) : array_map(array($this, 'stripslashes'), $_POST);
+		if( isset( $_POST['wpfepp-form-'.$this->id.'-submit'] ) ) {
+			$result  = $this->handle_submission( $_POST, 'html' );
+			$current = ( $result['success'] ) ? ( $this->get_post( $result['post_id'] ) ) : array_map( array( $this, 'stripslashes' ), $_POST );
 		}
 
 		if(isset($_POST['wpfepp-form-'.$this->id.'-save'])){
@@ -198,7 +194,9 @@ class WPFEPP_Form
 		}
 
 		//Finally print the form
-		$this->print_form($current, $result);
+		do_action( 'wpfepp_do_before_print_form' );
+		do_action( 'wpfepp_do_before_'.$this->id.'_print_form' );		
+		$this->print_form( $current, $result );
 
 	}
 
@@ -225,9 +223,8 @@ class WPFEPP_Form
 	 * @param  array $result The array obtained from handle_submission(). It contains a success flag, a list of errors/messages and id of the newly generated post.
 	 * @return string The input string with slashed stripped out.
 	 **/
-	private function print_form($current = false, $result = false){
-		include('partials/form.php');
-		
+	private function print_form( $current = false, $result = false ) {
+		include( 'partials/form.php' );
 	}
 
 	/**
@@ -237,52 +234,48 @@ class WPFEPP_Form
 	 * @param  string $error_format Dictates the format of the returned errors. Set to HTML by default.
 	 * @return array An array consisting of a boolean flag that tells whether post insertion was successful, all the form errors and in case of successful post insertion, the post id. This structure has been used so that this function can be conviniently used with ajax.
 	 **/
-	public function save_draft($post_data, $error_format = 'html') {
+	public function save_draft( $post_data, $error_format = 'html' ) {
 		$return_val = array( 'success' => false, 'errors' => array() );
 
 		do{
-			if(!$this->settings['enable_drafts']){
-				$return_val['errors']['form'][] = __('Drafts are not allowed!', 'wpfepp-plugin');
+			if( ! $this->settings['enable_drafts'] ) {
+				$return_val['errors']['form'][] = __( "Drafts are not allowed!", "wpfepp-plugin" );
 				break;
 			}
 
 			$captcha_enabled = $this->settings['captcha_enabled'];
-			if($captcha_enabled && $this->captcha->keys_available() && $this->post_status($post_data['post_id']) == 'new'){
-				$captcha_check = $this->captcha->check_response($post_data['g-recaptcha-response']);
-				if(!$captcha_check){
-					$return_val['errors']['form'][] = __('Captcha response incorrect', 'wpfepp-plugin');
+			
+			if( $captcha_enabled && $this->captcha->keys_available() && $this->post_status( $post_data['post_id']) == 'new' ) {
+				$captcha_check = $this->captcha->check_response( $post_data['g-recaptcha-response'] );
+				if( ! $captcha_check ) {
+					$return_val['errors']['form'][] = __( "Captcha response incorrect", "wpfepp-plugin" );
 					break;
 				}
 			}
 
 			$post_data['post_status'] = 'draft';
-			$result = $this->insert_post($post_data);
-			if(is_wp_error($result)){
+			$result = $this->insert_post( $post_data );
+			if( is_wp_error( $result ) ) {
 				$return_val['errors']['form'][] = $result->get_error_message();
 				break;
 			}
 
-			$return_val['success'] 	= true;
-			$return_val['post_id'] 	= $result;
+			$return_val['success'] = true;
+			$return_val['post_id'] = $result;
+			$preview_link = sprintf( '<br/><a target="_blank" href="%s">%s</a>', WPFEPP_Post_Previews::make_preview_link( $result ), __( "Preview", "wpfepp-plugin" ) );
+			$preview_link = ( $this->post_type_obj->public) ? $preview_link : '';
+			$return_val['errors']['form'][] = sprintf( __( "The post has been saved successfully! %s", "wpfepp-plugin" ), $preview_link );
+		}
+		while(0);
 
-			$preview_link = sprintf('<br/><a target="_blank" href="%s">%s</a>', WPFEPP_Post_Previews::make_preview_link($result), __('Preview', 'wpfepp-plugin'));
-			$preview_link = ($this->post_type_obj->public) ? $preview_link : '';
-
-			$return_val['errors']['form'][] = sprintf(
-					__('The post has been saved successfully! %s', 'wpfepp-plugin'),
-					$preview_link
-				);
-
-		} while(0);
-
-		if($error_format == 'html')
-			$return_val['errors'] = $this->format_errors($return_val['errors']);
+		if( $error_format == 'html' )
+			$return_val['errors'] = $this->format_errors( $return_val['errors'] );
 
 		return $return_val;
 	}
 
-	private function post_status($post_id){
-		if($post_id < 1)
+	private function post_status( $post_id ) {
+		if( $post_id < 1 )
 			return 'new';
 		return get_post_status( $post_id );
 	}
@@ -294,33 +287,32 @@ class WPFEPP_Form
 	 * @param  string $error_format Dictates the format of the returned errors. Set to HTML by default.
 	 * @return array An array consisting of a boolean flag that tells whether post insertion was successful, all the form errors and in case of successful post insertion, the post id. This structure has been used so that this function can be conviniently used with ajax.
 	 **/
-	public function handle_submission($post_data, $error_format = 'html'){
+	public function handle_submission( $post_data, $error_format = 'html' ){
 		$return_val = array( 'success' => false, 'errors' => array() );
-		$user_defined_errors = get_option('wpfepp_errors');
+		$user_defined_errors = get_option( 'wpfepp_errors' );
+		$old_status = $this->post_status( $post_data['post_id'] );
 
-		$old_status = $this->post_status($post_data['post_id']);
-
-		if( wpfepp_current_user_has($this->settings['instantly_publish']) )
+		if( wpfepp_current_user_has( $this->settings['instantly_publish'] ) )
 			$post_data['post_status'] = 'publish';
 		else
 			$post_data['post_status'] = 'pending';
 
 		do {
-			if(!$this->valid){
-				$return_val['errors']['form'][] = __('This form no longer exists.', 'wpfepp-plugin');
+			if( !$this->valid ) {
+				$return_val['errors']['form'][] = __( 'This form no longer exists.', 'wpfepp-plugin' );
 				break;
 			}
 
-			if( !wp_verify_nonce($post_data['_wpnonce'], 'wpfepp-form-'.$post_data['form_id'].'-nonce') ){
-				$return_val['errors']['form'][] = __('You failed the security check.', 'wpfepp-plugin');
+			if( !wp_verify_nonce( $post_data['_wpnonce'], 'wpfepp-form-'.$post_data['form_id'].'-nonce' ) ) {
+				$return_val['errors']['form'][] = __( 'You failed the security check.', 'wpfepp-plugin' );
 				break;
 			}
-			if( $post_data['post_id'] != -1 && !$this->current_user_can_edit($post_data['post_id']) ){
-				$return_val['errors']['form'][] = __('You do not have permission to modify this post.', 'wpfepp-plugin');
+			if( $post_data['post_id'] != -1 && !$this->current_user_can_edit( $post_data['post_id'] ) ) {
+				$return_val['errors']['form'][] = __( 'You do not have permission to modify this post.', 'wpfepp-plugin' );
 				break;
 			}
-			$restriction_errors = $this->check_restrictions($post_data);
-			if(count($restriction_errors)){
+			$restriction_errors = $this->check_restrictions( $post_data );
+			if( count( $restriction_errors ) ) {
 				$return_val['errors'] = $restriction_errors;
 				$return_val['errors']['form'][] = $user_defined_errors['form'];
 				break;
@@ -335,12 +327,13 @@ class WPFEPP_Form
 				}
 			}
 
-			$copyscape 			= new WPFEPP_CopyScape($this->version);
-			$copyscape_enabled 	= $this->settings['copyscape_enabled'];
+			$copyscape = new WPFEPP_CopyScape($this->version);
+			$copyscape_enabled = $this->settings['copyscape_enabled'];
 			$copyscape_block 	= $copyscape->option('block');
-			$column_msg 		= '';
-			if($copyscape_enabled){
-				$passed 		= $copyscape->passed($post_data);
+			$column_msg = '';
+			
+			if( $copyscape_enabled ) {
+				$passed = $copyscape->passed($post_data);
 				
 				if(is_wp_error($passed)){
 					$column_msg = __('ERROR: ', 'wpfepp-plugin') . $passed->get_error_message();
@@ -377,11 +370,11 @@ class WPFEPP_Form
 			$return_val['success'] 	= true;
 			$return_val['post_id'] 	= $result;
 			$return_val['redirect_url'] = ($this->settings['redirect_url']) ? $this->settings['redirect_url'] : false;
-			$action = ($old_status == 'new' || $old_status == 'draft')?'created':'updated';
-			$preview_link 	= sprintf('<a target="_blank" href="%s">%s</a>', WPFEPP_Post_Previews::make_preview_link($result), __('Preview', 'wpfepp-plugin'));
-			$permalink = sprintf('<a target="_blank" href="%s">%s</a>', get_post_permalink($result), __('View', 'wpfepp-plugin'));
-			$final_link = ($post_data['post_status'] == 'publish') ? $permalink : $preview_link;
-			$final_link = ($this->post_type_obj->public) ? $final_link : '';
+			$action = ( $old_status == 'new' || $old_status == 'draft' ) ? 'created' : 'updated';
+			$preview_link 	= sprintf( '<a target="_blank" href="%s">%s</a>', WPFEPP_Post_Previews::make_preview_link( $result ), __( "Preview", "wpfepp-plugin" ) );
+			$permalink = sprintf( '<a target="_blank" href="%s">%s</a>', get_post_permalink( $result ), __( "View", "wpfepp-plugin" ) );
+			$final_link = ( $post_data['post_status'] == 'publish' ) ? $permalink : $preview_link;
+			$final_link = ( $this->post_type_obj->public ) ? $final_link : '';
 
 			if( 'created' == $action ){
 				$display_message 	= __("The post has been created successfully. %s %s", 'wpfepp-plugin');
@@ -392,11 +385,11 @@ class WPFEPP_Form
 
 			$return_val['errors']['form'][] = sprintf(
 				$display_message,
-				sprintf('<br/><a class="wpfepp-continue-editing" href="#">%s</a>', __('Continue Editing', 'wpfepp-plugin')),
+				sprintf( '<br/><a class="wpfepp-continue-editing" href="#">%s</a>', __( "Continue Editing", "wpfepp-plugin" ) ),
 				$final_link
 			);
 
-			$this->user_defined_actions(array_merge($post_data, array( 'post_id'=> $result, 'action' => $action )));
+			$this->user_defined_actions( array_merge( $post_data, array( 'post_id'=> $result, 'action' => $action ) ) );
 
 		} while (0);
 
@@ -458,8 +451,8 @@ class WPFEPP_Form
 	 * @param string $str An HTML string.
 	 * @return integer Number of links in the input HTML string.
 	 **/
-	private function count_links($str){
-		return preg_match_all('/<\s*\ba\b.*?href/', $str, $matches);
+	private function count_links( $str ){
+		return preg_match_all( '/<\s*\ba\b.*?href/', $str, $matches );
 	}
 
 	/**
@@ -472,15 +465,16 @@ class WPFEPP_Form
 	 * @param array $post_data An array containing all the data from the form. It is actually $_POST.
 	 * @return int or WP_Error Either the ID of the new post is returned or a WP_Error object.
 	 **/
-	private function insert_post($post_data){
+	private function insert_post( $post_data ){
 		$post = array('post_type' => $this->post_type, 'post_status' => $post_data['post_status']);
 		$custom_fields = array();
 		$hierarchical_taxonomies = array();
 		$non_hierarchical_taxonomies = array();
 		$post_formats = 0;
 		$thumbnail = 0;
-
-		foreach ($this->get_fields() as $key => $field) {
+		$form_fields = $this->get_fields();
+						
+		foreach ($form_fields as $key => $field) { //$key - field name; $field - options array (e.g. enabled[1|0], type, label, element, widget_label)
 			switch ($field['type']) {
 				case 'title':
 					if(!empty($post_data[$key])) $post['post_title'] = $this->sanitize($post_data[$key], $field);
@@ -495,17 +489,14 @@ class WPFEPP_Form
 					if(!empty($post_data[$key]) && $post_data[$key] != -1) $thumbnail = $post_data[$key];
 					break;
 				case 'hierarchical_taxonomy':
-					if(!empty($post_data[$key])){
-						if(is_array($post_data[$key]) && count($post_data[$key])){
+					if( !empty( $post_data[$key] ) ) {
+						if( is_array( $post_data[$key] ) && count( $post_data[$key] ) ) {
 							$hierarchical_taxonomies[$key] = $post_data[$key];
-						}
-						elseif(is_string($post_data[$key])){
-							//This is necessary because the fallback taxonomy terms are added as commasperated IDs
-							$term_ids = explode(',', $post_data[$key]);
-							$term_ids = array_map('trim', $term_ids);
+						} elseif( is_string( $post_data[$key] ) ) {
+							$term_ids = array_map( 'trim', explode( ',', $post_data[$key] ) );
 							$hierarchical_taxonomies[$key] = $term_ids;
 						}
-					} 
+					}
 					break;
 				case 'post_formats':
 					if(!empty($post_data[$key]) && $post_data[$key]) $post_formats = $post_data[$key];
@@ -539,10 +530,18 @@ class WPFEPP_Form
 						$custom_fields['_downloadable_files'] = $this->downloadable_product_files($file_names, $file_urls);
 						$custom_fields['_external'] = (!empty($post_data[$key .'_external']) && $post_data[$key .'_external'] == 1) ? 'yes' : 'no';
 						$custom_fields['_product_url'] = !empty($post_data[$key .'_product_url']) ? sanitize_text_field($post_data[$key .'_product_url']) : '';
+						$custom_fields['_product_image_gallery'] = !empty($post_data['product_image_gallery']) ? sanitize_text_field($post_data['product_image_gallery']) : '';
+						$custom_fields['_visibility'] = 'visible'; // Catalog visibility: Catalog/search
 					}
 					break;
 				case 'custom_field':
+				
+					if( isset($field['element']) && $field['element'] == 'map' ) {
+						if(!empty($post_data[$key])) $custom_fields['_rh_gmw_map_hidden_adress'] = $this->sanitize($post_data[$key], $field);
+					}
+					
 					if(!empty($post_data[$key])) $custom_fields[$key] = $this->sanitize($post_data[$key], $field);
+
 					// hidden map API fields
 					if(!empty($post_data['wpfepp_start_geo_lat'])) $custom_fields['medafi_rhmap_latitude'] = $this->sanitize($post_data['wpfepp_start_geo_lat'], array('strip_tags' => 'all'));
 					if(!empty($post_data['wpfepp_start_geo_long'])) $custom_fields['medafi_rhmap_longitude'] = $this->sanitize($post_data['wpfepp_start_geo_long'], array('strip_tags' => 'all'));
@@ -553,20 +552,49 @@ class WPFEPP_Form
 		}
 		// hidden field for check if form is being paid
 		if(!empty($post_data['wpfepp_paid_post'])) $custom_fields['_wpfepp_paid_post'] = $this->sanitize($post_data['wpfepp_paid_post'], array('strip_tags' => 'all'));
+
+		if( $post_data['form_id'] > 0 ) {
+			$custom_fields['wpfepp_submit_with_form_id'] = $this->sanitize($post_data['form_id'], array('strip_tags' => 'all'));
+		}		
 		
 		if( $post_data['post_id'] != -1 ) {
 			$post['ID'] = $post_data['post_id'];
 			$post['comment_status'] = get_post_field('comment_status', $post_data['post_id']);
+			if( get_post_status( $post_data['post_id'] ) == 'publish' ) {
+				$post_time_unix = get_post_time('U', false, $post_data['post_id']);
+				$post_date = date( 'Y-m-d H:i:s', $post_time_unix );
+				$post['post_date'] = $post_date;
+				$post['post_date_gmt'] = get_gmt_from_date( $post_date );
+			}
 		}
 
-		$post_id = wp_insert_post($post, true);
-		if( !is_wp_error($post_id) ){
-			foreach ($hierarchical_taxonomies as $tax => $tax_terms) {
+		$post_id = wp_insert_post( $post, true );
+		if( !is_wp_error( $post_id ) ) {
+			
+			$tax_attrs = array();
+			$wc_tax_attrs = wpfepp_get_attribute_taxonomies();
+			
+			foreach ( $hierarchical_taxonomies as $tax => $tax_terms ) {
+				
+				wp_set_post_terms( $post_id, $tax_terms, $tax, false );
+				
+				// searches Product Attribut taxonomy, check if they have terms and collects them into array
+				if( !empty( $wc_tax_attrs ) && in_array( $tax, $wc_tax_attrs ) && !empty( $tax_terms[0] ) ) {
+					$tax_attrs[] = $tax;
+				}
+			}
+			// adds Attribut taxonomy options to Product
+			wpfepp_product_attributes_options( $post_id, $tax_attrs );
+			
+			foreach ( $non_hierarchical_taxonomies as $tax => $tax_terms ) {
 				wp_set_post_terms( $post_id, $tax_terms, $tax, false);
 			}
-			foreach ($non_hierarchical_taxonomies as $tax => $tax_terms) {
-				wp_set_post_terms( $post_id, $tax_terms, $tax, false);
-			}
+			
+			/**
+			* Fires custom_fields before save them
+			*/
+			do_action( 'wpfepp_before_update_custom_field', $post_id, $custom_fields );
+
 			foreach ($custom_fields as $meta_key => $value) {
 				// grant permission to any newly added files on any existing orders for this product prior to saving
 				if($meta_key == '_downloadable_files') {
@@ -582,7 +610,6 @@ class WPFEPP_Form
 				}
 				
 				update_post_meta( $post_id, $meta_key, $value );
-				
 			}
 			
 			if($thumbnail)
@@ -606,6 +633,9 @@ class WPFEPP_Form
 	 **/
 	private function sanitize($value, $field){
 
+		if( isset($field['unixtime']) && $field['unixtime'] == 1 )
+			$value = strtotime($value);
+
 		if( isset($field['strip_tags']) && $field['strip_tags'] == 'all' )
 			$value = wp_strip_all_tags($value);
 		
@@ -626,11 +656,11 @@ class WPFEPP_Form
 	 * @param integer $post_id The id of the WordPress post to be fetched.
 	 * @return array An array containing the post data in the formal that can directly be used by our form.
 	 **/
-	private function get_post($post_id){
+	private function get_post( $post_id ){
 		$form_post = array();
 		$post_obj = get_post( $post_id );
-		foreach ($this->get_fields() as $key => $field) {
-			switch ($field['type']) {
+		foreach ( $this->get_fields() as $key => $field ) {
+			switch ( $field['type'] ) {
 				case 'title':
 					$form_post[$key] = $post_obj->post_title;
 					break;
@@ -661,20 +691,21 @@ class WPFEPP_Form
 					$form_post[$key . '_downloadable_files'] = get_post_meta( $post_id, '_downloadable_files', true );
 					$form_post[$key . '_external'] = get_post_meta( $post_id, '_external', true );
 					$form_post[$key . '_product_url'] = get_post_meta( $post_id, '_product_url', true );
+					$form_post[$key . 'product_image_gallery'] = get_post_meta( $post_id, '_product_image_gallery', true );
 					break;
 				case 'hierarchical_taxonomy':
-					$form_post[$key] = wp_get_post_terms($post_id, $key, array("fields" => "ids"));
+					$form_post[$key] = wp_get_post_terms( $post_id, $key, array( "fields" => "ids" ) );
 					break;
 				case 'post_formats':
-					$form_post[$key] = get_post_format($post_id);
+					$form_post[$key] = get_post_format( $post_id );
 					break;
 				case 'non_hierarchical_taxonomy':
-					$term_names = wp_get_post_terms($post_id, $key, array("fields" => "names"));
-					$form_post[$key] = implode(', ', $term_names);
+					$term_names = wp_get_post_terms( $post_id, $key, array( "fields" => "names" ) );
+					$form_post[$key] = implode( ', ', $term_names );
 					break;
 				case 'custom_field':
 					$post_meta = get_post_meta( $post_id, $key, true );
-					$form_post[$key] = ($post_meta)?$post_meta:"";
+					$form_post[$key] = ( $post_meta )?$post_meta:"";
 					break;
 				default:
 					break;
@@ -904,14 +935,37 @@ class WPFEPP_Form
 	 *
 	 * Enqueue frontend styles and javascripts for map location module.
 	 *
-	 * @since 2.9
+	 * @since 3.2
 	 */
-	public function enqueue_frontend_location_scripts($post_id) {
+	public function enqueue_frontend_location_scripts( $post_id ) {
 		$current_start_geo_lat = get_post_meta( $post_id, 'medafi_rhmap_latitude', true );
 		$current_start_geo_long = get_post_meta( $post_id, 'medafi_rhmap_longitude', true );
 		
-		wp_enqueue_script( 'google-map', '//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places' );
+		$protocol  = is_ssl() ? 'https' : 'http';
+			
+		//register google maps api
+		if ( !wp_script_is( 'google-maps', 'registered' ) && apply_filters( 'wpfepp_google_maps_api', true ) ) {
 
+			//Build Google API url. elements can be modified via filters
+			$maps_url_args = array(
+				'libraries' => 'places',
+				'key' => $this->extended['map_google_key'],
+				'region' => $this->extended['map_google_country'],
+				'language' => $this->extended['map_google_lang'],
+				'sansor' => 'false'
+	        );
+			
+			$maps_api_args = array(
+				'protocol'	=> $protocol,
+				'url_base' => '://maps.googleapis.com/maps/api/js?',
+				'url_data' => http_build_query( apply_filters( 'wpfepp_google_maps_api_args', $maps_url_args ), '', '&amp;' ),
+			);
+			
+			$google_url = apply_filters( 'wpfepp_google_maps_api', $maps_api_args, $this->extended );
+
+			wp_enqueue_script( 'google-maps', implode( '', $google_url ) , array( 'jquery' ), $this->version, false );
+		}
+		
 		wp_localize_script( 'wpfepp-script', 'wpfeppl', array(
 			'start_point'	=> $this->extended['map_start_location'],
 			'start_geo_lat'	=> ($current_start_geo_lat && !empty($current_start_geo_lat) ) ? $current_start_geo_lat : $this->extended['start_geo_lat'],
@@ -936,7 +990,7 @@ class WPFEPP_Form
 	 *
 	 * @access private
 	 **/
-	private function user_defined_fields($current_values){
+	private function user_defined_fields( $current_values ) {
 		do_action( 'wpfepp_form_'.$this->id.'_fields', $current_values );
 		do_action( 'wpfepp_form_fields', $current_values, $this );
 	}
@@ -946,7 +1000,7 @@ class WPFEPP_Form
 	 *
 	 * @access private
 	 **/
-	private function user_defined_actions($post_data){
+	private function user_defined_actions( $post_data ) {
 		do_action( 'wpfepp_form_'.$this->id.'_actions', $post_data );
 		do_action( 'wpfepp_form_actions', $post_data, $this );
 	}
@@ -960,7 +1014,7 @@ class WPFEPP_Form
 	 * @param int Post id.
 	 * @return boolean Whether or not the current user can perform the specified action.
 	 **/
-	private function current_user_can_edit($post_id){
+	private function current_user_can_edit( $post_id ) {
 		$post_author_id = get_post_field( 'post_author', $post_id );
 		$current_user = wp_get_current_user();
 
@@ -986,7 +1040,7 @@ class WPFEPP_Form
 	private function hierarchical_taxonomy_options($taxonomy, $args, $current, $level = -1){
 		$level++;
 		$terms = get_terms( $taxonomy, $args );
-		if(!count($terms) || is_wp_error($terms))
+		if( !count( $terms ) || is_wp_error( $terms ) )
 			return;
 		?>
 			<?php foreach($terms as $term_key => $term): ?>

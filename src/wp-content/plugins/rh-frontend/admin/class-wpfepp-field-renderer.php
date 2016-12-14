@@ -53,7 +53,7 @@ class WPFEPP_Field_Renderer
 		if($args['type'] == 'checkbox' || $args['type'] == 'bool'):
 			?>
 				<input type="hidden" name="<?php echo $field_name; ?>" value="0" />
-				<input type="checkbox" class="<?php echo $field_name; ?>" name="<?php echo $field_name; ?>" value="1" <?php checked($current); ?> />
+				<input type="checkbox" class="<?php echo 'wpfepp_'. $args['id']; ?>" name="<?php echo $field_name; ?>" value="1" <?php checked($current); ?> />
 			<?php
 		endif;
 

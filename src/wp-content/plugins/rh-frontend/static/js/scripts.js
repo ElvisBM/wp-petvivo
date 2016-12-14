@@ -156,6 +156,12 @@ jQuery(document).ready(function($){
 			wpfepp_forms.get( $(form) ).submit_post();
 		}
 	});
+	
+	$('.wpfepp-media').each(function () {
+		$(this).wp_media_lib_element(
+			$(this).data()
+		);
+	});
 
 	//Create a form collection object on page load.
 	var wpfepp_forms = new WPFEPP_Form_Collection();
@@ -327,6 +333,7 @@ jQuery(document).ready(function($){
 				}
 			);
 		}
+		
 		//Removes the thumb and resets the value of the hidden field.
 		this.reset_thumb = function() {
 			this.thumb_id_field.val('-1');
@@ -348,32 +355,15 @@ jQuery(document).ready(function($){
 		e.preventDefault();
 		var clicked = $(this);
 		custom_uploader = wp.media.frames.file_frame = wp.media({
-            title: 'Choose Image',
+            title: wpfepp.chooseimg,
             button: {
-                text: 'Choose Image'
+                text: wpfepp.chooseimg
             },
             multiple: false
         });
 		custom_uploader.on('select', function() {
             attachment = custom_uploader.state().get('selection').first().toJSON();
             wpfepp_forms.get( $(clicked).closest('.wpfepp-form') ).load_thumb(attachment.id);
-        });
-		custom_uploader.open();
-	});
-
-	$('.wpfepp-image-url-button').click(function(e){
-		e.preventDefault();
-		var clicked = $(this);
-		custom_uploader = wp.media.frames.file_frame = wp.media({
-            title: 'Choose Image',
-            button: {
-                text: 'Choose Image'
-            },
-            multiple: false
-        });
-		custom_uploader.on('select', function() {
-            attachment = custom_uploader.state().get('selection').first().toJSON();
-            clicked.siblings('.wpfepp-form-field').first().val(attachment.url);
         });
 		custom_uploader.open();
 	});
@@ -438,7 +428,7 @@ jQuery(document).ready(function($){
 	
 	//Google map options
 	if ( "undefined" !== typeof wpfeppl && '1' == wpfeppl.enable_map ) {
-	
+ 
 		if ( '1' == wpfeppl.enable_city_suggest ) {
 			jQuery( '#wpfepp_map_start_location' ).geo_tag_text();
 		}
@@ -450,20 +440,41 @@ jQuery(document).ready(function($){
 			latInputId 			: 'wpfepp_start_geo_lat', 
 			lngInputId 		: 'wpfepp_start_geo_long'
 		});
+
+		jQuery(document).on('change', '#wpfepp_map_start_location', function() {
+			var changemapfield = jQuery('#wpfepp_map_start_location').val();
+			jQuery('#rh_map_hidden_adress').val(changemapfield);
+		});
+		
 	}
 
+	// Custom field File Upload
+	$('.wpfepp-image-url-button').on('click', function(e){
+		e.preventDefault();
+		$(this).customUploaderOpen({field_id:'.wpfepp-form-field'});
+		return false;
+	});
+	
 	// Downlaodable product options
 	$( '.wpfepp-product_options-field-container' ).on( 'click','.wpfepp-downloadable_files-container a.insert', function() {
 		$( this ).closest( '.wpfepp-downloadable_files-container' ).find( 'tbody' ).append( $( this ).data( 'row' ) );
-		$('.wpfepp-file-url-button').customUploaderOpen({field_id:'.wpfepp-product_options-url-field'});
+		$('.wpfepp-file-url-button').on('click', function(e){
+			e.preventDefault();
+			$(this).customUploaderOpen({field_id:'.wpfepp-product_options-url-field'});
+		});
 		return false;
 	});
+	
 	$( '.wpfepp-product_options-field-container' ).on( 'click','.wpfepp-downloadable_files-container a.delete',function() {
 		$( this ).closest( 'tr' ).remove();
 		return false;
 	});
 	
-	$('.wpfepp-file-url-button').customUploaderOpen({field_id:'.wpfepp-product_options-url-field'});
+/* 	$('.wpfepp-file-url-button').on('click', function(e){
+		e.preventDefault();
+		$(this).customUploaderOpen({field_id:'.wpfepp-product_options-url-field'});
+		return false;
+	}); */
 	
 	if($('input.wpfepp-product_options-downloadable-field').is(':checked')) {
 		$('input.wpfepp-product_options-external-field').prop("disabled", true);
@@ -506,7 +517,7 @@ jQuery(document).ready(function($){
 
 });
 
-// Repaetable input file URL
+// WP Media Uploader
 (function($) {
 	var defaults = { field_id:'.wpfepp-url-field' };
 
@@ -515,23 +526,26 @@ jQuery(document).ready(function($){
 	$.fn.customUploaderOpen = function (params) {
 		options = $.extend({}, defaults, options, params);
 		
-		$(this).click(function(e){
-			e.preventDefault();
 			var clicked = $(this);
 			custom_uploader = wp.media.frames.file_frame = wp.media({
-				title: 'Choose File',
+				title: wpfepp.choosefile,
 				button: {
-					text: 'Choose File'
+					text: wpfepp.choosefile
 				},
 				multiple: false
 			});
 			custom_uploader.on('select', function() {
 				attachment = custom_uploader.state().get('selection').first().toJSON();
-				var field_container = clicked.parent().prev(); // act only if the field container in HTML is above the button container
-				field_container.find(options.field_id).val(attachment.url);
+				var fieldContainer = clicked.parent().prev(); // chooses the previous div container with the input field oject
+				var unputField = fieldContainer.find(options.field_id);
+				
+				if(fieldContainer.hasClass("wpfepp-attid")) {
+					unputField.val(attachment.id);
+				} else {
+					unputField.val(attachment.url);
+				}
 			});
 			custom_uploader.open();
 			return this;
-		});
 	}
 })(jQuery);

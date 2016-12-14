@@ -60,123 +60,134 @@ class WPFEPP_Tab_Form_Settings extends WPFEPP_Tab
 	 * Outputs the contents of the tab with the help of WordPress' settings API.
 	 **/
 	public function display() {
-		$form = $this->db->get($_GET['form']);
+		$form = $this->db->get( $_GET['form'] );
 		$form_settings = $form['settings'];
 		$page = 'wpfepp_form_settings_tab';
 		$section = 'wpfepp_form_settings_section';
-		$callback = array($this->renderer, 'render');
-		$args = array('group' => 'form_settings', 'curr' => $form_settings);
-
+		$callback = array( $this->renderer, 'render' );
+		$args = array( 'group' => 'form_settings', 'curr' => $form_settings );
+		
 		add_settings_section( $section, '', null, $page);
 
 		add_settings_field(
 		    'no_restrictions', __('Disable restrictions for', 'wpfepp-plugin'), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('These roles will have unrestricted access to the form.', 'wpfepp-plugin'),
-					'id' 	=> 'no_restrictions',
-					'type' 	=> 'roles'
+					'desc' => __( "These roles will have unrestricted access to the form.", "wpfepp-plugin" ),
+					'id' => 'no_restrictions',
+					'type' => 'roles'
 				),
 				$args
 		    )
 		);
 
 		add_settings_field(
-		    'instantly_publish', __('Instantly publish posts by', 'wpfepp-plugin'), $callback, $page, $section,
+		    'instantly_publish', __( "Instantly publish posts by", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('The post submitted by these roles will be published instantly.', 'wpfepp-plugin'),
-					'id' 	=> 'instantly_publish',
-					'type' 	=> 'roles'
+					'desc' => __( "The post submitted by these roles will be published instantly.", "wpfepp-plugin" ),
+					'id' => 'instantly_publish',
+					'type' => 'roles'
 				),
 				$args
 		    )
 		);
 		add_settings_field(
-		    'width', __('Width', 'wpfepp-plugin'), $callback, $page, $section,
+		    'width', __( "Width", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('Maximum form width.', 'wpfepp-plugin'),
-					'id' 	=> 'width',
-					'type' 	=> 'text'
+					'desc' => __( "Maximum form width.", "wpfepp-plugin" ),
+					'id' => 'width',
+					'type' => 'text'
 				),
 				$args
 		    )
 		);
 		add_settings_field(
-		    'redirect_url', __('Redirect URL', 'wpfepp-plugin'), $callback, $page, $section,
+		    'redirect_url', __( "Redirect URL", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('The user will be redirected to this URL after successful submission. Leave this empty to disable redirection.', 'wpfepp-plugin'),
-					'id' 	=> 'redirect_url',
-					'type' 	=> 'text'
+					'desc' => __( "The user will be redirected to this URL after successful submission. Leave this empty to disable redirection.", "wpfepp-plugin" ),
+					'id' => 'redirect_url',
+					'type' => 'text'
 				),
 				$args
 		    )
 		);
 		add_settings_field(
-		    'button_color', __('Button Color', 'wpfepp-plugin'), $callback, $page, $section,
+		    'button_color', __( "Button Color", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('Color of the submission button.', 'wpfepp-plugin'),
-					'id' 	=> 'button_color',
-					'type' 	=> 'select',
-					'items' => array('blue' => __('Blue', 'wpfepp-plugin'), 'green' => __('Green', 'wpfepp-plugin'), 'red' => __('Red', 'wpfepp-plugin'), 'brown' => __('Brown', 'wpfepp-plugin'))
+					'desc' => __( "Color of the submission button.", "wpfepp-plugin" ),
+					'id' => 'button_color',
+					'type' => 'select',
+					'items' => array( 'blue' => __( "Blue", "wpfepp-plugin" ), 'green' => __( "Green", "wpfepp-plugin" ), 'red' => __( "Red", "wpfepp-plugin" ), 'brown' => __( "Brown", "wpfepp-plugin" ) )
 				),
 				$args
 		    )
 		);
 		add_settings_field(
-		    'enable_drafts', __('Allow users to save drafts', 'wpfepp-plugin'), $callback, $page, $section,
+		    'enable_drafts', __( "Allow users to save drafts", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> '',
-					'id' 	=> 'enable_drafts',
-					'type' 	=> 'bool'
+					'desc' => '',
+					'id' => 'enable_drafts',
+					'type' => 'bool'
 				),
 				$args
 		    )
 		);
 	    add_settings_field(
-	        'user_emails', __('User Emails', 'wpfepp-plugin'), $callback, $page, $section,
+	        'user_emails', __( "User Emails", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('Send thank you email to user on post submission?', 'wpfepp-plugin'),
-					'id' 	=> 'user_emails',
-					'type' 	=> 'bool'
+					'desc' => __( "Send thank you email to user on post submission?", "wpfepp-plugin" ),
+					'id' => 'user_emails',
+					'type' => 'bool'
 				),
 				$args
 		    )
 	    );
 	    add_settings_field(
-	        'admin_emails', __('Admin Emails', 'wpfepp-plugin'), $callback, $page, $section,
+	        'admin_emails', __( "Admin Email New", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('Send email to admin on post submission?', 'wpfepp-plugin'),
-					'id' 	=> 'admin_emails',
-					'type' 	=> 'bool'
+					'desc' => __( "Send email to admin on post submission?", "wpfepp-plugin" ),
+					'id' => 'admin_emails',
+					'type' => 'bool'
 				),
 				$args
 		    )
 	    );
 	    add_settings_field(
-	        'copyscape_enabled', __('Enable CopyScape', 'wpfepp-plugin'), $callback, $page, $section,
+	        'admin_email_up', __( "Admin Email Edit", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('Enable CopyScape for this form. In order to use this feature you need to add your CopyScape keys in the plugin settings.', 'wpfepp-plugin'),
-					'id' 	=> 'copyscape_enabled',
-					'type' 	=> 'bool'
+					'desc' => __( "Send email to admin on post updating?", "wpfepp-plugin" ),
+					'id' => 'admin_email_up',
+					'type' => 'bool'
 				),
 				$args
 		    )
 	    );
 	    add_settings_field(
-	        'captcha_enabled', __('Enable Captcha', 'wpfepp-plugin'), $callback, $page, $section,
+	        'copyscape_enabled', __( "Enable CopyScape", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'desc' 	=> __('Enable captcha for this form. In order to use this feature you need to add your ReCaptcha keys in the plugin settings.', 'wpfepp-plugin'),
-					'id' 	=> 'captcha_enabled',
-					'type' 	=> 'bool'
+					'desc' => __( "Enable CopyScape for this form. In order to use this feature you need to add your CopyScape keys in the plugin settings.", "wpfepp-plugin" ),
+					'id' => 'copyscape_enabled',
+					'type' => 'bool'
+				),
+				$args
+		    )
+	    );
+	    add_settings_field(
+	        'captcha_enabled', __( "Enable Captcha", "wpfepp-plugin" ), $callback, $page, $section,
+		    array_merge(
+				array(
+					'desc' => __( "Enable captcha for this form. In order to use this feature you need to add your ReCaptcha keys in the plugin settings.", "wpfepp-plugin" ),
+					'id' => 'captcha_enabled',
+					'type' => 'bool'
 				),
 				$args
 		    )

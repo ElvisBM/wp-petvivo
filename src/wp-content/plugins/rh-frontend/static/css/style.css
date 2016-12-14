@@ -62,46 +62,34 @@
     font-size: 17px
 }
 .wpfepp-post-table-container table{width: 100%; margin-bottom:30px }
-.wpfepp-form .wpfepp-form-field-container > input[type="text"],
-.wpfepp-form .wpfepp-form-field-container > input[type="email"],
-.wpfepp-form .wpfepp-form-field-container > input[type="url"],
-.wpfepp-form .wpfepp-form-field-container > input[type="number"],
-.wpfepp-form .wpfepp-form-field-container > select,
-.wpfepp-form .wpfepp-form-field-container > textarea {
-width:100%; box-sizing:border-box;outline:0;padding: 9px 10px;color: #444;background: none #fff; border-radius: 0;transition: border-color 0.4s ease;border:1px solid #ccc;line-height: 18px; font: normal 15px/18px Arial;
-}
-.wpfepp-form .wpfepp-form-field-container > input[type="text"]:focus,
-.wpfepp-form .wpfepp-form-field-container > input[type="email"]:focus,
-.wpfepp-form .wpfepp-form-field-container > input[type="url"]:focus,
-.wpfepp-form .wpfepp-form-field-container > input[type="number"]:focus,
-.wpfepp-form .wpfepp-form-field-container > select:focus,
-.wpfepp-form .wpfepp-form-field-container > textarea:focus{border:1px solid #444;}
-.wpfepp-form .wpfepp-form-field-container .wpfepp-content-field{
-    box-shadow: none;
-    -ms-box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    border: none;
-}
+.wpfepp-form .wpfepp-form-field-container input[type="text"],
+.wpfepp-form .wpfepp-form-field-container input[type="email"],
+.wpfepp-form .wpfepp-form-field-container input[type="url"],
+.wpfepp-form .wpfepp-form-field-container input[type="number"],
+.wpfepp-form .wpfepp-form-field-container select,
+.wpfepp-form .wpfepp-form-field-container textarea {width:100%; box-sizing:border-box;outline:0;padding: 9px 10px;color: #444;background: none #fff; border-radius: 0;transition: border-color 0.4s ease;border:1px solid #ccc;line-height: 18px; font: normal 15px/18px Arial}
+.wpfepp-form .wpfepp-form-field-container input[type="text"]:focus,
+.wpfepp-form .wpfepp-form-field-container input[type="email"]:focus,
+.wpfepp-form .wpfepp-form-field-container input[type="url"]:focus,
+.wpfepp-form .wpfepp-form-field-container input[type="number"]:focus,
+.wpfepp-form .wpfepp-form-field-container select:focus,
+.wpfepp-form .wpfepp-form-field-container textarea:focus{border:1px solid #444}
+.wpfepp-form .wpfepp-form-field-container .wpfepp-content-field{box-shadow: none; -ms-box-shadow: none; -moz-box-shadow: none; -webkit-box-shadow: none; border: none}
 .wpfepp-form .wpfepp-form-field-container > input[type="number"]::-webkit-inner-spin-button{
 	opacity: 1;
 }
 .wpfepp-form .g-recaptcha {
     height: 85px;
 }
-.wpfepp-thumbnail-field a{text-decoration: none;}
-.wpfepp-thumbnail-link{margin: 5px 10px 0 0; display: inline-block;}
+.wpfepp-form .wpfepp-thumbnail-field a, .wpfepp-form .wpfepp-media a{text-decoration:none}
+.wpfepp-form .wpfepp-thumbnail-link, .wpfepp-form .wpfepp-media-select{margin:5px 10px 0 0;display:inline-block}
+
 .wpfepp-prefix-text{font-size: 14px;font-style: italic;}
-.wpfepp-form .wpfepp-form-field-container .wpfepp-thumbnail-field {
-    background: #f1f1f1;
-    border: 1px solid #e7e7e7;
-    display: table;
-    padding: 20px;
-    text-align: center;
-}
-.wpfepp-form .wpfepp-form-field-container.wpfepp-thumbnail-field-container{
-    display: table;
-}
+
+.wpfepp-form .wpfepp-thumbnail-field, .wpfepp-form .wpfepp-media{background:#f1f1f1;border:1px solid #e7e7e7;display:table;padding:14px;text-align:center}
+.wpfepp-form .wpfepp-media-preview img {margin:5px}
+.wpfepp-form .wpfepp-form-field-container.wpfepp-thumbnail-field-container{display:table}
+
 .wpfepp-form .wpfepp-form-field-container textarea.wpfepp-form-field {
     resize: vertical;
 }
@@ -431,25 +419,8 @@ Font
     height: 1em;
     width: 1em;
 }
-.wpfepp-form .wpfepp-downloadable_files-container table td .delete:before{
-font-family: Dashicons;
-    speak: none;
-    font-weight: 600;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    margin: 0;
-    text-indent: 0;
-    position: absolute;
-    top: 2px;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    content: "\f153";
-    color: #999;
-}
-.wpfepp-form .wpfepp-downloadable_files-container table td .delete:hover:before{
-	color: #a00;
-}
+.wpfepp-form .wpfepp-downloadable_files-container table td .delete:before{font-family: Dashicons;speak: none;font-weight: 600;font-variant: normal;text-transform: none;line-height: 1;-webkit-font-smoothing: antialiased;margin: 0;text-indent: 0;position: absolute;top: 2px;left:0px;width: 100%;height: 100%;text-align: center;content: "\f153";color: #999;}
+.wpfepp-form .wpfepp-downloadable_files-container table td .delete:hover:before{color: #a00}
+#product_images_container{padding: 20px 0;}#product_images_container ul{margin:0;padding:0}#product_images_container ul:after, #product_images_container ul:before{content:" ";display:table}#product_images_container ul:after{clear:both}#product_images_container ul li.add, #product_images_container ul li.image, #product_images_container ul li.wc-metabox-sortable-placeholder{width:80px;float:left;cursor:move;border:1px solid #d5d5d5;margin:0 10px 10px 0;background:#f7f7f7;border-radius:2px;position:relative;box-sizing:border-box;list-style: none}#product_images_container ul li.add img,#product_images_container ul li.image img,#product_images_container ul li.wc-metabox-sortable-placeholder img{width:100%;height:auto;display:block}#product_images_container ul li.wc-metabox-sortable-placeholder{border:3px dashed #ddd;position:relative}#product_images_container ul li.wc-metabox-sortable-placeholder:after{font-family:Dashicons;speak:none;font-weight:400;font-variant:normal;text-transform:none;-webkit-font-smoothing:antialiased;margin:0;text-indent:0;position:absolute;top:0;left:0;width:100%;height:100%;text-align:center;content:"";font-size:2.618em;line-height:72px;color:#ddd}#product_images_container ul ul.actions{position:absolute;top:-8px;right:-8px;padding:2px;display:none}#product_images_container ul ul.actions li{float:right;margin:0 0 0 2px}#product_images_container ul ul.actions li a{width:1em;margin:0;height:0;display:block;overflow:hidden}#product_images_container ul ul.actions li a.tips{cursor:pointer}#product_images_container ul ul.actions li a.delete{display:block;text-indent:-9999px;position:relative;height:1em;width:1em;font-size:1.4em}#product_images_container ul ul.actions li a.delete:before{font-family:Dashicons;speak:none;font-weight:400;font-variant:normal;text-transform:none;line-height:1;-webkit-font-smoothing:antialiased;margin:0;text-indent:0;position:absolute;top:0;left:0;width:100%;height:100%;text-align:center;content:"";color:#999}#product_images_container ul ul.actions li a.delete:hover:before{color:#a00}#product_images_container ul li:hover ul.actions{display:block}
+
+#product_images_container .add_product_images{margin:15px 0 25px}

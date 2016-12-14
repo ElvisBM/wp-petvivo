@@ -101,7 +101,7 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 	 * @var string $field_key Field key.
 	 * @var string $field Current settings of the field.
 	 **/
-	public function display_item($field_key, $field, $post_type){
+	public function display_item( $field_key, $field, $post_type ) {
 			$page 			= 'wpfepp_'.$field_key.'_widget';
 			$section 		= $page.'_section';
 			$callback 	= array($this->renderer, 'render');
@@ -109,86 +109,93 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 
 			add_settings_section( $section, '', null, $page );
 
-			add_settings_field('enabled', __( 'Enabled', 'wpfepp-plugin' ), $callback, $page, $section, 
-				array_merge(array('id' => 'enabled', 'type' => 'bool'), $args)
+			add_settings_field( 'enabled', __( 'Enabled', 'wpfepp-plugin' ), $callback, $page, $section, 
+				array_merge( array( 'id' => 'enabled', 'type' => 'bool' ), $args)
 			);
 			add_settings_field('required', __( 'Required', 'wpfepp-plugin' ), $callback, $page, $section, 
-				array_merge(array('id' => 'required', 'type' => 'bool'), $args)
+				array_merge( array( 'id' => 'required', 'type' => 'bool'), $args )
 			);
-			add_settings_field('label', __( 'Label', 'wpfepp-plugin' ), $callback, $page, $section, 
-				array_merge(array('id' => 'label', 'type' => 'text'), $args)
+			add_settings_field( 'label', __( 'Label', 'wpfepp-plugin' ), $callback, $page, $section, 
+				array_merge( array( 'id' => 'label', 'type' => 'text' ), $args)
 			);
 			
-			if($field['type'] == 'custom_field') {
-				add_settings_field('element', __( 'Form Element', 'wpfepp-plugin' ), $callback, $page, $section, 
+			if( $field['type'] == 'custom_field' ) {
+				add_settings_field( 'element', __( 'Form Element', 'wpfepp-plugin' ), $callback, $page, $section, 
 					array_merge(
 						array(
-							'id' 	=> 'element',
-							'type' 	=> 'select',
-							'items' => array( 'input' => __('Text Field', 'wpfepp-plugin'), 'textarea' => __('Text Area', 'wpfepp-plugin'), 'checkbox' => __('Checkbox', 'wpfepp-plugin'), 'select' => __('Select', 'wpfepp-plugin'), 'radio' => __('Radio Buttons', 'wpfepp-plugin'), 'email' => __('Email', 'wpfepp-plugin'), 'url' => __('URL', 'wpfepp-plugin'), 'image_url' => __('Image URL', 'wpfepp-plugin'), 'inputdate' => __('Date Field', 'wpfepp-plugin'), 'inputnumb' => __('Number field', 'wpfepp-plugin'), 'map' => __('Address Input', 'wpfepp-plugin') )
-						),
-						$args
+							'id' => 'element',
+							'type' => 'select',
+							'items' => array( 
+								'input' => __( "Text field", "wpfepp-plugin" ), 
+								'textarea' => __( "Text area", "wpfepp-plugin" ), 
+								'checkbox' => __( "Checkbox", "wpfepp-plugin" ), 
+								'select' => __( "Select", "wpfepp-plugin" ), 
+								'radio' => __( "Radio buttons", "wpfepp-plugin" ), 
+								'email' => __( "Email", "wpfepp-plugin" ), 
+								'url' => __( "URL field", "wpfepp-plugin" ), 
+								'image_url' => __( "File upload", "wpfepp-plugin" ), 
+								'inputdate' => __( "Date field", "wpfepp-plugin" ), 
+								'inputnumb' => __( "Number field", "wpfepp-plugin" ), 
+								'map' => __( "Address input", "wpfepp-plugin" ), 
+								'image_galery' => __( "Image galery", "wpfepp-plugin" ) 
+							)
+						), $args
 					)
 				);
-				add_settings_field('step_count', __( 'Step Count', 'wpfepp-plugin' ), $callback, $page, $section,
+				add_settings_field( 'step_count', __( 'Step Count', 'wpfepp-plugin' ), $callback, $page, $section,
 					array_merge(
 						array(
-							'id' 	=> 'step_count',
-							'type' 	=> 'int',
-							'desc' 	=> __('The step attribute specifies the legal number interval that you want the user to enter.', 'wpfepp-plugin')
-						),
-						$args
+							'id' => 'step_count',
+							'type' => 'int',
+							'desc' => __('The step attribute specifies the legal number interval that you want the user to enter.', 'wpfepp-plugin')
+						), $args
 					)
 				);	
-				add_settings_field('min_number', __( 'Min value', 'wpfepp-plugin' ), $callback, $page, $section,
+				add_settings_field( 'min_number', __( 'Min value', 'wpfepp-plugin' ), $callback, $page, $section,
 					array_merge(
 						array(
-							'id' 	=> 'min_number',
-							'type' 	=> 'int',
-							'desc' 	=> __('Minimum number that you want the user to enter.', 'wpfepp-plugin')
-						),
-						$args
+							'id' => 'min_number',
+							'type' => 'int',
+							'desc' => __('Minimum number that you want the user to enter.', 'wpfepp-plugin')
+						), $args
 					)
 				);
-				add_settings_field('max_number', __( 'Max value', 'wpfepp-plugin' ), $callback, $page, $section,
+				add_settings_field( 'max_number', __( 'Max value', 'wpfepp-plugin' ), $callback, $page, $section,
 					array_merge(
 						array(
-							'id' 	=> 'max_number',
-							'type' 	=> 'int',
-							'desc' 	=> __('Maximum number that you want the user to enter.', 'wpfepp-plugin')
-						),
-						$args
+							'id' => 'max_number',
+							'type' => 'int',
+							'desc' => __('Maximum number that you want the user to enter.', 'wpfepp-plugin')
+						), $args
 					)
 				);							
-				add_settings_field('choices', __( 'Choices', 'wpfepp-plugin' ), $callback, $page, $section,
+				add_settings_field( 'choices', __( 'Choices', 'wpfepp-plugin' ), $callback, $page, $section,
 					array_merge(
 						array(
-							'id' 	=> 'choices',
-							'type' 	=> 'textarea',
-							'desc' 	=> __('The choices for select and radio elements. One per line. Key value pairs can be added like this: key|Value', 'wpfepp-plugin')
-						),
-						$args
+							'id' => 'choices',
+							'type' => 'textarea',
+							'desc' => __('The choices for select and radio elements. One per line. Key value pairs can be added like this: key|Value', 'wpfepp-plugin')
+						), $args
 					)
 				);
 			}
 			
-			add_settings_field('width', __( 'Field Width', 'wpfepp-plugin' ), $callback, $page, $section, 
+			add_settings_field( 'width', __( 'Field Width', 'wpfepp-plugin' ), $callback, $page, $section, 
 				array_merge(
 					array(
-						'id' 	=> 'width',
-						'type' 	=> 'text',
-						'desc' 	=> 'Width in pixels or percentage. (e.g. 300px)'
-					), 
-					$args
+						'id' => 'width',
+						'type' => 'text',
+						'desc' => __( 'Width in pixels or percentage. (e.g. 300px)', 'wpfepp-plugin' )
+					), $args
 				)
 			);
 
-			if(in_array($field['type'], array('title', 'content', 'excerpt', 'custom_field'))) {
+			if( in_array( $field['type'], array( 'title', 'content', 'excerpt', 'custom_field' ) ) ) {
 				add_settings_field('min_words', __( 'Min Words', 'wpfepp-plugin' ), $callback, $page, $section,
-					array_merge(array('id' => 'min_words', 'type' => 'int'), $args)
+					array_merge( array( 'id' => 'min_words', 'type' => 'int'), $args )
 				);
-				add_settings_field('max_words', __( 'Max Words', 'wpfepp-plugin' ), $callback, $page, $section,
-					array_merge(array('id' => 'max_words', 'type' => 'int'), $args)
+				add_settings_field( 'max_words', __( 'Max Words', 'wpfepp-plugin' ), $callback, $page, $section,
+					array_merge( array( 'id' => 'max_words', 'type' => 'int' ), $args )
 				);
 			}
 			if(in_array($field['type'], array('sku', 'price', 'sale_price', 'custom_field'))) {
@@ -199,38 +206,52 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 					array_merge(array('id' => 'max_symbols', 'type' => 'int'), $args)
 				);				
 			}
+			
 			if(in_array($field['type'], array('title', 'content', 'excerpt', 'sku', 'price', 'sale_price', 'custom_field'))) {
-				add_settings_field('strip_tags', __( 'Strip Tags', 'wpfepp-plugin' ), $callback, $page, $section, 
+				add_settings_field( 'strip_tags', __( 'Strip Tags', 'wpfepp-plugin' ), $callback, $page, $section, 
 					array_merge(
 						array(
 							'id' 	=> 'strip_tags',
 							'type' 	=> 'select',
 							'desc' 	=> __('These HTML tags will be removed before the post is inserted into the database.', 'wpfepp-plugin'),
 							'items'	=> array('none' => __('None', 'wpfepp-plugin'), 'unsafe' => __('Unsafe', 'wpfepp-plugin'), 'all' => __('All', 'wpfepp-plugin'))
-						),
-						$args
+						), $args
+					)
+				);
+			}
+			
+			if( $field['type'] == 'custom_field' ) {
+				add_settings_field( 'attachdata', __( 'Data type', 'wpfepp-plugin' ), $callback, $page, $section, 
+					array_merge(
+						array(
+							'id' 	=> 'attachdata',
+							'type' 	=> 'select',
+							'items' => array( 'atturl' => __( 'Attachment URL', 'wpfepp-plugin'), 'attid' => __( 'Attachment ID', 'wpfepp-plugin') ),
+							'desc' 	=> __( 'Select how to save data from this field.', 'wpfepp-plugin' )
+						), $args
+					)
+				);
+				add_settings_field( 'unixtime', __( 'Unix timestamp', 'wpfepp-plugin' ), $callback, $page, $section,
+					array_merge(
+						array(
+							'id' => 'unixtime', 
+							'type' => 'bool', 
+							'desc' => __('Some meta field need it. E.g. _sale_price_dates_from', 'wpfepp-plugin')
+						), $args
 					)
 				);
 			}
 
-			if($field['type'] == 'content' || $field['type'] == 'custom_field') {
-				add_settings_field('nofollow', __( 'Nofollow All Links', 'wpfepp-plugin' ), $callback, $page, $section,
-					array_merge(array('id' => 'nofollow', 'type' => 'bool'), $args)
-				);
-			}
-
-			if($field['type'] == 'content') {
+			if( $field['type'] == 'content' ) {
 				add_settings_field('media_button', __( 'Display Media Button', 'wpfepp-plugin' ), $callback, $page, $section,
 					array_merge(
 						array(
 							'id' 	=> 'media_button',
 							'type' 	=> 'bool',
 							'desc'	=> __('The media button will show up only if the user has permission to upload media.', 'wpfepp-plugin')
-						),
-						$args
+						), $args
 					)
 				);
-
 				add_settings_field('max_links', __( 'Max Links', 'wpfepp-plugin' ), $callback, $page, $section,
 					array_merge(array('id' => 'max_links', 'type' => 'int'), $args)
 				);
@@ -239,10 +260,16 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 						array(
 							'id' 	=> 'element',
 							'type' 	=> 'select',
-							'items' => array('richtext' => __('Rich Text Editor', 'wpfepp-plugin'), 'plaintext' => __('Textarea', 'wpfepp-plugin'))
+							'items' => array( 'richtext' => __( 'Rich Text Editor', 'wpfepp-plugin' ), 'plaintext' => __( 'Textarea', 'wpfepp-plugin' ) )
 						),
 						$args
 					)
+				);
+			}
+			
+			if(in_array($field['type'], array('content', 'excerpt', 'custom_field'))) {
+				add_settings_field('nofollow', __( 'Nofollow All Links', 'wpfepp-plugin' ), $callback, $page, $section,
+					array_merge(array('id' => 'nofollow', 'type' => 'bool'), $args)
 				);
 			}
 
@@ -297,7 +324,19 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 					)
 				);
 			}
-
+			if(in_array($field['type'], array('title', 'content', 'excerpt', 'sku', 'price', 'sale_price', 'custom_field'))) {
+				add_settings_field('strip_tags', __( 'Strip Tags', 'wpfepp-plugin' ), $callback, $page, $section, 
+					array_merge(
+						array(
+							'id' 	=> 'strip_tags',
+							'type' 	=> 'select',
+							'desc' 	=> __('These HTML tags will be removed before the post is inserted into the database.', 'wpfepp-plugin'),
+							'items'	=> array('none' => __('None', 'wpfepp-plugin'), 'unsafe' => __('Unsafe', 'wpfepp-plugin'), 'all' => __('All', 'wpfepp-plugin'))
+						),
+						$args
+					)
+				);
+			}
 			add_settings_field('prefix_text', __( 'Instructions', 'wpfepp-plugin' ), $callback, $page, $section, 
 				array_merge(
 					array(
@@ -325,8 +364,9 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 					<div class="wpfepp-widget-head">
 						<strong><?php echo $field['widget_label']; ?></strong>
 						<span class="wpfepp-expand"><i class="wpfepp-icon-arrow-down"></i></span>
-						<?php if($field['type'] == 'custom_field'): ?>
+						<?php if( $field['type'] == 'custom_field' ) : ?>
 							<span class="wpfepp-custom-field-delete"><i class="wpfepp-icon-remove"></i></span>
+							<span>: <code><?php echo $field_key; ?></code></span>
 						<?php endif; ?>
 					</div>
 					<div class="wpfepp-widget-body">
@@ -365,18 +405,36 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 					<?php submit_button(__('Update Form', 'wpfepp-plugin'), 'primary', 'update-form-fields'); ?>
 				</form>
 			</div>
+			
 			<div class="wpfepp-op-sidebar">
 				<div class="side-block custom-field-builder">
-					<h3><?php _e('Custom Fields', 'wpfepp-plugin'); ?></h3>
+					<h3><?php _e( "Custom Fields", "wpfepp-plugin" ); ?></h3>
 					<form class="wpfepp-ajax-form">
-						<label><?php _e('Label', 'wpfepp-plugin'); ?></label>
+						<label><?php _e( "Label", "wpfepp-plugin" ); ?></label>
 						<input class="wpfepp-required" type="text" name="label" />
-						<label><?php _e('Meta Key', 'wpfepp-plugin'); ?></label>
+						<label><?php _e( "Meta Key", "wpfepp-plugin" ); ?></label>
 						<input class="wpfepp-required" type="text" name="meta_key" />
 						<input type="hidden" name="action" value="wpfepp_create_custom_field_ajax" />
-						<?php submit_button(__('Add', 'wpfepp-plugin'), 'primary', 'wpfepp-add-custom-field'); ?>
+						<?php submit_button( __( "Add field", "wpfepp-plugin" ), 'primary', 'wpfepp-add-custom-field' ); ?>
 					</form>
 				</div>
+				<?php if( 'rehub' == get_option( 'template' ) ) { ?>
+				<div class="side-block custom-field-builder">
+					<h3><?php _e( "REhub Theme Fields", "wpfepp-plugin" ); ?></h3>
+					<ul class="wpfepp-rehub-fields">
+						<li data-field="rh_post_image_gallery"><?php _e( "Image gallery", "wpfepp-plugin" ); ?></li>
+						<li data-field="rehub_offer_product_url"><?php _e( "Offer product URL", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_name"><?php _e( "Offer product Name", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_product_desc"><?php _e( "Offer product Description", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_product_price_old"><?php _e( "Offer product Old price", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_product_price"><?php _e( "Offer product Price", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_product_coupon"><?php _e( "Offer product Coupon code", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_coupon_date"><?php _e( "Offer product Expiration date", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_product_thumb"><?php _e( "Offer product Image URL", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_logo_url"><?php _e( "Offer product Logo URL", "wpfepp-plugin" ); ?>
+					</ul>
+				</div>
+			<?php } ?>
 			</div>
 		<?php
 	}

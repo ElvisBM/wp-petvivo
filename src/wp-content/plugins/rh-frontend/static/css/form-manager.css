@@ -23,11 +23,19 @@
     background: #fff;
     border: 1px solid #e7e7e7;
     margin-left: 20px;
+	margin-bottom: 20px;
     padding: 20px;
 }
 .wpfepp-op-sidebar .side-block h3{
 	margin-top: 0;
 	margin-bottom: 20px;
+}
+.wpfepp-op-sidebar .side-block .wpfepp-rehub-fields{
+    overflow-y: scroll;
+    height: 180px;
+}
+.wpfepp-op-sidebar .side-block .wpfepp-rehub-fields li{
+	cursor: pointer;
 }
 .wpfepp-op-sidebar .custom-field-builder label {
     clear: both;
@@ -43,7 +51,6 @@
     margin: 15px 0 0 0;
     padding: 0;
 }
-
 .wpfepp-form-ul label {
     display: block;
     float: left;

@@ -132,8 +132,7 @@ class WPFEPP_Shortcode_Manager
 									<div class="buttons_col">
 										<div class="priced_block">
 											<?php if ( $product->is_in_stock() && $product->add_to_cart_url() !='') : ?>
-												<?php  echo apply_filters( 'woocommerce_loop_add_to_cart_link',
-													sprintf( '<a href="%s" target="_blank" data-product_id="%s" data-product_sku="%s" class="woo_loop_btn btn_offer_block %s %s product_type_%s"%s%s>%s</a>',
+												<?php $loop_add_to_cart_link = sprintf( '<a href="%s" target="_blank" data-product_id="%s" data-product_sku="%s" class="woo_loop_btn btn_offer_block %s %s product_type_%s"%s%s>%s</a>',
 													esc_url( get_post_permalink($post->ID) ),
 													esc_attr( $product->id ),
 													esc_attr( $product->get_sku() ),
@@ -143,8 +142,8 @@ class WPFEPP_Shortcode_Manager
 													$product->product_type =='external' ? ' target="_blank"' : '',
 													$product->product_type =='external' ? ' rel="nofollow"' : '',
 													__('Get package', 'wpfepp-plugin')
-													),
-												$product );?>
+													); ?>
+												<?php echo apply_filters( 'woocommerce_loop_add_to_cart_link', $loop_add_to_cart_link, $product ); ?>
 											<?php endif; ?>                                            
 										</div>
 
@@ -188,9 +187,9 @@ class WPFEPP_Shortcode_Manager
 		wp_enqueue_script('wpfepp-script');
 		wp_enqueue_media();
 
-		$args = shortcode_atts( array( 'form' => -1 ), $_args );
+		$args = shortcode_atts( array( 'form' => -1, 'show_all' => 1 ), $_args );
 		ob_start();
-		$post_list = new WPFEPP_Post_List($this->version, $args['form']);
+		$post_list = new WPFEPP_Post_List($this->version, $args['form'], $args['show_all']);
 		$post_list->display();
 		return ob_get_clean();
 	}

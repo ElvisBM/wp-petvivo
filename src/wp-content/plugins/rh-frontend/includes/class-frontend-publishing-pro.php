@@ -82,24 +82,21 @@ class Frontend_Publishing_Pro
 	 *
 	 * @param string $version Plugin version
 	 **/
-	public function __construct($version = "1.0")
-	{
+	public function __construct( $version = "1.0" ) {
 		$this->load_dependencies();
-
-		$this->version 				= $version;
-		$this->loader 				= new WPFEPP_Loader();
-		$this->shortcode_manager 	= new WPFEPP_Shortcode_Manager( $version );
-		$this->form_manager 		= new WPFEPP_Form_Manager( $version );
-		$this->plugin_settings 		= new WPFEPP_Plugin_Settings( $version, $this->form_manager->get_page_slug() );
-		$this->admin_messages 		= new WPFEPP_Admin_Messages( $version );
-		$this->email_manager 		= new WPFEPP_Email_Manager( $version );
-		$this->form_ajax 			= new WPFEPP_Form_Ajax( $version );
-		$this->post_list 			= new WPFEPP_Post_List( $version );
-		$this->db 					= WPFEPP_DB_Table::get_instance();
-		$this->copyscape 			= new WPFEPP_CopyScape( $version );
-		$this->previews 			= new WPFEPP_Post_Previews();
-		$this->media_settings 		= get_option('wpfepp_media_settings');
-
+		$this->version = $version;
+		$this->loader = new WPFEPP_Loader();
+		$this->shortcode_manager = new WPFEPP_Shortcode_Manager( $version );
+		$this->form_manager = new WPFEPP_Form_Manager( $version );
+		$this->plugin_settings = new WPFEPP_Plugin_Settings( $version, $this->form_manager->get_page_slug() );
+		$this->admin_messages = new WPFEPP_Admin_Messages( $version );
+		$this->email_manager = new WPFEPP_Email_Manager( $version );
+		$this->form_ajax = new WPFEPP_Form_Ajax( $version );
+		$this->post_list = new WPFEPP_Post_List( $version );
+		$this->db = WPFEPP_DB_Table::get_instance();
+		$this->copyscape = new WPFEPP_CopyScape( $version );
+		$this->previews = new WPFEPP_Post_Previews();
+		$this->media_settings = get_option( 'wpfepp_media_settings' );
 		$this->define_admin_hooks();
 	}
 
@@ -129,7 +126,7 @@ class Frontend_Publishing_Pro
 	 **/
 	private function define_admin_hooks() {
 		// Hook initialization and uninstallation functions.
-		$this->loader->add_action('wpfepp_activation', $this, 'initialize');
+		$this->loader->add_action('admin_init', $this, 'initialize');
 		$this->loader->add_action('wpfepp_uninstall', $this, 'rollback');
 
 		// Hook the main functions of the plugin.
@@ -184,7 +181,7 @@ class Frontend_Publishing_Pro
 		// Change the database flag to reflect that all the changes of this version have been completed
 		update_option('wpfepp_version', $this->version);
 	}
-
+	 
 	/**
 	 * The function that will run on uninstallation of the plugin to remove data.
 	 **/
@@ -214,12 +211,18 @@ class Frontend_Publishing_Pro
 		wp_register_style( 'wpfepp-style', plugins_url('static/css/style.css', dirname(__FILE__) ), array(), $this->version, 'all' );
 
 		// Register plugin scripts. All the scripts are included in scripts.js for performance.
+		wp_register_script( 'wpfepp-meta-boxes-product', plugins_url( 'static/js/meta-boxes-product.js', dirname(__FILE__) ), array('jquery'), $this->version, true );
 		wp_register_script( 'wpfepp-script', plugins_url( 'static/js/scripts.js', dirname(__FILE__) ), array('jquery'), $this->version, true );
+		wp_register_script( 'wpfepp-media', plugins_url( 'static/js/media-element.js', dirname(__FILE__) ), array('jquery'), $this->version, true );
 		wp_register_script( 'wpfepp-recaptcha', 'https://www.google.com/recaptcha/api.js', array(), $this->version, true );
 
 		// Localize resources.
 		$errors = get_option('wpfepp_errors');
-		wp_localize_script( 'wpfepp-script', 'wpfepp', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));
+		wp_localize_script( 'wpfepp-script', 'wpfepp', array( 
+			'ajaxurl' => admin_url( 'admin-ajax.php' ),
+			'chooseimg' => esc_html__( 'Choose Image', 'wpfepp-plugin' ),
+			'choosefile' => esc_html__( 'Choose File', 'wpfepp-plugin' ),
+		));
 		wp_localize_script( 'wpfepp-script', 'wpfepp_errors', $errors );
 	}
 
@@ -387,8 +390,7 @@ JS;
 			$contributor_role 	= get_role( 'contributor' );
 			if($contributor_role)
 				$contributor_role->add_cap('upload_files');
-		}
-		else{
+		} else {
 			$subscriber_role 	= get_role( 'subscriber' );
 			if($subscriber_role)
 				$subscriber_role->remove_cap('upload_files');
@@ -401,9 +403,9 @@ JS;
 	/*
 		Adds vriables to yoast's whitelist
 	*/
-	public function update_yoast_whitelist( $query_vars ){
+	public function update_yoast_whitelist( $query_vars ) {
 		$wpfepp_vars = array( 'wpfepp_action', 'wpfepp_post', '_wpnonce' );
-		return array_merge($wpfepp_vars, $query_vars);
+		return array_merge( $wpfepp_vars, $query_vars );
 	}
 }
 

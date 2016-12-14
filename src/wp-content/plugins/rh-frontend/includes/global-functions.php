@@ -1,4 +1,14 @@
 <?php
+/* Debug Plugin function */
+function wpfepp_log( $variable, $content ) {
+	if ( true === WP_DEBUG ) {
+		if ( is_array( $content ) || is_object( $content ) ) {
+			error_log( $variable .' = '. print_r( $content, true ) );
+		} else {
+			error_log( $variable .' = '. $content );
+		}
+	}
+}
 
 /**
  * Creates an associative array of roles in which each element has role slug as the key and role name as value e.g. 'administrator' => 'Administrator'
@@ -84,12 +94,11 @@ function wpfepp_update_array($current, $default) {
 	return $current;
 }
 
-function wpfepp_update_form_fields($current, $default, $default_custom){
-
-	$current = wpfepp_update_array($current, $default);
+function wpfepp_update_form_fields( $current, $default, $default_custom ) {
+	$current = wpfepp_update_array( $current, $default );
 	foreach ($current as $key => $field) {
-		if($field['type'] == 'custom_field')
-			$current[$key] = wpfepp_update_array($field, $default_custom);
+		if( $field['type'] == 'custom_field' )
+			$current[$key] = wpfepp_update_array( $field, $default_custom );
 	}
 	return $current;
 }
@@ -101,7 +110,7 @@ function wpfepp_update_form_fields($current, $default, $default_custom){
  * @var string $field_type The type of field we want to check.
  * @return bool A boolean variable indicating whether or not the field is supported.
  **/
-function wpfepp_is_field_supported($field_type, $post_type){
+function wpfepp_is_field_supported( $field_type, $post_type ) {
 	if($field_type == 'thumbnail' ) {
 		return ( post_type_supports($post_type, 'thumbnail') && get_theme_support('post-thumbnails') );
 	}
@@ -160,31 +169,162 @@ function wpfepp_submission_form($form_id) {
  * Output the html of a post table and includes the necessary scripts and stylesheets.
  *
  * @var int $form_id Form ID.
- * @author
- **/
+ */
 function wpfepp_post_table($form_id) {
 	echo do_shortcode( sprintf('[wpfepp_post_table form="%s"]', $form_id) );
 }
 
-function wpfepp_get_post_types(){
+/**
+ * Gets post type names
+ *
+ * returns arr $types
+ */
+function wpfepp_get_post_types() {
 	$types = get_post_types( array('show_ui'=>true), 'names', 'and' );
-	unset($types['attachment']);
+	unset( $types['attachment'] );
 	return $types;
 }
 
-function wpfepp_get_post_type_settings(){
+function wpfepp_get_post_type_settings() {
 	$settings = array();
 	$types = wpfepp_get_post_types();
-	foreach ($types as $key => $type) {
+	foreach ( $types as $key => $type ) {
 		$settings[$type] = false;
 	}
 	return $settings;
 }
 
-if( !function_exists('ot_get_media_post_ID') ) {
+if( !function_exists( 'ot_get_media_post_ID' ) ) {
 	function ot_get_media_post_ID() {
 		return -1;
 	}
 }
 
+/**
+ * Runs on update of the plugin
+ */
+function wpfepp_check_update() {
+	require plugin_dir_path( __FILE__ ) . 'class-update-checker.php';
+}
+
+/**
+ * Pass Map data to Geo My WP plugin
+ */
+function rh_gmw_pass_map_data($postid, $custom_fields) {
+	$address = (!empty($custom_fields['_rh_gmw_map_hidden_adress'])) ? $custom_fields['_rh_gmw_map_hidden_adress'] : '';
+	if( !$address || empty($address)) return;
+	if(!defined('GMW_PT_PATH')) return;
+	include_once( GMW_PT_PATH .'/includes/gmw-pt-update-location.php' );
+	if ( function_exists( 'gmw_pt_update_location' ) ) {
+		// geocoder args
+		$args = array(
+			'post_id'         => $postid,
+			'address'         => $address,
+			'map_icon'        => '',
+		);
+		// run geocoder function
+		gmw_pt_update_location( $args );
+	}
+}
+add_action( 'wpfepp_before_update_custom_field', 'rh_gmw_pass_map_data', 10, 2 );
+
+/**
+ * Get WC attribute taxonomies.
+ *
+ * @return array of attribut names
+ */
+function wpfepp_get_attribute_taxonomies() {
+	$arr_names = array();
+
+	if ( false === ( $attribute_taxonomies = get_transient( 'wc_attribute_taxonomies' ) ) ) {
+		global $wpdb;
+		$attribute_taxonomies = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . "woocommerce_attribute_taxonomies order by attribute_name ASC;" );
+		set_transient( 'wc_attribute_taxonomies', $attribute_taxonomies );
+	}
+
+	foreach( $attribute_taxonomies as $attribute_taxonomie ) {
+		$arr_names[] = 'pa_' . $attribute_taxonomie->attribute_name;
+	}
+
+	return $arr_names;
+}
+
+/** 
+ * Save Product attribut options
+ */
+function wpfepp_product_attributes_options( $post_id, $tax_attrs ) {
+	
+	if( empty( $post_id ) )
+		return;
+	
+	$atts = array();
+	
+	if( !empty( $tax_attrs ) ) {
+		for( $i = 0, $cc = count( $tax_attrs ); $i < $cc; ++$i ) {
+			$tax_name = sanitize_title( $tax_attrs[$i] );
+			$atts[ $tax_name ] = array(
+				'name' => $tax_name,
+				'value' => '',
+				'position' => $i,
+				'is_visible' => 1,
+				'is_variation' => 0,
+				'is_taxonomy' => 1
+			);
+		}
+	} 
+
+	/** 
+	* Filter attribut options
+	*/
+	$attributes = apply_filters( 'wpfepp_product_attributes_options', $atts, $post_id, $tax_attrs );
+	
+	update_post_meta( $post_id, '_product_attributes', $attributes );
+}
+
+/* 
+ * Takes multiple media IDs | ID | URL and returns preview HTML for them
+ */
+function wpfepp_media_preview_html( $media_data, $media_type ) {
+	
+	if ( ! $media_data )
+		return;
+	
+	$html = '';
+
+	if ( $media_type == 'attids' ) {
+		foreach ( explode( ',', $media_data ) as $id ) {
+			$html .= wp_get_attachment_image( trim( $id ), 'thumbnail');
+		}
+	} 
+
+	if ( $media_type == 'attid' ) {
+		$html = ( $media_data ) ? wp_get_attachment_image( $media_data, 'thumbnail', true ) : '';
+	}
+
+	if ( $media_type == 'atturl' ) {
+		$id = wpfepp_get_attachment_id_by_url( $media_data );
+		$html = ( $id ) ? wp_get_attachment_image( $id, 'thumbnail', true ) : '';
+	}
+
+	return $html;
+}
+
+/* 
+ * Retrives Attachment ID by File URL
+ */
+function wpfepp_get_attachment_id_by_url( $url ) {
+
+	$parsed_url  = explode( parse_url( WP_CONTENT_URL, PHP_URL_PATH ), $url );
+	$this_host = str_ireplace( 'www.', '', parse_url( home_url(), PHP_URL_HOST ) );
+	$file_host = str_ireplace( 'www.', '', parse_url( $url, PHP_URL_HOST ) );
+
+	if ( ! isset( $parsed_url[1] ) || empty( $parsed_url[1] ) || ( $this_host != $file_host ) ) {
+		return;
+	}
+
+	global $wpdb;
+	$attachment = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->prefix}posts WHERE guid RLIKE %s;", $parsed_url[1] ) );
+
+	return $attachment[0];
+}
 ?>

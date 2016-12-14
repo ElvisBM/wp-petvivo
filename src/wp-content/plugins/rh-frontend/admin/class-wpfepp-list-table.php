@@ -31,18 +31,17 @@ class WPFEPP_List_Table extends WP_List_Table {
     /**
      * Class constructor. Initializes class attributes and invokes the constructor of parent class WP_List_Table
      **/
-    public function __construct($version){
+    public function __construct( $version ){
         $this->load_dependencies();
-
-        $this->version      = $version;
-        $this->db           = WPFEPP_DB_Table::get_instance();
+        $this->version = $version;
+        $this->db = WPFEPP_DB_Table::get_instance();
 
         global $status, $page;
         parent::__construct( array(
-            'singular'  => 'form',
-            'plural'    => 'forms',
-            'ajax'      => false,
-            'screen'    => $_REQUEST['page']
+            'singular' => 'form',
+            'plural' => 'forms',
+            'ajax' => false,
+            'screen' => $_REQUEST['page']
         ) );
     }
 
@@ -57,8 +56,8 @@ class WPFEPP_List_Table extends WP_List_Table {
      * @param string $column_name Name of the column currently being displayed.
      * @return string Column value.
      **/
-    function column_default($item, $column_name){
-        return stripslashes($item[$column_name]);
+    function column_default( $item, $column_name ){
+        return stripslashes( $item[$column_name] );
     }
 
     /**
@@ -67,18 +66,16 @@ class WPFEPP_List_Table extends WP_List_Table {
      * @param array $item An associative array representing a row from the database table.
      * @return string Form name and action links formatted into a single string.
      **/
-    function column_name($item){
+    function column_name( $item ){
         
         //Build row actions
         $actions = array(
-            'edit'      => sprintf('<a href="?page=%s&action=%s&form=%s">%s</a>', $_REQUEST['page'], 'edit', $item['id'], __('Edit', 'wpfepp-plugin'))
+            'edit' => sprintf( '<a href="?page=%s&action=%s&form=%s">%s</a>', $_REQUEST['page'], 'edit', $item['id'], __( 'Edit', 'wpfepp-plugin' ) ),
+			//'delete' => sprintf( '<a href="?page=%s&action=%s&form[0]=%s">%s</a>', $_REQUEST['page'], 'delete', $item['id'], __( 'Delete', 'wpfepp-plugin' ) )
         );
         
         //Return the title contents
-        return sprintf('%1$s %2$s',
-            /*$1%s*/ stripslashes($item['name']),
-            /*$2%s*/ $this->row_actions($actions)
-        );
+        return sprintf('%1$s %2$s', stripslashes( $item['name'] ), $this->row_actions( $actions ) );
     }
 
     /**
@@ -87,11 +84,11 @@ class WPFEPP_List_Table extends WP_List_Table {
      * @param array $item An associative array representing a row from the database table.
      * @return string HTML for the check box.
      **/
-    function column_cb($item){
+    function column_cb( $item ){
         return sprintf(
             '<input type="checkbox" name="%1$s[]" value="%2$s" />',
-            /*$1%s*/ $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movie")
-            /*$2%s*/ $item['id']                //The value of the checkbox should be the record's id
+            $this->_args['singular'],  //Let's simply repurpose the table's singular label ("movie")
+            $item['id']  //The value of the checkbox should be the record's id
         );
     }
     
@@ -102,11 +99,11 @@ class WPFEPP_List_Table extends WP_List_Table {
      **/
     function get_columns(){
         $columns = array(
-            'cb'            => '<input type="checkbox" />',
-            'id'            => __('ID', 'wpfepp-plugin'),
-            'name'          => __('Name', 'wpfepp-plugin'),
-            'post_type'     => __('Post Type', 'wpfepp-plugin'),
-            'description'   => __('Description', 'wpfepp-plugin')
+            'cb' => '<input type="checkbox" />',
+            'id' => __( 'ID', 'wpfepp-plugin' ),
+            'name' => __( 'Name', 'wpfepp-plugin' ),
+            'post_type' => __( 'Post Type', 'wpfepp-plugin' ),
+            'description' => __( 'Description', 'wpfepp-plugin' )
         );
         return $columns;
     }
@@ -118,7 +115,7 @@ class WPFEPP_List_Table extends WP_List_Table {
      **/
     function get_bulk_actions() {
         $actions = array(
-            'delete'    => __('Delete', 'wpfepp-plugin')
+            'delete' => __( 'Delete', 'wpfepp-plugin' )
         );
         return $actions;
     }
@@ -128,22 +125,20 @@ class WPFEPP_List_Table extends WP_List_Table {
      **/
     public function prepare_items() {
 
-        $per_page               = 25;
-        $hidden                 = array();
-        $columns                = $this->get_columns();
-        $sortable               = array();
-        $curr_page              = $this->get_pagenum();
-
-        $total_items            = $this->db->get_total_count();
-        $data                   = $this->db->get_forms($curr_page, $per_page);
-
-        $this->items            = $data;
-        $this->_column_headers  = array($columns, $hidden, $sortable);
+        $per_page = 25;
+        $hidden  = array();
+        $columns = $this->get_columns();
+        $sortable = array();
+        $curr_page = $this->get_pagenum();
+        $total_items  = $this->db->get_total_count();
+        $data = $this->db->get_forms( $curr_page, $per_page );
+        $this->items = $data;
+        $this->_column_headers  = array( $columns, $hidden, $sortable );
         
         $this->set_pagination_args( array(
             'total_items' => $total_items,                  //WE have to calculate the total number of items
             'per_page'    => $per_page,                     //WE have to determine how many items to show on a page
-            'total_pages' => ceil($total_items/$per_page)   //WE have to calculate the total number of pages
+            'total_pages' => ceil( $total_items/$per_page )   //WE have to calculate the total number of pages
         ) );
     }
     

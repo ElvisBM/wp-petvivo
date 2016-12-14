@@ -37,7 +37,7 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 	 * Registers the actions of this class with WordPress. This function is called by add_actions of WPFEPP_Tab_Collection, which in turn is called by add_actions of WPFEPP_Form_Manager.
 	 **/
 	public function add_actions(){
-		add_action('admin_init', array($this, 'save_extended'));
+		add_action( 'admin_init', array( $this, 'save_extended' ) );
 		add_action( 'enqueue_admin_add_scripts', array( $this, 'admin_enqueue_location_scripts' ), 0 );
 	}
 
@@ -111,6 +111,16 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 				), $args )
 	    );
 	    add_settings_field(
+	        'wpfepp_map_placeholder', __('Placeholder Address', 'wpfepp-plugin'), $callback, $page, $section1,
+		    array_merge(
+				array(
+					'desc' 	=> __('Set a placeholder to the address field.', 'wpfepp-plugin'),
+					'id' 	=> 'adress_placeholder',
+					'type' 	=> 'text',
+					'size' => 50
+				), $args )
+	    );
+	    add_settings_field(
 	        'wpfepp_map_start_location', __('Default Location', 'wpfepp-plugin'), $callback, $page, $section1,
 		    array_merge(
 				array(
@@ -120,6 +130,37 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 					'size' => 50
 				), $args )
 	    );
+	    add_settings_field(
+	        'wpfepp_map_google_key', __('Google Map API key', 'wpfepp-plugin'), $callback, $page, $section1,
+		    array_merge(
+				array(
+					'desc' 	=> __('This is optional but will let you track your API requests. You can obtain your free Goole API key <a href="https://code.google.com/apis/console/" target="_blank">here</a>.', 'wpfepp-plugin'),
+					'id' 	=> 'map_google_key',
+					'type' 	=> 'text',
+					'size' => 50
+				), $args )
+	    );
+	    add_settings_field(
+	        'wpfepp_map_google_country', __('Country Code', 'wpfepp-plugin'), $callback, $page, $section1,
+		    array_merge(
+				array(
+					'desc' 	=> __('Enter the default country code. <a href="https://wikipedia.org/wiki/ISO_3166-1" target="blank">List of country codes</a>.', 'wpfepp-plugin'),
+					'id' 	=> 'map_google_country',
+					'type' 	=> 'text',
+					'size' => 10
+				), $args )
+	    );
+	    add_settings_field(
+	        'wpfepp_map_google_lang', __('Language Code', 'wpfepp-plugin'), $callback, $page, $section1,
+		    array_merge(
+				array(
+					'desc' 	=> __( 'Set the language to be used with Google Places address auto-complete. <a href="https://wikipedia.org/wiki/List_of_ISO_639-1_codes" target="blank">List of language codes</a>.', 'wpfepp-plugin' ),
+					'id' 	=> 'map_google_lang',
+					'type' 	=> 'text',
+					'size' => 10
+				), $args )
+	    );
+
 
 	    add_settings_section( 'wpfepp_paid_help_section', __('Payment Settings', 'wpfepp-plugin'), array($this, 'paidhelper_callback'), $page );
 
@@ -145,7 +186,7 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 		$form_extended = $this->get_extended_settings();
 		$default_extended = $this->form_manager->get_defaults();
 		
-		wp_enqueue_script( 'google-maps', '//maps.googleapis.com/maps/api/js?v=3.exp&libraries=places' );
+		wp_enqueue_script( 'google-maps', '//maps.googleapis.com/maps/api/js?v=3.exp&amp;'. $form_extended['map_google_key'] .'&amp;libraries=places' );
 		wp_register_script( 'admin-location', plugins_url( '/static/js/admin-location.js', dirname(__FILE__) ), array( 'jquery', 'mapify' ), $this->version, true );
 
 		wp_localize_script( 'admin-location', 'wpfeppl', array(

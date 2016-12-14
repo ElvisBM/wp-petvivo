@@ -15,6 +15,22 @@ class WPFEPP_Post_List
 	 * @var string
 	 **/
 	private $version;
+
+	/**
+	 * Form id.
+	 *
+	 * @access private
+	 * @var string
+	 **/
+	private $formid;
+
+	/**
+	 * Show all shortcode parameter.
+	 *
+	 * @access private
+	 * @var string
+	 **/
+	private $show_all;		
 	
 	/**
 	 * An instance of the WPFEPP_Form class for editing posts.
@@ -43,19 +59,20 @@ class WPFEPP_Post_List
 	/**
 	 * Class constructor. Initializes the attributes of the object.
 	 **/
-	public function __construct($version, $form_id = -1)
-	{
+	public function __construct( $version, $form_id = -1, $show_all = 1 ) {
 		$this->version = $version;
+		$this->formid = $form_id;
+		$this->show_all = $show_all;
 
-		if($form_id < 0){
+		if( $form_id < 0 ) {
 			$this->valid = false;
 			return;
 		}
 
 		require_once plugin_dir_path( dirname(__FILE__) ) . 'includes/class-wpfepp-form.php';
-		$this->form = new WPFEPP_Form($this->version, $form_id, false);
+		$this->form = new WPFEPP_Form( $this->version, $form_id, false );
 
-		if(!$this->form->valid()){
+		if( ! $this->form->valid() ) {
 			$this->valid = false;
 			return;
 		}
@@ -67,47 +84,43 @@ class WPFEPP_Post_List
 	/**
 	 * Adds the actions of the class. The WPFEPP_Loader class registers this function with WordPress.
 	 **/
-	public function add_actions(){
-		add_action('wp', array($this, 'handle_deletion_request'));
-		add_action( 'wp_ajax_wpfepp_delete_post', array($this, 'delete_post_ajax') );
+	public function add_actions() {
+		add_action( 'wp', array( $this, 'handle_deletion_request' ) );
+		add_action( 'wp_ajax_wpfepp_delete_post', array( $this, 'delete_post_ajax' ) );
 	}
 
 	/**
 	 * Outputs the HTML of the post list or the form (depending on $_GET variables).
 	 **/
-	public function display(){
-
-		if(!$this->valid){
-			_e("No form with the specified ID was found", 'wpfepp-plugin');
+	public function display() {
+		if( ! $this->valid ) {
+			_e( "No form with the specified ID was found", "wpfepp-plugin" );
 			return;
 		}
-
-		if(!is_user_logged_in()){
-			printf(__('You need to %s first.', 'wpfepp-plugin'), sprintf('<a href="%s" id="rh_login_trigger_url">%s</a>', wp_login_url(), __('log in', 'wpfepp-plugin')));
+		if( ! is_user_logged_in() ) {
+			printf( __( "You need to %s first.", "wpfepp-plugin"), sprintf( '<a href="%s" id="rh_login_trigger_url">%s</a>', wp_login_url(), __( "log in", "wpfepp-plugin" ) ) );
 			return;
 		}
-
-		if($this->form->post_type() == 'product' and !class_exists('Woocommerce') and current_user_can('install_plugins')){
-			printf( '<div class="wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Woocommerce plugin is deactivated or not installed.", "wpfepp-plugin" ));
+		if( $this->form->post_type() == 'product' && ! class_exists( 'Woocommerce' ) && current_user_can( 'install_plugins' ) ) {
+			printf( '<div class="wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Woocommerce plugin is deactivated or not installed.", "wpfepp-plugin" ) );
 			return;
 		}
-		
-		if( isset($_GET['wpfepp_post']) && isset($_GET['wpfepp_action']) && is_numeric($_GET['wpfepp_post']) && $_GET['wpfepp_action'] == 'edit' ){
-			$this->form->display($_GET['wpfepp_post']);
-		}
-		else
+		if( isset( $_GET['wpfepp_post'] ) && isset( $_GET['wpfepp_action'] ) && is_numeric( $_GET['wpfepp_post'] ) && $_GET['wpfepp_action'] == 'edit' ) {
+			$this->form->display( $_GET['wpfepp_post'] );
+		} else {
 			$this->print_list();
+		}	
 	}
 
 	/**
 	 * Takes care of post deletion and redirects the user back to the post list table with a new query variable 'wpfepp_deleted'.
 	 **/
-	public function handle_deletion_request(){
-		if( isset($_GET['wpfepp_post']) && isset($_GET['wpfepp_action']) && is_numeric($_GET['wpfepp_post']) && isset($_GET['_wpnonce']) && $_GET['wpfepp_action'] == 'delete' ){
-			$blog_page 		= isset($_GET['p']) ? array('p', $_GET['p']) : array();
-			$result 		= $this->delete_post($_GET['wpfepp_post'], $_GET['_wpnonce']);
-			$success_vars 	= ($result['success']) ? array( 'wpfepp_deleted' => 1 ) : array();
-			$sendback 		= esc_url_raw( add_query_arg( array_merge($blog_page, $success_vars), '' ) );
+	public function handle_deletion_request() {
+		if( isset( $_GET['wpfepp_post'] ) && isset( $_GET['wpfepp_action'] ) && is_numeric( $_GET['wpfepp_post'] ) && isset( $_GET['_wpnonce'] ) && $_GET['wpfepp_action'] == 'delete' ) {
+			$blog_page = isset( $_GET['p'] ) ? array( 'p', $_GET['p'] ) : array();
+			$result = $this->delete_post( $_GET['wpfepp_post'], $_GET['_wpnonce'] );
+			$success_vars = ( $result['success'] ) ? array( 'wpfepp_deleted' => 1 ) : array();
+			$sendback = esc_url_raw( add_query_arg( array_merge( $blog_page, $success_vars ), '' ) );
 			wp_redirect( $sendback );
 		}
 	}
@@ -121,27 +134,26 @@ class WPFEPP_Post_List
 	 * @param string $delete_nonce A nonce string that ensures that the request is coming from the right person.
 	 * @return array An associative array containing a status flag and a message to display to the user.
 	 **/
-	private function delete_post($post_id, $delete_nonce){
-		$data = array('success' => false, 'message' => '');
+	private function delete_post( $post_id, $delete_nonce ) {
+		$data = array( 'success' => false, 'message' => '' );
 		do{
-			if(!wp_verify_nonce($delete_nonce, 'wpfepp-delete-post-'.$post_id.'-nonce')){
-				$data['message'] = __('Sorry! You failed the security check', 'wpfepp-plugin');
+			if( ! wp_verify_nonce( $delete_nonce, 'wpfepp-delete-post-'.$post_id.'-nonce' ) ) {
+				$data['message'] = __( "Sorry! You failed the security check", "wpfepp-plugin" );
 				break;
 			}	
-
-			if(!$this->current_user_can_delete($post_id)){
-				$data['message'] = __("You don't have permission to delete this post", 'wpfepp-plugin');
+			if( ! $this->current_user_can_delete( $post_id ) ) {
+				$data['message'] = __( "You don't have permission to delete this post", "wpfepp-plugin" );
 				break;
 			}
 
 			$result = wp_delete_post( $post_id, false );
-			if(!$result){
-				$data['message'] = __("The article could not be deleted", 'wpfepp-plugin');
+			if( ! $result ) {
+				$data['message'] = __( "The article could not be deleted", "wpfepp-plugin" );
 				break;
 			}
 
 			$data['success'] = true;
-			$data['message'] = __('The article has been deleted successfully!', 'wpfepp-plugin');
+			$data['message'] = __( "The article has been deleted successfully!", "wpfepp-plugin" );
 		}
 		while (0);
 
@@ -154,8 +166,8 @@ class WPFEPP_Post_List
 	 * @param array The $_POST array.
 	 * @return string A json encoded string.
 	 **/
-	public function delete_post_ajax(){
-		die(json_encode($this->delete_post($_POST['post_id'], $_POST['delete_nonce'])));
+	public function delete_post_ajax() {
+		die( json_encode( $this->delete_post( $_POST['post_id'], $_POST['delete_nonce'] ) ) );
 	}
 
 	/**
@@ -163,8 +175,10 @@ class WPFEPP_Post_List
 	 *
 	 * @access private
 	 **/
-	private function print_list(){
-		include('partials/post-list.php');
+	private function print_list() {
+		$check_form_id = $this->formid;
+		$show_all = $this->show_all;
+		include( 'partials/post-list.php' );
 	}
 
 	/**
@@ -176,11 +190,10 @@ class WPFEPP_Post_List
 	 * @param int Post id.
 	 * @return boolean Whether or not the current user can perform the specified action.
 	 **/
-	private function current_user_can_delete($post_id){
+	private function current_user_can_delete( $post_id ) {
 		$post_author_id = get_post_field( 'post_author', $post_id );
 		$current_user = wp_get_current_user();
-
-		return ( $post_author_id == $current_user->ID || current_user_can('delete_post', $post_id) );
+		return ( $post_author_id == $current_user->ID || current_user_can( 'delete_post', $post_id ) );
 	}
 }
 

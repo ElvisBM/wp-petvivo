@@ -59,7 +59,7 @@ if ( ! class_exists( 'Envato_Market_Theme_Installer_Skin' ) ) :
 				}
 
 				if ( current_user_can( 'manage_network_themes' ) ) {
-					$install_actions['network_enable'] = '<a href="' . esc_url( network_admin_url( wp_nonce_url( 'themes.php?action=enable&amp;theme=' . urlencode( $stylesheet ) .'&amp;paged=1&amp;s', 'enable-theme_' . $stylesheet ) ) ) . '" target="_parent">' . __( 'Network Enable', 'envato-market' ) . '</a>';
+					$install_actions['network_enable'] = '<a href="' . esc_url( network_admin_url( wp_nonce_url( 'themes.php?action=enable&amp;theme=' . urlencode( $stylesheet ) . '&amp;paged=1&amp;s', 'enable-theme_' . $stylesheet ) ) ) . '" target="_parent">' . __( 'Network Enable', 'envato-market' ) . '</a>';
 				}
 			}
 
@@ -99,7 +99,7 @@ if ( ! class_exists( 'Envato_Market_Plugin_Installer_Skin' ) ) :
 			$plugin_file = $this->upgrader->plugin_info();
 			$install_actions = array();
 
-			if ( ! current_user_can( 'activate_plugins' ) ) {
+			if ( current_user_can( 'activate_plugins' ) ) {
 				$install_actions['activate_plugin'] = '<a href="' . esc_url( wp_nonce_url( 'plugins.php?action=activate&amp;plugin=' . urlencode( $plugin_file ), 'activate-plugin_' . $plugin_file ) ) . '" target="_parent">' . __( 'Activate Plugin', 'envato-market' ) . '</a>';
 			}
 

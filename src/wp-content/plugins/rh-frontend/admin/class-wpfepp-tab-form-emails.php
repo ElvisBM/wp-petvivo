@@ -61,55 +61,71 @@ class WPFEPP_Tab_Form_Emails extends WPFEPP_Tab
 	 **/
 	public function display() {
 
-		$form 			= $this->db->get($_GET['form']);
-		$form_emails 	= $form['emails'];
+		$form 	= $this->db->get($_GET['form']);
+		$form_emails = $form['emails'];
+		$section = 'wpfepp_form_emails_section';
+		$page = 'wpfepp_form_emails_tab';
+		$callback = array($this->renderer, 'render');
+		$args = array( 'group' => 'form_emails', 'curr' => $form_emails );
 
-		$section 	= 'wpfepp_form_emails_section';
-		$page 		= 'wpfepp_form_emails_tab';
-		$callback 	= array($this->renderer, 'render');
-		$args 		= array( 'group' => 'form_emails', 'curr' => $form_emails );
-
-		add_settings_section( $section, '', array($this, 'section_callback'), $page );
+		add_settings_section( $section, '', array( $this, 'section_callback' ), $page );
 
 		add_settings_field(
-		    'user_email_subject', __('User Email Subject', 'wpfepp-plugin'), $callback, $page, $section,
+		    'user_email_subject', __( "User Email Subject", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'id' 	=> 'user_email_subject',
-					'type' 	=> 'text'
+					'id' => 'user_email_subject',
+					'type' => 'text'
 				),
 				$args
 		    )
 		);
-
 		add_settings_field(
-		    'user_email_content', __('User Email Content', 'wpfepp-plugin'), $callback, $page, $section,
+		    'user_email_content', __( "User Email Content", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'id' 	=> 'user_email_content',
-					'type' 	=> 'textarea'
+					'id' => 'user_email_content',
+					'type' => 'textarea'
 				),
 				$args
 		    )
 		);
-
 		add_settings_field(
-		    'admin_email_subject', __('Admin Email Subject', 'wpfepp-plugin'), $callback, $page, $section,
+		    'admin_email_subject', __( "Admin Email Subject (created)", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'id' 	=> 'admin_email_subject',
-					'type' 	=> 'text'
+					'id' => 'admin_email_subject',
+					'type' => 'text'
 				),
 				$args
 		    )
 		);
-
 		add_settings_field(
-		    'admin_email_content', __('Admin Email Content', 'wpfepp-plugin'), $callback, $page, $section,
+		    'admin_email_content', __( "Admin Email Content (created)", "wpfepp-plugin" ), $callback, $page, $section,
 		    array_merge(
 				array(
-					'id' 	=> 'admin_email_content',
-					'type' 	=> 'textarea'
+					'id' => 'admin_email_content',
+					'type' => 'textarea'
+				),
+				$args
+		    )
+		);		
+		add_settings_field(
+		    'admin_email_subject_up', __( "Admin Email Subject (updated)", "wpfepp-plugin" ), $callback, $page, $section,
+		    array_merge(
+				array(
+					'id' => 'admin_email_subject_up',
+					'type' => 'text'
+				),
+				$args
+		    )
+		);
+		add_settings_field(
+		    'admin_email_content_up', __( "Admin Email Content (updated)", "wpfepp-plugin" ), $callback, $page, $section,
+		    array_merge(
+				array(
+					'id' => 'admin_email_content_up',
+					'type' => 'textarea'
 				),
 				$args
 		    )
