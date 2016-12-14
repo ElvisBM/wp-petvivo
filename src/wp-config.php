@@ -68,7 +68,7 @@ define('NONCE_SALT',       'e7[LB_@~z&%dpzxc5Ssa_ya:{_qjhInK;hVK#IjeE#;?YA0Jdn%L
  * Você pode ter várias instalações em um único banco de dados se você der
  * para cada um um único prefixo. Somente números, letras e sublinhados!
  */
-$table_prefix  = 'wp_';
+$table_prefix  = 'wp82_';
 
 /**
  * Para desenvolvedores: Modo debugging WordPress.
