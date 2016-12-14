@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: rehub_translation_child\n"
-"POT-Creation-Date: 2016-07-27 19:55+0200\n"
-"PO-Revision-Date: 2016-07-27 19:55+0200\n"
+"POT-Creation-Date: 2016-10-14 05:41+0200\n"
+"PO-Revision-Date: 2016-10-14 05:41+0200\n"
 "Last-Translator: Sizam themes <sizamtheme@gmail.com>\n"
 "Language-Team: Sizam Design <sizamtheme@gmail.com>\n"
 "Language: en\n"
@@ -71,170 +71,176 @@ msgstr ""
 msgid "Select what kind of post string layout you want to use for search pages"
 msgstr ""
 
-#: ../admin/option/option.php:98
-msgid "Custom CSS"
-msgstr ""
-
-#: ../admin/option/option.php:99
-msgid "Write your custom CSS here"
-msgstr ""
-
-#: ../admin/option/option.php:106
-msgid "Analytics Code/js code"
-msgstr ""
-
-#: ../admin/option/option.php:107
-msgid "Enter your Analytics code or any html, js code"
+#: ../admin/option/option.php:97
+msgid "Post layout"
 msgstr ""
 
 #: ../admin/option/option.php:114
+msgid "Custom CSS"
+msgstr ""
+
+#: ../admin/option/option.php:115
+msgid "Write your custom CSS here"
+msgstr ""
+
+#: ../admin/option/option.php:122
+msgid "Analytics Code/js code"
+msgstr ""
+
+#: ../admin/option/option.php:123
+msgid "Enter your Analytics code or any html, js code"
+msgstr ""
+
+#: ../admin/option/option.php:130
 msgid "Set sidebar to left side?"
 msgstr ""
 
-#: ../admin/option/option.php:120
+#: ../admin/option/option.php:136
 msgid "Enable frontend in visual composer?"
 msgstr ""
 
-#: ../admin/option/option.php:128
+#: ../admin/option/option.php:144
 msgid "Appearance/Color"
 msgstr ""
 
-#: ../admin/option/option.php:134
+#: ../admin/option/option.php:150
 msgid "Color schema of website"
 msgstr ""
 
-#: ../admin/option/option.php:139
+#: ../admin/option/option.php:155
 msgid "Choose color schema"
 msgstr ""
 
-#: ../admin/option/option.php:143
+#: ../admin/option/option.php:159
 msgid "Default - orange"
 msgstr ""
 
-#: ../admin/option/option.php:147
+#: ../admin/option/option.php:163
 msgid "Blue"
 msgstr ""
 
-#: ../admin/option/option.php:151
+#: ../admin/option/option.php:167
 msgid "Green"
 msgstr ""
 
-#: ../admin/option/option.php:155
+#: ../admin/option/option.php:171
 msgid "Violet"
 msgstr ""
 
-#: ../admin/option/option.php:159
+#: ../admin/option/option.php:175
 msgid "Yellow"
 msgstr ""
 
-#: ../admin/option/option.php:169
+#: ../admin/option/option.php:185
 msgid "Custom main color"
 msgstr ""
 
-#: ../admin/option/option.php:170
+#: ../admin/option/option.php:186
 msgid "Or you can set any main color (it will be used under white text)"
 msgstr ""
 
-#: ../admin/option/option.php:177
+#: ../admin/option/option.php:193
 msgid "Custom secondary color"
 msgstr ""
 
-#: ../admin/option/option.php:178
+#: ../admin/option/option.php:194
 msgid "Set secondary color (for search buttons, tabs, etc)."
 msgstr ""
 
-#: ../admin/option/option.php:186
+#: ../admin/option/option.php:202
 msgid "Set offer buttons color."
 msgstr ""
 
-#: ../admin/option/option.php:193
+#: ../admin/option/option.php:209
 msgid "Custom color for links inside posts"
 msgstr ""
 
-#: ../admin/option/option.php:200
+#: ../admin/option/option.php:216
 msgid "Background settings"
 msgstr ""
 
-#: ../admin/option/option.php:205
+#: ../admin/option/option.php:221
 msgid "Create flat color for background"
 msgstr ""
 
-#: ../admin/option/option.php:206
+#: ../admin/option/option.php:222
 msgid ""
 "This will disable default background image and add flat color. If you want "
 "to add background image, use fields below"
 msgstr ""
 
-#: ../admin/option/option.php:212
+#: ../admin/option/option.php:228
 msgid "Background Color"
 msgstr ""
 
-#: ../admin/option/option.php:213
-msgid "Choose the background color"
+#: ../admin/option/option.php:229
+msgid ""
+"This works only if you set background image. For flat background - use "
+"option above"
 msgstr ""
 
-#: ../admin/option/option.php:219
+#: ../admin/option/option.php:235
 msgid "Background Image"
 msgstr ""
 
-#: ../admin/option/option.php:220
+#: ../admin/option/option.php:236
 msgid "Upload a background image"
 msgstr ""
 
-#: ../admin/option/option.php:226
+#: ../admin/option/option.php:242
 msgid "Background Repeat"
 msgstr ""
 
-#: ../admin/option/option.php:230
+#: ../admin/option/option.php:246
 msgid "Repeat"
 msgstr ""
 
-#: ../admin/option/option.php:234
+#: ../admin/option/option.php:250
 msgid "No Repeat"
 msgstr ""
 
-#: ../admin/option/option.php:238
+#: ../admin/option/option.php:254
 msgid "Repeat X"
 msgstr ""
 
-#: ../admin/option/option.php:242
+#: ../admin/option/option.php:258
 msgid "Repeat Y"
 msgstr ""
 
-#: ../admin/option/option.php:252
+#: ../admin/option/option.php:268
 msgid "Background Position"
 msgstr ""
 
-#: ../admin/option/option.php:271
+#: ../admin/option/option.php:287
 msgid "Set offset"
 msgstr ""
 
-#: ../admin/option/option.php:272
+#: ../admin/option/option.php:288
 msgid ""
 "Set offset from top for background (without px) for avoid header overlap"
 msgstr ""
 
-#: ../admin/option/option.php:278
+#: ../admin/option/option.php:294
 msgid "Fixed Background Image?"
 msgstr ""
 
-#: ../admin/option/option.php:279
+#: ../admin/option/option.php:295
 msgid "The background is fixed with regard to the viewport."
 msgstr ""
 
-#: ../admin/option/option.php:284
+#: ../admin/option/option.php:300
 msgid "Fit size?"
 msgstr ""
 
-#: ../admin/option/option.php:285
+#: ../admin/option/option.php:301
 msgid "Set background image width and height to fit the size of window"
 msgstr ""
 
-#: ../admin/option/option.php:290
+#: ../admin/option/option.php:306
 msgid "Url for branded background"
 msgstr ""
 
-#: ../admin/option/option.php:291
+#: ../admin/option/option.php:307
 msgid "Insert url that will be display on background"
 msgstr ""
 
@@ -245,6 +251,10 @@ msgstr ""
 
 #: ../geo-my-wp/friends/search-results/sellers/results.php:104
 msgid "Shop"
+msgstr ""
+
+#: ../geo-my-wp/posts/search-results/custom-table/results.php:17
+msgid "Product"
 msgstr ""
 
 #: ../inc/parts/simplepostlist.php:6

@@ -91,7 +91,23 @@ $theme_options =  array(
 								'rehub_framework_archive_list',
 							),
 						),							
-											
+						array(
+							'type' => 'select',
+							'name' => 'post_layout_style',
+							'label' => __('Post layout', 'rehub_framework'),
+							'default' => 'normal_post',
+							'items' => array(
+								'data' => array(
+									array(
+										'source' => 'function',
+										'value'  => 'rehub_get_post_layout_array',
+									),
+								),
+							),
+							'default' => array(
+								'meta_outside',
+							),
+						),											
 						array(
 							'type' => 'codeeditor',
 							'name' => 'rehub_custom_css',
@@ -210,7 +226,7 @@ $theme_options =  array(
 							'type' => 'color',
 							'name' => 'rehub_color_background',
 							'label' => __('Background Color', 'rehub_framework'),
-							'description' => __('Choose the background color', 'rehub_framework'),
+							'description' => __('This works only if you set background image. For flat background - use option above', 'rehub_framework'),
 							'format' => 'hex',
 						),
 						array(

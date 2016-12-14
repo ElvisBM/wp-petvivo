@@ -68,7 +68,13 @@
             if ( is_array( $store_icon_src ) ) { 
                 $store_bg= $store_icon_src[0]; 
             }   
-        };
+        }
+        else {
+            $store_banner_src  = wp_get_attachment_image_src( get_user_meta( $vendor_id, 'rh_vendor_free_header', true ), 'full');
+            if ( is_array( $store_banner_src ) ) { 
+                $store_bg= $store_banner_src[0]; 
+            }   
+        }        
         $bg_styles = (!empty($store_bg)) ? ' style="background-image: url('.$store_bg.'); background-repeat: no-repeat;background-size: cover;"' : '';
         ?>        
         <li <?php bp_member_class( array('col_item') ); ?>>

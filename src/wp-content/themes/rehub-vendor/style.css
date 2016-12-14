@@ -4,9 +4,9 @@
   Description: A Hybrid magazine/shop/review/news Wordpress Theme
   Author: Wpsoul
   Author URI: https://wpsoul.com/
-  Version: 6.2.3
+  Version: 6.6.2
   Template: rehub
-  Text Domain: rehub-child
+  Text Domain: rehubchild
 */
 
 /* =Theme customization starts here
@@ -29,9 +29,11 @@ body.no_bg_wrap .re_filter_panel, .content.no_shadow .re_filter_panel{background
 
 @media screen and (min-width: 1225px) {
 .separate_sidebar_bg .content{ box-shadow: none; width: 1200px}
-.separate_sidebar_bg.mediad_layout_enabled .content{ box-shadow: none; width: 1044px}
 .separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side:not(.full_width){ width: 834px }
 .separate_sidebar_bg.mediad_layout_enabled .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg.mediad_layout_enabled .main-side:not(.full_width){ width: 728px }
+}
+@media screen and (min-width: 1100px) {
+.separate_sidebar_bg.mediad_layout_enabled .content{ box-shadow: none; width: 1044px}
 }
 @media screen and (max-width: 1224px) and (min-width: 1024px){
 	.separate_sidebar_bg .content{width: 1002px;}
@@ -42,6 +44,7 @@ body.no_bg_wrap .re_filter_panel, .content.no_shadow .re_filter_panel{background
 	.separate_sidebar_bg .content .sidebar .widget{width: 374px; column-width: 374px;-webkit-column-width: 374px;}
 }
 @media screen and (max-width: 767px){
+  body.no_bg_wrap .main-side, body.no_bg_wrap .vc_row.vc_rehub_container > .vc_col-sm-8, .content.no_shadow .vc_row.vc_rehub_container > .vc_col-sm-8{padding: 0 15px !important}
 	.separate_sidebar_bg .content, .separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side{width: 100%}
 	.colored_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .colored_bg .main-side:not(.visual_page_builder){box-shadow: 0 0 1px #bbb; padding: 15px}
   .separate_sidebar_bg .content{margin: 10px 0}
@@ -59,28 +62,17 @@ body.no_bg_wrap .re_filter_panel, .content.no_shadow .re_filter_panel{background
 .widget.tabs > ul{border: none;}
 .sidebar .widget.tabs, .widget.outer_widget{border: none; padding: 0; background-color: transparent; box-shadow: none;}
 .postNavigation a{ background-color: #868686}
-.postNavigation{ bottom: 0}
-.postNavigation a{ width: 138px}
-.postNavigation a:hover { width: 330px}
-.prevPostBox a:before{ left: 114px}
-.nextPostBox a:before{right: 114px}
-.postNavigation.prevPostBox a:hover:before{ left: 12px}
-.postNavigation.nextPostBox a:hover:before{ right: 12px}
-.float-posts-nav{ opacity: 1}
 .widget .title, .widget h2{position:relative;font-size: 20px; line-height: 24px; font-weight: normal;border-bottom: 1px solid #ddd;padding-bottom: 15px; margin: 0 0 25px 0}
 .widget .title:after {content: ' ';width: 75px;border-bottom: 2px solid #17baae;display: block;position: absolute;bottom: -1px;}
 .footer_widget .widget .title:after, .widget.better_menu .title:after{display: none;}
 .footer_widget .widget .title{padding: 0; border: none; font-size: 18px}
 .rate_bar_wrap{background-color: transparent;padding: 30px}
-.row_social_inpost a, .favour_in_row .simplefavorite-button{padding: 2px 7px}
-.row_social_inpost a i{font-size: 13px}
 .re-line-badge.re-line-table-badge{padding: 5px 8px 5px 20px;font: normal 13px/15px Arial;}
 .re-line-badge span:before, .re-line-badge span:after{display: none;}
 .sidebar .wpsm_recent_posts_list .item-small-news {border-bottom: 1px solid #E4E4E4;padding: 10px 0;background: radial-gradient(ellipse at top, rgba(255,255,255,0.75), rgba(255,255,255,0) 75%);}
 .vc_row .wpsm_recent_posts_list h3{font-size: 18px}
 .vc_row .wpsm_recent_posts_list .item-small-news{font-size: 14px; padding: 20px 0}
 .single_top_main .stars-rate{margin: 0 0 10px 0; display: inline-block;}
-.postimagetrend .title{padding: 8px 15px}
 .sidebar .list_excerpt{display: none;}
 .dealScore .thumbscount{background: #dff0ef;}
 .dealScore .label{background: #23b5ac;}
@@ -91,8 +83,5 @@ body.no_bg_wrap .re_filter_panel, .content.no_shadow .re_filter_panel{background
 }
 
 @media (max-width: 767px) {
-.prevPostBox a:before{ left: 12px}
-.nextPostBox a:before{right: 12px}  
-#rh_social_panel_footer{bottom: 0}
-.postNavigation{ bottom: 10px}
+
 } 

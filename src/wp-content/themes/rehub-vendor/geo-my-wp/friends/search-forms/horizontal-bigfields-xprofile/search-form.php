@@ -20,7 +20,7 @@
 ?>
 <?php do_action( 'gmw_before_search_form_template', $gmw ); ?>
 
-<div class="gmw-form-wrapper gmw-form-wrapper<?php echo $gmw['ID']; ?> gmw-fl-form-wrapper gmw-fl-horizontal-gray-form-wrapper">
+<div class="gmw-form-wrapper gmw-form-wrapper<?php echo $gmw['ID']; ?> gmw-fl-form-wrapper gmw-fl-horizontal-xprofile-big-form-wrapper">
 	
 	<?php do_action( 'gmw_before_search_form', $gmw ); ?>
 	
@@ -28,10 +28,8 @@
 			
 		<?php do_action( 'gmw_search_form_start', $gmw ); ?>
 		
-		<?php do_action( 'gmw_search_form_before_address', $gmw ); ?>
-	
-		<?php gmw_fl_xprofile_fields( $gmw, $class='' ); ?>
-
+		<?php do_action( 'gmw_search_form_before_address', $gmw ); ?>	
+				
 		<div class="address-locator-wrapper">
 			<!-- Address Field -->
 			<?php gmw_search_form_address_field( $gmw, $id='', $class='' ); ?>
@@ -41,12 +39,8 @@
 		</div>
 				
 		<?php do_action( 'gmw_search_form_before_xprofile', $gmw ); ?>
-		
-		<div class="xfield-trigger-wrapper">
-			<div class="xfield-trigger" onclick="jQuery(this).closest('form').find('.gmw-fl-form-xprofile-fields').slideToggle();jQuery(this).html(jQuery(this).html() == 'Hide Options' ? 'Show Options' : 'Hide Options');">
-				<?php echo $gmw['labels']['search_form']['show_options']; ?>
-			</div>
-		</div>
+
+		<?php gmw_fl_xprofile_fields( $gmw, $class='' ); ?>
 				            		
 		<?php do_action( 'gmw_search_form_before_distance', $gmw ); ?>
 		
@@ -56,7 +50,7 @@
 		<!--distance units-->
 		<?php gmw_search_form_units( $gmw, $class='' ); ?>	
 		
-		<?php gmw_form_submit_fields( $gmw, false ); ?>
+		<?php gmw_form_submit_fields( $gmw, false ); ?>	
 		
 		<?php do_action( 'gmw_search_form_end', $gmw ); ?>
 		

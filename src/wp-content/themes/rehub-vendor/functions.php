@@ -1,5 +1,9 @@
 <?php
 
+if ( defined( 'RH_GRANDCHILD_DIR' ) ) {
+	include( RH_GRANDCHILD_DIR . 'rh-grandchild-func.php' );
+}
+
 add_action( 'wp_enqueue_scripts', 'enqueue_parent_theme_style' );
 function enqueue_parent_theme_style() {
     wp_enqueue_style( 'parent-style', get_template_directory_uri().'/style.css' );
@@ -21,12 +25,6 @@ $classes[] = 'separate_sidebar_bg';
 	// return the $classes array
 	return $classes;
 }
-
-// repick scripts
-function revendor_js_scripts() {
-	wp_enqueue_script( 'revendor_js', get_stylesheet_directory_uri().'/js/revendor_js.js', array('jquery'), '1.0', 1 );	
-}
-//add_action('wp_enqueue_scripts','revendor_js_scripts', 11);
 
 //////////////////////////////////////////////////////////////////
 // Translation
