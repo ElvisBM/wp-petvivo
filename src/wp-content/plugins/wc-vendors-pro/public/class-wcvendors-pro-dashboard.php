@@ -135,7 +135,7 @@ class WCVendors_Pro_Dashboard {
 		}
 		
 		// Include the dashboard wrapper 
-		include_once( 'partials/wcvendors-pro-dashboard-open.php'); 
+		include_once( apply_filters( 'wcvendors_pro_dashboard_open_path', 'partials/wcvendors-pro-dashboard-open.php' ) ); 
 
 		do_action( 'wcv_pro_before_dashboard' );
 
@@ -197,7 +197,7 @@ class WCVendors_Pro_Dashboard {
 
 		do_action( 'wcv_pro_after_dashboard' );
 
-		include_once( 'partials/wcvendors-pro-dashboard-close.php'); 
+		include_once( apply_filters( 'wcvendors_pro_dashboard_close_path', 'partials/wcvendors-pro-dashboard-close.php' ) ); 
 
 	} // load_page() 
 
@@ -261,14 +261,19 @@ class WCVendors_Pro_Dashboard {
 	 */
 	public function get_dashboard_pages()  { 
 			
+		$disable_duplicate 		= WC_Vendors::$pv_options->get_option( 'duplicate_product_cap' );
+
 		$this->dashboard_pages[ 'product' ] = array( 
 			'slug'			=> 'product', 
 			'label'			=> __('Products', 'wcvendors-pro' ), 
 			'actions'		=> array( 
-								'edit' 		=> __('Edit', 'wcvendors-pro' ), 
-								'delete'	=> __('Delete', 'wcvendors-pro' )
+								'edit' 		=> __(' Edit', 'wcvendors-pro' ), 
+								'duplicate' => __(' Duplicate', 'wcvendors-pro' ), 
+								'delete'	=> __(' Delete', 'wcvendors-pro' )
 							)
 		);
+
+		if ( $disable_duplicate ) unset( $this->dashboard_pages[ 'product' ][ 'actions' ][ 'duplicate' ] ); 
 
 		$this->dashboard_pages[ 'order' ] = array( 
 			'slug'			=> 'order', 
@@ -348,12 +353,14 @@ class WCVendors_Pro_Dashboard {
 		$shipping_disabled			= WCVendors_Pro::get_option( 'shipping_management_cap' );
 		$shipping_methods 			= $woocommerce->shipping->load_shipping_methods();		
 		$shipping_method_enabled	= ( array_key_exists( 'wcv_pro_vendor_shipping', $shipping_methods ) && $shipping_methods['wcv_pro_vendor_shipping']->enabled == 'yes' ) ? true : 0; 
+		$shipping_details 			= get_user_meta( get_current_user_id(), '_wcv_shipping', true );
 
 		wc_get_template( 'store-settings.php', array( 
 				'store_name' 				=> $store_name, 
 				'store_description' 		=> $store_description, 
 				'shipping_disabled'			=> $shipping_disabled, 
 				'shipping_method_enabled'	=> $shipping_method_enabled, 
+				'shipping_details'			=> $shipping_details
 				), 
 				'wc-vendors/dashboard/', $this->base_dir . 'templates/dashboard/' );	
 	} // load_order_page() 
@@ -362,13 +369,19 @@ class WCVendors_Pro_Dashboard {
 	 * Check object permission to see if the vendor owns the object (this is to stop people messing with URLs)
 	 *
 	 * @since    1.0.0
-	 * @param      string    $page_type     the page type to test
-	 * @param      int    	 $post_id       post id to check 
+	 * @version  1.3.7
+	 * @param    string    $page_type     the page type to test
+	 * @param    int    	 $post_id       post id to check 
 	 */
 	public static function check_object_permission( $object, $post_id ) { 
 
 		$can_edit_live 		= WC_Vendors::$pv_options->get_option( 'can_edit_published_products' ); 
+		$edit_status 		= apply_filters( 'wcv_edit_object_status', array( 'draft', 'pending' ) ); 
+		$post_status 		= get_post_status( $post_id ); 
+		$can_edit 			= in_array($post_status, $edit_status ); 
 
+		if ( ! $can_edit_live ) $can_edit_live = $can_edit ? true : false; 
+		
 		switch ( $object ) {
 			// Product permissions 
 			case 'product':
@@ -399,12 +412,12 @@ class WCVendors_Pro_Dashboard {
 		if ( $current_page_id == $dashboard_page_id ) { 
 			if ( !is_user_logged_in() ) {
 
-				$my_account_page = woocommerce_get_page_id( 'myaccount' ); 
+				$my_account_page = wc_get_page_id( 'myaccount' ); 
 
 				if ( ! is_string( get_post_status( $my_account_page ) ) ){ 
 					wc_add_notice( __( '<h2>Please contact the website administrator and instruct them that in order for the Vendor Dashboard to work for logged out users, they must have their My Account page configured and set properly in their WooCommerce settings.</h2>', 'wcvendors-pro' ), 'error'); 
 				} else { 
-					wp_redirect( apply_filters( 'wcv_login_redirect', get_permalink( woocommerce_get_page_id( 'myaccount' ) ) ), 302);
+					wp_redirect( apply_filters( 'wcv_login_redirect', get_permalink( wc_get_page_id( 'myaccount' ) ) ), 302);
 					exit;
 				} 
 			} 
@@ -423,7 +436,7 @@ class WCVendors_Pro_Dashboard {
 			return false;
 		} else if ( !WCV_Vendors::is_vendor( get_current_user_id() ) ) {
 			// Include the dashboard wrapper 
-			include_once( 'partials/wcvendors-pro-dashboard-open.php'); 
+			include_once( apply_filters( 'wcvendors_pro_dashboard_open_path', 'partials/wcvendors-pro-dashboard-open.php' ) ); 
 
 			if ( WCVendors_Pro_Vendor_Controller::is_pending_vendor( get_current_user_id() ) ) { 
 				$vendor_pending_notice = WCVendors_Pro::get_option( 'vendor_pending_notice' );
@@ -440,7 +453,7 @@ class WCVendors_Pro_Dashboard {
 			}
 
 			// Close the dashboard wrapper
-			include_once( 'partials/wcvendors-pro-dashboard-close.php'); 
+			include_once( apply_filters( 'wcvendors_pro_dashboard_close_path', 'partials/wcvendors-pro-dashboard-close.php' ) ); 
 		}
 
 		return true;
@@ -533,22 +546,26 @@ class WCVendors_Pro_Dashboard {
 
 
 		// Add dashboard home to the pages array
-		$dashboard_home = array( 'label' => __( 'Dashboard', 'wcvendors-pro' ), 'slug' => '' ); 
+		$dashboard_home = apply_filters( 'wcv_dashboard_home_url', array( 'label' => __( 'Dashboard', 'wcvendors-pro' ), 'slug' => '' ) ); 
 		
 		if ( !$viewstore_disabled ) { 
-			$store_url 		= array( 'label' => __( 'View Store', 'wcvendors-pro' ),'slug' => WCVendors_Pro_Vendor_Controller::get_vendor_store_url( get_current_user_id() ) ); 
-			$pages[] = $store_url; 
+			$store_url 		= apply_filters( 'wcv_dashboard_view_store_url', array( 'label' => __( 'View Store', 'wcvendors-pro' ),'slug' => WCVendors_Pro_Vendor_Controller::get_vendor_store_url( get_current_user_id() ) ) ); 
+			$pages[ 'view_store' ] = $store_url; 
 		} 
 
-		array_unshift( $pages, $dashboard_home ); 
+		$pages 		= array_merge( array( 'dashboard_home' => $dashboard_home ), $pages ); 
+		$pages 		= apply_filters( 'wcv_dashboard_pages_nav', $pages ); 
+		$nav_class 	= apply_filters( 'wcv_dashboard_nav_class', '' ); 
+
+		// Move this into a template 
 
 		echo '<div class="wcv-cols-group wcv-horizontal-gutters">'; 
 
 		echo '<div class="all-100">'; 
 
-		echo '<nav class="wcv-navigation">';
+		echo '<nav class="wcv-navigation ' . $nav_class . ' ">';
 
-		echo ' <ul class="menu horizontal black">'; 
+		echo ' <ul class="menu horizontal black flyout">'; 
 
 		foreach ( $pages as $page ) {
 

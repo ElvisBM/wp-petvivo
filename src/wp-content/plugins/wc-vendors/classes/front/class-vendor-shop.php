@@ -34,7 +34,7 @@ class WCV_Vendor_Shop
 		} 
 
 		// Remove Page Title if on Vendor Shop 
-		add_filter ( 'woocommerce_show_page_title', array('WCV_Vendor_Shop', 'remove_vendor_title') ); 
+		add_filter ( 'woocommerce_show_page_title', array( 'WCV_Vendor_Shop', 'remove_vendor_title' ) ); 
 
 		// Show vendor on all sales related invoices 
 		add_action( 'woocommerce_add_order_item_meta', array('WCV_Vendor_Shop', 'add_vendor_to_order_item_meta'), 10, 2 );
@@ -182,7 +182,14 @@ class WCV_Vendor_Shop
 		$sold_by = WCV_Vendors::is_vendor( $vendor_id )
 			? sprintf( '<a href="%s">%s</a>', WCV_Vendors::get_vendor_shop_page( $vendor_id ), WCV_Vendors::get_vendor_sold_by( $vendor_id ) )
 			: get_bloginfo( 'name' );
-		echo '<small class="wcvendors_sold_by_in_loop">' . apply_filters('wcvendors_sold_by_in_loop', $sold_by_label ).'&nbsp;'. $sold_by . '</small> <br />';
+		
+			wc_get_template( 'vendor-sold-by.php', array(
+													'vendor_id' 		=> $vendor_id, 
+													'sold_by_label'		=> $sold_by_label, 
+													'sold_by'			=> $sold_by, 
+												
+											   ), 'wc-vendors/front/', wcv_plugin_dir . 'templates/front/' );
+
 	}
 
 
@@ -190,6 +197,7 @@ class WCV_Vendor_Shop
 	* Remove the Page title from Archive-Product while on a vendor Page
 	*/ 
 	public static function remove_vendor_title( $b ) { 
+		
 		if ( WCV_Vendors::is_vendor_page() ) { 
 			return false; 
 		}

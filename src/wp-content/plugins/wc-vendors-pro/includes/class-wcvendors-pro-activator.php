@@ -67,7 +67,7 @@ class WCVendors_Pro_Activator {
 
 			self::create_feedback_table(); 
 			self::create_pages(); 
-
+			
 		} elseif ( version_compare( $db_version, '1.1', '<' ) ) {
 
 			self::update_to( '1.1' ); 	
@@ -76,6 +76,10 @@ class WCVendors_Pro_Activator {
 
 			self::update_to( '1.2' ); 	
 		} 
+
+		// Make permalinks flush after adding pages 
+		update_option( WC_Vendors::$id . '_flush_rules', true );
+
 	}
 
 	/**
@@ -91,6 +95,8 @@ class WCVendors_Pro_Activator {
 
 		$table_name = $wpdb->prefix . self::$feedback_tbl_name;
 
+		$charset_collate = $wpdb->get_charset_collate();
+
 		$sql = "CREATE TABLE $table_name (
 			id bigint(20) NOT NULL AUTO_INCREMENT,
 			rating bigint(20) NOT NULL,
@@ -102,7 +108,7 @@ class WCVendors_Pro_Activator {
 			comments varchar(255),
 			postdate timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 			UNIQUE KEY id (id)
-		)";
+		) $charset_collate;";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		dbDelta( $sql );
@@ -134,7 +140,7 @@ class WCVendors_Pro_Activator {
 		self::create_page( 'dashboard', __( 'Pro Dashboard', 'wcvendors-pro' ), '[wcv_pro_dashboard]' );
 
 		// Nest the feedback page under my-account 
-		$my_account_page = woocommerce_get_page_id( 'myaccount' ); 
+		$my_account_page = wc_get_page_id( 'myaccount' ); 
 		self::create_page( 'feedback', __( 'Feedback', 'wcvendors-pro' ), '[wcv_feedback_form]', $my_account_page );
 
 	} // create_pages()
@@ -158,6 +164,7 @@ class WCVendors_Pro_Activator {
 		$page_id = WC_Vendors::$pv_options->get_option( $slug . '_page_id' );
 
 		if ( $page_id > 0 && get_post( $page_id ) ) {
+			update_option( 'wcv_' . $slug . '_page_id', $page_id ); 
 			return $page_id;
 		}
 
@@ -166,7 +173,7 @@ class WCVendors_Pro_Activator {
 		if ( $page_found ) {
 			if ( !$page_id ) {
 				WC_Vendors::$pv_options->update_option( $slug . '_page_id', $page_found );
-				update_option('wcv' . $slug . '_page_id', $page_found ); 
+				update_option( 'wcv_' . $slug . '_page_id', $page_found ); 
 				return $page_found;
 			}
 
@@ -185,8 +192,8 @@ class WCVendors_Pro_Activator {
 		);
 
 		$page_id = wp_insert_post( $page_data );
-
-		add_option('wcv' . $slug . '_page_id', $page_id ); 
+		
+		add_option( 'wcv_' . $slug . '_page_id', $page_id ); 
 
 		WC_Vendors::$pv_options->update_option( $slug . '_page_id', $page_id );
 
@@ -239,209 +246,213 @@ class WCVendors_Pro_Activator {
 
 		$vendors        	= get_users(  array(  'role' => 'vendor',  'fields'	=> 'ID' ) );
 
-		foreach ( $vendors as $vendor_id ) {
+		if ( post_type_exists( 'vendor_store' ) ) { 
 
-			$post_args = array( 
-					'post_type'  		=> 'vendor_store', 
-					'author'	 		=> $vendor_id, 
-					'order_by' 	 		=> 'date', 
-					'posts_per_page' 	=> 1,
-			); 
+			foreach ( $vendors as $vendor_id ) {
 
-			$store = get_posts( $post_args ); 
-			$vendor_store = reset( $store ); 
+				$post_args = array( 
+						'post_type'  		=> 'vendor_store', 
+						'author'	 		=> $vendor_id, 
+						'order_by' 	 		=> 'date', 
+						'posts_per_page' 	=> 1,
+				); 
 
-			$store_shipping 	= get_post_meta( $vendor_store->ID, '_wcv_shipping', true ); 
-			$vendor_shipping 	= get_user_meta( $vendor_id, '_wcv_shipping', true ); 
-			
-			if ( ! is_array( $vendor_shipping ) ) { 
-				update_user_meta( $vendor_id, '_wcv_shipping', 	$store_shipping ); 	
-			}
+				$store = get_posts( $post_args ); 
+				$vendor_store = reset( $store ); 
 
-			// Fix migration script for shipping details 
-			$store_shipping_rates 	= get_post_meta( $vendor_store->ID, '_wcv_shipping_rates', true ); 
-			$vendor_shipping_rates	= get_user_meta( $vendor_id, '_wcv_shipping_rates', true ); 
-
-			if ( ! is_array( $vendor_shipping ) ) { 
-				update_user_meta( $vendor_id, '_wcv_shipping_rates',  $store_shipping_rates  );
-			}
-			
-			$store_icon_id = get_post_meta( $vendor_store->ID, '_wcv_store_icon_id', 	true );  	
-			$vendor_icon_id = get_user_meta( $vendor_id, '_wcv_store_icon_id', true );  	
-
-			// Store Icon 
-			if ( '' !== $store_icon_id && '' === $vendor_icon_id ) { 
-				update_user_meta( $vendor_id, '_wcv_store_icon_id', 	$store_icon_id );  	
-			}
-
-			// Company URL  
-			$store_company_url = get_post_meta( $vendor_store->ID, '_wcv_company_url', 	true );  	
-			$vendor_company_url = get_user_meta( $vendor_id, '_wcv_company_url', true );  
-
-			if ( '' !== $store_company_url && '' === $vendor_company_url ) { 
-				update_user_meta( $vendor_id, '_wcv_company_url', 	$store_company_url ); 
-			} 
-
-			// Store Address1 
-			$address1 = get_post_meta( $vendor_store->ID, '_wcv_store_address1', 	true );  	
-			$vendor_address1 = get_user_meta( $vendor_id, '_wcv_store_address1', true );  
-
-			if ( '' !== $address1 && '' === $vendor_address1 ) { 
-				update_user_meta( $vendor_id, '_wcv_store_address1', 	$address1 ); 
-			} 
-
-			$address2 = get_post_meta( $vendor_store->ID, '_wcv_store_address2', 	true );  	
-			$vendor_address2 = get_user_meta( $vendor_id, '_wcv_store_address2', true );  
-
-			// Store Address2 
-			if ( '' !== $address2 && '' === $vendor_address2 ) { 
-				update_user_meta( $vendor_id, '_wcv_store_address2', 	$address2 ); 
-			} 
-
-			// Store City 
-			$city = get_post_meta( $vendor_store->ID, '_wcv_store_city', 	true );  	
-			$vendor_city = get_user_meta( $vendor_id, '_wcv_store_city', true ); 
-
-			if ( '' !== $city && '' === $vendor_city ) { 
-				update_user_meta( $vendor_id, '_wcv_store_city', 	$city ); 
-			} 
-
-			// Store State 
-			$state = get_post_meta( $vendor_store->ID, '_wcv_store_state', 	true );  	
-			$vendor_state = get_user_meta( $vendor_id, '_wcv_store_state', true ); 
-
-			if ( '' !== $state && '' === $vendor_state ) { 
-				update_user_meta( $vendor_id, '_wcv_store_state', 	$state ); 
-			}
-
-			// Store Country 
-			$country = get_post_meta( $vendor_store->ID, '_wcv_store_country', 	true );  	
-			$vendor_country = get_user_meta( $vendor_id, '_wcv_store_country', true ); 
-
-			if ( '' !== $country && '' === $country ) { 
-				update_user_meta( $vendor_id, '_wcv_store_country', 	$country ); 
-			} 
-
-			// Store post code 
-			$postcode = get_post_meta( $vendor_store->ID, '_wcv_store_postcode', true );  	
-			$vendor_postcode = get_user_meta( $vendor_id, '_wcv_store_postcode', true ); 
-
-			if ( '' !== $postcode && '' === $vendor_postcode ) { 
-				update_user_meta( $vendor_id, '_wcv_store_postcode', 	$postcode ); 
-			} 
-
-			// Store Phone
-			$store_phone = get_post_meta( $vendor_store->ID, '_wcv_store_phone', true );  	
-			$vendor_phone = get_user_meta( $vendor_id, '_wcv_store_phone', true ); 
-
-			if ( '' !== $store_phone && '' === $vendor_phone ) { 
-				update_user_meta( $vendor_id, '_wcv_store_phone', 	$store_phone ); 
-			}
-		
-			// Twitter Username
-			$twitter_username = get_post_meta( $vendor_store->ID, '_wcv_twitter_username', true );  	
-			$vendor_twitter_username = get_user_meta( $vendor_id, '_wcv_twitter_username', true ); 
-
-			if ( '' !== $twitter_username && '' === $vendor_twitter_username ) { 
-				update_user_meta( $vendor_id, '_wcv_twitter_username', 	$twitter_username ); 
-			} 
-			
-			//Instagram Username 
-			$instagram_username = get_post_meta( $vendor_store->ID, '_wcv_instagram_username', true );  	
-			$vendor_instagram_username = get_user_meta( $vendor_id, '_wcv_instagram_username', true ); 
-
-			if ( '' !== $instagram_username && '' === $vendor_instagram_username ) { 
-				update_user_meta( $vendor_id, '_wcv_instagram_username', 	$instagram_username ); 
-			}
-
-			// Facebook URL
-			$facebook_url = get_post_meta( $vendor_store->ID, '_wcv_facebook_url', true );  	
-			$vendor_facebook_url = get_user_meta( $vendor_id, '_wcv_facebook_url', true ); 
-
-			if ( '' !== $facebook_url && '' === $vendor_facebook_url ) { 
-				update_user_meta( $vendor_id, '_wcv_facebook_url', 	$facebook_url ); 
-			} 
-			
-			// LinkedIn URL
-			$linkedin_url = get_post_meta( $vendor_store->ID, '_wcv_linkedin_url', true );  	
-			$vendor_linkedin_url = get_user_meta( $vendor_id, '_wcv_linkedin_url', true ); 
-
-			if ( '' !== $linkedin_url && '' === $vendor_linkedin_url ) { 
-				update_user_meta( $vendor_id, '_wcv_linkedin_url', 	$linkedin_url ); 
-			}
-
-			// YouTube URL
-			$youtube_url = get_post_meta( $vendor_store->ID, '_wcv_youtube_url', true );  	
-			$vendor_youtube_url = get_user_meta( $vendor_id, '_wcv_youtube_url', true ); 
-
-			if ( '' !== $youtube_url && '' === $vendor_youtube_url ) { 
-				update_user_meta( $vendor_id, '_wcv_youtube_url', 	$youtube_url ); 
-			}
-
-			// Pinterest URL
-			$pinterest_url = get_post_meta( $vendor_store->ID, '_wcv_pinterest_url', true );  	
-			$vendor_pinterest_url = get_user_meta( $vendor_id, '_wcv_pinterest_url', true ); 
-
-			if ( '' !== $pinterest_url && '' === $vendor_pinterest_url ) { 
-				update_user_meta( $vendor_id, '_wcv_pinterest_url', 	$pinterest_url ); 
-			} 
-
-			// Google+ URL
-			$googleplus_url = get_post_meta( $vendor_store->ID, '_wcv_googleplus_url', true );  	
-			$vendor_googleplus_url = get_user_meta( $vendor_id, '_wcv_googleplus_url', true ); 
-
-			if ( '' !== $googleplus_url && '' === $vendor_googleplus_url ) { 
-				update_user_meta( $vendor_id, '_wcv_googleplus_url', 	$googleplus_url ); 
-			}
-
-			// Commission 
-			$store_store_commission_type 	= get_post_meta( $vendor_store->ID, 'wcv_commission_type', 	 true ); 
-			$vendor_store_commission_type 	= get_user_meta( $vendor_id, '_wcv_commission_type', 	 true ); 
-
-			if ( '' !== $store_store_commission_type && '' === $vendor_store_commission_type ) { 
-				update_user_meta( $vendor_id, '_wcv_commission_type', 	 $store_store_commission_type ); 
-			}
-
-			$store_commission_percent 		= get_post_meta( $vendor_store->ID, 'wcv_commission_percent',  true );  
-			$vendor_commission_percent 		= get_user_meta( $vendor_id, '_wcv_commission_percent',  true ); 
-
-			if ( '' !== $store_commission_percent && '' === $vendor_commission_percent ){ 
-				update_user_meta( $vendor_id, '_wcv_commission_percent', 	 $store_commission_percent ); 
-			}
-
-			$store_commission_amount 		= get_post_meta( $vendor_store->ID, 'wcv_commission_amount',	 true ); 
-			$vendor_commission_amount 		= get_user_meta( $vendor_id, '_wcv_commission_amount',	 true ); 
-
-			if ( '' !== $store_commission_amount && '' === $vendor_commission_amount ){ 
-				update_user_meta( $vendor_id, '_wcv_commission_amount', 	 $store_commission_amount ); 
-			}
-
-			$store_commission_fee			= get_post_meta( $vendor_store->ID, 'wcv_commission_fee', 	 true ); 
-			$vendor_commission_fee			= get_user_meta( $vendor_id, '_wcv_commission_fee', 	 true ); 
-
-			if ( '' !== $store_commission_fee && '' === $vendor_commission_fee ){ 
-				update_user_meta( $vendor_id, '_wcv_commission_fee', 	 $store_commission_fee ); 
-			}
-
-			// Featured image 
-			if ( get_post_thumbnail_id( $vendor_store->ID ) ) { 
-				update_user_meta( $vendor_id, '_wcv_store_banner_id', get_post_thumbnail_id( $vendor_store->ID ) ); 
-			}
-
-			// Custom metas 
-			$custom_metas = array_intersect_key( $store_meta, array_flip( preg_grep('/^_wcv_custom_settings_/', array_keys( $store_meta ) ) ) );
-
-			foreach ( $custom_metas as $key => $value ){
-
-				$store_post_meta 	= get_post_meta( $vendor_store->ID, $key, true ); 
-				$user_post_meta		= get_user_meta( $vendor_id, $key,  true ); 
-
-				if ( '' !== $store_post_meta && '' === $user_post_meta ) { 
-					update_user_meta( $vendor_id, $key, $store_post_meta ); 
+				$store_shipping 	= get_post_meta( $vendor_store->ID, '_wcv_shipping', true ); 
+				$vendor_shipping 	= get_user_meta( $vendor_id, '_wcv_shipping', true ); 
+				
+				if ( ! is_array( $vendor_shipping ) ) { 
+					update_user_meta( $vendor_id, '_wcv_shipping', 	$store_shipping ); 	
 				}
-			}
 
-		} 
+				// Fix migration script for shipping details 
+				$store_shipping_rates 	= get_post_meta( $vendor_store->ID, '_wcv_shipping_rates', true ); 
+				$vendor_shipping_rates	= get_user_meta( $vendor_id, '_wcv_shipping_rates', true ); 
+
+				if ( ! is_array( $vendor_shipping ) ) { 
+					update_user_meta( $vendor_id, '_wcv_shipping_rates',  $store_shipping_rates  );
+				}
+				
+				$store_icon_id = get_post_meta( $vendor_store->ID, '_wcv_store_icon_id', 	true );  	
+				$vendor_icon_id = get_user_meta( $vendor_id, '_wcv_store_icon_id', true );  	
+
+				// Store Icon 
+				if ( '' !== $store_icon_id && '' === $vendor_icon_id ) { 
+					update_user_meta( $vendor_id, '_wcv_store_icon_id', 	$store_icon_id );  	
+				}
+
+				// Company URL  
+				$store_company_url = get_post_meta( $vendor_store->ID, '_wcv_company_url', 	true );  	
+				$vendor_company_url = get_user_meta( $vendor_id, '_wcv_company_url', true );  
+
+				if ( '' !== $store_company_url && '' === $vendor_company_url ) { 
+					update_user_meta( $vendor_id, '_wcv_company_url', 	$store_company_url ); 
+				} 
+
+				// Store Address1 
+				$address1 = get_post_meta( $vendor_store->ID, '_wcv_store_address1', 	true );  	
+				$vendor_address1 = get_user_meta( $vendor_id, '_wcv_store_address1', true );  
+
+				if ( '' !== $address1 && '' === $vendor_address1 ) { 
+					update_user_meta( $vendor_id, '_wcv_store_address1', 	$address1 ); 
+				} 
+
+				$address2 = get_post_meta( $vendor_store->ID, '_wcv_store_address2', 	true );  	
+				$vendor_address2 = get_user_meta( $vendor_id, '_wcv_store_address2', true );  
+
+				// Store Address2 
+				if ( '' !== $address2 && '' === $vendor_address2 ) { 
+					update_user_meta( $vendor_id, '_wcv_store_address2', 	$address2 ); 
+				} 
+
+				// Store City 
+				$city = get_post_meta( $vendor_store->ID, '_wcv_store_city', 	true );  	
+				$vendor_city = get_user_meta( $vendor_id, '_wcv_store_city', true ); 
+
+				if ( '' !== $city && '' === $vendor_city ) { 
+					update_user_meta( $vendor_id, '_wcv_store_city', 	$city ); 
+				} 
+
+				// Store State 
+				$state = get_post_meta( $vendor_store->ID, '_wcv_store_state', 	true );  	
+				$vendor_state = get_user_meta( $vendor_id, '_wcv_store_state', true ); 
+
+				if ( '' !== $state && '' === $vendor_state ) { 
+					update_user_meta( $vendor_id, '_wcv_store_state', 	$state ); 
+				}
+
+				// Store Country 
+				$country = get_post_meta( $vendor_store->ID, '_wcv_store_country', 	true );  	
+				$vendor_country = get_user_meta( $vendor_id, '_wcv_store_country', true ); 
+
+				if ( '' !== $country && '' === $country ) { 
+					update_user_meta( $vendor_id, '_wcv_store_country', 	$country ); 
+				} 
+
+				// Store post code 
+				$postcode = get_post_meta( $vendor_store->ID, '_wcv_store_postcode', true );  	
+				$vendor_postcode = get_user_meta( $vendor_id, '_wcv_store_postcode', true ); 
+
+				if ( '' !== $postcode && '' === $vendor_postcode ) { 
+					update_user_meta( $vendor_id, '_wcv_store_postcode', 	$postcode ); 
+				} 
+
+				// Store Phone
+				$store_phone = get_post_meta( $vendor_store->ID, '_wcv_store_phone', true );  	
+				$vendor_phone = get_user_meta( $vendor_id, '_wcv_store_phone', true ); 
+
+				if ( '' !== $store_phone && '' === $vendor_phone ) { 
+					update_user_meta( $vendor_id, '_wcv_store_phone', 	$store_phone ); 
+				}
+			
+				// Twitter Username
+				$twitter_username = get_post_meta( $vendor_store->ID, '_wcv_twitter_username', true );  	
+				$vendor_twitter_username = get_user_meta( $vendor_id, '_wcv_twitter_username', true ); 
+
+				if ( '' !== $twitter_username && '' === $vendor_twitter_username ) { 
+					update_user_meta( $vendor_id, '_wcv_twitter_username', 	$twitter_username ); 
+				} 
+				
+				//Instagram Username 
+				$instagram_username = get_post_meta( $vendor_store->ID, '_wcv_instagram_username', true );  	
+				$vendor_instagram_username = get_user_meta( $vendor_id, '_wcv_instagram_username', true ); 
+
+				if ( '' !== $instagram_username && '' === $vendor_instagram_username ) { 
+					update_user_meta( $vendor_id, '_wcv_instagram_username', 	$instagram_username ); 
+				}
+
+				// Facebook URL
+				$facebook_url = get_post_meta( $vendor_store->ID, '_wcv_facebook_url', true );  	
+				$vendor_facebook_url = get_user_meta( $vendor_id, '_wcv_facebook_url', true ); 
+
+				if ( '' !== $facebook_url && '' === $vendor_facebook_url ) { 
+					update_user_meta( $vendor_id, '_wcv_facebook_url', 	$facebook_url ); 
+				} 
+				
+				// LinkedIn URL
+				$linkedin_url = get_post_meta( $vendor_store->ID, '_wcv_linkedin_url', true );  	
+				$vendor_linkedin_url = get_user_meta( $vendor_id, '_wcv_linkedin_url', true ); 
+
+				if ( '' !== $linkedin_url && '' === $vendor_linkedin_url ) { 
+					update_user_meta( $vendor_id, '_wcv_linkedin_url', 	$linkedin_url ); 
+				}
+
+				// YouTube URL
+				$youtube_url = get_post_meta( $vendor_store->ID, '_wcv_youtube_url', true );  	
+				$vendor_youtube_url = get_user_meta( $vendor_id, '_wcv_youtube_url', true ); 
+
+				if ( '' !== $youtube_url && '' === $vendor_youtube_url ) { 
+					update_user_meta( $vendor_id, '_wcv_youtube_url', 	$youtube_url ); 
+				}
+
+				// Pinterest URL
+				$pinterest_url = get_post_meta( $vendor_store->ID, '_wcv_pinterest_url', true );  	
+				$vendor_pinterest_url = get_user_meta( $vendor_id, '_wcv_pinterest_url', true ); 
+
+				if ( '' !== $pinterest_url && '' === $vendor_pinterest_url ) { 
+					update_user_meta( $vendor_id, '_wcv_pinterest_url', 	$pinterest_url ); 
+				} 
+
+				// Google+ URL
+				$googleplus_url = get_post_meta( $vendor_store->ID, '_wcv_googleplus_url', true );  	
+				$vendor_googleplus_url = get_user_meta( $vendor_id, '_wcv_googleplus_url', true ); 
+
+				if ( '' !== $googleplus_url && '' === $vendor_googleplus_url ) { 
+					update_user_meta( $vendor_id, '_wcv_googleplus_url', 	$googleplus_url ); 
+				}
+
+				// Commission 
+				$store_store_commission_type 	= get_post_meta( $vendor_store->ID, 'wcv_commission_type', 	 true ); 
+				$vendor_store_commission_type 	= get_user_meta( $vendor_id, '_wcv_commission_type', 	 true ); 
+
+				if ( '' !== $store_store_commission_type && '' === $vendor_store_commission_type ) { 
+					update_user_meta( $vendor_id, '_wcv_commission_type', 	 $store_store_commission_type ); 
+				}
+
+				$store_commission_percent 		= get_post_meta( $vendor_store->ID, 'wcv_commission_percent',  true );  
+				$vendor_commission_percent 		= get_user_meta( $vendor_id, '_wcv_commission_percent',  true ); 
+
+				if ( '' !== $store_commission_percent && '' === $vendor_commission_percent ){ 
+					update_user_meta( $vendor_id, '_wcv_commission_percent', 	 $store_commission_percent ); 
+				}
+
+				$store_commission_amount 		= get_post_meta( $vendor_store->ID, 'wcv_commission_amount',	 true ); 
+				$vendor_commission_amount 		= get_user_meta( $vendor_id, '_wcv_commission_amount',	 true ); 
+
+				if ( '' !== $store_commission_amount && '' === $vendor_commission_amount ){ 
+					update_user_meta( $vendor_id, '_wcv_commission_amount', 	 $store_commission_amount ); 
+				}
+
+				$store_commission_fee			= get_post_meta( $vendor_store->ID, 'wcv_commission_fee', 	 true ); 
+				$vendor_commission_fee			= get_user_meta( $vendor_id, '_wcv_commission_fee', 	 true ); 
+
+				if ( '' !== $store_commission_fee && '' === $vendor_commission_fee ){ 
+					update_user_meta( $vendor_id, '_wcv_commission_fee', 	 $store_commission_fee ); 
+				}
+
+				// Featured image 
+				if ( get_post_thumbnail_id( $vendor_store->ID ) ) { 
+					update_user_meta( $vendor_id, '_wcv_store_banner_id', get_post_thumbnail_id( $vendor_store->ID ) ); 
+				}
+
+				// Custom metas 
+				$custom_metas = array_intersect_key( $store_meta, array_flip( preg_grep('/^_wcv_custom_settings_/', array_keys( $store_meta ) ) ) );
+
+				foreach ( $custom_metas as $key => $value ){
+
+					$store_post_meta 	= get_post_meta( $vendor_store->ID, $key, true ); 
+					$user_post_meta		= get_user_meta( $vendor_id, $key,  true ); 
+
+					if ( '' !== $store_post_meta && '' === $user_post_meta ) { 
+						update_user_meta( $vendor_id, $key, $store_post_meta ); 
+					}
+				}
+
+			} 
+
+		}
 
 	} // remove_vendor_stores()
 }

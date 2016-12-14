@@ -195,8 +195,6 @@
 		// Show the global current one 
 		$( '.wcv-shipping-' + wcv_admin.current_shipping_type ).show(); 
 
-		console.log( wcv_admin ); 
-
 		// If there is a vendor shipping override change that here. 
 		var previous = wcv_admin.current_shipping_type; 
 

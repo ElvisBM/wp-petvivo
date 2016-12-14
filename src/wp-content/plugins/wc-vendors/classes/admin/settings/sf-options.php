@@ -297,7 +297,7 @@ $options[ ] = array(
 $options[ ] = array(
 	'name'    => __( 'Orders page', 'wcvendors' ),
 	'desc'    => __( 'Choose the page that has the shortcode <code>[wcv_orders]</code><br/>By default, Vendor Dashboard > Orders should have the shortcode.', 'wcvendors' ),
-	'id'      => 'orders_page',
+	'id'      => 'product_orders_page',
 	'type'    => 'single_select_page',
 	'select2' => true,
 );
@@ -326,7 +326,7 @@ $options[ ] = array( 'name' => __( 'Payments', 'wcvendors' ), 'type' => 'heading
 $options[ ] = array(
 	'name' => __( 'PayPal Adaptive Payments Scheduling', 'wcvendors' ), 'type' => 'title', 'desc' =>
 		sprintf( __( 'Total commission currently due: %s. <a href="%s">View details</a>.', 'wcvendors' ), !function_exists( 'woocommerce_price' ) ? $total_due : woocommerce_price( $total_due ), '?page=pv_admin_commissions' ) .
-		'<br/><br/>' . sprintf( __( 'Make sure you update your PayPal Adaptive Payments settings <a href="%s">here</a>.  <br><br>To instantly pay with Adaptive Payments you must activate the paypalap gateway in your Checkout settings. <br><a href="https://www.wcvendors.com/kb/configuring-paypal-adaptive-payments/" target="top">PayPal AP Application Help</a>.  <br><br>Another gateway that offers instant payments to vendors that also accepts credit cards directly on your checkout page is Stripe.   <br><a href="https://www.wcvendors.com/product/stripe-commissions-gateway/" target="top">Stripe Commissions & Gateway plugin</a> is $49 and specifically coded for WC Vendors and <a href="https://www.wcvendors.com/product/wc-vendors-pro/" target="top">WC Vendors Pro</a>.', 'wcvendors' ), 'admin.php?page=wc-settings&tab=checkout&section=wc_paypalap' )
+		'<br/><br/>' . sprintf( __( 'Make sure you update your PayPal Adaptive Payments settings <a href="%s">here</a>.  <br><br>To instantly pay with Adaptive Payments you must activate the PayPal AP gateway in your Checkout settings. <br><a href="https://www.wcvendors.com/kb/configuring-paypal-adaptive-payments/" target="top">PayPal AP Application Help</a>.  <br><br>Another gateway that offers instant payments to vendors that also accepts credit cards directly on your checkout page is Stripe.   <br><a href="https://www.wcvendors.com/product/stripe-commissions-gateway/" target="top">Stripe Commissions & Gateway plugin</a> is $49 and specifically coded for WC Vendors and <a href="https://www.wcvendors.com/product/wc-vendors-pro/" target="top">WC Vendors Pro</a>.', 'wcvendors' ), 'admin.php?page=wc-settings&tab=checkout&section=wc_paypalap' )
 );
 
 $options[ ] = array(
@@ -345,6 +345,7 @@ $options[ ] = array(
 	'type'    => 'radio',
 	'std'     => 'manual',
 	'options' => array(
+		'daily'    => __( 'Daily', 'wcvendors' ),
 		'weekly'   => __( 'Weekly', 'wcvendors' ),
 		'biweekly' => __( 'Biweekly', 'wcvendors' ),
 		'monthly'  => __( 'Monthly', 'wcvendors' ),

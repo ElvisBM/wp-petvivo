@@ -5,7 +5,7 @@
  * Override this template by copying it to yourtheme/wc-vendors/store
  *
  * @package    WCVendors_Pro
- * @version    1.3.3
+ * @version    1.3.5
  */
 
 $store_icon_src 	= wp_get_attachment_image_src( get_user_meta( $vendor_id, '_wcv_store_icon_id', true ), array( 150, 150 ) ); 
@@ -42,6 +42,7 @@ $linkedin_url 		= get_user_meta( $vendor_id , '_wcv_linkedin_url', true );
 $youtube_url 		= get_user_meta( $vendor_id , '_wcv_youtube_url', true ); 
 $googleplus_url 	= get_user_meta( $vendor_id , '_wcv_googleplus_url', true ); 
 $pinterest_url 		= get_user_meta( $vendor_id , '_wcv_pinterest_url', true ); 
+$snapchat_username 	= get_user_meta( $vendor_id , '_wcv_snapchat_username', true ); 
 
 // Migrate to store address array 
 $address1 			= ( array_key_exists( '_wcv_store_address1', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_address1' ] : ''; 
@@ -53,7 +54,7 @@ $store_postcode		= ( array_key_exists( '_wcv_store_postcode', $vendor_meta ) ) ?
 
 $address 			= ( $address1 != '') ? $address1 .', ' . $city .', '. $state .', '. $store_postcode : '';   
 
-$social_icons = empty( $twitter_username ) && empty( $instagram_username ) && empty( $facebook_url ) && empty( $linkedin_url ) && empty( $youtube_url ) && empty( $googleplus_url ) && empty( $pinterst_url ) ? false : true; 
+$social_icons = empty( $twitter_username ) && empty( $instagram_username ) && empty( $facebook_url ) && empty( $linkedin_url ) && empty( $youtube_url ) && empty( $googleplus_url ) && empty( $pinterst_url ) && empty( $snapchat_username ) ? false : true; 
 
 // This is where you would load your own custom meta fields if you stored any in the settings page for the dashboard
 
@@ -84,6 +85,7 @@ $social_icons = empty( $twitter_username ) && empty( $instagram_username ) && em
 				   			<?php if ( $pinterest_url != '') { ?><li><a href="<?php echo $pinterest_url; ?>" target="_blank"><i class="fa fa-pinterest-square"></i></a></li><?php } ?>
 				   			<?php if ( $youtube_url != '') { ?><li><a href="<?php echo $youtube_url; ?>" target="_blank"><i class="fa fa-youtube-square"></i></a></li><?php } ?>
 				   			<?php if ( $linkedin_url != '') { ?><li><a href="<?php echo $linkedin_url; ?>" target="_blank"><i class="fa fa-linkedin-square"></i></a></li><?php } ?>
+				   			<?php if ( $snapchat_username != '') { ?><li><a href="//www.snapchat.com/add/<?php echo $snapchat_username; ?>" target="_blank"><i class="fa fa-snapchat" aria-hidden="true"></i></a></li><?php } ?>
 					   	</ul>
 					<?php endif; ?>
 			   	</div>
@@ -120,6 +122,7 @@ $social_icons = empty( $twitter_username ) && empty( $instagram_username ) && em
 					   			<?php if ( $pinterest_url != '') { ?><li><a href="<?php echo $pinterest_url; ?>" target="_blank"><i class="fa fa-pinterest-square"></i></a></li><?php } ?>
 					   			<?php if ( $youtube_url != '') { ?><li><a href="<?php echo $youtube_url; ?>" target="_blank"><i class="fa fa-youtube-square"></i></a></li><?php } ?>
 					   			<?php if ( $linkedin_url != '') { ?><li><a href="<?php echo $linkedin_url; ?>" target="_blank"><i class="fa fa-linkedin-square"></i></a></li><?php } ?>
+					   			<?php if ( $snapchat_username != '') { ?><li><a href="//www.snapchat.com/add/<?php echo $snapchat_username; ?>" target="_blank"><i class="fa fa-snapchat" aria-hidden="true"></i></a></li><?php } ?>
 						   	</ul>
 						<?php endif; ?>
 				   	<?php endif; ?>
@@ -130,12 +133,13 @@ $social_icons = empty( $twitter_username ) && empty( $instagram_username ) && em
 	</div>
 </div>
 
-<div class="wcv-store-address-container">
-	<div class="store-address left"> 
-		<?php if ( $address != '' ) {  ?><a href="http://maps.google.com/maps?&q=<?php echo $address; ?>"><address><i class="fa fa-location-arrow"></i><?php echo $address; ?></address></a><?php } ?>
+<div class="wcv-store-address-container wcv-store-grid ">
+	
+	<div class="wcv-store-grid__col wcv-store-grid__col--1-of-2 store-address">	  
+			<?php if ( $address != '' ) {  ?><a href="http://maps.google.com/maps?&q=<?php echo $address; ?>"><address><i class="fa fa-location-arrow"></i><?php echo $address; ?></address></a><?php } ?>
 	</div>
-	<div class="store-phone right">
-		<?php if ($phone != '')  { ?><a href="tel:<?php echo $phone; ?>"><i class="fa fa-phone"></i><?php echo $phone; ?></a><?php } ?>
+	<div class="wcv-store-grid__col wcv-store-grid__col--1-of-2 store-phone">	  
+			<?php if ($phone != '')  { ?><a href="tel:<?php echo $phone; ?>"><i class="fa fa-phone"></i><?php echo $phone; ?></a><?php } ?>
 	</div> 
 </div>
 

@@ -13,6 +13,10 @@ class WCV_Admin_Setup
 
 		add_action( 'woocommerce_admin_order_data_after_shipping_address', array( $this, 'add_vendor_details' ), 10, 2 );
 		add_action( 'woocommerce_admin_order_actions_end', array( $this, 'append_actions' ), 10, 1 );
+
+		add_filter( 'woocommerce_debug_tools', array( $this, 'wcvendors_tools' ) ); 
+
+		add_action( 'admin_head', array( $this, 'commission_table_header_styles' ) ); 
 	}
 
 
@@ -63,6 +67,10 @@ class WCV_Admin_Setup
 
 
 	/**
+	 * Add the commissions sub menu 
+	 *
+	 * @since 1.0.0 
+	 * @access public 
 	 *
 	 */
 	public static function menu()
@@ -76,8 +84,143 @@ class WCV_Admin_Setup
 		);
 
 		add_action( "load-$hook", array( 'WCV_Admin_Setup', 'add_options' ) );
+
+		add_action( "admin_print_styles-$hook", 	array( 'WCV_Admin_Setup', 'commission_enqueue_style' ) );
+		add_action( "admin_print_scripts-$hook", 	array( 'WCV_Admin_Setup', 'commission_my_enqueue_script' ) );
+
+
+
+	} // menu() 
+
+
+	/**
+	 * Add tools to the woocommerce status tools page 
+	 * 
+	 * @since 1.9.2
+	 * @access public 
+	 */
+	public function wcvendors_tools( $tools ){ 
+
+		$tools[ 'reset_wcvendor_roles' ] = array(
+				'name'    => __( 'Reset WC Vendors roles ', 'wcvendors' ),
+				'button'  => __( 'Reset WC Vendor Roles', 'wcvendors' ),
+				'desc'    => __( 'This will reset the wcvendors roles ( vendor & pending_vendor ), back to the default capabilities.', 'wcvendors' ),
+				'callback' => array( 'WCV_Admin_Setup', 'reset_vendor_roles' )
+			); 
+
+		$tools[ 'reset_wcvendors' ] = array(
+				'name'    => __( 'Reset WC Vendors ', 'wcvendors' ),
+				'button'  => __( 'Reset WC Vendors Settings', 'wcvendors' ),
+				'desc'    => __( 'This will reset wcvendors back to defaults. This DELETES ALL YOUR Settings.', 'wcvendors' ),
+				'callback' => array( 'WCV_Admin_Setup', 'reset_wcvendors' )
+			); 
+
+		return $tools; 
+
+	} // wcvendors_tools() 
+
+	/**
+	 * Reset the vendor roles 
+	 * 
+	 * @since 1.9.2 
+	 * @access public
+	 */
+	public static function reset_vendor_roles(){ 
+
+		$can_add          = WC_Vendors::$pv_options->get_option( 'can_submit_products' );
+		$can_edit         = WC_Vendors::$pv_options->get_option( 'can_edit_published_products' );
+		$can_submit_live  = WC_Vendors::$pv_options->get_option( 'can_submit_live_products' );
+		$can_view_reports = WC_Vendors::$pv_options->get_option( 'can_view_backend_reports' );
+
+		$args = array(
+			'assign_product_terms'      => $can_add,
+			'edit_products'             => $can_add || $can_edit,
+			'edit_published_products'   => $can_edit,
+			'delete_published_products' => $can_edit,
+			'delete_products'           => $can_edit,
+			'manage_product'            => $can_add,
+			'publish_products'          => $can_submit_live,
+			'read'                      => true,
+			'read_products'             => $can_edit || $can_add,
+			'upload_files'              => true,
+			'import'                    => true,
+			'view_woocommerce_reports'  => false,
+		);
+
+		remove_role( 'vendor' );
+		add_role( 'vendor', __('Vendor', 'wcvendors'), $args );
+
+		remove_role( 'pending_vendor'); 
+		add_role( 'pending_vendor', __( 'Pending Vendor', 'wcvendors' ), array(
+																							  'read'         => true,
+																							  'edit_posts'   => false,
+																							  'delete_posts' => true
+																						 ) );
+
+		echo '<div class="updated inline"><p>' . __( 'WC Vendor roles successfully reset.', 'wcvendors' ) . '</p></div>';
+
+	} // reset_vendor_roles() 
+
+
+	/**
+	 * Reset wcvendors
+	 * 
+	 * @since 1.9.2 
+	 * @access public
+	 */	
+	public static function reset_wcvendors(){ 
+
+		delete_option( WC_Vendors::$id . '_options' ); 
+		echo '<div class="updated inline"><p>' . __( 'WC Vendors was successfully reset. All settings have been reset.', 'wcvendors' ) . '</p></div>';
+
+	} // reset_wcvendors() 
+
+
+	public static function commission_enqueue_style(){ 
+
+		wp_enqueue_style( 'commissions_select2_css', wcv_assets_url . 'css/select2.min.css' );
+
+	} //commission_enqueue_style() 
+
+	public static function commission_my_enqueue_script(){ 
+
+		$select2_args = apply_filters( 'wcvendors_select2_commission_args', array( 
+			'placeholder' => __( 'Select a Vendor', 'wcvendors' ), 
+			'allowclear' => true, 
+		) ); 
+
+		wp_enqueue_script( 'commissions_select2_styles_js', wcv_assets_url. 'js/select2.min.js', array('jquery') );
+		
+		wp_register_script( 'commissions_select2_load_js', wcv_assets_url. 'js/wcv-commissions.js', array('jquery') );
+		wp_localize_script( 'commissions_select2_load_js', 'wcv_commissions_select', $select2_args ); 
+		wp_enqueue_script( 'commissions_select2_load_js' );
+
 	}
 
+	/**
+	 * Load styles for the commissions table page 
+	 */
+	public function commission_table_header_styles() { 
+
+	    $page = ( isset( $_GET[ 'page' ] ) ) ? esc_attr( $_GET[ 'page' ] ) : false;
+
+	    // Only load the styles on the license table page 
+	   
+	    if ( 'pv_admin_commissions' !== $page ) return;
+
+	    echo '<style type="text/css">';
+	    echo '.wp-list-table .column-product_id { width: 20%; }';
+	    echo '.wp-list-table .column-vendor_id { width: 15%; }';
+	    echo '.wp-list-table .column-order_id { width: 8%; }';
+	    echo '.wp-list-table .column-total_due { width: 10%;}';
+	    echo '.wp-list-table .column-total_shipping { width: 10%;}';
+	    echo '.wp-list-table .column-tax { width: 10%;}';
+	    echo '.wp-list-table .column-totals { width: 10%;}';
+	    echo '.wp-list-table .column-status { width: 5%;}';
+	    echo '.wp-list-table .column-time { width: 10%;}';
+	    echo '</style>';
+	  
+	} //table_header_styles()
 
 	/**
 	 *
@@ -122,7 +265,7 @@ class WCV_Admin_Setup
 	{
 		global $woocommerce, $PV_Admin_Page;
 
-		$PV_Admin_Page->prepare_items();
+		
 
 		?>
 
@@ -133,8 +276,18 @@ class WCV_Admin_Setup
 
 			<form id="posts-filter" method="get">
 
-				<input type="hidden" name="page" value="pv_admin_commissions"/>
-				<?php $PV_Admin_Page->display() ?>
+			<?php 
+				$page  = filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRIPPED );
+				$paged = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
+
+				printf( '<input type="hidden" name="page" value="%s" />', $page );
+				printf( '<input type="hidden" name="paged" value="%d" />', $paged );
+			?>
+
+			<input type="hidden" name="page" value="pv_admin_commissions"/>
+				
+			<?php $PV_Admin_Page->prepare_items(); ?>
+			<?php $PV_Admin_Page->display() ?>
 
 			</form>
 			<div id="ajax-response"></div>
@@ -201,7 +354,14 @@ class WCV_Admin_Page extends WP_List_Table
 				$user = get_userdata( $item->vendor_id );
 				return '<a href="' . admin_url( 'user-edit.php?user_id=' . $item->vendor_id ) . '">' . WCV_Vendors::get_vendor_shop_name( $item->vendor_id ) . '</a>';
 			case 'total_due' :
-				return woocommerce_price( $item->total_due + $item->total_shipping + $item->tax );
+				return woocommerce_price( $item->total_due );
+			case 'total_shipping': 
+				return woocommerce_price($item->total_shipping );
+			case 'tax': 
+				return woocommerce_price( $item->tax );
+			case 'totals' :
+				$totals = ( wc_tax_enabled() ) ? $item->total_due + $item->total_shipping + $item->tax :  $item->total_due + $item->total_shipping; 
+				return woocommerce_price( $totals );
 			case 'product_id' :
 				$parent = get_post_ancestors( $item->product_id );
 				$product_id = $parent ? $parent[ 0 ] : $item->product_id;
@@ -248,14 +408,19 @@ class WCV_Admin_Page extends WP_List_Table
 	function get_columns()
 	{
 		$columns = array(
-			'cb'         => '<input type="checkbox" />',
-			'product_id' => __( 'Product', 'wcvendors' ),
-			'order_id'   => __( 'Order ID', 'wcvendors' ),
-			'vendor_id'  => __( 'Vendor', 'wcvendors' ),
-			'total_due'  => __( 'Total', 'wcvendors' ),
-			'status'     => __( 'Status', 'wcvendors' ),
-			'time'       => __( 'Date', 'wcvendors' ),
+			'cb'         		=> '<input type="checkbox" />',
+			'product_id' 		=> __( 'Product', 'wcvendors' ),
+			'order_id'   		=> __( 'Order ID', 'wcvendors' ),
+			'vendor_id' 	    => __( 'Vendor', 'wcvendors' ),
+			'total_due'  		=> __( 'Commission', 'wcvendors' ),
+			'total_shipping'  	=> __( 'Shipping', 'wcvendors' ),
+			'tax'  				=> __( 'Tax', 'wcvendors' ),
+			'totals'  			=> __( 'Total', 'wcvendors' ),
+			'status'     		=> __( 'Status', 'wcvendors' ),
+			'time'       		=> __( 'Date', 'wcvendors' ),
 		);
+
+		if ( ! wc_tax_enabled() ) unset( $columns[ 'tax'] ); 
 
 		return $columns;
 	}
@@ -270,14 +435,19 @@ class WCV_Admin_Page extends WP_List_Table
 	function get_sortable_columns()
 	{
 		$sortable_columns = array(
-			'time'       => array( 'time', true ),
-			'product_id' => array( 'product_id', false ),
-			'order_id'   => array( 'order_id', false ),
-			'total_due'  => array( 'total_due', false ),
-			'status'     => array( 'status', false ),
-			'vendor_id'  => array( 'vendor_id', false ),
-			'status'     => array( 'status', false ),
+			'time'       		=> array( 'time', true ),
+			'product_id' 		=> array( 'product_id', false ),
+			'order_id'   		=> array( 'order_id', false ),
+			'total_due' 		=> array( 'total_due', false ),
+			'total_shipping'	=> array( 'total_shipping', false ), 
+			'tax'				=> array( 'tax', false ), 
+			'totals' 			=> array( 'totals', false ),
+			'status'    		=> array( 'status', false ),
+			'vendor_id' 		=> array( 'vendor_id', false ),
+			'status'    		=> array( 'status', false ),
 		);
+
+		if ( ! wc_tax_enabled() ) unset( $sortable_columns[ 'tax'] ); 
 
 		return $sortable_columns;
 	}
@@ -296,6 +466,8 @@ class WCV_Admin_Page extends WP_List_Table
 			'mark_reversed' => __( 'Mark reversed', 'wcvendors' ),
 			// 'delete' => __('Delete', 'wcvendors'),
 		);
+		
+		$actions = apply_filters('wcv_edit_bulk_actions', $actions);
 
 		return $actions;
 	}
@@ -307,13 +479,17 @@ class WCV_Admin_Page extends WP_List_Table
 	function extra_tablenav( $which )
 	{
 		if ( $which == 'top' ) {
-			?>
-			<div class="alignleft actions"><?php
+			?><div class="alignleft actions" style="width: 70%;">
+			<?php
+			// Months drop down 
 			$this->months_dropdown( 'commission' );
-			submit_button( __( 'Filter' ), false, false, false, array( 'id' => "post-query-submit", 'name' => 'do-filter' ) );
-			?></div>
-			<div class="alignleft actions"><?php
+			
+			// commission status drop down 
 			$this->status_dropdown( 'commission' );
+			
+			// Vendor drop down 
+			$this->vendor_dropdown( 'commission' );
+			
 			submit_button( __( 'Filter' ), false, false, false, array( 'id' => "post-query-submit", 'name' => 'do-filter' ) );
 			?></div>
 			<?php
@@ -349,7 +525,7 @@ class WCV_Admin_Page extends WP_List_Table
 		$m = isset( $_GET[ 'm' ] ) ? (int) $_GET[ 'm' ] : 0;
 		?>
 		<select name="m" id="filter-by-date">
-			<option<?php selected( $m, 0 ); ?> value='0'><?php _e( 'Show all dates' ); ?></option>
+			<option<?php selected( $m, 0 ); ?> value='0'><?php _e( 'Show all dates', 'wcvendors' ); ?></option>
 			<?php
 			foreach ( $months as $arc_row ) {
 				if ( 0 == $arc_row->year )
@@ -385,12 +561,42 @@ class WCV_Admin_Page extends WP_List_Table
 		?>
 		<select name="com_status">
 			<option<?php selected( $com_status, '' ); ?> value=''><?php _e( 'Show all Statuses', 'wcvendors' ); ?></option>
-			<option<?php selected( $com_status, 'due' ); ?> value="due">Due</option>
-			<option<?php selected( $com_status, 'paid' ); ?> value="paid">Paid</option>
-			<option<?php selected( $com_status, 'reversed' ); ?> value="reversed">Reversed</option>
+			<option<?php selected( $com_status, 'due' ); ?> value="due"><?php _e( 'Due', 'wcvendors' ); ?></option>
+			<option<?php selected( $com_status, 'paid' ); ?> value="paid"><?php _e( 'Paid', 'wcvendors' ); ?></option>
+			<option<?php selected( $com_status, 'reversed' ); ?> value="reversed"><?php _e( 'Reversed', 'wcvendors' ); ?></option>
 		</select>
 	<?php
 	}
+
+	/**
+	 * Display a vendor dropdown for filtering commissions
+	 *
+	 * @since  1.9.2
+	 * @access public
+	 *
+	 * @param unknown $post_type
+	 */
+	public function vendor_dropdown( $post_type ){ 
+
+		$user_args 			= array( 'fields' => array( 'ID', 'display_name' ) );
+		$vendor_id 			= isset( $_GET[ 'vendor_id' ] ) ? $_GET[ 'vendor_id' ] : '';
+		$new_args           = $user_args;
+		$new_args[ 'role' ] = 'vendor';
+		$users              = get_users( $new_args );
+
+		// Generate the drop down 
+		$output = '<select style="width: 30%;" name="vendor_id" id="vendor_id" class="select2">'; 
+		$output .= "<option></option>";
+		foreach ( (array) $users as $user ) {
+			$select = selected( $user->ID, $vendor_id, false );
+			$output .= "<option value='$user->ID' $select>$user->display_name</option>";
+		}
+		$output .= '</select>';
+
+		echo $output; 
+
+	} // vendor_dropdown() 
+
 
 
 	/**
@@ -429,6 +635,7 @@ class WCV_Admin_Page extends WP_List_Table
 
 			default:
 				// code...
+				do_action('wcv_edit_process_bulk_actions', $this->current_action(), $ids);
 				break;
 		}
 
@@ -467,11 +674,11 @@ class WCV_Admin_Page extends WP_List_Table
 		global $wpdb;
 
 		$table_name = $wpdb->prefix . "pv_commission";
-
-		$query  = "UPDATE `{$table_name}` SET `status` = 'reversed' WHERE id IN ($ids) AND `status` = 'due'";
+		$query  = "UPDATE `{$table_name}` SET `status` = 'reversed' WHERE id IN ($ids)";
 		$result = $wpdb->query( $query );
 
-		return $result;
+		return $result; 
+
 	}
 
 
@@ -512,6 +719,7 @@ class WCV_Admin_Page extends WP_List_Table
 		$orderby = !empty( $_REQUEST[ 'orderby' ] ) ? esc_attr( $_REQUEST[ 'orderby' ] ) : 'time';
 		$order   = ( !empty( $_REQUEST[ 'order' ] ) && $_REQUEST[ 'order' ] == 'asc' ) ? 'ASC' : 'DESC';
 		$com_status = !empty( $_REQUEST[ 'com_status' ] ) ? esc_attr( $_REQUEST[ 'com_status' ] ) : '';
+		$vendor_id = !empty( $_REQUEST[ 'vendor_id' ] ) ? esc_attr( $_REQUEST[ 'vendor_id' ] ) : '';
 		$status_sql = '';
 		$time_sql = ''; 
 
@@ -519,7 +727,6 @@ class WCV_Admin_Page extends WP_List_Table
 		 * Init column headers
 		 */
 		$this->_column_headers = $this->get_column_info();
-
 
 		/**
 		 * Process bulk actions
@@ -559,6 +766,22 @@ class WCV_Admin_Page extends WP_List_Table
 			$sql .= $status_sql; 
 		}
 
+
+		if ( !empty( $_GET[ 'vendor_id' ] ) ) { 
+
+			if ( $time_sql == '' || $status_sql == '' ) { 
+				$vendor_sql = " 
+				WHERE vendor_id = '$vendor_id'
+				"; 
+			} else { 
+				$vendor_sql = " 
+				AND vendor_id = '$vendor_id'
+				";
+			}
+			
+			$sql .= $vendor_sql; 
+		}
+
 		$max = $wpdb->get_var( $sql );
 
 		$sql = "
@@ -573,8 +796,11 @@ class WCV_Admin_Page extends WP_List_Table
 			$sql .= $status_sql;
 		}
 
-		$offset = ( $current_page - 1 ) * $per_page; 
+		if ( !empty( $_GET['vendor_id'] ) ) { 
+			$sql .= $vendor_sql;
+		}
 
+		$offset = ( $current_page - 1 ) * $per_page; 
 
 		$sql .= "
 			ORDER BY `{$orderby}` {$order}

@@ -150,7 +150,7 @@ if ( !class_exists( 'SF_Settings_API' ) ) {
 			$this_plugin = plugin_basename( $this->file );
 			$page        = strpos( $this->menu, '.php' ) ? $this->menu : 'admin.php';
 			if ( $file == $this_plugin ) {
-				$settings_link = '<a href="' . $page . '?page=' . $this->id . '">' . __( 'Settings', 'geczy' ) . '</a>';
+				$settings_link = '<a href="' . $page . '?page=' . $this->id . '">' . __( 'Settings', 'wcvendors' ) . '</a>';
 				array_unshift( $links, $settings_link );
 			}
 
@@ -299,7 +299,7 @@ if ( !class_exists( 'SF_Settings_API' ) ) {
 				/* @TODO: Can prob add this to the activation hook. */
 				$this->set_defaults( $this->current_options );
 			} else {
-				wp_die( __( 'Could not load settings at: ', 'geczy' ) . '<br/><code>' . $option_file . '</code>', __( 'Error - WP Settings Framework', 'geczy' ) );
+				wp_die( __( 'Could not load settings at: ', 'wcvendors' ) . '<br/><code>' . $option_file . '</code>', __( 'Error - WP Settings Framework', 'wcvendors' ) );
 			}
 		}
 
@@ -365,7 +365,9 @@ if ( !class_exists( 'SF_Settings_API' ) ) {
 			endforeach;
 
 			do_action( $this->id . '_options_updated', $clean, $tabname );
-			add_settings_error( $this->id, 'save_options', __( 'Settings saved.', 'geczy' ), 'updated' );
+			add_settings_error( $this->id, 'save_options', __( 'Settings saved.', 'wcvendors' ), 'updated' );
+
+			update_option( WC_Vendors::$id . '_flush_rules', true ); 
 
 			return apply_filters( $this->id . '_options_on_update', $clean, $tabname );
 		}
@@ -481,7 +483,7 @@ if ( !class_exists( 'SF_Settings_API' ) ) {
 				<p class="submit">
 					<input type="hidden" name="currentTab" value="<?php echo $tabname; ?>">
 					<input type="submit" name="update" class="button-primary"
-						   value="<?php echo sprintf( __( 'Save %s changes', 'geczy' ), $this->tab_headers[ $tabname ] ); ?>"/>
+						   value="<?php echo sprintf( __( 'Save %s changes', 'wcvendors' ), $this->tab_headers[ $tabname ] ); ?>"/>
 				</p>
 			</form> <?php
 
@@ -494,7 +496,7 @@ if ( !class_exists( 'SF_Settings_API' ) ) {
 		private function template_footer()
 		{
 
-			$message = apply_filters( 'wcvendors_footer_msg', __( 'Please help with a <a href="https://wordpress.org/support/view/plugin-reviews/wc-vendors?rate=5#postform" target="top">High Five!</a> | <a href="https://www.wcvendors.com/product/wc-vendors-pro/" target="top">WC Vendors Pro</a> | <a href="https://www.wcvendors.com/product/stripe-commissions-gateway/" target="top">Stripe Commissions & Gateway</a> | <a href="https://www.wcvendors.com/kb/" target="top">KnowledgeBase</a> | <a href="https://www.wcvendors.com/help/" target="top">Help Forums</a>', 'wc-vendors' ) ); 
+			$message = apply_filters( 'wcvendors_footer_msg', __( 'Please help with a <a href="https://wordpress.org/support/view/plugin-reviews/wc-vendors?rate=5#postform" target="top">High Five!</a> | <a href="https://www.wcvendors.com/product/wc-vendors-pro/" target="top">WC Vendors Pro</a> | <a href="https://www.wcvendors.com/product/stripe-commissions-gateway/" target="top">Stripe Commissions & Gateway</a> | <a href="https://www.wcvendors.com/kb/" target="top">KnowledgeBase</a> | <a href="https://www.wcvendors.com/help/" target="top">Help Forums</a>', 'wcvendors' ) ); 
 
 			echo '<div><p>' . $message . '</a></p>'; 
 			echo '</div>';
@@ -666,7 +668,7 @@ if ( !class_exists( 'SF_Settings_API' ) ) {
 
 			</th>
 			<td <?php echo $grouped; ?> >
-		<?php endif; ?>
+			<?php endif; ?>
 
 			<?php foreach ( $header_types as $header ) :
 			if ( $type != $header ) continue; ?>
@@ -786,11 +788,46 @@ if ( !class_exists( 'SF_Settings_API' ) ) {
 
 				if ( $select2 ) : ?>
 					<script type="text/javascript">jQuery(function () {
-							jQuery("#<?php echo $id; ?>").select2({ allowClear: true, placeholder: "<?php _e( 'Select a page...', 'wcvendors' ); ?>", width: '350px' });
+							jQuery("#<?php echo $id; ?>").select2({ allowClear: true, placeholder: "<?php _e( 'Select a page...', 'wcvendors' ); ?>", width: '350px', allowMultiple: true });
 						});</script>
 				<?php endif;
 
 				break;
+
+			case 'multi_select_page':
+
+				// TODO get this working with multiple page selection 
+
+				$selected = ( $value !== false ) ? $value : $std;
+				$selected  = implode( ',', array_keys( $selected ) ); 
+
+				if ( $value == 0 ) $selected = $std; 
+
+				$name = $name . '[]'; 
+
+				$args = array(
+					'name'       => $name,
+					'id'         => $id,
+					'sort_order' => 'ASC',
+					'echo'       => 0,
+					'selected'   => $selected
+				);
+
+				echo str_replace( "'>", "' multiple=\"multiple\"><option></option>", wp_dropdown_pages( $args ) );
+
+				echo '<a href="post.php?post='.$selected.'&action=edit" class="button">'.__( 'Edit Page', 'wcvendors' ).'</a>'; 
+				echo '<a href="'.get_permalink( $selected ). '" class="button">'.__( 'View Page', 'wcvendors' ).'</a>'; 
+
+				echo $description;
+
+				if ( $select2 ) : ?>
+					<script type="text/javascript">jQuery(function () {
+							jQuery("#<?php echo $id; ?>").select2({ allowClear: true, placeholder: "<?php _e( 'Select a page...', 'wcvendors' ); ?>", width: '350px', allowMultiple: true });
+						});</script>
+				<?php endif;
+
+				break;
+
 
 			case 'select':
 

@@ -65,8 +65,6 @@ jQuery( function( $ ){
 
 	$('.cancel_sale_schedule').on( 'click', function() {
 		$('.sale_price_dates_fields').hide();
-		$('#_sale_price_dates_to').val('0000-00-00');
-		$('#_sale_price_dates_from').val('0000-00-00');
 		$(this).hide(); 
 		$('.sale_schedule').show(); 
 		return false;
@@ -843,5 +841,4 @@ jQuery( function( $ ){
 
 		return false;
 	});
-
 });

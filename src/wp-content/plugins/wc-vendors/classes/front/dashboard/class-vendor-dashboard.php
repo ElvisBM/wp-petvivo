@@ -52,7 +52,7 @@ class WCV_Vendor_Dashboard
 				do_action('wcvendors_vendor_ship', $order_id, $user_id);
 				wc_add_notice( __( 'Order marked shipped.', 'wcvendors' ), 'success' );
 				$shop_name = WCV_Vendors::get_vendor_shop_name( $user_id );
-				$order->add_order_note( apply_filters( 'wcvendors_vendor_shipped_note', __( $shop_name . ' has marked as shipped. ', 'wcvendors') ), $user_id ) ; 
+				$order->add_order_note( apply_filters( 'wcvendors_vendor_shipped_note', sprintf( __(  '%s has marked as shipped. ', 'wcvendors'), $shop_name ) ), $user_id, $shop_name ); 
 			} elseif ( false != ( $key = array_search( $user_id, $shippers) ) ) {
 				unset( $shippers[$key] ); // Remove user from the shippers array
  			}
@@ -150,15 +150,14 @@ class WCV_Vendor_Dashboard
 		$vendor_dashboard_page = WC_Vendors::$pv_options->get_option( 'vendor_dashboard_page' );
 		$shop_settings_page    = WC_Vendors::$pv_options->get_option( 'shop_settings_page' );
 
-		if ( is_page( $vendor_dashboard_page ) || is_page( $shop_settings_page ) ) {
+		if ( $vendor_dashboard_page && is_page( $vendor_dashboard_page ) || $shop_settings_page && is_page( $shop_settings_page ) ) {
 			if ( !is_user_logged_in() ) {
 				wp_redirect( get_permalink( woocommerce_get_page_id( 'myaccount' ) ), 303 );
 				exit;
 			}
-			// user is logged, start session only if it's vendor dashboard
-			if ( !session_id() ) session_start();
 		}
-	}
+		
+	} //check_access() 
 
 
 	/**
@@ -341,7 +340,10 @@ class WCV_Vendor_Dashboard
 	{
 		if ( empty( $products ) ) return false;
 
-		$orders_page        = get_permalink( WC_Vendors::$pv_options->get_option( 'orders_page' ) );
+		// This is required to support existing installations after WC 2.6 
+		$orders_page_id 	= (string) WC_Vendors::$pv_options->get_option( 'orders_page' ); 
+		$orders_page_id 	= ( strlen( $orders_page_id ) > 0 ) ? $orders_page_id : WC_Vendors::$pv_options->get_option( 'product_orders_page' ); 
+		$orders_page        = get_permalink( $orders_page_id );
 		$default_commission = WC_Vendors::$pv_options->get_option( 'default_commission' );
 		$total_qty          = $total_cost = 0;
 		$data               = array(
@@ -464,5 +466,49 @@ class WCV_Vendor_Dashboard
 		"; 
 
 		return $js; 
-	}
+	} // wc_st_js() 
+
+
+	/**
+	 * Add custom wcvendors pro css classes 
+	 *
+	 * @since    1.0.0
+	 * @access public 
+	 * 
+	 * @param array $classes - body css classes 
+	 * @return array $classes - body css classes 
+	 */
+	public function body_class( $classes ){ 
+
+		$dashboard_page 	= WC_Vendors::$pv_options->get_option( 'vendor_dashboard_page' ); 
+
+		// This is required to support existing installations after WC 2.6 
+		$orders_page_id 	= WC_Vendors::$pv_options->get_option( 'orders_page' ); 
+		$orders_page_id 	= isset( $orders_page_id ) ? $orders_page_id : WC_Vendors::$pv_options->get_option( 'product_orders_page' ); 
+
+		$orders_page 		= $orders_page_id; 
+		$shop_settings 		= WC_Vendors::$pv_options->get_option( 'shop_settings_page' ); 
+		$terms_page 		= WC_Vendors::$pv_options->get_option( 'terms_to_apply_page' ); 
+
+		if ( is_page( $dashboard_page ) ){ 
+			$classes[] = 'wcvendors wcv-vendor-dashboard-page'; 
+		}
+
+		if ( is_page( $orders_page ) ){ 
+			$classes[] = 'wcvendors wcv-orders-page'; 
+		}
+
+		if ( is_page( $shop_settings ) ){ 
+			$classes[] = 'wcvendors wcv-shop-settings-page'; 
+		}
+
+		if ( is_page( $terms_page ) ){ 
+			$classes[] = 'wcvendors wcv-terms-page'; 
+		}
+
+
+		return $classes; 
+
+
+	} // body_class() 
 }

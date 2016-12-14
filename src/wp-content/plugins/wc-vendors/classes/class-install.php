@@ -30,23 +30,41 @@ class WCV_Install
 			$orders_page = get_post( WC_Vendors::$pv_options->get_option( 'orders_page' ) ); 
 
 			// Only update the page slug for orders if it is called orders 
-			if ( $orders_page->post_name === 'orders' ) { 
+			// This is due to WC 2.6 api changes 
+			if ( is_object( $orders_page ) ) { 
 
-				wp_update_post(
-		            array (
-		                'ID'        => $orders_page->ID,
-		                'post_name' => 'product_orders'
-		            )
-		        );
-				
-				WC_Vendors::$pv_options->update_option( 'db_version', '1.9.0' );	
+				if ( $orders_page && $orders_page->post_name === 'orders' ){ 
+
+					wp_update_post(
+			            array (
+			                'ID'        => $orders_page->ID,
+			                'post_name' => 'product_orders'
+			            )
+			        );
+					
+					WC_Vendors::$pv_options->update_option( 'db_version', '1.9.0' );	
+				} 
 			}
 
-			
+		} else if ( version_compare( $db_version, '1.9.1', '<' ) ) { 
+			remove_role( 'vendor' );
+			add_role( 'vendor', __('Vendor', 'wcvendors') , array(
+											   'assign_product_terms'     => true,
+											   'edit_products'            => true,
+											   'edit_product'             => true,
+											   'edit_published_products'  => false,
+											   'manage_product'           => true,
+											   'publish_products'         => false,
+											   'delete_posts'			  => true, 
+											   'read'                     => true,
+											   'upload_files'             => true,
+											   'view_woocommerce_reports' => true,
+										  ) );
 
-		} 
+			WC_Vendors::$pv_options->update_option( 'db_version', '1.9.1' );	
+		}
 
-	}
+	} // init()
 
 
 	/**
@@ -91,6 +109,7 @@ class WCV_Install
 										   'edit_published_products'  => false,
 										   'manage_product'           => true,
 										   'publish_products'         => false,
+										   'delete_posts'			  => true, 
 										   'read'                     => true,
 										   'upload_files'             => true,
 										   'view_woocommerce_reports' => true,

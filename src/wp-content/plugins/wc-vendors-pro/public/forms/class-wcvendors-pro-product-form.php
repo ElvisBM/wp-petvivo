@@ -208,7 +208,6 @@ class WCVendors_Pro_Product_Form {
 		self::$file_display 				= WC_Vendors::$pv_options->get_option( 'file_display' );
 		self::$form_caps 					= (array) WC_Vendors::$pv_options->get_option( 'product_form_cap' );
 
-
 	} // init() 
 
 
@@ -266,10 +265,10 @@ class WCVendors_Pro_Product_Form {
 	public static function title( $post_id, $product_title ) {
 
 		WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_product_title', array( 
-		 	'post_id' 	=> $post_id, 
-		 	'id'	 	=> 'post_title', 
-		 	'label' 	=> __( 'Product Name', 'wcvendors-pro' ),
-		 	'value' 	=> $product_title, 
+		 	'post_id' 			=> $post_id, 
+		 	'id'	 			=> 'post_title', 
+		 	'label' 			=> __( 'Product Name', 'wcvendors-pro' ),
+		 	'value' 			=> $product_title, 
 		 	'custom_attributes' => array( 
 		 			'data-rules' => 'required|max_length[100]', 
 		 			'data-error' => __( 'Product name is required or is too long.', 'wcvendors-pro' ), 
@@ -296,6 +295,7 @@ class WCVendors_Pro_Product_Form {
 			 	'id' 		=> 'post_content', 
 			 	'label'	 	=> __( 'Product Description', 'wcvendors-pro' ), 
 			 	'value' 	=> $product_description, 
+			 	'placeholder' 		=> __( 'Please add a full description of your product here', 'wcvendors-pro' ), 
 			 	'custom_attributes' => array( 
 		 			'data-rules' => 'required', 
 		 			'data-error' => __( 'Product description is required.', 'wcvendors-pro' )
@@ -319,9 +319,10 @@ class WCVendors_Pro_Product_Form {
 		if ( ! self::$basic_options[ 'short_description' ] ) { 
 
 			 WCVendors_Pro_Form_Helper::textarea( apply_filters( 'wcv_product_short_description', array( 
-			 	'post_id'	=> $post_id, 
-			 	'id' 		=> 'post_excerpt', 
-			 	'label'	 	=> __( 'Product Short Description', 'wcvendors-pro' ), 
+			 	'post_id'			=> $post_id, 
+			 	'id' 				=> 'post_excerpt', 
+			 	'label'	 			=> __( 'Product Short Description', 'wcvendors-pro' ), 
+			 	'placeholder' 		=> __( 'Please add a brief description of your product here', 'wcvendors-pro' ), 
 			 	'value' 	=> $product_short_description 
 			 	) )
 			 );
@@ -614,7 +615,7 @@ class WCVendors_Pro_Product_Form {
 		WCVendors_Pro_Form_Helper::select2( apply_filters( 'wcv_product_tags_dropdown', 
 			array( 
 				'post_id'			=> $post_id, 
-				'id' 				=> 'product_tags[]', 
+				'id' 				=> 'product_tag[]', 
 				'taxonomy'			=> 'product_tag', 
 				'show_option_none'	=> $show_option_none,
 				'taxonomy_args'		=> array( 
@@ -626,7 +627,6 @@ class WCVendors_Pro_Product_Form {
 				) 
 			)
 		);
-
 		
 	} // tags_select_limited()
 
@@ -867,7 +867,7 @@ class WCVendors_Pro_Product_Form {
 
 			$readonly = ( self::$general_options[ 'download_file_url' ] ) ? 'readonly' : ''; 
 
-			include_once('partials/wcvendors-pro-downloadable-files.php');
+			include_once( apply_filters( 'wcvendors_pro_product_form_download_files_path', 'partials/wcvendors-pro-downloadable-files.php' ) );
 		} 
 
 	} // download_files()
@@ -885,7 +885,7 @@ class WCVendors_Pro_Product_Form {
 
 			$form_caps = (array) WC_Vendors::$pv_options->get_option( 'product_form_cap' );
 
-			include_once('partials/wcvendors-pro-attributes.php');
+			include_once( apply_filters( 'wcvendors_pro_product_form_product_attributes_path', 'partials/wcvendors-pro-attributes.php' ) );
 		} 
 
 	} // download_files()
@@ -1679,7 +1679,7 @@ class WCVendors_Pro_Product_Form {
 
 		$css_class = implode(' ', $css_classes ); 
 
-		include('partials/wcvendors-pro-product-meta-tabs.php');
+		include( apply_filters( 'wcvendors_pro_product_form_product_meta_tabs_path', 'partials/wcvendors-pro-product-meta-tabs.php' ) );
 
 	} //product_meta_tabs 
 
@@ -1969,7 +1969,7 @@ class WCVendors_Pro_Product_Form {
 
 		$shipping_rates = get_post_meta( $post_id, '_wcv_shipping_rates', true ); 
 
-		include_once('partials/wcvendors-pro-shipping-table.php');
+		include_once( apply_filters( 'wcvendors_pro_product_form_shipping_rate_table_path', 'partials/wcvendors-pro-shipping-table.php' ) );
 
 	} // download_files()
 
@@ -2001,7 +2001,7 @@ class WCVendors_Pro_Product_Form {
 
 		$variations_count       = absint( $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(ID) FROM $wpdb->posts WHERE post_parent = %d AND post_type = 'product_variation' AND post_status IN ('publish', 'private')", $post_id ) ) );
 		
-		include_once( 'partials/wcvendors-pro-product-variations.php' ); 
+		include_once( apply_filters( 'wcvendors_pro_product_form_product_variations_path', 'partials/wcvendors-pro-product-variations.php' ) ); 
 		
 	} // product_variations() 
 

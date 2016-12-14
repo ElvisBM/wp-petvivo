@@ -2,7 +2,7 @@
 var gulp = require('gulp'),
     sass = require('gulp-ruby-sass'),
     autoprefixer = require('gulp-autoprefixer'),
-    minifycss = require('gulp-minify-css'),
+    minifycss = require('gulp-clean-css'),
     jshint = require('gulp-jshint'),
     uglify = require('gulp-uglify'),
     imagemin = require('gulp-imagemin'),
@@ -11,18 +11,20 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     cache = require('gulp-cache'),
     livereload = require('gulp-livereload'),
-    del = require('del');
+    del = require('del'), 
+    wpPot = require('gulp-wp-pot'), 
+    sort = require('gulp-sort');
 
 // Public 
 gulp.task('styles-public', function() {
-  return gulp.src( ['public/assets/css/src/dashboard.scss', 'public/assets/css/src/store.scss'] )
-    .pipe(sass({'sourcemap=none': true, style: 'compact' }))
+    return sass( 'public/assets/css/src/*.scss', { 'sourcemap=none': true, style: 'compact' } )
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
     .pipe(gulp.dest('public/assets/css'))
     .pipe(rename({suffix: '.min'}))
     .pipe(minifycss())
     .pipe(gulp.dest('public/assets/css')); 
 });
+
 
 gulp.task('js-public', function() {
   return gulp.src('public/assets/js/src/*.js')
@@ -34,10 +36,9 @@ gulp.task('js-public', function() {
 
 // Admin  
 gulp.task('styles-admin', function() {
-    return gulp.src( ['public/assets/css/src/dashboard.scss', 'public/assets/css/src/store.scss'] )
-    .pipe(sass({'sourcemap=none': true, style: 'compact' }))
+   return sass( 'admin/assets/css/src/*.scss', { 'sourcemap=none': true, style: 'compact' } )
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
-    .pipe(gulp.dest('public/assets/css')); 
+    .pipe(gulp.dest('admin/assets/css')); 
 });
 
 gulp.task('js-admin', function() {
@@ -58,8 +59,7 @@ gulp.task( 'watch', function() {
 
 // Includes 
 gulp.task('styles-include', function() {
-  return gulp.src( ['includes/assets/lib/select2/src/css/select2.scss'] )
-    .pipe(sass({'sourcemap=none': true, style: 'compact' }))
+  return sass( 'sass', { 'sourcemap=none': true, style: 'compact' } )
     .pipe(autoprefixer('last 2 version', 'safari 5', 'ie 8', 'ie 9', 'opera 12.1', 'ios 6', 'android 4'))
     .pipe(gulp.dest('includes/assets/css'))
     .pipe(rename({suffix: '.min'}))
@@ -75,5 +75,20 @@ gulp.task('js-include', function() {
 });
 
 
+// i18n files 
+gulp.task('wcvpro-pot', function () {
+    return gulp.src([ 'admin/**/*.php', 'public/**/*.php', 'includes/**/*.php', 'templates/**/*.php' ] )
+        .pipe( sort() )
+        .pipe( wpPot( {
+            domain: 'wcvendors-pro',
+            destFile:'wcvendors-pro.pot',
+            package: 'wcvendors-pro',
+            bugReport: 'https://www.wcvendors.com',
+            lastTranslator: 'Jamie Madden <support@wcvendors.com>',
+            team: 'WC Vendors <support@wcvendors.com>'
+        } ) )
+        .pipe( gulp.dest('languages') );
+});
 
-gulp.task('default', ['styles-public', 'js-public', 'styles-admin', 'js-admin', 'styles-include', 'js-include']);
+
+gulp.task('default', ['styles-public', 'js-public', 'styles-admin', 'js-admin', 'styles-include', 'js-include', 'wcvpro-pot' ] );

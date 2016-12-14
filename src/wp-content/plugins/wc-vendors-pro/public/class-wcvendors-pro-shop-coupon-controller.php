@@ -120,7 +120,7 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 		}
 
 		// Update coupon Post meta from form 
-		$coupon_meta = array_intersect_key( $_POST, array_flip( preg_grep( '/^_wcv_coupon_post_meta_/', array_keys( $_POST ) ) ) );
+		$coupon_meta = array_intersect_key( $_POST, array_flip( preg_grep( '/^_wcv_coupon_post_meta_/', array_keys( $_POST ) ) ) ); 
 
 		if ( !empty( $coupon_meta ) ) { 
 
@@ -128,10 +128,14 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 
 				$key = str_replace( '_wcv_coupon_post_meta_', '', $key ); 
 				if ( in_array( $key, $this->coupon_meta_defs() ) ) { 
-					update_post_meta( $coupon, $key, $value ); 	
-				} else { 
-					delete_post_meta( $coupon, $key ); 	
-				}
+
+					if ( ! empty( $value ) ){ 
+						update_post_meta( $coupon, $key, $value ); 	
+					} else { 
+						delete_post_meta( $coupon, $key ); 	
+					}
+					
+				} 
 			}
 		} 
 
@@ -243,7 +247,7 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 					'expiry_date'  	=> __( 'Expiry', 			'wcvendors-pro' ), 
 		); 
 
-		return $columns;
+		return apply_filters( 'wcv_shop_coupon_table_columns', $columns ); 
 
 	} // table_columns() 
 
@@ -288,13 +292,14 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 			$new_row->product_ids	= $products_text; 
 			$new_row->usage_limts	= $usage_display; 
 			$new_row->expiry_date	= date_i18n( get_option( 'date_format' ), strtotime( reset( $coupon_meta[ 'expiry_date' ] ) ) ); 
+			$new_row->coupon_meta   = $coupon_meta; 
 
 			$new_rows[] = $new_row; 
 
 
 		} 
 
-		return $new_rows; 
+		return apply_filters( 'wcv_shop_coupon_table_rows' , $new_rows ); 
 
 	} // table_rows() 
 
@@ -309,7 +314,8 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 	public function table_action_column( $column ) {
 
 		$new_column = 'coupon'; 
-		return $new_column; 
+
+		return apply_filters( 'wcv_shop_coupon_table_action_column', $new_column ); 
 
 	}
 
@@ -344,7 +350,7 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 			$notice = __("You cannot add coupons until you've added a product. ", 'wcvendors-pro' ); 
 		}
 
-		return $notice; 
+		return apply_filters( 'wcv_shop_coupon_table_no_data_notice', $notice ); 
 
 	}
 
@@ -367,7 +373,7 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 
 			$add_url = 'edit'; 
 
-			include('partials/shop_coupon/wcvendors-pro-table-shop-coupon-table-actions.php');
+			include( apply_filters( 'wcvendors_pro_shop_coupon_table_actions_path', 'partials/shop_coupon/wcvendors-pro-table-shop-coupon-table-actions.php' ) );
 		}
 		
 	} //table_actions()
@@ -466,7 +472,7 @@ class WCVendors_Pro_Shop_Coupon_Controller {
 
 		    case 'vendor_store' :	
 
-		    	include( 'partials/shop_coupon/wcvendors-pro-shop-coupon-admin-column.php' ); 
+		    	include( apply_filters( 'wcvendors_pro_shop_coupon_admin_column_path', 'partials/shop_coupon/wcvendors-pro-shop-coupon-admin-column.php' ) ); 
 		        break;
 
 		    default :

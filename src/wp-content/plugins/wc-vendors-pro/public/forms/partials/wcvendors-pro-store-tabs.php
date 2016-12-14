@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Stpre Tabs 
+ * Store Tabs 
  *
  * This file is used to output the store tabs on settings and signup page  
  *

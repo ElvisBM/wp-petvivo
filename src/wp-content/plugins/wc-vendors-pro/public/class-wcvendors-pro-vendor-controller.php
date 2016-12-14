@@ -198,11 +198,11 @@ class WCVendors_Pro_Vendor_Controller {
 		$sql = "
 			SELECT id, order_id, product_id, vendor_id, total_due, total_shipping, qty, tax, status, time
 			FROM {$wpdb->prefix}pv_commission as order_items
-			WHERE   vendor_id = {$vendor_id}"; 
+			WHERE vendor_id = {$vendor_id} "; 
 
-		if ( !$reports ) { 
+		if ( $reports ) { 
 			$sql .= 
-			"AND     status != 'reversed'"; 
+			" AND status != 'reversed'"; 
 		}
 
 		if ( $date_range != null ) { 
@@ -216,6 +216,8 @@ class WCVendors_Pro_Vendor_Controller {
 		$sql .= "
 			ORDER BY time DESC;
 		";
+
+		$sql = apply_filters( 'wcv_get_orders_all_sql', $sql ); 
 
 		// Get all orders for the vendor id supplied except for reversed commission
 		$all_orders = $wpdb->get_results( $sql );
@@ -223,11 +225,11 @@ class WCVendors_Pro_Vendor_Controller {
 		$sql = "
 			SELECT DISTINCT( order_id )
 			FROM {$wpdb->prefix}pv_commission as unqiue_orders
-			WHERE   vendor_id = {$vendor_id}"; 
+			WHERE   vendor_id = {$vendor_id} "; 
 
-		if ( !$reports ) { 
+		if ( $reports ) { 
 			$sql .= 
-			"AND     status != 'reversed'"; 
+			" AND     status != 'reversed'"; 
 		}
 
 		if ( $date_range != null ) { 
@@ -241,6 +243,8 @@ class WCVendors_Pro_Vendor_Controller {
 		$sql .= "
 			ORDER BY time DESC;
 		";
+
+		$sql = apply_filters( 'wcv_get_orders_unqiue_sql', $sql ); 
 
 		$unique_orders = $wpdb->get_results( $sql ); 
 
@@ -282,6 +286,7 @@ class WCVendors_Pro_Vendor_Controller {
 
 					// // Ensure that only the vendor products are in the order 
 					foreach ( $order_items as $key => $order_item ) {
+
 						if ( $order_item ['product_id' ] == $vendor_product->product_id || $order_item[ 'variation_id' ] == $vendor_product->product_id ) { 
 							$item_id 							= ( $order_item[ 'variation_id' ] ) ? $order_item[ 'variation_id' ] : $order_item ['product_id' ]; 
 							$order_item[ 'commission_total' ] 	= $vendor_product->total_due;
@@ -517,7 +522,7 @@ class WCVendors_Pro_Vendor_Controller {
 	 */
 	public function redirect_to_pro_dashboard( $redirect ) { 
 
-		$terms = $_POST['agree_to_terms']; 
+		$terms = isset( $_POST['agree_to_terms'] ) ? $_POST['agree_to_terms'] : ''; 
 
 		$dashboard_url = WCVendors_Pro_Dashboard::get_dashboard_page_url() . '?terms='.$terms; 
 		return apply_filters( 'wcv_vendor_signup_redirect', $dashboard_url );
@@ -569,6 +574,7 @@ class WCVendors_Pro_Vendor_Controller {
 		$youtube_url 		= ( isset( $_POST[ '_wcv_youtube_url' ] ) ) 		? trim( $_POST[ '_wcv_youtube_url' ] )			: ''; 
 		$pinterest_url 		= ( isset( $_POST[ '_wcv_pinterest_url' ] ) ) 		? trim( $_POST[ '_wcv_pinterest_url' ] )		: ''; 
 		$googleplus_url 	= ( isset( $_POST[ '_wcv_googleplus_url' ] ) ) 		? trim( $_POST[ '_wcv_googleplus_url' ] )		: ''; 
+		$snapchat_username 	= ( isset( $_POST[ '_wcv_snapchat_username' ] ) ) 	? trim( $_POST[ '_wcv_snapchat_username' ] )		: ''; 
 		$address1 			= ( isset( $_POST[ '_wcv_store_address1' ] ) ) 		? trim( $_POST[ '_wcv_store_address1' ] ) 		: '';
 		$address2 			= ( isset( $_POST[ '_wcv_store_address2' ] ) ) 		? trim( $_POST[ '_wcv_store_address2' ] ) 		: '';
 		$city	 			= ( isset( $_POST[ '_wcv_store_city' ] ) ) 			? trim( $_POST[ '_wcv_store_city' ] ) 			: '';
@@ -582,12 +588,12 @@ class WCVendors_Pro_Vendor_Controller {
 
 		$shipping_fee_national				= ( isset( $_POST[ '_wcv_shipping_fee_national' ] ) ) 				? trim( $_POST[ '_wcv_shipping_fee_national' ] ) 				: '';
 		$shipping_fee_international			= ( isset( $_POST[ '_wcv_shipping_fee_international' ] ) ) 			? trim( $_POST[ '_wcv_shipping_fee_international' ] ) 			: '';
-		$shipping_fee_national_qty			= ( isset( $_POST[ '_wcv_shipping_fee_national_qty' ] ) ) 			? trim( $_POST[ '_wcv_shipping_fee_national_qty' ] ) 			: '';
-		$shipping_fee_international_qty		= ( isset( $_POST[ '_wcv_shipping_fee_international_qty' ] ) ) 		? trim( $_POST[ '_wcv_shipping_fee_international_qty' ] ) 		: '';
-		$shipping_fee_national_free			= ( isset( $_POST[ '_wcv_shipping_fee_national_free' ] ) ) 			? trim( $_POST[ '_wcv_shipping_fee_national_free' ] ) 			: '';
-		$shipping_fee_international_free	= ( isset( $_POST[ '_wcv_shipping_fee_international_free' ] ) ) 	? trim( $_POST[ '_wcv_shipping_fee_international_free' ] ) 		: '';
-		$shipping_fee_national_disable		= ( isset( $_POST[ '_wcv_shipping_fee_national_disable' ] ) ) 		? trim( $_POST[ '_wcv_shipping_fee_national_disable' ] ) 		: '';
-		$shipping_fee_international_disable	= ( isset( $_POST[ '_wcv_shipping_fee_international_disable' ] ) ) 	? trim( $_POST[ '_wcv_shipping_fee_international_disable' ] ) 	: '';
+		$shipping_fee_national_qty			= ( isset( $_POST[ '_wcv_shipping_fee_national_qty' ] ) ) 			? 'yes' 	: '';
+		$shipping_fee_international_qty		= ( isset( $_POST[ '_wcv_shipping_fee_international_qty' ] ) ) 		? 'yes' 	: '';
+		$shipping_fee_national_free			= ( isset( $_POST[ '_wcv_shipping_fee_national_free' ] ) ) 			? 'yes'		: '';
+		$shipping_fee_international_free	= ( isset( $_POST[ '_wcv_shipping_fee_international_free' ] ) ) 	? 'yes'		: '';
+		$shipping_fee_national_disable		= ( isset( $_POST[ '_wcv_shipping_fee_national_disable' ] ) ) 		? 'yes'		: '';
+		$shipping_fee_international_disable	= ( isset( $_POST[ '_wcv_shipping_fee_international_disable' ] ) ) 	? 'yes' 	: '';
 		$product_handling_fee   			= ( isset( $_POST[ '_wcv_shipping_product_handling_fee' ] ) ) 		? trim( $_POST[ '_wcv_shipping_product_handling_fee' ] ) 		: '';
 		$shipping_policy					= ( isset( $_POST[ '_wcv_shipping_policy' ] ) ) 					? trim( $_POST[ '_wcv_shipping_policy' ] ) 						: '';
 		$return_policy						= ( isset( $_POST[ '_wcv_shipping_return_policy' ] ) ) 				? trim( $_POST[ '_wcv_shipping_return_policy' ] ) 				: '';
@@ -737,6 +743,14 @@ class WCVendors_Pro_Vendor_Controller {
 			delete_user_meta( $vendor_id, '_wcv_googleplus_url' ); 
 		}
 
+		// Snapchat Username 
+		if ( isset( $snapchat_username ) && '' !== $snapchat_username ) { 
+			update_user_meta( $vendor_id, '_wcv_snapchat_username', 	$snapchat_username ); 
+		} else { 
+			delete_user_meta( $vendor_id, '_wcv_snapchat_username' ); 
+		}
+
+
 		$wcvendors_shipping = array( 
 			'national' 						=> $shipping_fee_national, 
 			'national_qty_override'			=> $shipping_fee_national_qty,
@@ -880,10 +894,62 @@ class WCVendors_Pro_Vendor_Controller {
 					'title'				=> __( 'Ships From: ', 'wcvendors-pro' )
 				) ); 
 
-			include('partials/product/wcvendors-pro-ships-from.php'); 
+			include( apply_filters( 'wcvendors_pro_vendor_product_ships_from_path', 'partials/product/wcvendors-pro-ships-from.php' ) ); 
 		} 
 
 	} // product_ships_from() 
+
+
+	/**
+	 *  Hook into the single product page to vendor tools 
+	 * 
+	 * @since    1.0.0
+	 * @param 	 int 		$product_id  the product to hook into 
+	 */
+	public function enable_vendor_tools( $product_id ) { 
+
+		global $post, $product;
+
+		if ( get_current_user_id() == $product->post->post_author && WCV_Vendors::is_vendor( get_current_user_id() ) ) { 
+
+			$can_edit 				= WC_Vendors::$pv_options->get_option( 'can_edit_published_products');
+			$disable_delete 		= WC_Vendors::$pv_options->get_option( 'delete_product_cap');
+			$disable_duplicate 		= WC_Vendors::$pv_options->get_option( 'duplicate_product_cap');
+			$tools_label 			= apply_filters( 'wcv_product_tools_label', __( 'Tools: ', 'wcvendors-pro') ); 
+
+			$actions = apply_filters( 'wcv_product_single_actions' , array( 
+				'edit'  	=> 
+						apply_filters( 'wcv_product_single_actions_edit', array(  
+							'label' 	=> __( 'Edit', 	'wcvendors-pro' ), 
+							'class'		=> '', 
+							'url' 		=> WCVendors_Pro_Dashboard::get_dashboard_page_url( 'product/edit/' . $product->id ), 
+						) ), 
+				'duplicate'  	=> 
+						apply_filters( 'wcv_product_single_actions_duplicate', array(  
+							'label' 	=> __( 'Duplicate', 	'wcvendors-pro' ), 
+							'class'		=> '', 
+							'url' 		=> WCVendors_Pro_Dashboard::get_dashboard_page_url( 'product/duplicate/' . $product->id ), 
+						) ), 
+				'delete'  	=> 
+						apply_filters( 'wcv_product_single_actions_delete', array( 
+							'label' 	=> __( 'Delete', 'wcvendors-pro' ), 
+							'class'		=> 'confirm_delete', 
+							'custom'	=> array( 'data-confirm_text' => __( 'Delete product?', 'wcvendors-pro')  ), 
+							'url' 		=> WCVendors_Pro_Dashboard::get_dashboard_page_url( 'product/delete/' . $product->id ), 
+						) ), 
+			) ); 
+
+			// Abide by dashboard permissions 
+			if ( !$can_edit ) {  unset( $actions[ 'edit' ] ); } 
+			if ( $disable_delete ) unset( $actions[ 'delete' ] ); 
+			if ( $disable_duplicate ) unset( $actions[ 'duplicate' ] ); 
+
+			if ( ! empty( $actions ) ) { 
+				include( apply_filters( 'wcvendors_pro_vendor_single_product_tools_path', 'partials/product/wcvendors-pro-single-product-tools.php' ) ); 
+			}
+		} 
+
+	} // edit_product_link() 
 
 
 	/**

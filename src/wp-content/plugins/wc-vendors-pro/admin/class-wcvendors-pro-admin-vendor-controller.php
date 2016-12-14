@@ -63,9 +63,6 @@ class WCVendors_Pro_Admin_Vendor_Controller {
 	 */
 	public function get_pro_user_meta_fields( $user ){ 
 
-		$vendor_meta 		= array_map( function( $a ){ return $a[0]; }, get_user_meta( $user->ID ) );
-		$vendor_shipping	= unserialize( $vendor_meta['_wcv_shipping'] ); 
-
 		return $fields = apply_filters( 'wcv_custom_user_fields', array( 
 			'store_general' => array( 
 				'title'  	=> __( 'Store General' ), 	
@@ -117,7 +114,7 @@ class WCVendors_Pro_Admin_Vendor_Controller {
 						'type'        => 'select',
 						'options'     => array( '' => __( 'Select a country&hellip;', 'wcvendors-pro' ) ) + WC()->countries->get_allowed_countries()
 					),
-					'_wcv_shipping_state' => array(
+					'_wcv_store_state' => array(
 						'label'       => __( 'State/County', 'wcvendors-pro' ),
 						'description' => __( 'State/County or state code', 'wcvendors-pro' ),
 						'class'       => 'js_field-state'
@@ -202,8 +199,8 @@ class WCVendors_Pro_Admin_Vendor_Controller {
 
 		$user = get_user_by( 'id', $vendor_id ); 
 
-		if ( ! WCV_Vendors::is_vendor( $user->ID ) && ! WCV_Vendors::is_pending( $user->ID ) ) { return; } 
-
+		if ( ! WCV_Vendors::is_pending( $vendor_id ) && ! WCV_Vendors::is_vendor(  $vendor_id ) ) { return; }
+		
 		$save_fields = $this->get_pro_user_meta_fields( $user );
 
 		foreach ( $save_fields as $fieldset ) {
@@ -211,7 +208,16 @@ class WCVendors_Pro_Admin_Vendor_Controller {
 			foreach ( $fieldset['fields'] as $key => $field ) {
 
 				if ( isset( $_POST[ $key ] ) ) {
-					update_user_meta( $vendor_id, $key, wc_clean( $_POST[ $key ] ) );
+
+					// Set the correct value for a check box
+					if ( array_key_exists( 'type', $field ) && 'checkbox' == $field[ 'type' ] ) { 
+						$value = 'yes'; 
+					} else { 
+						$value = $_POST[ $key ]; 
+					}
+
+					update_user_meta( $vendor_id, $key, wc_clean( $value ) );
+
 				} else { 
 					delete_user_meta( $vendor_id, $key );
 				}
@@ -250,7 +256,7 @@ class WCVendors_Pro_Admin_Vendor_Controller {
 					'ID', 'user_login', 
 				) 
 			) );
-			include( 'partials/vendor/wcvendors-pro-vendor-dropdown.php' ); 
+			include( apply_filters( 'wcvendors_pro_restrict_manage_posts_path', 'partials/vendor/wcvendors-pro-vendor-dropdown.php' ) ); 
 			echo $output;
 		}
 

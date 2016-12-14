@@ -301,6 +301,9 @@ class WCVendors_Pro_Reports_Controller {
 	 */
 	public function recent_orders_table( ){ 
 
+		$wc_prd_vendor_options 	= get_option( 'wc_prd_vendor_options' ); 
+		$shipping_disabled		= ( isset( $wc_prd_vendor_options[ 'shipping_management_cap' ] ) ) ? $wc_prd_vendor_options[ 'shipping_management_cap' ] : true;
+
 		// Get the last 10 recent orders 
 		$max_orders = apply_filters( 'wcv_recent_orders_max', 9 ); 
 
@@ -314,9 +317,9 @@ class WCVendors_Pro_Reports_Controller {
 		// Set the columns 
 		$columns = array( 
 			'ID' 			=> __( 'ID', 		'wcvendors-pro' ), 
-			'order_number'	=> __( 'Order #', 	'wcvendors-pro' ),
-			'product'  		=> __( 'Details', 	'wcvendors-pro' ),
-			'order_date'  	=> __( 'Date', 		'wcvendors-pro' ), 
+			'order_number'	=> __( 'Order', 	'wcvendors-pro' ),
+			'product'  		=> __( 'Products', 	'wcvendors-pro' ),
+			'totals'  		=> __( 'Totals', 	'wcvendors-pro' ), 
 		); 
 		$recent_order_table->set_columns( $columns ); 
 
@@ -324,26 +327,45 @@ class WCVendors_Pro_Reports_Controller {
 		$rows = array(); 
 
 		if ( !empty( $recent_orders ) ){ 
+
 			foreach ( $recent_orders as $order ) {
 
 				$products_html 	= ''; 
+				$totals_html = ''; 
+				$total_products = 0; 
 
 				// Make sure the order exists before attempting to loop over it. 
 				if ( is_object( $order->order ) ) { 
 
+					$total_products = count( $order->order_items ); 
+
 					// Get products to output 
 					foreach ( $order->order_items as $key => $item ) { 
+
 							// May need to fix for variations 
-							$products_html .= '<strong>'. $item['qty'] . ' x ' . $item['name'] . '</strong><br />'.woocommerce_price( $order->commission_total ); 
+							$products_html 	.= '<strong>'. $item['qty'] . ' x ' . $item['name'] . '</strong>'; 
+							$totals_html 	.= woocommerce_price( $item[ 'commission_total' ] ); 
+							if ( $total_products > 1 ) { 
+								$products_html .= '<br />'; 
+								$totals_html .= '<br />'; 
+							} 
+
 					}
 				} 
 
+
+				if ( ! $shipping_disabled ){ 
+
+					$products_html 	.=  ( $total_products == 1  ) ? '<br /><strong>' . __( 'Shipping', 'wcvendors-pro' ) . '</strong>' : '<strong>' . __( 'Shipping', 'wcvendors-pro' ) . '</strong>'; ; 
+					$totals_html 	.=  ( $total_products == 1  ) ? '<br />' . woocommerce_price( $order->total_shipping ) : woocommerce_price( $order->total_shipping ); 
+				}
+
 				$new_row = new stdClass(); 
 
-				$new_row->ID			= $order->order_id;
-				$new_row->order_number	= $order->order->get_order_number(); 
+				$new_row->ID			= $order->order_id; 
+				$new_row->order_number	= $order->order->get_order_number()  . '<br />' . date_i18n( 'Y-m-d', strtotime( $order->recorded_time ) );  
 				$new_row->product		= $products_html;
-				$new_row->order_date	= date_i18n( 'Y-m-d', strtotime( $order->recorded_time ) ); 
+				$new_row->totals		= $totals_html; 
 				
 				$rows[] = $new_row; 
 
@@ -463,7 +485,7 @@ class WCVendors_Pro_Reports_Controller {
 		WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_dashboard_start_date_input', array( 
 			'id' 			=> '_wcv_dashboard_start_date_input', 
 			'label' 		=> __( 'Start Date', 'wcvendors-pro' ), 
-			'class'			=> 'wcv-datepicker no_limit', 
+			'class'			=> 'wcv-datepicker', 
 			'value' 		=> date("Y-m-d", $this->start_date), 
 			'placeholder'	=> 'YYYY-MM-DD',  
 			'wrapper_start' 	=> '<div class="all-66 tiny-50"><div class="wcv-cols-group wcv-horizontal-gutters"><div class="all-50 tiny-100">',
@@ -479,7 +501,7 @@ class WCVendors_Pro_Reports_Controller {
 		WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_dashboard_end_date_input', array( 
 			'id' 			=> '_wcv_dashboard_end_date_input', 
 			'label' 		=> __( 'End Date', 'wcvendors-pro' ), 
-			'class'			=> 'wcv-datepicker no_limit', 
+			'class'			=> 'wcv-datepicker', 
 			'value' 		=> date("Y-m-d", $this->end_date ), 
 			'placeholder'	=> 'YYYY-MM-DD',  
 			'wrapper_start' 	=> '<div class="all-50 tiny-100">',

@@ -105,6 +105,7 @@ class WCVendors_Pro {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->define_shared_hooks();
+
 	}
 
 	/**
@@ -221,9 +222,11 @@ class WCVendors_Pro {
 		$this->loader->add_action( 'admin_enqueue_scripts',					$this->wcvendors_pro_admin, 'enqueue_scripts' );
 		$this->loader->add_filter( 'wcvendors_option_updates',				$this->wcvendors_pro_admin, 'options_updated', 10, 2 );
 		
-		$this->loader->add_action( 'init', 								$this->wcvendors_pro_admin, 'admin_lockout' );	
-		$this->loader->add_action( 'woocommerce_system_status_report', 	$this->wcvendors_pro_admin, 'wcvendors_pro_system_status' );	
-		$this->loader->add_action( 'woocommerce_system_status_report', 	$this->wcvendors_pro_admin, 'wcvendors_pro_template_status' );	
+		$this->loader->add_action( 'init', 									$this->wcvendors_pro_admin, 'admin_lockout' );	
+		$this->loader->add_action( 'woocommerce_system_status_report', 		$this->wcvendors_pro_admin, 'wcvendors_pro_system_status' );	
+		$this->loader->add_action( 'woocommerce_system_status_report', 		$this->wcvendors_pro_admin, 'wcvendors_pro_template_status' );	
+
+		$this->loader->add_filter( 'woocommerce_debug_tools',				$this->wcvendors_pro_admin, 'wc_pro_tools' );
 	
 		// @todo replace this with the plugin_basename once work out how to correct the path to wcvendors-pro instead of wc-vendors-pro
 		$this->loader->add_action( 'plugin_action_links_'. $plugin_basename, 	$this->wcvendors_pro_admin, 	'add_action_links' );
@@ -292,10 +295,12 @@ class WCVendors_Pro {
 		$pro_store_header		= ( isset( $wc_prd_vendor_options[ 'vendor_store_header_type' ] ) ) ? $wc_prd_vendor_options[ 'vendor_store_header_type' ] : ''; 
 		$shop_store_header		= ( isset( $wc_prd_vendor_options[ 'store_shop_headers' ] ) && $wc_prd_vendor_options[ 'store_shop_headers' ] ) ? true : false; 
 		$single_store_header	= ( isset( $wc_prd_vendor_options[ 'store_single_headers' ] ) && $wc_prd_vendor_options[ 'store_single_headers' ] ) ? true : false; 
-
+		$single_product_tools	= ( isset( $wc_prd_vendor_options[ 'single_product_tools' ] ) ) ? $wc_prd_vendor_options[ 'single_product_tools' ] : false;
+		
 		// Public Class 
-		$this->loader->add_action( 'wp_enqueue_scripts', 	$this->wcvendors_pro_public, 		'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', 	$this->wcvendors_pro_public, 		'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', 	$this->wcvendors_pro_public, 		'enqueue_styles' 	);
+		$this->loader->add_action( 'wp_enqueue_scripts', 	$this->wcvendors_pro_public, 		'enqueue_scripts' 	);
+		$this->loader->add_filter( 'body_class', 			$this->wcvendors_pro_public, 		'body_class' 		);
 
 		// WCVendors Pro Dashboard 
 		$this->loader->add_action( 'template_redirect', 	$this->wcvendors_pro_dashboard, 	'check_permission' );
@@ -309,6 +314,7 @@ class WCVendors_Pro {
 		// Product controller 
 		$this->loader->add_action( 'init', 										$this->wcvendors_pro_product_controller, 	'process_submit' );
 		$this->loader->add_action( 'template_redirect', 						$this->wcvendors_pro_product_controller, 	'process_delete' );
+		$this->loader->add_action( 'template_redirect', 						$this->wcvendors_pro_product_controller, 	'process_duplicate' );
 		$this->loader->add_action( 'template_redirect', 						$this->wcvendors_pro_product_form, 	'init' );
 		$this->loader->add_filter( 'wcv_product_gallery_options', 				$this->wcvendors_pro_product_form, 	'product_max_gallery_count' );
 
@@ -332,14 +338,15 @@ class WCVendors_Pro {
 		$this->loader->add_action( 'wp_ajax_wcv_json_link_all_variations', 			$this->wcvendors_pro_product_controller, 'json_link_all_variations' );
 
 		// Orders controller 
-		$this->loader->add_filter( 'wcvendors_pro_table_action_column_order',	$this->wcvendors_pro_order_controller, 	'table_action_column' );
-		$this->loader->add_filter( 'wcvendors_pro_table_before_order',			$this->wcvendors_pro_order_controller, 	'table_actions' );
-		$this->loader->add_filter( 'wcvendors_pro_table_no_data_notice_order',  $this->wcvendors_pro_order_controller,  'table_no_data_notice' );
-		$this->loader->add_action( 'template_redirect', 						$this->wcvendors_pro_order_controller, 	'process_submit' );
-
-		// Shop Coupon controller 
-		$this->loader->add_action( 'template_redirect',							$this->wcvendors_pro_shop_coupon_controller, 	'process_submit' );
-		$this->loader->add_action( 'template_redirect', 						$this->wcvendors_pro_shop_coupon_controller, 	'process_delete' );
+		$this->loader->add_filter( 'wcvendors_pro_table_action_column_order',		$this->wcvendors_pro_order_controller, 	'table_action_column' );
+		$this->loader->add_filter( 'wcvendors_pro_table_before_order',				$this->wcvendors_pro_order_controller, 	'table_actions' );
+		$this->loader->add_filter( 'wcvendors_pro_table_no_data_notice_order', 	 	$this->wcvendors_pro_order_controller,  'table_no_data_notice' );
+		$this->loader->add_action( 'template_redirect', 							$this->wcvendors_pro_order_controller, 	'process_submit' );
+		$this->loader->add_action( 'template_redirect', 							$this, 	'wc_filter_address_hook' );
+	
+		// Shop Coupon controller 	
+		$this->loader->add_action( 'template_redirect',								$this->wcvendors_pro_shop_coupon_controller, 	'process_submit' );
+		$this->loader->add_action( 'template_redirect', 							$this->wcvendors_pro_shop_coupon_controller, 	'process_delete' );
 		
 		// Shop coupon table 
 		$this->loader->add_filter( 'wcvendors_pro_table_columns_shop_coupon', 		$this->wcvendors_pro_shop_coupon_controller, 	'table_columns' );
@@ -390,6 +397,11 @@ class WCVendors_Pro {
 			$this->loader->add_action( 'woocommerce_product_meta_start', 		$this->wcvendors_pro_vendor_controller, 	'product_ships_from', 9 );
 		}
 
+		// Single product page vendor tools
+		if ( $single_product_tools ){ 
+			$this->loader->add_action( 'woocommerce_product_meta_start', 		$this->wcvendors_pro_vendor_controller, 	'enable_vendor_tools', 8 );
+		}
+		
 		// Settings and signup form
 		$this->loader->add_action( 'template_redirect', 						$this->wcvendors_pro_store_form, 	'init' );
 
@@ -407,7 +419,6 @@ class WCVendors_Pro {
 
 		// Settings 
 		$this->loader->add_filter( 'wc_prd_vendor_options', $this, 'load_settings' 	); 
-
 		// Get the settings directly from the database as WC_Vendors::$pv_options->get_option() isn't loaded yet. 
 		$wc_prd_vendor_options 	= get_option( 'wc_prd_vendor_options' ); 
 		$ratings_disabled		= ( isset( $wc_prd_vendor_options[ 'ratings_management_cap' ] ) ) ? $wc_prd_vendor_options[ 'ratings_management_cap' ] : true;
@@ -502,18 +513,15 @@ class WCVendors_Pro {
 	*/
 	public function load_settings( $options ) {
 
-		$existing_options = get_option( WC_Vendors::$id. '_options' ); 
-
-		$existing_commission = ( isset( $existing_options[ 'default_commission' ] ) ) ? $existing_options[ 'default_commission' ] : 0; 
-
-		$dashboard_page_id 	 = get_option('wcv_dashboard_page_id'); 
-		$feedback_page_id 	 = get_option('wcv_feedback_page_id'); 
-
-		$options[ ] = array( 'name' => __( 'Pro', 'wcvendors-pro' ), 'type' => 'heading' );
-
 		$wc_prd_vendor_options 	= get_option( 'wc_prd_vendor_options' ); 
-		$shipping_disabled		= ( isset( $wc_prd_vendor_options[ 'shipping_management_cap' ] ) ) ? $wc_prd_vendor_options[ 'shipping_management_cap' ] : true;
 
+		$existing_commission 	= ( array_key_exists( 'default_commission', $wc_prd_vendor_options ) ) ? $wc_prd_vendor_options[ 'default_commission' ] : 0; 
+
+		$dashboard_page_id 	 = get_option( 'wcv_dashboard_page_id' ); 
+		$feedback_page_id 	 = get_option( 'wcv_feedback_page_id' ); 
+		
+		$options[ ] = array( 'name' => __( 'Pro', 'wcvendors-pro' ), 'type' => 'heading' );
+		$shipping_disabled		= ( isset( $wc_prd_vendor_options[ 'shipping_management_cap' ] ) ) ? $wc_prd_vendor_options[ 'shipping_management_cap' ] : true;
 		$desc = $shipping_disabled ? '' : sprintf('<a href="%s">' .__('Click to view vendor shipping settings here.', 'wcvendors-pro') .'</a>', 'admin.php?page=wc-settings&tab=shipping&section=wcvendors_pro_shipping_method' ); 
 
 		$options[ ] = array( 'name' => __( 'General options', 'wcvendors-pro' ), 'type' => 'title', 'desc' => $desc );
@@ -583,9 +591,18 @@ class WCVendors_Pro {
 			'std'  => false,
 		);
 
+		$options[ ] = array(
+			'name' => __( 'Single Product Tools', 'wcvendors-pro' ),
+			'desc' => __( 'Display product actions on the single product page for vendor.', 'wcvendors-pro' ),
+			'tip'  => __( 'Diplay the enabled actions for edit/duplicate/delete on the single product page to the vendor.', 'wcvendors-pro' ),
+			'id'   => 'single_product_tools',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
 
 		// Dashboard Options 
-		$options[ ] = array( 'name' => __( 'Pro Features', 'wcvendors-pro' ), 'type' => 'title', 'desc' => __( '<strong>Please save your permalinks after changing any of the following settings</strong>', 'wcvendors-pro' ) );
+		$options[ ] = array( 'name' => __( 'Pro Features', 'wcvendors-pro' ), 'type' => 'title', 'desc' => '' );
 
 		$options[ ] = array(
 			'name' => __( 'Product Management', 'wcvendors-pro' ),
@@ -660,6 +677,15 @@ class WCVendors_Pro {
 		);
 
 		$options[ ] = array(
+			'name' => __( 'Duplicate Product', 'wcvendors-pro' ),
+			'desc' => __( 'Disable the duplicate option on the product form. ', 'wcvendors-pro' ),
+			'tip'  => __( 'Check to remove the duplicate button from the product table.', 'wcvendors-pro' ),
+			'id'   => 'duplicate_product_cap',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
 			'name' => __( 'Edit Approved Products', 'wcvendors-pro' ),
 			'desc' => __( 'Publish edits to approved products. ( New products will still have to be approved )', 'wcvendors-pro' ),
 			'tip'  => __( 'Allow vendors to edit products that have already been approved.', 'wcvendors-pro' ),
@@ -716,6 +742,84 @@ class WCVendors_Pro {
 			'id'   => 'coupons_per_page',
 			'type' => 'number',
 			'std'  => 20, 
+		);
+
+		// Trash Options
+		$options[ ] = array( 'name' => __( 'Permissions', 'wcvendors-pro' ), 'type' => 'title', 'desc' => __( 'Configure what to hide from all vendors on the front end.', 'wcvendors-pro' ) );
+
+
+		$options[ ] = array(
+			'name' => __( 'Orders Table & Details', 'wcvendors-pro' ),
+			'desc' => __( 'Customer Name', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the customers name from the vendor on the orders dashboard page.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_customer_name',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
+			'desc' => __( 'Customer Shipping Address', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the customers address from the vendor on the orders dashboard page.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_customer_shipping_address',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
+			'desc' => __( 'Customer Billing Address', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the customers address from the vendor on the orders dashboard page.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_customer_billing_address',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
+			'desc' => __( 'Customer Phone', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the customers phone number from the vendor on the orders dashboard page.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_customer_phone',
+			'type' => 'checkbox',
+			'std'  => true,
+		);
+
+		$options[ ] = array(
+			'name' => __( 'Orders Table Actions', 'wcvendors-pro' ),
+			'desc' => __( 'View order details', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the view details action from the orders table.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_view_details',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
+			'desc' => __( 'Shipping label', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the shipping label action from the orders table.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_shipping_label',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
+			'desc' => __( 'Order note', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the order note action from the orders table.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_order_note',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
+			'desc' => __( 'Tracking number', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the tracking number action from the orders table.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_tracking_number',
+			'type' => 'checkbox',
+			'std'  => false,
+		);
+
+		$options[ ] = array(
+			'desc' => __( 'Mark shipped', 'wcvendors-pro' ),
+			'tip'  => __( 'Hide the mark shipped action from the orders table.', 'wcvendors-pro' ),
+			'id'   => 'hide_order_mark_shipped',
+			'type' => 'checkbox',
+			'std'  => false,
 		);
 
 		// Trash Options
@@ -782,16 +886,7 @@ class WCVendors_Pro {
 			'type' => 'checkbox',
 			'std'  => false,
 		);
-		// $options[ ] = array(
-		// 	'name' => __( 'Verified Vendor Icon', 'wcvendors-pro' ),
-		// 	'desc' => __( 'Select an image for the verified vendor icon shown on the vendor stores.', 'wcvendors-pro' ),
-		// 	'id'   => 'verified_vendor_icon_src',
-		// 	'type' => 'image',
-		// 	'class' => 'wcv-img-id button', 
-		// 	'std'  => plugin_dir_url( dirname( __FILE__ ) ) . 'includes/assets/images/wcvendors_verified_icon.png', 
-		// );
 
-		
 		// Vendor Rating System
 		$options[ ] = array( 'name' => __( 'Vendor Ratings', 'wcvendors-pro' ), 'type' => 'heading' );
 		$options[ ] = array( 'name' => __( 'Vendor Ratings System.', 'wcvendors-pro' ), 'type' => 'title', 'desc' => '');
@@ -891,7 +986,7 @@ class WCVendors_Pro {
 				'min' => 0,
 				'max' => 100
 			), 
-			'std'	   => (int) $existing_commission, 
+			'std'	   => $existing_commission, 
 		);
 
 		$options[ ] = array(
@@ -925,6 +1020,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'		=> false
 		);
 
 		$options[ ] = array(
@@ -936,6 +1032,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false
 		);
 
 
@@ -958,6 +1055,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false
 		);
 
 		$options[ ] = array(
@@ -972,6 +1070,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'		=> false
 		);
 
 		$options[ ] = array(
@@ -985,6 +1084,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false
 		);
 
 		$options[ ] = array(
@@ -997,6 +1097,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array( 'name' => __( 'Options', 'wcvendors-pro' ), 'type' => 'title', 'desc' => __( 'Configure the product edit form options. ', 'wcvendors-pro' ) );
@@ -1009,6 +1110,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => 0
 		);
 
 		$options[ ] = array(
@@ -1038,6 +1140,19 @@ class WCVendors_Pro {
 			'options' => array(
 					'select'			=> __( 'Multi select',  'wcvendors-pro' ),
 					'select_limited'	=> __( 'Multi select limited', 'wcvendors-pro' ), 
+			), 
+			'std'	=> 'select'
+		);
+
+		$options[ ] = array(
+			'name'     => __( 'Tag Separator', 'wcvendors-pro' ),
+			'desc'     => __( 'What kind of tag separator.', 'wcvendors-pro' ),
+			'id'       => 'tag_separator',
+			'type'     => 'select',
+			'options' => array(
+					'both'			=> __( 'Comma (,) and space ( )',  'wcvendors-pro' ),
+					'space'			=> __( 'Space only ( )', 'wcvendors-pro' ), 
+					'comma'			=> __( 'Comma only (,)', 'wcvendors-pro' ), 
 			), 
 			'std'	=> 'select'
 		);
@@ -1085,6 +1200,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1100,6 +1216,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1110,6 +1227,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1121,6 +1239,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1133,6 +1252,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1150,6 +1270,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		// Signup Form 
@@ -1167,6 +1288,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1181,6 +1303,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1191,6 +1314,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1202,6 +1326,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1214,6 +1339,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		$options[ ] = array(
@@ -1230,6 +1356,7 @@ class WCVendors_Pro {
 			),
 			'type'     => 'checkbox',
 			'multiple' => true,
+			'std'	   => false 
 		);
 
 		// Vendor Signup Options
@@ -1257,11 +1384,7 @@ class WCVendors_Pro {
 			'type' => 'textarea',
 			'std' => __( 'Congratulations! You are now a vendor. Be sure to configure your store settings before adding products.', 'wcvendors-pro' ), 
 		);
-
-		// Disable free commission field 
-
-		unset( $options[ 2 ] ); 
-
+	
 		return $options; 
 	}
 
@@ -1294,4 +1417,43 @@ class WCVendors_Pro {
 
 	} // get_path()
 
-}
+	/**
+	 * Class logger so that we can keep our debug and logging information cleaner 
+	 *
+	 * @since 1.3.4
+	 * @access public
+	 * 
+	 * @param mixed - $data the data to go to the error log could be string, array or object
+	 */
+	public function log( $data ){ 
+
+		if ( is_array( $data ) || is_object( $data ) ) { 
+			error_log( print_r( $data, true ) ); 
+		} else { 
+			error_log( $data );
+		}
+
+	} // log() 
+
+	/**
+	 * Filter the WooCommerce shipping and billing addresses on the pro dashboard to show and hide options 
+	 * 
+	 * @since 1.3.6 
+	 * @access public 
+	 */
+	public function wc_filter_address_hook() { 
+
+		$wc_prd_vendor_options 	= get_option( 'wc_prd_vendor_options' ); 
+		$dashboard_page_id 		= ( isset( $wc_prd_vendor_options[ 'dashboard_page_id' ] ) ) ? $wc_prd_vendor_options[ 'dashboard_page_id' ] : '';
+
+		if ( isset( $dashboard_page_id ) ) { 
+			// Dashboard page or the shipping label page 
+			if ( is_page( $dashboard_page_id ) || ( isset( $_GET['wcv_shipping_label' ] ) ) ){ 
+				add_filter( 'woocommerce_order_formatted_shipping_address',	array( $this->wcvendors_pro_order_controller, 	'filter_formatted_shipping_address' ) ); 
+				add_filter( 'woocommerce_order_formatted_billing_address',	array( $this->wcvendors_pro_order_controller, 	'filter_formatted_billing_address' ) ); 
+			}
+		}
+
+	} // wc_shipping_address_hook() 
+
+} // WCVendors_Pro

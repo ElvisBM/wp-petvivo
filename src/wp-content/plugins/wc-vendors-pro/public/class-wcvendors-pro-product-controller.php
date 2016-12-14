@@ -95,8 +95,8 @@ class WCVendors_Pro_Product_Controller {
 		$can_submit_live 		= WC_Vendors::$pv_options->get_option( 'can_submit_live_products' ); 
 		$current_post_status 	= isset( $_POST[ 'post_status' ] ) ? $_POST[ 'post_status' ] : ''; 
 		$can_edit_approved 		= WC_Vendors::$pv_options->get_option( 'can_edit_approved_products' ); 
-		$trusted_vendor 		= ( get_user_meta( get_current_user_id(), '_wcv_trusted_vendor', true ) == 'on' ) ? true: false;
-		$untrusted_vendor 		= ( get_user_meta( get_current_user_id(), '_wcv_untrusted_vendor', true ) == 'on' ) ? true: false;
+		$trusted_vendor 		= ( get_user_meta( get_current_user_id(), '_wcv_trusted_vendor', true ) == 'yes' ) ? true: false;
+		$untrusted_vendor 		= ( get_user_meta( get_current_user_id(), '_wcv_untrusted_vendor', true ) == 'yes' ) ? true: false;
 
 		if ( $trusted_vendor ) $can_submit_live = true; 
 		if ( $untrusted_vendor ) $can_submit_live = false; 
@@ -193,7 +193,8 @@ class WCVendors_Pro_Product_Controller {
 				if ( WCVendors_Pro::get_option( 'vendor_product_trash' ) == 0 || null === WCVendors_Pro::get_option( 'vendor_product_trash' ) ) { 
 					$update = wp_update_post( array( 'ID' => $id, 'post_status' => 'trash' ) ); 
 				} else { 
-					$update = wp_delete_post( $id ); 					
+					$update = wp_delete_post( $id ); 	
+					do_action( 'wcv_delete_post', $id ); 
 				}
 
 				if (is_object( $update ) || is_numeric( $update ) ) { 
@@ -210,6 +211,59 @@ class WCVendors_Pro_Product_Controller {
 
 	    }
 	} // process_delete() 
+
+
+	/**
+	 *  Process the duplicate action 
+	 *
+	 * @since    1.0.0
+	 */
+	public function process_duplicate( ) { 
+
+		global $wp; 
+
+		if ( isset( $wp->query_vars[ 'object' ] ) ) {
+
+			$object 	= get_query_var( 'object' ); 
+			$action 	= get_query_var( 'action' ); 
+			$id 		= get_query_var( 'object_id' ); 
+			
+			if ( $object == 'product' && $action == 'duplicate' && is_numeric( $id ) ) { 
+
+				if ( $id != null ) { 
+					if ( WCVendors_Pro_Dashboard::check_object_permission( 'products', $id ) == false ) { 
+						return false; 
+					} 
+				}
+
+				$new_product_id 		= $this->duplicate_product( $id ); 
+
+				wc_add_notice( apply_filters( 'wcv_product_duplicated_msg', __( 'Product Duplicated.', 'wcvendors-pro' ) ) ); 
+
+				wp_safe_redirect( WCVendors_Pro_Dashboard::get_dashboard_page_url( 'product/edit/' . $new_product_id ) ); 
+
+				exit;
+			}
+
+	    }
+	} // process_duplicate() 
+
+	/**
+	 *  Process the duplicate action 
+	 *
+	 * @since    1.3.4
+	 * @access private 
+	 * 
+	 * @return int $product_id the new product id 
+	 */
+	private function duplicate_product( $object_id ){ 
+
+		// create the WC Admin duplicate product object 
+		$wcdpa 			= new WC_Admin_Duplicate_Product; 
+
+		return $wcdpa->duplicate_product( get_post( $object_id ) ); 
+
+	} // duplicate_product() 
 
 	/**
 	 *  Save a new product 
@@ -249,8 +303,8 @@ class WCVendors_Pro_Product_Controller {
 		}
 
 		// Bypass globals for live product submissions 
-		$trusted_vendor = ( get_user_meta( get_current_user_id(), '_wcv_trusted_vendor', true ) == 'on' ) ? true: false;
-		$untrusted_vendor = ( get_user_meta( get_current_user_id(), '_wcv_untrusted_vendor', true ) == 'on' ) ? true: false;
+		$trusted_vendor = ( get_user_meta( get_current_user_id(), '_wcv_trusted_vendor', true ) == 'yes' ) ? true: false;
+		$untrusted_vendor = ( get_user_meta( get_current_user_id(), '_wcv_untrusted_vendor', true ) == 'yes' ) ? true: false;
 		
 		if ( $trusted_vendor && ! isset( $_POST[ 'draft_button' ] ) ) $post_status = 'publish'; 
 		if ( $untrusted_vendor ) $post_status = 'pending'; 
@@ -431,37 +485,37 @@ class WCVendors_Pro_Product_Controller {
 			}
 
 			if ( isset( $_POST[ '_shipping_fee_national_qty' ] ) && '' != $_POST[ '_shipping_fee_national_qty' ] ) {
-				$shipping_details[ 'national_qty_override' ] = $_POST[ '_shipping_fee_national_qty' ]; 
+				$shipping_details[ 'national_qty_override' ] = 'yes'; 
 			} else { 
 				$shipping_details[ 'national_qty_override' ] = ''; 
 			}
 
 			if ( isset( $_POST[ '_shipping_fee_national_disable' ] ) && '' != $_POST[ '_shipping_fee_national_disable' ] ) {
-				$shipping_details[ 'national_disable' ] = $_POST[ '_shipping_fee_national_disable' ]; 
+				$shipping_details[ 'national_disable' ] = 'yes'; 
 			} else { 
 				$shipping_details[ 'national_disable' ] = ''; 
 			}
 
 			if ( isset( $_POST[ '_shipping_fee_national_free' ] ) && '' != $_POST[ '_shipping_fee_national_free' ] ) {
-				$shipping_details[ 'national_free' ] = $_POST[ '_shipping_fee_national_free' ]; 
+				$shipping_details[ 'national_free' ] = 'yes'; 
 			} else { 
 				$shipping_details[ 'national_free' ] = ''; 
 			}
 
 			if ( isset( $_POST[ '_shipping_fee_international_qty' ] ) && '' != $_POST[ '_shipping_fee_international_qty' ] ) {
-				$shipping_details[ 'international_qty_override' ] = $_POST[ '_shipping_fee_international_qty' ]; 
+				$shipping_details[ 'international_qty_override' ] = 'yes'; 
 			} else { 
 				$shipping_details[ 'international_qty_override' ] = ''; 
 			}
 
 			if ( isset( $_POST[ '_shipping_fee_international_disable' ] ) && '' != $_POST[ '_shipping_fee_international_disable' ] ) {
-				$shipping_details[ 'international_disable' ] = $_POST[ '_shipping_fee_international_disable' ]; 
+				$shipping_details[ 'international_disable' ] = 'yes'; 
 			} else { 
 				$shipping_details[ 'international_disable' ] = ''; 
 			}
 
 			if ( isset( $_POST[ '_shipping_fee_international_free' ] ) && '' != $_POST[ '_shipping_fee_international_free' ] ) {
-				$shipping_details[ 'international_free' ] = $_POST[ '_shipping_fee_international_free' ]; 
+				$shipping_details[ 'international_free' ] = 'yes'; 
 			} else { 
 				$shipping_details[ 'international_free' ] = ''; 
 			}
@@ -697,12 +751,10 @@ class WCVendors_Pro_Product_Controller {
 			$date_from = isset( $_POST[ '_sale_price_dates_from' ] ) ? wc_clean( $_POST[ '_sale_price_dates_from' ] ) : '';
 			$date_to   = isset( $_POST[ '_sale_price_dates_to' ] ) ? wc_clean( $_POST[ '_sale_price_dates_to' ] ) : '';
 
-			$today = date( 'Y-m-d' ); 
-
-			if ( wc_clean( $date_from ) == $today && wc_clean( $date_to ) == $today ) { 
+			if ( wc_clean( $date_from ) == wc_clean( $date_to ) ) { 
 				$date_to = ''; 
 				$date_from = '';
-			} 
+			}
 
 			// Dates
 			if ( $date_from ) {
@@ -746,7 +798,7 @@ class WCVendors_Pro_Product_Controller {
 		}
 
 		// Update parent if grouped so price sorting works and stays in sync with the cheapest child
-		if ( $_POST[ 'parent_id' ] > 0 || 'grouped' == $product_type || $_POST[ 'previous_parent_id' ] > 0 ) {
+		if ( isset( $_POST[ 'parent_id' ] ) && $_POST[ 'parent_id' ] > 0 || 'grouped' == $product_type || isset( $_POST[ 'previous_parent_id' ] )  && $_POST[ 'previous_parent_id' ] > 0 ) {
 
 			$clear_parent_ids = array();
 
@@ -1160,6 +1212,11 @@ class WCVendors_Pro_Product_Controller {
 				$date_from     = wc_clean( $variable_sale_price_dates_from[ $i ] );
 				$date_to       = wc_clean( $variable_sale_price_dates_to[ $i ] );
 
+				if ( wc_clean( $date_from ) == wc_clean( $date_to ) ) { 
+					$date_to = ''; 
+					$date_from = '';
+				} 
+
 				update_post_meta( $variation_id, '_regular_price', $regular_price );
 				update_post_meta( $variation_id, '_sale_price', $sale_price );
 
@@ -1539,11 +1596,12 @@ class WCVendors_Pro_Product_Controller {
 
 		$this->max_num_pages = $result_object->max_num_pages; 
 
-		$can_edit = WC_Vendors::$pv_options->get_option( 'can_edit_published_products');
-		$can_edit_approved = WC_Vendors::$pv_options->get_option( 'can_edit_approved_products' ); 
-		$disable_delete = WC_Vendors::$pv_options->get_option( 'delete_product_cap');
-		$trusted_vendor = ( get_user_meta( get_current_user_id(), '_wcv_trusted_vendor', true ) == 'on' ) ? true: false;
-		$untrusted_vendor = ( get_user_meta( get_current_user_id(), '_wcv_untrusted_vendor', true ) == 'on' ) ? true: false;
+		$can_edit 				= WC_Vendors::$pv_options->get_option( 'can_edit_published_products');
+		$can_edit_approved 		= WC_Vendors::$pv_options->get_option( 'can_edit_approved_products' ); 
+		$disable_delete 		= WC_Vendors::$pv_options->get_option( 'delete_product_cap');
+		$disable_duplicate 		= WC_Vendors::$pv_options->get_option( 'duplicate_product_cap');
+		$trusted_vendor 		= ( get_user_meta( get_current_user_id(), '_wcv_trusted_vendor', true ) == 'yes' ) ? true: false;
+		$untrusted_vendor 		= ( get_user_meta( get_current_user_id(), '_wcv_untrusted_vendor', true ) == 'yes' ) ? true: false;
 
 		if ( $trusted_vendor ) 		$can_edit = true; 
 		if ( $untrusted_vendor ) 	$can_edit = false; 
@@ -1560,6 +1618,12 @@ class WCVendors_Pro_Product_Controller {
 							'label' 	=> __( 'Edit', 	'wcvendors-pro' ), 
 							'class'		=> '', 
 							'url' 		=> WCVendors_Pro_Dashboard::get_dashboard_page_url( 'product/edit/' . $product->id ), 
+						) ), 
+				'duplicate'  	=> 
+						apply_filters( 'wcv_product_table_row_actions_duplicate', array(  
+							'label' 	=> __( 'Duplicate', 	'wcvendors-pro' ), 
+							'class'		=> '', 
+							'url' 		=> WCVendors_Pro_Dashboard::get_dashboard_page_url( 'product/duplicate/' . $product->id ), 
 						) ), 
 				'delete'  	=> 
 						apply_filters( 'wcv_product_table_row_actions_delete', array( 
@@ -1587,12 +1651,17 @@ class WCVendors_Pro_Product_Controller {
 			// Check if you can delete the product 
 			if ( $disable_delete ) unset( $row_actions[ 'delete' ] ); 
 
+			// Check if you can duplicate the product 
+			if ( $disable_duplicate ) unset( $row_actions[ 'duplicate' ] ); 
+
 			$new_row->ID	 		= $row->ID; 
-			$new_row->tn 			= get_the_post_thumbnail( $row->ID, array(120,120) );  
+			$new_row->tn 			= get_the_post_thumbnail( $row->ID, array( 120, 120 ) );  
 			$new_row->details 		= apply_filters( 'wcv_product_row_details' , sprintf('<h4>%s</h4> %s %s <br />%s %s <br />' , $product->get_title(), __( 'Categories:', 'wcvendors-pro' ),$product->get_categories(), __('Tags:', 'wcvendors-pro'), $product->get_tags() ) ); 
 			$new_row->price  		= wc_price( $product->get_display_price() ) . $product->get_price_suffix(); 
 			$new_row->status 		= sprintf('%s <br /> %s', WCVendors_Pro_Product_Controller::product_status( $row->post_status ), date_i18n( get_option( 'date_format' ), strtotime( $row->post_date ) ) );
 			$new_row->row_actions 	= $row_actions; 
+			$new_row->product 		= $product; 
+
 			$new_rows[] = $new_row; 
 		} 
 
@@ -1629,7 +1698,8 @@ class WCVendors_Pro_Product_Controller {
 		); 
 
 		$add_url = apply_filters( 'wcv_add_product_url', WCVendors_Pro_Dashboard::get_dashboard_page_url( 'product/edit/' ) ); 
-		include('partials/product/wcvendors-pro-table-actions.php');
+		
+		include( apply_filters( 'wcv_product_table_actions_path', 'partials/product/wcvendors-pro-table-actions.php' ) );
 	}
 
 	/**
@@ -1701,7 +1771,8 @@ class WCVendors_Pro_Product_Controller {
 		
 		$form_caps = (array) WC_Vendors::$pv_options->get_option( 'product_form_cap' );
 
-		include( 'forms/partials/wcvendors-pro-product-attribute.php' );
+		include( apply_filters( 'wcvendors_pro_product_attribute_path', 'forms/partials/wcvendors-pro-product-attribute.php' ) );
+
 		die();
 	}
 
@@ -1883,7 +1954,7 @@ class WCVendors_Pro_Product_Controller {
 				$variation_data[ '_enabled' ]       = ( $variation->post_status == 'publish' ) ? true : false; 
 				$variation_data[ 'id' ]			  = $variation_id; 
 
-				include( 'forms/partials/wcvendors-pro-product-variation.php' );
+				include( apply_filters( 'wcvendors_pro_product_variation_path', 'forms/partials/wcvendors-pro-product-variation.php' ) );
 
 				$loop++;
 			}
@@ -2003,7 +2074,7 @@ class WCVendors_Pro_Product_Controller {
 				$parent_data[ 'height' ] = wc_format_localized_decimal( 0 );
 			}
 
-			include( 'forms/partials/wcvendors-pro-product-variation.php' );
+			include( apply_filters( 'wcvendors_pro_product_variation_path', 'forms/partials/wcvendors-pro-product-variation.php' ) );
 		}
 
 		die();
@@ -2169,7 +2240,7 @@ class WCVendors_Pro_Product_Controller {
 					$parent_data[ 'height' ] = wc_format_localized_decimal( 0 );
 				}
 
-				include( 'forms/partials/wcvendors-pro-product-variation.php' );
+				include( apply_filters('wcvendors_pro_product_variation_path', 'forms/partials/wcvendors-pro-product-variation.php' ) );
 
 			}
 
@@ -2196,7 +2267,7 @@ class WCVendors_Pro_Product_Controller {
 
 		$attributes = $_POST[ 'attributes' ]; 
 
-		include( 'forms/partials/wcvendors-pro-product-variations-default-attribute.php' );
+		include( apply_filters( 'wcvendors_pro_product_variation_default_path', 'forms/partials/wcvendors-pro-product-variations-default-attribute.php' ) );
 
 		die();
 

@@ -8,9 +8,9 @@
  * Author URI:          https://www.wcvendors.com
  * GitHub Plugin URI:   https://github.com/wcvendors/wcvendors
  *
- * Version:             1.9.1
- * Requires at least:   4.0.0
- * Tested up to:        4.5.2
+ * Version:             1.9.7
+ * Requires at least:   4.4.0
+ * Tested up to:        4.7.0
  *
  * Text Domain:         wcvendors
  * Domain Path:         /languages/
@@ -20,7 +20,22 @@
  * @copyright           Copyright © 2016 WC Vendors
  * @author              Matt Gates, WC Vendors
  * @package             WCVendors
- */
+ * @license     		GPL2
+
+WC Vendors is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+any later version.
+ 
+WC Vendors is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+ 
+You should have received a copy of the GNU General Public License
+along with WC Vendors. If not, see http://www.gnu.org/licenses/gpl-2.0.txt.
+
+*/
 
 
 /**
@@ -57,7 +72,7 @@ if ( wcv_is_woocommerce_activated() ) {
 	if ( !defined( 'wcv_plugin_dir_path' ) )	define( 'wcv_plugin_dir_path', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 
 
-	define('WCV_VERSION', '1.9.0' ); 
+	define('WCV_VERSION', '1.9.7' ); 
 
 	/**
 	 * Main Product Vendor class
@@ -88,12 +103,11 @@ if ( wcv_is_woocommerce_activated() ) {
 			add_action( 'admin_init', array( $this, 'check_install' ) );
 			add_action( 'admin_init', array( $this, 'maybe_flush_permalinks' ), 99 );
 			add_action( 'admin_init', array( $this, 'wcv_required_ignore_notices' ) );
-			add_action( 'admin_notices', array( $this, 'wcv_required_admin_notice') );
-
 
 			add_action( 'plugins_loaded', array( $this, 'load_settings' ) );
 			add_action( 'plugins_loaded', array( $this, 'include_gateways' ) );
 			add_action( 'plugins_loaded', array( $this, 'include_core' ) ); 
+			add_action( 'init', 		  array( $this, 'include_init' ) ); 
 			add_action( 'current_screen', array( $this, 'include_assets' ) ); 
 
 			add_filter( 'plugin_row_meta', array($this, 'plugin_row_meta'), 10, 2 );
@@ -111,7 +125,7 @@ if ( wcv_is_woocommerce_activated() ) {
 		 */
 		public function invalid_wc_version()
 		{
-			echo '<div class="error"><p>' . __( '<b>WC Vendors is disabled</b>. WC Vendors requires a minimum of WooCommerce v2.4.0.', 'wcvendors' ) . '</p></div>';
+			echo '<div class="error"><p>' . __( '<b>WC Vendors is disabled</b>. WC Vendors requires a minimum of WooCommerce v2.5.0.', 'wcvendors' ) . '</p></div>';
 		}
 
 		/**
@@ -119,15 +133,17 @@ if ( wcv_is_woocommerce_activated() ) {
 		 */
 		public function init_session(){ 
 			
-			 if ( !session_id() ) {
+			 if ( !session_id() && is_user_logged_in() ) {
         		session_start();
-    		}
+    		 }
 
 		} //init_session() 
 
 		public function destroy_session(){ 
 
-			session_destroy(); 
+			 if ( session_id() ) {
+        		session_destroy(); 
+    		 }
 
 		} // destroy_session()
 
@@ -143,8 +159,8 @@ if ( wcv_is_woocommerce_activated() ) {
 		{
 			global $woocommerce;
 
-			// WC 2.0.1 is required
-			if ( version_compare( $woocommerce->version, '2.4', '<' ) ) {
+			// WC 2.5.0+ is required
+			if ( version_compare( $woocommerce->version, '2.5', '<' ) ) {
 				add_action( 'admin_notices', array( $this, 'invalid_wc_version' ) );
 				deactivate_plugins( plugin_basename( __FILE__ ) );
 				return false;
@@ -224,17 +240,29 @@ if ( wcv_is_woocommerce_activated() ) {
 			new WCV_Cron;
 			new WCV_Orders;
 			new WCV_Vendor_Dashboard;
-			new WCV_Product_Meta;
-			new WCV_Vendor_Reports;
 			new WCV_Admin_Setup;
 			new WCV_Vendor_Admin_Dashboard; 
 			new WCV_Admin_Reports;
 			new WCV_Vendor_Applicants;
-			new WCV_Admin_Users;
 			new WCV_Emails;
 			new WCV_Vendor_Signup;
 			new WCV_Shortcodes; 
 		}
+
+
+		/**
+		 * These need to be initlized later in loading to fix interaction with other plugins that call current_user_can at the right time. 
+		 * 
+		 * @since 1.9.4 
+		 * @access public 
+		 */
+		public function include_init(){ 
+
+			new WCV_Vendor_Reports;
+			new WCV_Product_Meta;
+			new WCV_Admin_Users;
+
+		} // include_init() 
 
 		/** 
 		*	Load plugin assets 
@@ -345,33 +373,6 @@ if ( wcv_is_woocommerce_activated() ) {
 		}
 
 		/**
-		 *  Add admin notices to ensure users are saving the settings correctly 
-		 * 	@access public 
-		 * 
-		*/
-		public function wcv_required_admin_notice(){
-				global $current_user;
-
-			if ( current_user_can( 'manage_options' ) ) {
-	        		$current_user_id = $current_user->ID;
-
-					if ( WC_Vendors::$pv_options->get_option( 'vendor_shop_permalink' ) == null  && ! get_user_meta( $current_user_id, 'wcv_shop_ignore_notice' ) ) {
-						echo '<div class="updated">
-					   	<p>'.sprintf (__('WC Vendors requires the Vendor shop page value be set <a href="%s">click here to set it.</a> | <a href="%s">Hide Notice</a>','wcvendors'), 'admin.php?page=wc_prd_vendor', esc_url( add_query_arg( 'wcv_shop_ignore_notice', '0' ) ) ).'</p>
-						</div>';
-					}
-
-					$general_tab = ( isset( $_GET['tab'] ) && 'general' == $_GET['tab'] ) || !isset( $_GET['tab'] ) ? true : false; 
-
-					if ( isset( $_GET['page'] ) && 'wc_prd_vendor' == $_GET['page'] && isset( $_GET[ 'settings-updated' ] ) && $general_tab == true && ! get_user_meta( $current_user_id, 'wcv_pl_ignore_notice' ) ) {
-						echo '<div class="updated">
-					   	<p>'.sprintf (__('You must save your permalinks once you have modified your vendor page. <a href="%s">click here to save</a>.  | <a href="%s">Hide Notice</a>','wcvendors'), 'options-permalink.php', esc_url( add_query_arg( 'wcv_pl_ignore_notice', '0' ) ) ).'</p>
-						</div>';
-					}
-			}	
-		}			
-            
-		/**
 		 * Add user meta to remember ignore notices 
 		 * @access public
          * 
@@ -393,6 +394,6 @@ if ( wcv_is_woocommerce_activated() ) {
 	}
 
 
-	new WC_Vendors;
+	$wc_vendors = new WC_Vendors;
 
 }

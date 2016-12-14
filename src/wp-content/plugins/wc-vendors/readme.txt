@@ -4,12 +4,12 @@ Tags: commission rate,  e-commerce, ecommerce, ebay, free, marketplace, multi se
 Donate link: http://www.wcvendors.com/
 Author URI: http://www.wcvendors.com/
 Plugin URI: http://www.wcvendors.com/
-Requires at least: 4.0
-Tested up to: 4.5.2
-Stable tag: 1.9.1
+Requires at least: 4.4.0
+Tested up to: 4.7.0
+Stable tag: 1.9.7
 License: GPLv2 or later
 
-The free multi-vendor plugin for WooCommerce.  Now you can allow anyone to open a store on your site!
+The free marketplace plugin for WooCommerce.  Now you can allow anyone to open a store on your site!
 
 == Description ==
 Create your own marketplace and allow vendors to sell just like etsy, Envato, eBay, or Amazon type sites! This allows other sellers/vendors to sell tangible products, virtual products, or downloads on your site. With this plugin, your vendors receive commissions you set on products they sell from your store.
@@ -19,7 +19,7 @@ This plugin has been around since 2011 and remains still the #1 multi vendor plu
 = Features =
 * ALL FEATURES LISTED HERE ARE INCLUDED IN THE FREE PLUGIN!
 * Instantly pay vendors their commission as soon as an order is placed using PayPal Adaptive Payments or <a href="https://www.wcvendors.com/product/stripe-commissions-gateway/">Stripe</a>.
-* Or, pay commission on a schedule. Weekly, biweekly, monthly, or manually using any payment provider you choose.
+* Or, pay commission on a schedule. Daily, weekly, biweekly, monthly, or manually using any payment provider you choose.
 * Vendors can submit products for admin review, or send new products live to the site immediately.
 * Vendors can view live sales and reports for their products
 * Vendors can comment on their orders (eg, to inform customers of a tracking number)
@@ -44,6 +44,7 @@ This plugin has been around since 2011 and remains still the #1 multi vendor plu
 * Free technical support around the clock @ <a href="https://www.wcvendors.com/help/">www.wcvendors.com/help/</A>
 * Knowledgebase full of great articles on all the hooks, actions, filters, shortcodes, neat tricks, etc, @ <a href="https://www.wcvendors.com/knowledgebase/">www.wcvendors.com/knowledgebase/</A>
 * ....and much more!
+* We are NOT compatible with WordPress MultiSite. We have no intentions of supporting this feature any time soon. 
 
 = WC Vendors Pro =
 * The following features are part of <a href="https://www.wcvendors.com/product/wc-vendors-pro/">WC Vendors Pro</a>
@@ -119,6 +120,81 @@ Also be sure to visit our KnowledgeBase at https://www.wcvendors.com/kb/
 No Upgrade required at this time.
 
 == Changelog ==
+
+= Version 1.9.6 - 4th November 2016 = 
+
+* Added: Commission Query Functions #321
+* Added: Template for sold by in shop loop #324
+* Merged: Extended commissions management #319 from MounirHamani
+* Updated: Brazilian Portuguese translation
+* Template Added: 
+	templates/front/vendor-sold-by.php	
+
+= Version 1.9.5 - 29th September 2016 = 
+
+* Added: Automated language file builds
+* Added: Vendors can now delete media in the media uploader
+* Updated: Commissions table in backend now shows cost breakdowns
+* Fixed: Removed legacy code for unsupported shipping methods
+* Fixed: Rounding issue with 100% commission and coupons in pro
+
+= Version 1.9.4 - 24th September 2016 = 
+
+* Added: Filter to add delayed payment possibility #309
+* Added: WPML support configuration file
+* Updated: Brazilian translation files thanks Luis!
+* Fixed: Using "date_i18n" instead of just "date"  #316 from CasperBraske
+* Fixed: Geczy text domain in the settings file #314
+* Fixed: Commissions lock on one vendor after some actions are made #311
+* Fixed: Vendor dashboard Orders Export link is dead #306
+* Fixed: Vendor sorting in commissions - no option to NOT choose a vendor #305
+* Fixed: vendor order admin product metadata loading #298 from mikko-niemikorpi
+* Fixed: Commission status translatable in reports thanks CasperBraske
+* Fixed: Translatable strings thanks CasperBraske
+* Fixed: Issues with translation strings
+* Fixed: Incorrect variable reference
+* Fixed: bp_setup_current_user was called incorrectly
+* Fixed: Display of variations on main dashboard
+* Fixed: Trying to get property of non-object
+* Fixed: Variation data styles in order display in wp-admin
+* Fixed: Save user meta fields when pending vendor
+* Fixed: Incorrect url string format in french translation
+* Templates Updated: 
+	templates/dashboard/orders.php	
+
+= Version 1.9.3 - 11th of August 2016 
+
+* Fixed: Only load asset on orders page in admin
+* Fixed: Not showing orders on vendor dashboard for new installations 
+* Updated: Persian translations thanks to Alireza
+
+= Verion 1.9.2 - 6th of August 2016 
+
+* Added: Reverse commission when order emptied from trash #277
+* Added: Daily Payout option for PayPal Cron #297
+* Added: Vendor select2 on the commissions page #284
+* Added: Button to reset vendor roles & WC Vendors settings to WooCoomerce system status tools page #230
+* Added: Dutch Translation, thanks @jjclinton
+* Added: Date filter for order queries
+* Added: Turkish translations thanks Hakan
+* Added: $wc_vendors object variable
+* Added: Action to fire after dashboard links (wcvendors_after_links)
+* Added: Body css classes to set pages
+* Updated: Support for woo commerce minimum and readme
+* Fixed: Mark commission reversed bulk action on commissions table
+* Fixed: No longer have to save permalink settings when updating WC Vendors options
+* Fixed: Orders page not set on fresh install
+* Fixed: Property of non object #300
+* Fixed: Translation for Mark Shipped #296
+* Fixed: Too many redirect loops if pages not set #290
+* Fixed: Non-Object Notice in install #289
+* Fixed: Rounding error with 100% commission thanks Brett!
+* Fixed: text domain for email templates
+* Fixed: Don't start session if user isn't logged
+* Fixed: Session error on log out if session doesn't exist
+* Fixed: Settings image selector bug
+* Merged pull request #302 from NicolasBernier - Completed French Translations, Thanks!
+* Merged: pull request #293 from stodorovic/fix_init_sessions
 
 = Version 1.9.1 - 17th of June 2016 
 

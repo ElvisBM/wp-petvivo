@@ -210,7 +210,7 @@ class WCVendors_Pro_Ratings_Admin_Table extends WP_List_Table {
 	 */
  	public function display_edit_form( $feedback ) { 
 
-		include('partials/ratings/admin/wcvendors-pro-ratings-feedback-form.php'); 
+		include( apply_filters( 'wcvendors_pro_display_edit_form_path', 'partials/ratings/admin/wcvendors-pro-ratings-feedback-form.php' ) ); 
 
 	} // display_edit_form() 
 
@@ -241,8 +241,8 @@ class WCVendors_Pro_Ratings_Admin_Table extends WP_List_Table {
 	 */
 	public function column_rating_title( $item ) {
 	  $actions = array(
-	            'edit'      => sprintf('<a href="?page=%s&action=%s&wcv_vendor_rating_id=%s">Edit</a>',$_REQUEST[ 'page' ],'edit', $item->id ),
-	            'delete'    => sprintf('<a href="?page=%s&action=%s&wcv_vendor_rating_id=%s">Delete</a>',$_REQUEST[ 'page' ],'delete',$item->id ),
+	            'edit'      => sprintf('<a href="?page=%s&action=%s&wcv_vendor_rating_id=%s">%s</a>',$_REQUEST[ 'page' ],'edit', $item->id, __( 'Edit', 'wcvendors-pro') ),
+	            'delete'    => sprintf('<a href="?page=%s&action=%s&wcv_vendor_rating_id=%s">%s</a>',$_REQUEST[ 'page' ],'delete',$item->id, __( 'Delete', 'wcvendors-pro') ),
 	        );
 
 	  return sprintf('%1$s %2$s', $item->rating_title, $this->row_actions( $actions ) );

@@ -45,7 +45,7 @@ class WCV_Product_Dropdown_Walker extends Walker {
 
 		$output .= '>';
 
-		$output .= $pad . __( $cat_name, 'woocommerce' );
+		$output .= $pad . __( $cat_name, 'wcvendors-pro' );
 
 		if ( ! empty( $args['show_count'] ) )
 			$output .= '&nbsp;(' . $cat->count . ')';

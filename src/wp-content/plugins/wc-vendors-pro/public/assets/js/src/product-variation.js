@@ -1111,4 +1111,5 @@ jQuery( function( $ ) {
 	wcv_product_variations_counts.init();
 
 
+
 });

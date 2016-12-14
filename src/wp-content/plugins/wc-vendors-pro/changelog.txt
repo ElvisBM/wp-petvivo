@@ -1,5 +1,109 @@
 Changelog for WC Vendors Pro
 
+Version 1.3.8 - 16th November 2016 
+
+* Added: wcv_dashboard_nav_class filter to add a css class to dashboard nav
+* Added: Show order status to vendors and removed order actions on refunded or cancelled orders #490
+* Added: New license and update system
+* Added: Action Hook(s) for product-edit Media Uploader area #487
+* Added: Admin css class names for shipping fields
+* Added: Filter for button class on orders page
+* Fixed: Puerto Rico does not show up on the front end #498
+* Fixed: Missing double quote in store form #497
+* Fixed: References to depreciated function calls
+* Fixed: Refresh Page; Feedback / Rating is submitted again. #488
+* Fixed: Coupon checkbox selection after edit/save #489
+* Fixed: Typo in tracking providers #485
+* Fixed: Address info still showing despite permissions selection #480
+* Fixed: Undefined variable reference on new template store settings template 
+* Fixed: Commission fee product override not saving value #477
+* Fixed: License url ending slash
+
+Version 1.3.7 - 29th September 2016 
+
+* Added: Jquery datetimepicker ui to front end
+* Added: Placeholders for the product description and short description
+* Added: Filters to all file include paths for non template overrides by developers #400
+* Updated: Replaced date picker with jquery-ui-datepicker fixing #466 #459
+* Updated: Portuguese translations thanks Elsa!
+* Fixed: Commission fee product override not saving value #477
+* Fixed: Country rate shipping commission only giving 1 #472
+* Fixed: Hide "export order to CSV" on dashboard/orders now obeys free capability #469
+* Fixed: Can't edit draft if edit live product is disabled #463
+* Fixed: Move shipping fields into template #456
+* Fixed: Vendor terms incorrect link on application page #452
+* Fixed: Incorrect text domain for some inputs
+* Fixed: Use WordPress date format for date picker on dashboard
+* Fixed: Report issue with reversed commissions.
+* Fixed: Errors saving products with grouped products disabled on the form.
+* Fixed: Remove font family from main style sheet
+* Fixed: Method get_orders2 in class WCVendors_Pro_Vendor_Controller produces an invalid SQL
+* Templates Updated: 
+	templates/dashboard/store-settings.php	
+
+Version 1.3.6 - 20th August 2016 
+
+* Added: Price breakdown on dashboard recent orders 
+* Added: Orders page options to disable table data and actions #359
+* Added: Vendor tools on single product page #334
+* Added: Multi Word Tags support via options #163
+* Added: Tool to import commission overrides for vendors and products
+* Added: GPL notice and support information
+* Fixed: Dashboard reports incorrect price breakdown #450
+* Fixed: Default for attribute capability not loading 
+* Fixed: Options defaults don't load on initial plugin install #448
+* Fixed: Check if terms page is set when processing application on new installs
+* Fixed: Save fields for pending vendors also
+* Fixed: Shop header: phone number in wrong spot #449
+* Fixed: Sass not compiling
+* Fixed: Dashboard permalink flushed correctly on activation
+* Fixed: Remove debug code from template #446
+* Fixed: International shipping settings issues #445
+* Fixed: Trusted Vendor, Verified, etc. selections in admin are not saving #444
+* Fixed: Fall back to free commission overrides for products and vendors if not imported into pro yet #440 
+* Fixed: Activation error if post type doesn't exist.
+* Fixed: Undefined value warning on dashboard 
+* Fixed: Shipping checkboxes not loading values in admin area
+* Templates Updated: 
+	templates/store/store-header.php	
+
+Version 1.3.5 - 14th August 2016 
+
+* Fixed: Store defaults not applied if no product override #442
+* Fixed: Shipping checkboxes not loading values in admin area
+* Fixed: Missing translated strings
+* Added: New dashboard page nav filters for overriding the navigation
+
+Version 1.3.4 - 5th August 2016
+
+* Added: wcv_delete_post action to allow hooking into deleted products
+* Added: Duplicate product #427
+* Added: Body css classes to set pro pages #420
+* Added: Class main logger to Pro class 
+* Added: Order number to orders row filter
+* Added: 100% Complete French translations thanks Nicolas !
+* Added: Auto mark as shipped if tracking info added
+* Added: Shop coupon table filters wcv_shop_coupon_table_rows, wcv_shop_coupon_table_columns
+* Updated: License language to stop confusion with activation issues 
+* Fixed: Don't show orders that have been reversed in reports
+* Fixed: Shipping calculation breaks in WC2.6 for some installs
+* Fixed: Dashboard Recent Orders table product display #438
+* Fixed: Default pages being set during plugin activation
+* Fixed: Disabled national shipping bug
+* Fixed: Sale price on variable products doesnt work #434
+* Fixed: PHP Warnings Order Controller L371 #433
+* Fixed: Country Table Rate QTY not calculating #430
+* Fixed: 'Charge once per product' fields reset after product approval #429
+* Fixed: Snapchat integration incomplete #423
+* Fixed: Mark Shipped gives customers (2) emails #422
+* Fixed: Sprintf error when feedback page accessed directly
+* Fixed: shipping panel problems in the dashboard for admin
+* Fixed: Storing non-english characters correctly in the database.
+* Fixed: Updated strings to be translated in ratings controller 
+* Fixed: Commission bug when using variations and overrides
+* Templates Updated: 
+	templates/store/store-header.php	
+
 Version 1.3.3 - 9th July 2016 
 
 * Added: Shortcode to show Dashboard Menu on Other Pages #233

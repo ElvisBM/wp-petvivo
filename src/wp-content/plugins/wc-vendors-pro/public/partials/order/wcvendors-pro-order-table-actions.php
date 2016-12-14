@@ -6,7 +6,7 @@
  * This file is used to add the table actions before and after a table
  *
  * @link       http://www.wcvendors.com
- * @since      1.2.3
+ * @since      1.3.7
  *
  * @package    WCVendors_Pro
  * @subpackage WCVendors_Pro/public/partials/product
@@ -65,8 +65,16 @@
 			?>
 		</form>
 	</div>
+
+	<?php if ( $can_export_csv ) : ?>
+
+	<?php $export_btn_class = apply_filters( 'wcv_order_export_btn_class', '' ); ?>
+
 	<div class="all-50 align-right">
 		<br />
-		<a href="<?php echo $add_url; ?>" class="wcv-button button"><?php echo __('Export Orders', $this->wcvendors_pro ); ?></a>
+		<a href="<?php echo $add_url; ?>" class="wcv-button button <?php echo $class; ?>"><?php echo __( 'Export Orders', 'wcvendors-pro' ); ?></a>
 	</div>
+
+	<?php endif; ?>
+	
 </div>

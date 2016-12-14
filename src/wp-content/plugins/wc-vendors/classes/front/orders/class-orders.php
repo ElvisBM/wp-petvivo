@@ -22,7 +22,9 @@ class WCV_Orders
 		$this->can_view_emails = WC_Vendors::$pv_options->get_option( 'can_view_order_emails' );
 
 		add_action( 'template_redirect', array( $this, 'check_access' ) );
-		add_action( 'wp', array( $this, 'display_shortcodes' ) );
+		add_action( 'template_redirect', array( $this, 'process_export_orders' ) ); 
+		// add_action( 'template_redirect', array( $this, 'display_product_orders' ) );
+		// add_action( 'wp', array( $this, 'display_shortcodes' ) );
 		add_shortcode( 'wcv_orders', array( $this, 'display_product_orders' ) );
 	}
 
@@ -32,15 +34,23 @@ class WCV_Orders
 	 */
 	public function check_access()
 	{
-		if ( is_page( WC_Vendors::$pv_options->get_option( 'orders_page' ) ) && !is_user_logged_in() ) {
+
+		// This is required to support existing installations after WC 2.6 
+		$orders_page_id 	= WC_Vendors::$pv_options->get_option( 'orders_page' ); 
+		$orders_page_id 	= isset( $orders_page_id ) ? $orders_page_id : WC_Vendors::$pv_options->get_option( 'product_orders_page' ); 
+
+		$orders_page = $orders_page_id; 
+		// Only if the orders page is set should we check access 
+		if ( $orders_page && is_page( $orders_page ) && !is_user_logged_in() ) {
 			wp_redirect( get_permalink( woocommerce_get_page_id( 'myaccount' ) ), 303 );
 			exit;
 		}
-	}
+		
+	} // check_access() 
 
 
 	/**
-	 *
+	 * DEPRICATED 
 	 */
 	public function display_shortcodes()
 	{
@@ -50,10 +60,10 @@ class WCV_Orders
 			wp_enqueue_script( 'jquery' );
 
 			$this->product_id = !empty( $_GET[ 'orders_for_product' ] ) ? (int) $_GET[ 'orders_for_product' ] : false;
+			
 			$products = array( $this->product_id );
 
 			$_product = get_product( $this->product_id );
-			
 
 			if  ( is_object( $_product ) ) { 
 
@@ -78,6 +88,46 @@ class WCV_Orders
 
 	}
 
+	/**
+	 *  Processs export orders csv request 
+	 * 
+	 * @since 1.9.4
+	 */
+	public function process_export_orders( ){ 
+
+		if ( empty( $_GET[ 'orders_for_product' ] ) ) {
+
+			return __( 'You haven\'t selected a product\'s orders to view! Please go back to the Vendor Dashboard and click Show Orders on the product you\'d like to view.', 'wcvendors' );
+		
+		} else { 
+			$this->product_id = !empty( $_GET[ 'orders_for_product' ] ) ? (int) $_GET[ 'orders_for_product' ] : false;
+			
+			$products = array( $this->product_id );
+
+			$_product = get_product( $this->product_id );
+
+			if  ( is_object( $_product ) ) { 
+
+				$children = $_product->get_children();
+
+				if ( !empty( $children ) ) {
+					$products = array_merge($products, $children);
+					$products = array_unique($products);
+				}
+			} 
+
+			$this->orders = WCV_Queries::get_orders_for_products( $products, array( 'vendor_id' => get_current_user_id() ) );
+		}
+
+		if ( !$this->orders ) {
+			return __( 'No orders.', 'wcvendors' );
+		}
+
+		if ( $this->can_export_csv && !empty( $_POST[ 'export_orders' ] ) ) {
+				$this->download_csv();
+		}
+
+	}  // process_export_orders() 
 
 	/**
 	 *
@@ -107,13 +157,32 @@ class WCV_Orders
 
 		if ( !WCV_Vendors::is_vendor( get_current_user_id() ) ) {
 			ob_start();
-			wc_get_template( 'denied.php', array(), 'wc-vendors/dashboard/', wcv_plugin_dir . 'templates/dashboard/' );
-
+				wc_get_template( 'denied.php', array(), 'wc-vendors/dashboard/', wcv_plugin_dir . 'templates/dashboard/' );
 			return ob_get_clean();
 		}
 
 		if ( empty( $_GET[ 'orders_for_product' ] ) ) {
+
 			return __( 'You haven\'t selected a product\'s orders to view! Please go back to the Vendor Dashboard and click Show Orders on the product you\'d like to view.', 'wcvendors' );
+		
+		} else { 
+			$this->product_id = !empty( $_GET[ 'orders_for_product' ] ) ? (int) $_GET[ 'orders_for_product' ] : false;
+			
+			$products = array( $this->product_id );
+
+			$_product = get_product( $this->product_id );
+
+			if  ( is_object( $_product ) ) { 
+
+				$children = $_product->get_children();
+
+				if ( !empty( $children ) ) {
+					$products = array_merge($products, $children);
+					$products = array_unique($products);
+				}
+			} 
+
+			$this->orders = WCV_Queries::get_orders_for_products( $products, array( 'vendor_id' => get_current_user_id() ) );
 		}
 
 		if ( !$this->orders ) {
@@ -152,8 +221,6 @@ class WCV_Orders
 			}
 		}
 		
-		ob_start();
-
 		// Show the Export CSV button
 		if ( $this->can_export_csv ) {
 			wc_get_template( 'csv-export.php', array(), 'wc-vendors/orders/', wcv_plugin_dir . 'templates/orders/' );
@@ -168,8 +235,7 @@ class WCV_Orders
 													 'provider_array' => $provider_array, 
 												), 'wc-vendors/orders/', wcv_plugin_dir . 'templates/orders/' );
 
-		return ob_get_clean();
-	}
+	} // display_product_orders() 
 
 
 	/**
@@ -265,5 +331,20 @@ class WCV_Orders
 			exit;
 		}
 	}
+
+	/**
+	 * Get the variation data for a product 
+	 * 
+	 * @since 1.9.4
+	 * @return string variation_data 
+	 */
+	public static function get_variation_data( $item_id ){ 
+		
+		$_var_product = new WC_Product_Variation(  $item_id );
+		$variation_data = $_var_product->get_variation_attributes();
+		$variation_detail = wc_get_formatted_variation( $variation_data, true );
+		return $variation_detail; 
+
+	} // get_variation_data() 
 
 }

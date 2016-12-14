@@ -17,8 +17,6 @@
 
 <?php if ( $shipping_type == 'flat' ) : ?> 
 
-	
-
 	<?php include( apply_filters( 'wcv_partial_path_pro_product_shipping_flat_rate' , $this->base_dir . 'admin/partials/product/wcvendors-pro-product-meta-shipping-flat-rate.php' ) ); ?> 
 
 <?php elseif ( $shipping_type =='country' ) :?> 
@@ -32,6 +30,6 @@
 <div class="options_group">
 	<p class="form-field _weight_field ">
 		<label for="_handling_fee"><?php _e( 'Product handling fee', 'wcvendors-pro'); ?></label>
-		<input type="text" class="short wc_input_decimal" style="" name="_handling_fee" id="_handling_fee" value="<?php echo $shipping_details['handling_fee']; ?>" placeholder="0">
+		<input type="text" class="short wc_input_decimal" style="" name="_handling_fee" id="_handling_fee" value="<?php echo $handling_fee; ?>" placeholder="0">
 	</p>
 </div>

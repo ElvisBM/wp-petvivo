@@ -35,8 +35,15 @@ Class WCV_Vendor_Admin_Dashboard {
 	}
 
 	function admin_enqueue_order_style() { 
-		add_thickbox();
-		wp_enqueue_style( 'admin_order_styles', wcv_assets_url . 'css/admin-orders.css' );
+
+		$screen 	= get_current_screen(); 
+		$screen_id 	= $screen->id; 
+
+		if ( 'wcv-vendor-orders' === $screen_id ){ 
+
+			add_thickbox();
+			wp_enqueue_style( 'admin_order_styles', wcv_assets_url . 'css/admin-orders.css' );
+		}	
 	}
 
 	/** 
@@ -206,8 +213,8 @@ class WCV_Vendor_Order_Page extends WP_List_Table
 
 		//Set parent defaults
 		parent::__construct( array(
-								  'singular' => 'order',
-								  'plural'   => 'orders',
+								  'singular' => __( 'order', 'wcvendors' ),
+								  'plural'   => __( 'orders', 'wcvendors' ), 
 								  'ajax'     => false
 							 ) );
 
@@ -434,21 +441,21 @@ class WCV_Vendor_Order_Page extends WP_List_Table
 
 				$items = $order->get_items();
 
-				foreach ( $items as $key => $item) {
+				foreach ( $items as $order_item_id => $item) {
 					if ( in_array( $item[ 'variation_id' ], $valid_items) || in_array( $item[ 'product_id' ], $valid_items ) ) {
-						$valid[ ] = $item;
+						$valid[ $order_item_id ] = $item;
 					}
 				}
 
 				$products = ''; 
 
-				foreach ( $valid as $key => $item ) { 
+				foreach ( $valid as $order_item_id => $item ) {
 					
 					$wc_product = new WC_Product( $item['product_id'] );
 
 					$products .= '<strong>'. $item['qty'] . ' x ' . $item['name'] . '</strong><br />'; 
 
-					if ( $metadata = $order->has_meta( $item['product_id'] ) ) {
+					if ( $metadata = $order->has_meta( $order_item_id ) ) {
 						$products .= '<table cellspacing="0" class="wcv_display_meta">';
 						foreach ( $metadata as $meta ) {
 
@@ -462,6 +469,8 @@ class WCV_Vendor_Order_Page extends WP_List_Table
 								'_line_subtotal_tax',
 								'_line_total',
 								'_line_tax',
+								'_vendor_order_item_id', 
+								'_vendor_commission', 
 								WC_Vendors::$pv_options->get_option( 'sold_by_label' ), 
 							) ) ) ) {
 								continue;
@@ -481,7 +490,7 @@ class WCV_Vendor_Order_Page extends WP_List_Table
 								$meta['meta_key']   = apply_filters( 'woocommerce_attribute_label', wc_attribute_label( $meta['meta_key'], $wc_product ), $meta['meta_key'] );
 							}
 
-							$products .= '<tr><th>' . wp_kses_post( rawurldecode( $meta['meta_key'] ) ) . ':</th><td>' . wp_kses_post( wpautop( make_clickable( rawurldecode( $meta['meta_value'] ) ) ) ) . '</td></tr>';
+							$products .= '<tr><th>' . wp_kses_post( rawurldecode( $meta['meta_key'] ) ) . ':</th><td>' . rawurldecode( $meta['meta_value'] ) . '</td></tr>';
 						}
 						$products .= '</table>';
 					}
@@ -489,10 +498,11 @@ class WCV_Vendor_Order_Page extends WP_List_Table
 				}
 
 				$shippers = (array) get_post_meta( $order->id, 'wc_pv_shipped', true );
-				$shipped = in_array($user_id, $shippers) ? 'Yes' : 'No' ; 
+				$shipped = in_array($user_id, $shippers) ? __( 'Yes', 'wcvendors' ) : __( 'No', 'wcvendors' ) ; 
 
-				$sum = WCV_Queries::sum_for_orders( array( $order->id ), array('vendor_id' =>get_current_user_id() ) ); 
-				$total = $sum[0]->line_total; 
+				$sum = WCV_Queries::sum_for_orders( array( $order->id ), array('vendor_id' =>get_current_user_id() ), false ); 
+				$sum = reset( $sum ); 
+				$total = $sum->line_total; 
 
 				$comment_output = '';
 

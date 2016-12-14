@@ -133,8 +133,22 @@ jQuery( function( $ ){
 	 if ( $( '.wcv-vacaction-mode' ).is( ':checked' ) ){ 
 	 	$( '.wcv-vacation-mode-msg-wrapper' ).show(); 
 	 }
-
 	
+	 $( '.wcv-datepicker' ).datepicker({
+	 		defaultDate: '',
+            dateFormat : 'yy-mm-dd'
+     });
+
+	 // Initialize all date pickers 
+	 $( '.wcv-datepicker' ).datepicker({
+	 		defaultDate: '',
+            dateFormat : wcv_frontend_general.date_format
+     });
+
+    $( '.wcv-datetimepicker' ).datetimepicker({
+		dateFormat: wcv_frontend_general.date_format,
+	});	
+
 });
 
 	
