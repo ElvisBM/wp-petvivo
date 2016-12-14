@@ -1,18 +1,12 @@
 <?php
 /*
-  Name: Sorted simple list
+  Name: Simple list
  */
 
 ?>
 
 <?php
 use ContentEgg\application\helpers\TemplateHelper;
-// sort items by price
-usort($items, function($a, $b) {
-    if (!$a['price']) return 1;
-    if (!$b['price']) return -1;
-    return $a['price'] - $b['price'];
-});
 $product_price_update = get_post_meta( get_the_ID(), '_cegg_last_update_Affiliatewindow', true );
 $product_keyword_update = get_post_meta( get_the_ID(), '_cegg_last_bykeyword_update_Affiliatewindow', true );
 if ($product_price_update) {
@@ -26,7 +20,7 @@ elseif ($product_keyword_update) {
 <div class="egg_sort_list re_sort_list simple_sort_list mb20"><a name="aff-link-list"></a>
     <div class="aff_offer_links">
         <?php $i=0; foreach ($items as $key => $item): ?>
-            <?php $offer_price = (!empty($item['price'])) ? TemplateHelper::price_format_i18n($item['price']) : ''; ?>
+            <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
             <?php $offer_price_old = (!empty($item['priceOld'])) ? TemplateHelper::price_format_i18n($item['priceOld']) : ''; ?>
             <?php $clean_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
             <?php $currency = (!empty($item['currency'])) ? $item['currency'] : ''; ?>

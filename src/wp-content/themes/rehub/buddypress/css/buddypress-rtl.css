@@ -244,12 +244,13 @@ body.no-js #buddypress div.item-list-tabs ul li.last select{opacity:1}
 #buddypress table.notifications,#buddypress table.notifications-settings,#buddypress table.profile-settings,#buddypress table.profile-fields,#buddypress table.wp-profile-fields,#buddypress table.messages-notices,#buddypress table.forum{width:100%}
 #buddypress table.notifications thead tr,#buddypress table.notifications-settings thead tr,#buddypress table.profile-settings thead tr,#buddypress table.profile-fields thead tr,#buddypress table.wp-profile-fields thead tr,#buddypress table.messages-notices thead tr,#buddypress table.forum thead tr{background:#eaeaea}
 #buddypress table#message-threads{clear:both; border: 1px solid #eee;}
-#buddypress table.profile-fields{margin-bottom:20px}
+#buddypress table.profile-fields{margin-bottom:20px; border: 1px solid #e5e5e5;}
 #buddypress table.profile-fields:last-child{margin-bottom:0}
 #buddypress table.profile-fields p{margin:0}
 #buddypress table.profile-fields p:last-child{margin-top:0}
 #buddypress table.notifications tr td,#buddypress table.notifications-settings tr td,#buddypress table.profile-settings tr td,#buddypress table.profile-fields tr td,#buddypress table.wp-profile-fields tr td,#buddypress table.messages-notices tr td,#buddypress table.forum tr td,#buddypress table.notifications tr th,#buddypress table.notifications-settings tr th,#buddypress table.profile-fields tr th,#buddypress table.wp-profile-fields tr th,#buddypress table.messages-notices tr th,#buddypress table.forum tr th{padding:8px;vertical-align:middle; background-color: #f4f4f4}
 #buddypress #groups-notification-settings{margin-bottom:0}
+#buddypress table.profile-settings tr td,#buddypress table.profile-fields tr td{background: #fff; font-size: 95%}
 #buddypress table.notifications tr td.label,#buddypress table.notifications-settings tr td.label,#buddypress table.profile-fields tr td.label,#buddypress table.wp-profile-fields tr td.label,#buddypress table.messages-notices tr td.label,#buddypress table.forum tr td.label{border-right:inherit;border-left:1px solid #eaeaea;font-weight:700;width:25%}
 #buddypress #message-threads .thread-info{min-width:40%}
 #buddypress table tr td.thread-info p{margin:0}
@@ -390,7 +391,7 @@ body.groups.single-item .main-side > .title{display: none;}
 #buddypress #mods-list li,
 #buddypress #members-list li,
 #buddypress #member-list li {
-	box-shadow: 0 2px 2px rgba(221, 221, 221, 0.26);border: 1px solid #ddd;
+	box-shadow: 0 2px 2px rgba(221, 221, 221, 0.26);border: 1px solid #ddd; box-sizing: border-box;
 	}
 .store_member_in_m_loop{font-size: 80%; margin: 0 0 10px 0 }
 .store_member_in_m_loop_l{opacity: 0.6}	
@@ -436,7 +437,7 @@ a.message-action-star:hover{opacity:1}
 .message-action-star span.icon:before,.message-action-unstar span.icon:before{font-family:dashicons;font-size:18px}
 .message-action-star span.icon:before{color:#aaa;content:"\f154"}
 .message-action-unstar span.icon:before{color:#fcdd77;content:"\f155"}
-#buddypress div.profile h4{margin-bottom:auto;margin-top:15px}
+#buddypress div.profile h4{margin-bottom:auto;margin:15px 0}
 #buddypress #profile-edit-form ul.button-nav{margin:15px 0 0;float: right}
 #buddypress .field-visibility-settings{display:none;margin-top:10px}
 #buddypress .current-visibility-level{font-weight:700;font-style:normal}
@@ -564,3 +565,4 @@ li.friend-tab img.avatar {margin: 0 4px;}
 .distance-to-user-geo i{color: #999}
 #gmw-your-location-wrapper div#your-location-section {background: #F8F8F8 !important;border: #d8d8d8 solid 1px !important;}
 #gmw-your-location-wrapper div#your-location-section p{border-bottom: #d8d8d8 solid 1px !important;}
+.editfield p.field-visibility-settings-toggle{margin: 0}

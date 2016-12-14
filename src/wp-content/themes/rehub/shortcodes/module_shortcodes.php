@@ -118,22 +118,34 @@ class WPSM_Postfilters{
 	            );
 	        }        
 	    } 
-	    if ($filter_args->show_coupons_only == '1') {     
+	    if ($filter_args->show_coupons_only == '1') { 
+	    	$args['meta_query']['relation'] = 'AND';    
 	        $args['meta_query'][] = array(
 	            'key'     => 'rehub_offer_product_price_old',
 	            'value' => '',
 	            'compare' => '!=',
 	        );
-	    }	     
-	    if ($filter_args->show_coupons_only == '2') {     
 	        $args['meta_query'][] = array(
-	            'key'     => 'rehub_offer_coupon_date',
-	            'value'   => date('Y-m-d'),
-	            'compare' => '>=',
+	            'key'     => 're_post_expired',
+	            'value'   => '1',
+	            'compare' => '!=',
+	        );		        
+	    }	     
+	    if ($filter_args->show_coupons_only == '2') { 
+	    	$args['meta_query']['relation'] = 'AND';    
+	        $args['meta_query'][] = array(
+	            'key'     => 'rehub_offer_product_coupon',
+	            'value' => '',
+	            'compare' => '!=',
 	        );
+	        $args['meta_query'][] = array(
+	            'key'     => 're_post_expired',
+	            'value'   => '1',
+	            'compare' => '!=',
+	        );	        
 	    } 
 	    if ($filter_args->show_coupons_only == '3') {     
-		    $args['meta_query'] = array(
+		    $args['meta_query'][] = array(
 		    	array(
 		       		'key' => 're_post_expired',
 		       		'value' => '1',
@@ -141,6 +153,14 @@ class WPSM_Postfilters{
 		    	),	    	
 			);
 	    } 	
+	    if ($filter_args->show_coupons_only == '6') {     
+		    $args['meta_query'][] = array(
+		    	array(
+		       		'key' => 'rehub_review_overall_score',
+		       		'compare' => 'EXISTS',
+		    	),	    	
+			);
+	    } 	    
 	    if ($filter_args->show_coupons_only == '4') {     
 	        $args['meta_query'][] = array(
 	            'key'     => 're_post_expired',
@@ -148,6 +168,18 @@ class WPSM_Postfilters{
 	            'compare' => '=',
 	        );
 	    } 
+	    if ($filter_args->show_coupons_only == '5') { 
+	    	$args['meta_query']['relation'] = 'AND';    
+	        $args['meta_query'][] = array(
+	            'key'     => 'rehub_offer_product_coupon',
+	            'compare' => 'NOT EXISTS',
+	        );
+	        $args['meta_query'][] = array(
+	            'key'     => 're_post_expired',
+	            'value'   => '1',
+	            'compare' => '!=',
+	        );		        
+	    }	    
 
 	    if ($filter_args->show_date == 'day') {     
 	        $args['date_query'][] = array(
@@ -191,6 +223,7 @@ class WPSM_Postfilters{
         }  
         if ($type=='logo'){
 	        $brand_url = get_post_meta( get_the_ID(), 'rehub_offer_logo_url', true );
+	        $brandtermname = '';
 	        if (!empty ($brand_url)) {
 	            $term_brand_image = esc_url($brand_url);
 	        }  
@@ -312,22 +345,34 @@ class WPSM_Woohelper{
 	        if (($filter_args->orderby == 'meta_value' || $filter_args->orderby == 'meta_value_num') && $filter_args->meta_key !='') {$args['meta_key'] = $filter_args->meta_key;}	   
 	        if ($filter_args->offset != '') {$args['offset'] = (int)$filter_args->offset;}     	        
 	    }
-	    if ($filter_args->show_coupons_only == '1') {     
+	    if ($filter_args->show_coupons_only == '1') { 
+	    	$args['meta_query']['relation'] = 'AND';    
 	        $args['meta_query'][] = array(
 	            'key'     => '_sale_price',
 	            'value' => '',
-				'compare' => '!=',
+	            'compare' => '!=',
 	        );
-	    } 	  
-	    if ($filter_args->show_coupons_only == '4') {     
 	        $args['meta_query'][] = array(
-	            'key'     => 'rehub_woo_coupon_date',
-	            'value'   => date('Y-m-d'),
-	            'compare' => '>=',
+	            'key'     => 're_post_expired',
+	            'value'   => '1',
+	            'compare' => '!=',
+	        );		        
+	    }	    	  
+	    if ($filter_args->show_coupons_only == '4') {     
+	    	$args['meta_query']['relation'] = 'AND';    
+	        $args['meta_query'][] = array(
+	            'key'     => 'rehub_woo_coupon_code',
+	            'value' => '',
+	            'compare' => '!=',
 	        );
+	        $args['meta_query'][] = array(
+	            'key'     => 're_post_expired',
+	            'value'   => '1',
+	            'compare' => '!=',
+	        );	        
 	    } 	      
 	    if ($filter_args->show_coupons_only == '2') {     
-		    $args['meta_query'] = array(
+		    $args['meta_query'][] = array(
 		    	array(
 		       		'key' => 're_post_expired',
 		       		'value' => '1',
@@ -342,6 +387,18 @@ class WPSM_Woohelper{
 	            'compare' => '=',
 	        );
 	    }	
+	    if ($filter_args->show_coupons_only == '5') { 
+	    	$args['meta_query']['relation'] = 'AND';    
+	        $args['meta_query'][] = array(
+	            'key'     => 'rehub_woo_coupon_code',
+	            'compare' => 'NOT EXISTS',
+	        );
+	        $args['meta_query'][] = array(
+	            'key'     => 're_post_expired',
+	            'value'   => '1',
+	            'compare' => '!=',
+	        );		        
+	    }	    
 	    if ($filter_args->show_date == 'day') {     
 	        $args['date_query'][] = array(
 				'after'  => '1 day ago',
@@ -738,7 +795,17 @@ ob_start();
 		$args = $argsfilter->extract_filters();
 		global $post; global $woocommerce; global $wp_query; $temp = $wp_query; 
 	?>
-	<?php $wp_query = new WP_Query( $args ); $i=1; if ( $wp_query->have_posts() ) : ?>
+	<?php 
+    if(class_exists('MetaDataFilter') AND MetaDataFilter::is_page_mdf_data()){   
+        $_REQUEST['mdf_do_not_render_shortcode_tpl'] = true;
+        $_REQUEST['mdf_get_query_args_only'] = true;
+        do_shortcode('[meta_data_filter_results]');
+        $args = $_REQUEST['meta_data_filter_args'];
+        $wp_query=new WP_Query($args);
+        $_REQUEST['meta_data_filter_found_posts']=$wp_query->found_posts;
+    }
+    else { $wp_query = new WP_Query($args); }
+	$i=1; if ( $wp_query->have_posts() ) : ?>
 		<?php 
 			if(!empty($args['paged'])){unset($args['paged']);}
 			$jsonargs = json_encode($args);
@@ -828,9 +895,11 @@ $ajaxoffset = $show + $offset;
 $additional_vars = array();
 $additional_vars['columns'] = $columns;
 $additional_vars['woolinktype'] = $woolinktype;
+if($custom_col){
 $additional_vars['custom_col'] = $custom_col;
 $additional_vars['custom_img_width'] = $custom_img_width;
 $additional_vars['custom_img_height'] = $custom_img_height;
+}
 ob_start(); 
 ?>
 
@@ -840,7 +909,17 @@ ob_start();
 	$args = $argsfilter->extract_filters();
 	global $post; global $woocommerce; global $wp_query; $temp = $wp_query;
 ?>
-<?php $wp_query = new WP_Query( $args ); $i=1; if ( $wp_query->have_posts() ) : ?> 
+<?php 
+    if(class_exists('MetaDataFilter') AND MetaDataFilter::is_page_mdf_data()){   
+        $_REQUEST['mdf_do_not_render_shortcode_tpl'] = true;
+        $_REQUEST['mdf_get_query_args_only'] = true;
+        do_shortcode('[meta_data_filter_results]');
+        $args = $_REQUEST['meta_data_filter_args'];
+        $wp_query=new WP_Query($args);
+        $_REQUEST['meta_data_filter_found_posts']=$wp_query->found_posts;
+    }
+    else { $wp_query = new WP_Query($args); }
+	$i=1; if ( $wp_query->have_posts() ) : ?> 
 	<?php 
 		if(!empty($args['paged'])){unset($args['paged']);}
 		$jsonargs = json_encode($args);
@@ -926,6 +1005,10 @@ ob_start();
 		<a name="woo-link-list"></a>		
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  global $product;  ?>
 			<?php include(locate_template('inc/parts/woolistpart.php')); ?>
+            <?php
+                $price_clean = $product->get_price();
+                $result_min[] = $price_clean;
+            ?>			
 		<?php $i++; endwhile; ?>
 		
 		<?php if ($enable_pagination == '1') :?>
@@ -1007,7 +1090,17 @@ ob_start();
 	$args = $argsfilter->extract_filters();
 	global $post; global $woocommerce; $backup=$post;
 ?>
-<?php $wp_query = new WP_Query( $args ); $i=1; if ( $wp_query->have_posts() ) : ?> 
+<?php 
+    if(class_exists('MetaDataFilter') AND MetaDataFilter::is_page_mdf_data()){   
+        $_REQUEST['mdf_do_not_render_shortcode_tpl'] = true;
+        $_REQUEST['mdf_get_query_args_only'] = true;
+        do_shortcode('[meta_data_filter_results]');
+        $args = $_REQUEST['meta_data_filter_args'];
+        $wp_query=new WP_Query($args);
+        $_REQUEST['meta_data_filter_found_posts']=$wp_query->found_posts;
+    }
+    else { $wp_query = new WP_Query($args); }
+	$i=1; if ( $wp_query->have_posts() ) : ?> 
 	<?php 
 		if(!empty($args['paged'])){unset($args['paged']);}
 		$jsonargs = json_encode($args);
@@ -1129,7 +1222,7 @@ ob_start();
 		$jsonargs = json_encode($args);
 		$json_innerargs = json_encode($additional_vars);
 	?> 	
-	<div class="eq_grid post_eq_grid <?php echo $col_wrap; echo $infinitescrollwrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="compact_grid" id="<?php echo $containerid;?>" data-innerargs='<?php echo $json_innerargs;?>'>
+	<div class="eq_grid post_eq_grid rh-flex-eq-height <?php echo $col_wrap; echo $infinitescrollwrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="compact_grid" id="<?php echo $containerid;?>" data-innerargs='<?php echo $json_innerargs;?>'>
 
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>
 			<?php include(locate_template('inc/parts/compact_grid.php')); ?>
@@ -2029,7 +2122,7 @@ ob_start();
 		    </div>
 		<?php else :?>	    
 		    <div class="news_widget_item clearfix">	
-		        <figure><a href="<?php the_permalink();?>"><?php wpsm_thumb ('med_thumbs') ?></a><?php rehub_formats_icons('small') ?></figure>
+		        <figure><a href="<?php the_permalink();?>"><?php wpsm_thumb ('med_thumbs') ?></a></figure>
 		        <div class="detail">
 		            <h3><a href="<?php the_permalink();?>"><?php the_title();?></a></h3>
 		            <?php do_action( 'rehub_after_two_column_title' ); ?>
@@ -2098,7 +2191,7 @@ ob_start();
 		    </div>
 		<?php else :?>	    
 		    <div class="news_widget_item clearfix">	
-		        <figure><a href="<?php the_permalink();?>"><?php wpsm_thumb ('med_thumbs') ?></a><?php rehub_formats_icons('small') ?></figure>
+		        <figure><a href="<?php the_permalink();?>"><?php wpsm_thumb ('med_thumbs') ?></a></figure>
 		        <div class="detail">
 		            <h3><a href="<?php the_permalink();?>"><?php the_title();?></a></h3>
 		            <?php do_action( 'rehub_after_two_column_title' ); ?>
@@ -2183,6 +2276,7 @@ if (!empty($cat_id)) {
 	global $wp_query; 
 	$argsfilter = new WPSM_Postfilters($build_args);
 	$args = $argsfilter->extract_filters();
+	$args['ignore_sticky_posts'] = 1;
 ?>
 
 <div class="post_carousel_block loading carousel-style-<?php echo $style;?><?php echo $disable_nav_class;?>">
@@ -2308,6 +2402,7 @@ ob_start();
 	global $wp_query; 
 	$argsfilter = new WPSM_Postfilters($build_args);
 	$args = $argsfilter->extract_filters();
+	$args['ignore_sticky_posts'] = 1;
 ?>
 
 <div class="post_carousel_block loading carousel-style-2 carousel-style-deal showrow-<?php echo $showrow;?>">
@@ -2414,7 +2509,7 @@ ob_start();
 					<?php $coupon_style = $expired =''; if(!empty($offer_coupon_date)) : ?>
 					    <?php
 					    $timestamp1 = strtotime($offer_coupon_date);
-					    $seconds = $timestamp1 - time();
+					    $seconds = $timestamp1 - (int)current_time('timestamp',0);
 					    $days = floor($seconds / 86400);
 					    $seconds %= 86400;
 					    if ($days > 0) {
@@ -2426,7 +2521,7 @@ ob_start();
 					      $coupon_style = '';
 					    }
 					    else {
-					      $coupon_text = __('Coupon is Expired', 'rehub_framework');
+					      $coupon_text = __('Expired', 'rehub_framework');
 					      $coupon_style = ' expired_coupon';
 					      $expired = '1';
 					    }
@@ -2445,7 +2540,7 @@ ob_start();
 			        ?>
 			        <div class="deal-item-wrap<?php echo $reveal_enabled; echo $coupon_style; ?>">
 			        	<div class="deal-item">
-			                <?php if ($product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0) : ?>
+			                <?php if ($product->is_on_sale() && !$product->is_type( 'variable' ) && $product->get_regular_price() && $product->get_price() > 0) : ?>
 			                    <span class="small_sale_a_proc">
 			                        <?php   
 			                            $offer_price_calc = (float) $product->get_price();
@@ -2542,6 +2637,7 @@ $build_args =shortcode_atts(array(
 	'enable_pagination' => '',	
 	'show_coupons_only' =>'', //Filters end
 	'nometa' =>'',
+	'image' =>'',
 	'center' => '',
 	'filterpanel' => '',
 	'taxdrop' => '',
@@ -2553,6 +2649,7 @@ $center_class=($center) ? ' text-center': '';
 $ajaxoffset = $show + $offset;
 $additional_vars = array();
 $additional_vars['nometa'] = $nometa;
+$additional_vars['image'] = $image;
 if ($enable_pagination =='2'){
 	$infinitescrollwrap = ' re_aj_pag_auto_wrap';
 }     
@@ -2642,6 +2739,7 @@ ob_start();
 	global $wp_query; 
 	$argsfilter = new WPSM_Postfilters($build_args);
 	$args = $argsfilter->extract_filters();
+	$args['ignore_sticky_posts'] = true;
 	$wp_query = new WP_Query($args);
 ?>
 <div class="wpsm_three_col_posts scroll-on-mobile" id="w_t_c_<?php echo $rand_id;?>">
@@ -2727,7 +2825,7 @@ function wpsm_offerbox_shortcode( $atts, $content = null ) {
 	$coupon_style = '';
 	if(!empty($offer_coupon_date)) :
 		$timestamp1 = strtotime($offer_coupon_date);
-		$seconds = $timestamp1 - time();
+		$seconds = $timestamp1 - (int)current_time('timestamp',0);
 		$days = floor($seconds / 86400);
 		$seconds %= 86400;
 		if ($days > 0) {
@@ -2739,7 +2837,7 @@ function wpsm_offerbox_shortcode( $atts, $content = null ) {
 			$coupon_style = '';
 		}
 		else {
-			$coupon_text = __('Coupon is Expired', 'rehub_framework');
+			$coupon_text = __('Expired', 'rehub_framework');
 			$coupon_style = 'expired_coupon';
 		}			
 	endif;
@@ -2815,7 +2913,7 @@ function wpsm_offerbox_shortcode( $atts, $content = null ) {
 	        $out .='<div class="buttons_col"><div class="priced_block">';
 			if(!empty($offer_coupon_date)) :
 				$timestamp1 = strtotime($offer_coupon_date); 
-				$seconds = $timestamp1 - time(); 
+				$seconds = $timestamp1 - (int)current_time('timestamp',0); 
 				$days = floor($seconds / 86400);
 				$seconds %= 86400;
         		if ($days > 0) {
@@ -2827,7 +2925,7 @@ function wpsm_offerbox_shortcode( $atts, $content = null ) {
         			$coupon_style = '';
         		}
         		else {
-        			$coupon_text = __('Coupon is Expired', 'rehub_framework');
+        			$coupon_text = __('Expired', 'rehub_framework');
         			$coupon_style = 'expired_coupon';
         		}									
 			endif;
@@ -2942,11 +3040,11 @@ function wpsm_offerbox_shortcode( $atts, $content = null ) {
                 			$out .= $coupon_style;
                 		endif;
                		$out .= '" data-clipboard-text="'.rawurlencode(esc_html($atts['offer_coupon'])).'" data-codetext="'.rawurlencode(esc_html($atts['offer_coupon'])).'" data-dest="'.esc_url($atts['button_link']).'">'.$offer_coupon_mask_text.'<i class="fa fa-external-link-square"></i></div>';
-                    if(!empty($atts['offer_coupon_date'])) :
-                    	$out .='<div class="time_offer">'.$coupon_text.'</div>';
-                    endif;
 				endif;	
-			endif;		
+			endif;
+            if(!empty($atts['offer_coupon_date'])) :
+            	$out .='<div class="time_offer">'.$coupon_text.'</div>';
+            endif;					
 		$out .= '</div></div>';
 
 	endif;
@@ -3286,7 +3384,9 @@ if( !function_exists('wpsm_searchbox_function') ) {
 		'placeholder' => 'Search',
 		'color' => 'orange',
 		'enable_ajax' => '',
-		'tax' => ''
+		'tax' => '',
+		'enable_compare' => '',
+		'catid' => ''
 	), $atts, 'wpsm_searchbox'); 
 	extract( $build_args ); 
 	ob_start(); 
@@ -3329,8 +3429,10 @@ if( !function_exists('wpsm_searchbox_function') ) {
 
 		<?php } else { ?>
 			<form  role="search" method="get" id="searchform" action="<?php echo home_url( '/' ); ?>">
-			  <input type="text" name="s" placeholder="<?php echo $placeholder?>" <?php if ($enable_ajax == '1') {echo 'class="re-ajax-search" autocomplete="off"';} ?> data-posttype="<?php echo $by;?>">
+			  <input type="text" name="s" placeholder="<?php echo $placeholder?>" <?php if ($enable_ajax == '1') {echo 'class="re-ajax-search" autocomplete="off"';} ?> data-posttype="<?php echo $by;?>" data-enable_compare="<?php echo $enable_compare;?>" data-catid="<?php echo $catid;?>">
 			  <input type="hidden" name="post_type" value="<?php echo $by?>" />
+			  <input type="hidden" name="enable_compare" value="<?php echo $enable_compare	?>" />
+			  <input type="hidden" name="catid" value="<?php echo $catid	?>" />
 			  <i class="fa fa-arrow-right inside-search"></i>
 			  <button type="submit" class="wpsm-button <?php echo $color?>"><i class="fa fa-search"></i></button>
 			</form>
@@ -3470,7 +3572,7 @@ if (!empty($term_ids) && !is_wp_error($term_ids)) {$term_brand = $term_ids[0]; $
             <?php if(!empty($offer_coupon_date)) : ?>
                 <?php 
                     $timestamp1 = strtotime($offer_coupon_date); 
-                    $seconds = $timestamp1 - time(); 
+                    $seconds = $timestamp1 - (int)current_time('timestamp',0); 
                     $days = floor($seconds / 86400);
                     $seconds %= 86400;
                     if ($days > 0) {
@@ -3482,7 +3584,7 @@ if (!empty($term_ids) && !is_wp_error($term_ids)) {$term_brand = $term_ids[0]; $
                         $coupon_style = '';
                     }
                     else {
-                        $coupon_text = __('Coupon is Expired', 'rehub_framework');
+                        $coupon_text = __('Expired', 'rehub_framework');
                         $coupon_style = 'expired_coupon';
                     }                                   
                 ?>
@@ -3663,7 +3765,7 @@ if (!empty($term_ids)) {$term_brand = $term_ids[0]; $term_brand_image = get_opti
             <?php if(!empty($offer_coupon_date)) : ?>
                 <?php 
                     $timestamp1 = strtotime($offer_coupon_date); 
-                    $seconds = $timestamp1 - time(); 
+                    $seconds = $timestamp1 - (int)current_time('timestamp',0); 
                     $days = floor($seconds / 86400);
                     $seconds %= 86400;
                     if ($days > 0) {
@@ -3675,7 +3777,7 @@ if (!empty($term_ids)) {$term_brand = $term_ids[0]; $term_brand_image = get_opti
                         $coupon_style = '';
                     }
                     else {
-                        $coupon_text = __('Coupon is Expired', 'rehub_framework');
+                        $coupon_text = __('Expired', 'rehub_framework');
                         $coupon_style = 'expired_coupon';
                     }                                   
                 ?>

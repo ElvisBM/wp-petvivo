@@ -12,39 +12,25 @@ var outputdate = d.getFullYear() + '.' +
 	tinymce.create('tinymce.plugins.Addshortcodes', {
 		init : function(ed, url) {
 
-		    //ads
-			ed.addButton('ads1', {  
-				title : 'Ads 1',  
-				image : url+'/images/bullhorn.png',  
-				onclick : function() {
-					//if(ed.selection.getContent().length > 0)				
-					ed.selection.setContent('[wpsm_ads1 float="none"]');  
-				}  
-			}); 
-
-		    //ads2
-			ed.addButton('ads2', {  
-				title : 'Ads 2',  
-				image : url+'/images/bullhorn2.png',  
-				onclick : function() {
-					//if(ed.selection.getContent().length > 0)				
-					ed.selection.setContent('[wpsm_ads2 float="none"]');  
-				}  
-			}); 
-
-		    //contents
 			ed.addButton('contents', {  
-				title : 'Specification',  
+				title : 'Auto contents',  
 				image : url+'/images/contents.png',  
 				onclick : function() {
 					//if(ed.selection.getContent().length > 0)				
-					ed.selection.setContent('[wpsm_specification]');  
+					ed.selection.setContent('[contents h2]');  
 				}  
-			}); 							 
-			
+			}); 
 
-		    //review
-			ed.addButton('review', {  
+			ed.addButton('sticky', {  
+				title : 'Sticky auto contents',  
+				image : url+'/images/post_images.png',  
+				onclick : function() {
+					//if(ed.selection.getContent().length > 0)				
+					ed.selection.setContent('[wpsm_stickypanel][contents h2][/wpsm_stickypanel]');  
+				}  
+			}); 										 
+			
+			ed.addButton('toplist', {  
 				title : 'Top list',  
 				image : url+'/images/star.png',  
 				onclick : function() {
@@ -53,7 +39,15 @@ var outputdate = d.getFullYear() + '.' +
 				}  
 			});
 
-		    //review
+			ed.addButton('linkhider', {  
+				title : 'Hidden link from google',  
+				image : url+'/images/link.png',  
+				onclick : function() {
+					//if(ed.selection.getContent().length > 0)				
+					ed.selection.setContent('[wpsm_hidelink text="" link=""]');  
+				}  
+			});				
+
 			ed.addButton('update', {  
 				title : 'Update notice',  
 				image : url+'/images/update.png',  

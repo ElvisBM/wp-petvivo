@@ -24,19 +24,19 @@ global $post, $product;
 
 ?>
 <?php if ( $product->is_featured() ) : ?>
-        <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . esc_html__( 'Featured!', 'woocommerce' ) . '</span>', $post, $product ); ?>
+        <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . esc_html__( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
 <?php endif; ?>        
-<?php if ( $product->is_on_sale() ) : ?>
+<?php if ( $product->is_on_sale()) : ?>
     <?php 
     $percentage=0;
     $featured = ($product->is_featured()) ? ' onsalefeatured' : '';
     if ($product->regular_price) {
         $percentage = round( ( ( $product->regular_price - $product->sale_price ) / $product->regular_price ) * 100 );
     }
-    if ($percentage) {
-        $sales_html = '<span class="onsale'.$featured.'"><span>- ' . $percentage . '%</span></span>';
+    if ($percentage && $percentage>0 && !$product->is_type( 'variable' )) {
+        $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'"><span>- ' . $percentage . '%</span></span>', $post, $product );
     } else {
-        $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $post, $product );
+        $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'">' . esc_html__( 'Sale!', 'rehub_framework' ) . '</span>', $post, $product );
     }
     ?>
     <?php echo $sales_html; ?>

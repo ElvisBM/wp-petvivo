@@ -1,95 +1,65 @@
 <?php get_header(); ?>
-    <!-- CONTENT -->
-    <div class="content"> 
-		<div class="clearfix">
-        <?php if(rehub_option('rehub_disable_fulltitle') !='1')  : ?>
-            <?php get_template_part('inc/parts/top_title'); ?>
-        <?php endif; ?>
+<?php $rh_post_layout_style = vp_metabox('rehub_post_side._post_layout');?>
+<?php if ($rh_post_layout_style == '') {$rh_post_layout_style = rehub_option('post_layout_style');} ?>
+<?php if ($rh_post_layout_style == '') :?>
+    <?php       
+    if (REHUB_NAME_ACTIVE_THEME == 'RECASH') {
+        $rh_post_layout_style = 'meta_compact'; 
+    }
+    elseif (REHUB_NAME_ACTIVE_THEME == 'REPICK') {
+        $rh_post_layout_style = 'corner_offer';
+    }
+    elseif (REHUB_NAME_ACTIVE_THEME == 'RETHING') {
+        $rh_post_layout_style = 'meta_center';
+    }
+    elseif (REHUB_NAME_ACTIVE_THEME == 'REVENDOR') {
+        $rh_post_layout_style = 'meta_outside';
+    }   
+    elseif (REHUB_NAME_ACTIVE_THEME == 'REDIRECT') {
+        $rh_post_layout_style = 'meta_compact_dir';
+    }           
+    elseif (REHUB_NAME_ACTIVE_THEME == 'REWISE') {
+        $rh_post_layout_style = 'default';
+    }                           
+    else{
+        $rh_post_layout_style = 'default';       
+    }?>
+<?php endif;?>
 
-		    <!-- Main Side -->
-            <div class="main-side single<?php if(vp_metabox('rehub_post_side.post_size') == 'full_post') : ?> full_width<?php endif; ?> clearfix">            
-            <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-                <article class="post post-inner <?php $category = get_the_category($post->ID); if ($category) {$first_cat = $category[0]->term_id; echo 'category-'.$first_cat.'';} ?>" id="post-<?php the_ID(); ?>">
-                    <?php if(rehub_option('rehub_disable_fulltitle') =='1')  : ?>
-                        <?php get_template_part('inc/parts/top_title'); ?>
-                    <?php endif; ?>
-                    <?php if(rehub_option('rehub_single_after_title') && vp_metabox('rehub_post_side.show_banner_ads') != '1') : ?><div class="mediad mediad_top"><?php echo do_shortcode(rehub_option('rehub_single_after_title')); ?></div><div class="clearfix"></div><?php endif; ?>
-                    <?php if(rehub_option('rehub_disable_share_top') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
-                    <?php else :?>
-                        <div class="top_share"><?php get_template_part('inc/parts/post_share'); ?></div>
-                        <div class="clearfix"></div> 
-                    <?php endif; ?>                	
-                    <?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.review_post_schema_type') == 'review_woo_product' && vp_metabox('rehub_post.review_post.0.review_woo_product.0.review_woo_slider') =='1') :?>
-                        <?php get_template_part('inc/parts/woo_slider'); ?>
-                	<?php elseif(vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.rehub_review_slider') =='1') :?>                     
-                        <?php get_template_part('inc/parts/review_slider'); ?>
-                    <?php else :?> 
-                    	<?php get_template_part('inc/parts/top_image'); ?>
-                    <?php endif; ?>
 
-                    <?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'music') : ?>
-                        <?php if(vp_metabox('rehub_post.music_post.0.music_post_source') == 'music_post_soundcloud') : ?>
-                            <div class="music_soundcloud">
-                                <?php echo vp_metabox('rehub_post.music_post.0.music_post_soundcloud_embed'); ?>
-                            </div>                        
-                        <?php elseif(vp_metabox('rehub_post.music_post.0.music_post_source') == 'music_post_spotify') : ?>
-                            <div class="music_spotify">
-                                <iframe src="https://embed.spotify.com/?uri=<?php echo vp_metabox('rehub_post.music_post.0.music_post_spotify_embed'); ?>" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
-                            </div>
-                        <?php endif; ?>
-                    <?php endif; ?>
-
-                    <?php if(rehub_option('rehub_single_before_post') && vp_metabox('rehub_post_side.show_banner_ads') != '1') : ?><div class="mediad mediad_before_content"><?php echo do_shortcode(rehub_option('rehub_single_before_post')); ?></div><?php endif; ?>
-
-                    <?php the_content(); ?>                                           
-                
-                </article>
-
-                <div class="clearfix"></div>
-                <?php echo re_badge_create('labelbig'); ?>
-                <?php if(rehub_option('rehub_single_code') && vp_metabox('rehub_post_side.show_banner_ads') != '1') : ?><div class="single_custom_bottom"><?php echo do_shortcode (rehub_option('rehub_single_code')); ?></div><div class="clearfix"></div><?php endif; ?>
-               
-                <?php if(rehub_option('rehub_disable_share') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
-                <?php else :?>
-                    <?php get_template_part('inc/parts/post_share'); ?>  
-                <?php endif; ?>
-
-                <?php if(rehub_option('rehub_disable_prev') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
-                <?php else :?>
-                    <?php get_template_part('inc/parts/prevnext'); ?>                    
-                <?php endif; ?>                 
-
-                <?php if(rehub_option('rehub_disable_tags') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
-                <?php else :?>
-                    <div class="tags">
-                        <p><?php the_tags('<span class="tags-title-post">'.__('Tags: ', 'rehub_framework').'</span>',""); ?></p>
-                    </div>
-                <?php endif; ?>
-
-                <?php if(rehub_option('rehub_disable_author') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
-                <?php else :?>
-                    <?php rh_author_detail_box();?>
-                <?php endif; ?>               
-
-                <?php if(rehub_option('rehub_disable_relative') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
-                <?php else :?>
-                    <?php get_template_part('inc/parts/related_posts'); ?>
-                <?php endif; ?>                               
-
-            <?php endwhile; endif; ?>
-
-                <?php comments_template(); ?>
-
-			</div>	
-            <!-- /Main Side -->  
-
-            <!-- Sidebar -->
-            <?php if(vp_metabox('rehub_post_side.post_size') == 'full_post') : ?><?php else : ?><?php get_sidebar(); ?><?php endif; ?>
-            <!-- /Sidebar --> 
-
-        </div>
-    </div>
-    <!-- /CONTENT -->     
+<?php if($rh_post_layout_style == 'default') : ?>
+    <?php include(locate_template('inc/post_layout/single-default.php')); ?>
+<?php elseif($rh_post_layout_style == 'meta_outside') : ?>
+    <?php include(locate_template('inc/post_layout/single-meta-outside.php')); ?> 
+<?php elseif($rh_post_layout_style == 'meta_center') : ?>
+    <?php include(locate_template('inc/post_layout/single-meta-center.php')); ?> 
+<?php elseif($rh_post_layout_style == 'meta_compact') : ?>
+    <?php include(locate_template('inc/post_layout/single-meta-compact.php')); ?>
+<?php elseif($rh_post_layout_style == 'meta_compact_dir') : ?>
+    <?php include(locate_template('inc/post_layout/single-meta-compact-dir.php')); ?>   
+<?php elseif($rh_post_layout_style == 'corner_offer') : ?>
+    <?php include(locate_template('inc/post_layout/single-corner-offer.php')); ?>
+<?php elseif($rh_post_layout_style == 'meta_in_image') : ?>
+    <?php include(locate_template('inc/post_layout/single-inimage.php')); ?>
+<?php elseif($rh_post_layout_style == 'meta_in_imagefull') : ?>
+    <?php include(locate_template('inc/post_layout/single-inimagefull.php')); ?>
+<?php elseif($rh_post_layout_style == 'meta_ce_compare') : ?>
+    <?php include(locate_template('inc/post_layout/single-ce-compare.php')); ?>  
+<?php elseif($rh_post_layout_style == 'meta_ce_compare_sec') : ?>
+    <?php include(locate_template('inc/post_layout/single-ce-compare-sec.php')); ?>
+<?php elseif($rh_post_layout_style == 'meta_ce_compare_full') : ?>
+    <?php include(locate_template('inc/post_layout/single-ce-compare-full.php')); ?>  
+<?php elseif($rh_post_layout_style == 'meta_ce_compare_auto') : ?>
+    <?php include(locate_template('inc/post_layout/single-ce-compare-fullauto.php')); ?>
+<?php elseif($rh_post_layout_style == 'big_post_offer') : ?>
+    <?php include(locate_template('inc/post_layout/single-big-offer.php')); ?>    
+<?php elseif($rh_post_layout_style == 'meta_ce_compare_auto_sec') : ?>
+    <?php include(locate_template('inc/post_layout/single-ce-compare-autocontent.php')); ?>      
+<?php elseif($rh_post_layout_style == 'offer_and_review') : ?>
+    <?php include(locate_template('inc/post_layout/single-offer-reviewscore.php')); ?>       
+<?php else:?>
+    <?php include(locate_template('inc/post_layout/single-default.php')); ?>                               
+<?php endif;?>
 
 <!-- FOOTER -->
 <?php get_footer(); ?>

@@ -64,7 +64,7 @@
 <?php endif; ?>	
 <?php if(rehub_option('rehub_headings_font')) : ?>
 	.priced_block .btn_offer_block,
-	.woobtn_offer_block,
+	.rh-deal-compact-btn,
 	.btn_block_part .btn_offer_block,
 	.wpsm-button.rehub_main_btn,
 	input[type="submit"],
@@ -83,12 +83,6 @@
 	h5,
 	h6,
 	.news_out_tabs .tabs-menu li,
-	.top_single_area h1,
-	article h2,
-	article h3,
-	article h4,
-	article h5,
-	article h6,
 	.cats_def a,
 	.btn_more,
 	.widget.tabs > ul > li,
@@ -114,7 +108,9 @@
 	.wpsm-numbox.wpsm-style6 span.num,
 	.wpsm-numbox.wpsm-style5 span.num,
 	.woocommerce ul.product_list_widget li a,
-	.widget.better_woocat {
+	.widget.better_woocat,
+	.re-compare-destin.wpsm-button,
+	.rehub-main-font {
 		font-family:"<?php echo rehub_option('rehub_headings_font'); ?>", trebuchet ms !important;
 		font-weight:<?php echo rehub_option('rehub_headings_font_weight'); ?> !important;
 		font-style:<?php echo rehub_option('rehub_headings_font_style'); ?> !important;
@@ -122,7 +118,7 @@
 	}
 <?php endif; ?>
 <?php if(rehub_option('rehub_body_font')) : ?>
-	.news .detail p, article, .small_post > p, .single .star .title_stars, .breadcrumb, footer div.f_text, .header-top .top-nav li, .related_articles ul li > a, .commentlist .comment-content p, .sidebar {
+	.news .detail p, article, .small_post > p, .single .star .title_stars, .breadcrumb, footer div.f_text, .header-top .top-nav li, .related_articles ul li > a, .commentlist .comment-content p, .sidebar, .prosconswidget, .rehub-body-font, .rehub_feat_block p {
 		font-family:"<?php echo rehub_option('rehub_body_font'); ?>", arial;
 		font-weight:<?php echo rehub_option('rehub_body_font_weight'); ?>!important;
 		font-style:<?php echo rehub_option('rehub_body_font_style'); ?>;			
@@ -148,7 +144,7 @@
 	.header-top, .header_top_wrap{ border: none !important}
 <?php endif; ?>	
 <?php if(rehub_option('rehub_custom_color_top_font') !='') : ?>
-	.header_top_wrap .user-ava-intop:after, .header-top .top-nav a, .header-top a.cart-contents, .header_top_wrap .icon-search-onclick:before, .header_top_wrap i.re-top-menu-collapse{
+	.header_top_wrap .user-ava-intop:after, .header-top .top-nav a, .header-top a.cart-contents, .header_top_wrap .icon-search-onclick:before{
 		color: <?php echo rehub_option('rehub_custom_color_top_font'); ?> !important;			
 	}
 	.header-top .top-nav li{border: none !important;}
@@ -222,17 +218,14 @@
 		}
 	}
 ?>
-<?php if (REHUB_NAME_ACTIVE_THEME == 'REVENDOR'):?>
-.widget .title:after{border-color: <?php echo $maincolor; ?>;}
+<?php if (REHUB_NAME_ACTIVE_THEME == 'REVENDOR' || REHUB_NAME_ACTIVE_THEME == 'REWISE' ):?>
+.rehub-main-color-border{border-color: <?php echo $maincolor; ?>;}
+.widget .title:after{border-bottom: 2px solid <?php echo $maincolor; ?>;}
 <?php endif;?>
-nav.top_menu > ul > li ul li a:hover { color: #111111 }
-.widget.tabs > ul > li:hover { color: #ffffff; }
-.sidebar .dark_sidebar .tabs-item .detail .post-meta a.cat{ color: #fff;}
-.footer-bottom .widget .f_menu li a:hover { text-decoration: underline; }
 
 .wpsm_promobox.rehub_promobox { border-left-color: <?php echo $maincolor; ?>!important; }
 .top_rating_block .top_rating_item .rating_col a.read_full, .color_link{ color: <?php echo $maincolor; ?> !important;}
-nav.top_menu > ul > li > a:hover, nav.top_menu > ul > li.current-menu-item a, .search-header-contents{border-top-color: <?php echo $maincolor; ?>; }
+nav.top_menu > ul:not(.off-canvas) > li > a:hover, nav.top_menu > ul:not(.off-canvas) > li.current-menu-item a, .search-header-contents{border-top-color: <?php echo $maincolor; ?>; }
 
 nav.top_menu > ul > li ul, .main-nav.dark_style { border-bottom: 2px solid <?php echo $maincolor; ?>; }
 .wpb_content_element.wpsm-tabs.n_b_tab .wpb_tour_tabs_wrapper .wpb_tabs_nav .ui-state-active a{ border-bottom: 3px solid <?php echo $maincolor; ?> !important }
@@ -276,7 +269,6 @@ nav.top_menu ul li ul { border-bottom: 2px solid <?php echo $maincolor; ?>; }
 #bbp_user_edit_submit,
 .bbp-topic-pagination a,
 .bbp-topic-pagination a,
-.title_deal_wrap,
 .widget.tabs > ul > li:hover,
 .custom-checkbox label.checked:after,
 .post_slider .caption,
@@ -300,7 +292,10 @@ ul.postpagination li a:focus,
 .wpsm-members > strong:first-child,
 .r_catbox_btn,
 .wpcf7 .wpcf7-submit,
-.rh_woocartmenu-icon
+.rh_woocartmenu-icon,
+.comm_meta_wrap .rh_user_s2_label,
+.wpsm_pretty_hover li:hover,
+.rehub-main-color-bg
  { background: <?php echo $maincolor;?>;}
 @media (max-width: 767px) {
 	.postNavigation a{ background: <?php echo $maincolor; ?>; }
@@ -319,6 +314,7 @@ nav.top_menu ul li.menu-item-has-children ul li.menu-item-has-children > a:befor
 #subscription-toggle a:before,
 #favorite-toggle a:before,
 .aff_offer_links .aff_name a,
+.rh-deal-price,
 .rehub_feat_block .start_price span,
 .news_lettr p a,
 .sidebar .featured_slider .link,
@@ -340,7 +336,8 @@ article.post a.color_link,
 .widget .title i,
 .woocommerce-MyAccount-navigation ul li.is-active a,
 .category-vendormenu li.current a,
-.deal_daywoo .title
+.deal_daywoo .title,
+.rehub-main-color
 { color: <?php echo $maincolor; ?>; }
 
 <?php if (rehub_option('rehub_ecwid_enable')) :?>
@@ -383,19 +380,40 @@ article.post a.color_link,
 		
 	}
 ?>
-span.re_filtersort_btn:hover, span.active.re_filtersort_btn, .page-link > span:not(.page-link-title), .postimagetrend .title, .widget.widget_affegg_widget .title, .widget.top_offers .title, header .header_first_style .search form.search-form [type="submit"], .more_post a, .more_post span, .filter_home_pick span.active, .filter_home_pick span:hover, .rh_tab_links a.active, .rh_tab_links a:hover, .wcv-navigation ul.menu li.active, .wcv-navigation ul.menu li:hover a, header .header_seven_style .search form.search-form [type="submit"] { background: <?php echo $seccolor ?> !important; color: #fff !important;}
+span.re_filtersort_btn:hover, 
+span.active.re_filtersort_btn, 
+.page-link > span:not(.page-link-title), 
+.postimagetrend .title, .widget.widget_affegg_widget .title, 
+.widget.top_offers .title, 
+header .header_first_style .search form.search-form [type="submit"], 
+.more_post a, 
+.more_post span, 
+.filter_home_pick span.active, 
+.filter_home_pick span:hover, 
+.filter_product_pick span.active,
+.filter_product_pick span:hover,
+.rh_tab_links a.active, 
+.rh_tab_links a:hover, 
+.wcv-navigation ul.menu li.active, 
+.wcv-navigation ul.menu li:hover a, 
+header .header_seven_style .search form.search-form [type="submit"],
+.title_deal_wrap,
+.rehub-sec-color-bg{ background: <?php echo $seccolor ?> !important; color: #fff !important;}
 .widget.widget_affegg_widget .title:after, .widget.top_offers .title:after, .vc_tta-tabs.wpsm-tabs .vc_tta-tab.vc_active, .vc_tta-tabs.wpsm-tabs .vc_tta-panel.vc_active .vc_tta-panel-heading{border-top-color: <?php echo $seccolor ?> !important;}  
 .page-link > span:not(.page-link-title){border: 1px solid <?php echo $seccolor ?>;}  
 .page-link > span:not(.page-link-title), .header_first_style .search form.search-form [type="submit"] i{color:#fff !important;}
 .rh_tab_links a.active,
-.rh_tab_links a:hover{border-color: <?php echo $seccolor ?>}
-.rh_wrapper_video_playlist .rh_video_currently_playing, .rh_wrapper_video_playlist .rh_video_currently_playing.rh_click_video:hover {background-color: <?php echo $seccolor; ?>;box-shadow: 1200px 0 0 <?php echo $seccolor; ?> inset;}		
+.rh_tab_links a:hover,
+.rehub-sec-color-border{border-color: <?php echo $seccolor ?>}
+.rh_wrapper_video_playlist .rh_video_currently_playing, .rh_wrapper_video_playlist .rh_video_currently_playing.rh_click_video:hover {background-color: <?php echo $seccolor; ?>;box-shadow: 1200px 0 0 <?php echo $seccolor; ?> inset;}	
+.rehub-sec-color{color: <?php echo $seccolor ?>}	
 <?php if (REHUB_NAME_ACTIVE_THEME == 'REPICK'):?>
 .rehub_chimp{background-color: <?php echo $seccolor; ?>;border-color: <?php echo $seccolor; ?>;}
 <?php endif;?>
 
 /**********BUTTON COLOR SCHEME*************/
 <?php 
+	$boxshadow = '';
 	if (rehub_option('rehub_btnoffer_color')) {
 		$btncolor = rehub_option('rehub_btnoffer_color');
 	} 
@@ -405,10 +423,16 @@ span.re_filtersort_btn:hover, span.active.re_filtersort_btn, .page-link > span:n
 		}
 		elseif (REHUB_NAME_ACTIVE_THEME == 'RETHING') {
 			$btncolor = '#B07C01';	
-		}				
+		}
+		elseif (REHUB_NAME_ACTIVE_THEME == 'REWISE') {
+			$btncolor = '#43c801';	
+		}						
 		else{
 			$btncolor = '#fb7203';			
 		}
+	}
+	if (REHUB_NAME_ACTIVE_THEME == 'REWISE'){
+		$boxshadow = hex2rgba($btncolor, 0.25);
 	}
 ?>
 /*woo style btn*/
@@ -421,7 +445,7 @@ span.re_filtersort_btn:hover, span.active.re_filtersort_btn, .page-link > span:n
 .woocommerce .single_add_to_cart_button,
 .woocommerce div.product form.cart .button,
 .priced_block .btn_offer_block, 
-.woobtn_offer_block, 
+.rh-deal-compact-btn, 
 input.mdf_button, 
 #buddypress input[type="submit"], 
 #buddypress input[type="button"], 
@@ -431,8 +455,21 @@ input.mdf_button,
 .btn_block_part .btn_offer_block,
 .wpsm-button.rehub_main_btn,
 .wcv-grid a.button,
-input.gmw-submit  
-{ background: none <?php echo $btncolor ?> !important; box-shadow: 0 2px 2px #E7E7E7 !important; color: #fff !important; border-radius: 0 !important; text-decoration: none !important; outline: 0; border:none !important; }
+input.gmw-submit,
+#ws-plugin--s2member-profile-submit 
+{ background: none <?php echo $btncolor ?> !important; 
+	color: #fff !important; 
+	border:none !important;
+	text-decoration: none !important; 
+	outline: 0;  
+	<?php if($boxshadow) :?>
+		border-radius: 100px !important;
+		box-shadow: -1px 6px 19px <?php echo $boxshadow;?> !important;
+	<?php else:?>
+		border-radius: 0 !important;
+		box-shadow: 0 2px 2px #E7E7E7 !important;
+	<?php endif; ?>
+}
 
 .woocommerce a.woo_loop_btn:hover,
 .woocommerce input.button.alt:hover,
@@ -449,11 +486,11 @@ input.gmw-submit
 #buddypress input[type="button"]:hover, 
 #buddypress input[type="reset"]:hover, 
 #buddypress button.submit:hover, 
-.post .btn:hover, 
 .small_post .btn:hover,
 .ap-pro-form-field-wrapper input[type="submit"]:hover,
 .btn_block_part .btn_offer_block:hover,
-.wcv-grid a.button:hover{ background: none <?php echo $btncolor ?> !important;color: #fff !important; opacity: 0.8; box-shadow: none !important; border-color: transparent}
+.wcv-grid a.button:hover,
+#ws-plugin--s2member-profile-submit:hover{ background: none <?php echo $btncolor ?> !important;color: #fff !important; opacity: 0.8; box-shadow: none !important; border-color: transparent;}
 
 .woocommerce a.woo_loop_btn:active,
 .woocommerce .button.alt:active,
@@ -471,12 +508,13 @@ input.gmw-submit
 #buddypress button.submit:active,
 .ap-pro-form-field-wrapper input[type="submit"]:active,
 .btn_block_part .btn_offer_block:active,
-.wcv-grid a.button:active{ background: none <?php echo $btncolor ?> !important; box-shadow: none; top:2px;color: #fff !important;}
+.wcv-grid a.button:active,
+#ws-plugin--s2member-profile-submit:active{ background: none <?php echo $btncolor ?> !important; box-shadow: none; top:2px;color: #fff !important;}
 
 .re_thing_btn .rehub_offer_coupon.masked_coupon:after{border: 1px dashed <?php echo $btncolor ?>; border-left: none;}
 .re_thing_btn.continue_thing_btn a, .re_thing_btn .rehub_offer_coupon.not_masked_coupon{color: <?php echo $btncolor ?> !important;}
 .re_thing_btn a, .re_thing_btn .rehub_offer_coupon {background-color: <?php echo $btncolor ?>; border: 1px solid <?php echo $btncolor ?>;}
-.main_slider .re_thing_btn a{background-color: <?php echo $btncolor ?> !important;}
+.main_slider .re_thing_btn a, .widget_merchant_list .buttons_col{background-color: <?php echo $btncolor ?> !important;}
 .re_thing_btn .rehub_offer_coupon {border-style: dashed;}
 <?php if(rehub_option('rehub_btnoffer_color_hover') !='') : ?>
 	.re_thing_btn a:hover, .re_thing_btn.continue_thing_btn a:hover, .woocommerce .summary .masked_coupon.zeroclipboard-is-hover, .woocommerce a.woo_loop_btn:hover, .woocommerce input.button.alt:hover, .woocommerce .checkout-button.button:hover, .woocommerce a.add_to_cart_button:hover, .woocommerce a.single_add_to_cart_button:hover, .woocommerce div.product form.cart .button:hover{background-color:<?php echo rehub_option('rehub_btnoffer_color_hover') ?>; border: 1px solid <?php echo rehub_option('rehub_btnoffer_color_hover') ?>; color: #fff !important}
@@ -495,6 +533,7 @@ input.gmw-submit
 <?php if(rehub_option('enable_adsense_opt') =='1') : ?>
 	@media screen and (min-width: 1100px) {
 	.header-top, header .logo-section, nav.top_menu, .top_theme, .footer-bottom .container, .footer-bottom.block_foot, footer#theme_footer.block_foot, footer#theme_footer .container, .block_style #main_header, .block_style header .logo-section, #branded_img{ width: 1074px;}
+	.separate_sidebar_bg .header-top, .separate_sidebar_bg header .logo-section, .separate_sidebar_bg nav.top_menu, .separate_sidebar_bg .top_theme, .separate_sidebar_bg .footer-bottom .container, .separate_sidebar_bg .footer-bottom.block_foot, .separate_sidebar_bg footer#theme_footer.block_foot, .separate_sidebar_bg footer#theme_footer .container, .separate_sidebar_bg.block_style #main_header, .separate_sidebar_bg.block_style header .logo-section, .separate_sidebar_bg #branded_img{width: 1044px}	
 	.content { width: 1074px; padding: 15px}
 	.content.no_shadow, .separate_sidebar_bg .content{width: 1074px}
 	.content.no_shadow .vc_row.vc_rehub_container > .vc_col-sm-8{ width: 758px }
@@ -585,10 +624,18 @@ input.gmw-submit
 	header .main-nav { margin-bottom: 0 !important }
 	.content.landing_page{ margin-top: 0 !important}
 <?php endif; ?>	
+<?php if(rehub_option('rehub_enable_fullwith_layout') ==1) : ?>
+	@media (min-width:1560px){ 
+		.header-top, header .logo-section, nav.top_menu, .top_theme, .footer-bottom .container, .footer-bottom.block_foot, footer#theme_footer.block_foot, footer#theme_footer .container, .block_style #main_header, .block_style header .logo-section, #branded_img, .content, .content.no_shadow, .separate_sidebar_bg .content{width:1530px;} 
+		.sidebar, .side-twocol, .vc_row.vc_rehub_container > .vc_col-sm-4{ width: 336px} 
+		.separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side:not(.full_width), .main-side, .gallery-pics, .main_slider.flexslider, .vc_row.vc_rehub_container > .vc_col-sm-8{width:1170px;} .centered-container .vc_col-sm-12 .wpb_wrapper, .vc_section .centered-container{max-width:1530px;} 
+	}
+<?php endif; ?>	
 <?php if (REHUB_NAME_ACTIVE_THEME == 'REHUB' || REHUB_NAME_ACTIVE_THEME == 'RECASH') :?>
 	@media(min-width: 1224px) {
 		.single-post .full_width > article.post, single-product .full_width > article.post{padding: 32px}
-		.top_single_area.full_width{margin: 25px 32px 0 32px;}	
+		.title_single_area.full_width{margin: 25px 32px 0 32px;}	
+		.main-side .title_single_area.full_width{margin: 0;}
 		.full_width .wpsm-comptable td img{padding:5px}
 	}
 <?php endif; ?>	

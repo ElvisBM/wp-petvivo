@@ -54,13 +54,14 @@ function rehub_framework_register_scripts() {
 	wp_register_script('stickysidebar', get_template_directory_uri() . '/js/stickysidebar.js', 'jquery', '1.3.0', true);
 	wp_register_script('printcoupon', get_template_directory_uri() . '/js/printcoupon.js', 'jquery', '1.0.0', true);
 	wp_register_script('typehead', get_template_directory_uri() . '/js/typehead.js', 'jquery', '0.10.5', true);
+	wp_register_script( 'rehubcompare', get_template_directory_uri() . '/js/comparechart.js', array('jquery', 'rehub'), '1.0.1', true );
+	wp_register_script( 'rehubwaypoints', get_template_directory_uri() . '/js/jquery.waypoints.min.js', 'jquery', '4.0.1', true );	
 }
 }
-
 if(!is_admin()) add_action('wp_enqueue_scripts', 'rehub_enqueue_scripts');
 if( !function_exists('rehub_enqueue_scripts') ) {
 function rehub_enqueue_scripts() {
-	if (in_array('affiliate-egg/affiliate-egg.php', apply_filters('active_plugins', get_option('active_plugins'))) || in_array('content-egg/content-egg.php', apply_filters('active_plugins', get_option('active_plugins')))) {wp_enqueue_style('eggrehub');}
+	if (rh_is_plugin_active('affiliate-egg/affiliate-egg.php') || rh_is_plugin_active('content-egg/content-egg.php')) {wp_enqueue_style('eggrehub');}
 	wp_enqueue_style('style');
 	wp_enqueue_style('responsive');
 	wp_enqueue_style('rehub_shortcode');	
@@ -115,16 +116,8 @@ function rh_optimized_media_styles() {
 	//wp_dequeue_script( 'jqueryui' );
 }
 
-// Css minify 
-function rehub_quick_minify( $css ) {
-	$css = preg_replace( '/\s+/', ' ', $css );
-	$css = preg_replace( '/\/\*[^\!](.*?)\*\//', '', $css );
-	$css = preg_replace( '/(,|:|;|\{|}) /', '$1', $css );
-	$css = preg_replace( '/ (,|;|\{|})/', '$1', $css );
-	$css = preg_replace( '/(:| )0\.([0-9]+)(%|em|ex|px|in|cm|mm|pt|pc)/i', '${1}.${2}${3}', $css );
-	$css = preg_replace( '/(:| )(\.?)0(%|em|ex|px|in|cm|mm|pt|pc)/i', '${1}0', $css );
-	return trim( $css );
-}
+//add helper functions
+include (TEMPLATEPATH . '/functions/helper_functions.php');
 
 if( !function_exists('rehub_custom_css') ) {
 function rehub_custom_css() {
@@ -159,8 +152,10 @@ add_filter( 'use_default_gallery_style', '__return_false' );
 remove_filter('comments_number', 'dsq_comments_text');
 remove_filter('get_comments_number', 'dsq_comments_number');
 remove_filter('pre_term_description', 'wp_filter_kses');
+add_filter( 'term_description', 'shortcode_unautop');
+add_filter( 'term_description', 'do_shortcode' );
+add_filter( 'widget_text', 'shortcode_unautop');
 add_filter('widget_text', 'do_shortcode');
-add_filter( 'category_description', 'do_shortcode' );
 
 
 //////////////////////////////////////////////////////////////////
@@ -175,10 +170,9 @@ function rehub_theme_setup(){
 
 
 //////////////////////////////////////////////////////////////////
-// REHub Theme Options and Metaboxes
+// REHub Theme Options and Admin
 //////////////////////////////////////////////////////////////////
 require_once ( locate_template( 'admin/admin.php' ) );
-require_once ( locate_template( 'admin/metabox/offermeta.php' ) );
 require_once ( locate_template( 'admin/rehub.php' ) );
 
 
@@ -328,7 +322,18 @@ function rehub_add_elem_to_footer(){
         if (rehub_option('rehub_sticky_nav') && rehub_option('rehub_logo_sticky_url') !='' && rehub_option('rehub_header_style')!='header_five') {
             echo '<div id="logo_insticky_wrapper"><a href="'.get_home_url().'" class="logo_image_inmenu"><img src="'.rehub_option('rehub_logo_sticky_url').'" alt="'.get_bloginfo( "name" ).'" /></a></div>';                
         }             
-    ?>     
+    ?>  
+
+    <?php if( rehub_option( 'rehub_logo_retina' ) != '' && rehub_option( 'rehub_logo_retina_width' ) != '' && rehub_option( 'rehub_logo_retina_height' ) !=''): ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+            var retina = window.devicePixelRatio > 1 ? true : false;
+            if(retina) {
+                jQuery('.logo_image img').attr('src', '<?php echo rehub_option( 'rehub_logo_retina' ); ?>');
+            }
+            });
+        </script>
+    <?php endif; ?>       
 
 	<?php
 }
@@ -381,7 +386,7 @@ if ( !function_exists( 'rehub_image_sizes' ) ) {
 //////////////////////////////////////////////////////////////////
 if( !function_exists('get_post_thumb') ) {
 function get_post_thumb(){
-	global $post ;
+	global $post;
 	if (function_exists('_nelioefi_url')){
 		$image_nelio_url = get_post_meta( $post->ID, _nelioefi_url(), true );
 		if (!empty($image_nelio_url)){
@@ -630,7 +635,7 @@ function rehub_exclude_feature_posts()
 
 if( !function_exists('rehub_price_clean') ) {
 function rehub_price_clean($price) {
-	$cur_clean = array('Rs.', 'руб.', 'RS.' );
+	$cur_clean = array('8377', 'Rs.', 'руб.', 'RS.' );
 	$price = str_replace($cur_clean, '', $price);
 	if (rehub_option('price_pattern') == 'us') {
 		$price = (float) preg_replace("/[^0-9\.]/","", $price);			
@@ -708,8 +713,9 @@ function rehub_format_score($size = 'small', $type = 'star' )
 
 if( !function_exists('meta_all') ) { //post meta
 function meta_all ($time_exist, $cats_exist, $admin_exist, $cats_post = false ){
+	global $post;
 	if(rehub_option('exclude_author_meta') != 1 && ($admin_exist != false)){ ?>
-		<?php global $post; $author_id=$post->post_author; ?>
+		<?php $author_id=$post->post_author; ?>
 		<span class="admin_meta">
 			<a class="admin" href="<?php echo get_author_posts_url( $author_id ) ?>">
 				<?php if ($admin_exist === 'full') :?><?php echo get_avatar( $author_id, '22' ); ?><?php endif;?>
@@ -725,7 +731,6 @@ function meta_all ($time_exist, $cats_exist, $admin_exist, $cats_post = false ){
 		<span class="cat_link_meta"><a class="cat" href="<?php echo get_category_link( $cats_exist); ?>"><?php echo $cat_name ?></a></span>
 	<?php }   
 	if(rehub_option('exclude_cat_meta') != 1 && ($cats_post != false)){ 
-		global $post;
 		$postidforcat = $post->ID;
 		if ('post' == get_post_type($postidforcat)) {
 			$categories = get_the_category($postidforcat);
@@ -740,7 +745,131 @@ function meta_all ($time_exist, $cats_exist, $admin_exist, $cats_post = false ){
 			    echo '</span>';
 			}
 		}
+		elseif ('blog' == get_post_type($postidforcat)) {
+	    	$term_list = get_the_term_list( $post->ID, 'blog_category', '<span class="date_meta">', ', ', '</span>' );
+	    	echo $term_list;
+		}
 	}		 	
+}
+}
+
+if( !function_exists('rh_post_header_meta') ) { //post meta
+function rh_post_header_meta ($admin_exist = true, $time_exist = true, $view_exist = true, $comment_exist = true, $cats_post = true ){
+	global $post;
+	if(rehub_option('exclude_author_meta') != 1 && ($admin_exist != false)){ ?>
+		<?php $author_id=$post->post_author; ?>
+		<span class="admin_meta">
+			<a class="admin" href="<?php echo get_author_posts_url( $author_id ) ?>">
+				<?php if ($admin_exist === 'full') :?><?php echo get_avatar( $author_id, '22' ); ?><?php endif;?>
+				<?php if ($admin_exist === 'fullbig') :?><?php echo get_avatar( $author_id, '40' ); ?><?php endif;?>				
+				<?php the_author_meta( 'display_name', $author_id ); ?>			
+			</a>
+		</span>
+	<?php }   
+	if(rehub_option('exclude_date_meta') != 1 && ($time_exist != false)){ ?>
+ 		<span class="date_meta"><?php the_time(get_option( 'date_format' )); ?></span>	
+	<?php }   
+	if(rehub_option('post_view_disable') != 1 && ($view_exist != false)){ ?>
+		<?php $rehub_views = get_post_meta (get_the_ID(),'rehub_views',true); if ($rehub_views !='') :?>
+			<span class="postview_meta"><?php echo $rehub_views; ?> </span>
+		<?php endif ;?>	
+	<?php }	
+	if(rehub_option('exclude_comments_meta') != 1 && ($comment_exist != false)){ ?>
+		<span class="comm_count_meta"><?php comments_popup_link( __('no comments','rehub_framework'), __('1 comment','rehub_framework'), __('% comments','rehub_framework'), 'comm_meta', ''); ?></span>
+	<?php }	
+	if(rehub_option('exclude_cat_meta') != 1 && ($cats_post != false)){ 
+		$postidforcat = $post->ID;
+		if ('post' == get_post_type($postidforcat)) {
+			$categories = get_the_category($postidforcat);
+			$separator = ', ';
+			$output = '';
+			if ( ! empty( $categories ) ) {
+				echo '<span class="cat_link_meta">';
+			    foreach( $categories as $category ) {
+			        $output .= '<a class="cat" href="' . esc_url( get_category_link( $category->term_id ) ) . '" alt="' . esc_attr( sprintf( __( 'View all posts in %s', 'rehub_framework' ), $category->name ) ) . '">' . esc_html( $category->name ) . '</a>' . $separator;
+			    }
+			    echo trim( $output, $separator );
+			    echo '</span>';
+			}
+		}
+		elseif ('blog' == get_post_type($postidforcat)) {
+	    	$term_list = get_the_term_list( $post->ID, 'blog_category', '<span class="date_meta">', ', ', '</span>' );
+	    	echo $term_list;
+		}
+	}			 	
+}
+}
+
+if( !function_exists('rh_post_header_meta_big') ) { //post meta_big
+function rh_post_header_meta_big (){
+	global $post;
+	?>
+		<div class="floatleft mr15">
+				<?php if(rehub_option('exclude_author_meta') != 1):?>
+					<?php $author_id=$post->post_author; ?>
+					<a href="<?php echo get_author_posts_url( $author_id ) ?>" class="floatleft mr10">
+						<?php echo get_avatar( $author_id, '40' ); ?>					
+					</a>	
+				<?php endif;?>
+				<span class="floatleft authortimemeta">
+					<?php if(rehub_option('exclude_author_meta') != 1):?>
+						<a href="<?php echo get_author_posts_url( $author_id ) ?>">				
+							<?php the_author_meta( 'display_name', $author_id ); ?>			
+						</a>
+					<?php endif;?>
+					<?php if(rehub_option('exclude_date_meta') != 1):?>
+						<div class="date_time_post"><?php the_time(get_option( 'date_format' )); ?></div>
+					<?php endif;?>
+				</span>	
+
+		</div>
+		<div class="floatright ml15 postviewcomm mt5">
+			<?php if(rehub_option('post_view_disable') != 1):?>
+				<?php $rehub_views = get_post_meta (get_the_ID(),'rehub_views',true);?>
+				<span class="postview_meta mr15 ml15"><strong><?php echo $rehub_views; ?></strong> <?php _e('Views', 'rehub_framework');?></span>
+			<?php endif;?>	
+			<?php if(rehub_option('exclude_comments_meta') != 1):?>			
+				<span class="comm_count_meta"><strong><?php comments_popup_link( __('0','rehub_framework'), __('1 comment','rehub_framework'), __('% comments','rehub_framework'), 'comm_meta', ''); ?></strong></span>	
+			<?php endif;?>			
+		</div>	
+	<?php				 	
+}
+}
+
+if( !function_exists('rh_post_header_cat') ) { //post meta
+function rh_post_header_cat($post_type='post', $dealstore = false){
+	global $post;
+	if(rehub_option('exclude_cat_meta') != 1){ 
+		echo '<div class="rh-cat-list-title">';
+		if ($post_type=='post' && 'post' == get_post_type($post->ID)) {
+			$categories = get_the_category($post->ID);
+			$separator = '';
+			$output = '';
+			if ( ! empty( $categories ) ) {
+			    foreach( $categories as $category ) {
+			    	$cat_data = get_option("category_$category->term_id");
+			    	if (!empty($cat_data['cat_color'])) :
+			    		echo '<style scoped>.rh-cat-label-title.rh-cat-'.$category->term_id.'{background-color:'.$cat_data['cat_color'].'}</style>';
+			    	endif;
+			        $output .= '<a class="rh-cat-label-title rh-cat-'.$category->term_id.'" href="' . esc_url( get_category_link( $category->term_id ) ) . '" alt="' . esc_attr( sprintf( __( 'View all posts in %s', 'rehub_framework' ), $category->name ) ) . '">' . esc_html( $category->name ) . '</a>' . $separator;
+			    }
+			    echo trim( $output, $separator );
+			}
+			if(rehub_option('enable_brand_taxonomy') == 1 && $dealstore == true){ 
+				$dealcats = wp_get_post_terms($post->ID, 'dealstore', array("fields" => "all"));	
+				if( ! empty( $dealcats ) && ! is_wp_error( $dealcats ) ) {
+					foreach( $dealcats as $dealcat ) {
+				        echo '<a class="rh-cat-label-title rh-dealstore-cat rh-cat-'.$dealcat->term_id.'" href="' . esc_url( get_term_link( $dealcat->term_id ) ) . '" alt="' . esc_attr( sprintf( __( 'View all posts in %s', 'rehub_framework' ), $dealcat->name ) ) . '">' . esc_html( $dealcat->name ) . '</a>' . $separator;						
+					}
+				}								
+			}		
+		}
+		elseif ('blog' == get_post_type($post->ID)) {
+	    	$term_list = get_the_term_list( $post->ID, 'blog_category', '<span class="rh-cat-label-title">', '', '</span>' );
+	    	echo $term_list;
+		}
+		echo '</div>';
+	}			 	
 }
 }
 
@@ -788,7 +917,10 @@ function re_badge_create ($type = 'label' ){
 		}
 		elseif($type =='labelbig'){ 
 			$output .= '<div class="text-center"><span class="re-line-badge re-line-big-label badge_'.$badge.'"><span>'.$label.'</span></span></div>';
-		}				
+		}
+		elseif($type =='labelsmall'){ 
+			$output .= '<span class="re-line-badge re-line-small-label badge_'.$badge.'"><span>'.$label.'</span></span>';
+		}
 		else{ 
 			$output .= '<span class="re-line-badge badge_'.$badge.'"><span>'.$label.'</span></span>';
 		}  
@@ -805,6 +937,7 @@ function re_badge_create ($type = 'label' ){
 // ADD FUNCTIONS
 //////////////////////////////////////////////////////////////////
 
+//Review and user reviews
 if (rehub_option('type_user_review') == 'user') {include (TEMPLATEPATH . '/functions/user_review_no_editor.php');}
 include (TEMPLATEPATH . '/functions/review_functions.php');
 if (rehub_option('type_user_review') == 'full_review' || rehub_option('type_user_review') == 'user') {
@@ -813,6 +946,9 @@ if (rehub_option('type_user_review') == 'full_review' || rehub_option('type_user
 		include (TEMPLATEPATH . '/functions/commentplus.php');
 	}
 }
+
+//Affiliate for posts
+include (TEMPLATEPATH . '/functions/affiliate_functions.php');
 
 //add taxonomy meta fields
 include (TEMPLATEPATH . '/functions/taxonomy_meta.php');
@@ -824,7 +960,7 @@ include (TEMPLATEPATH . '/functions/video_class.php');
 include (TEMPLATEPATH . '/functions/sidebar_functions.php');
 
 //add woocommerce functions
-if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+if (class_exists('Woocommerce')) {
 include (TEMPLATEPATH . '/functions/woo_functions.php');
 }
 
@@ -832,9 +968,6 @@ include (TEMPLATEPATH . '/functions/woo_functions.php');
 if (class_exists('Easy_Digital_Downloads')) {
 	include (TEMPLATEPATH . '/functions/edd_functions.php');
 }
-
-//add helper functions
-include (TEMPLATEPATH . '/functions/helper_functions.php');
 
 //add ajax functions
 include (TEMPLATEPATH . '/functions/ajax_helper_functions.php');
@@ -845,13 +978,25 @@ include (TEMPLATEPATH . '/functions/member_helper_functions.php');
 //add shortcode functions
 include (TEMPLATEPATH . '/shortcodes/shortcodes.php');
 
+//Add multiple thumbnails
+if( is_admin() ) {
+	//wp_enqueue_style( 'rh-admin-style', get_template_directory_uri() .'/css/admin.css' );
+	//wp_enqueue_script( 'rh_boxes_script', get_template_directory_uri() .'/js/meta-boxes-post.js' );	
+	//add_action( 'admin_enqueue_scripts', 'rh_enqueue_admin_script' );
+	//added to metabox.min in vafpress framework
+	include (TEMPLATEPATH . '/admin/metabox/class-rh-meta-box.php');
+	
+	//Post offer section meta panel
+	require_once ( locate_template( 'admin/metabox/offermeta.php' ) );	
+}
+
 // Login / Register Modal
 if (rehub_option('userlogin_enable') == '1') {
 require_once ( locate_template( 'inc/user-login.php' ) );
 }
 
 // Compare functions
-if (rehub_option('compare_page') != '') {
+if (rehub_option('compare_page') != '' || rehub_option('compare_multicats_toggle') == 1) {
 require_once ( locate_template( 'inc/compare.php' ) );
 }
 
@@ -885,7 +1030,7 @@ function rehub_framework_comments($comment, $args, $depth) {
 							$mycredrank = ( function_exists( 'mycred_get_users_rank' ) && $author_id !=0) ? mycred_get_users_rank($author_id) : '';
 							$mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) && $author_id !=0 ) ? mycred_get_users_fcred($author_id ) : ''; ?>
 
-						<span class="fn"><?php echo get_comment_author_link(); ?><?php if (!empty($mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo mycred_get_users_rank_id($author_id); ?>"><?php echo $mycredrank ;?></span><?php endif;?></span>
+						<span class="fn"><?php echo get_comment_author_link(); ?><?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?></span>
 						<div class="comm_meta_cred">
 					        <?php if ( function_exists( 'mycred_get_users_badges' ) && $author_id !=0 ) : ?>
 								<?php rh_mycred_display_users_badges( $author_id ) ?>
@@ -896,6 +1041,9 @@ function rehub_framework_comments($comment, $args, $depth) {
 						<span class="fn"><?php echo get_comment_author_link(); ?></span>
 					<?php endif;?>				
 					<span class="time"><?php printf(__('%1$s at %2$s', 'rehub_framework'), get_comment_date(),  get_comment_time()) ?></span>
+					<?php if(defined('WS_PLUGIN__S2MEMBER_MIN_PRO_VERSION')):?>
+        				<span class="rh_user_s2_label rh_user_s2_label_lvl<?php echo get_user_field("s2member_access_level", $comment->user_id);?>"><?php echo get_user_field("s2member_access_label", $comment->user_id);?></span>
+					<?php endif;?>
 	                <?php if ($comment->comment_approved == '0') : ?><div class="ap_waiting"><em><?php _e('Comment awaiting for approval', 'rehub_framework'); ?></em></div><?php endif; ?>	
                 </div>				
 			</div>
@@ -919,6 +1067,7 @@ function rehub_framework_comments($comment, $args, $depth) {
 if(!function_exists('rh_comment_author_profile_link')){
 function rh_comment_author_profile_link(){
 global $comment;
+if (empty($comment)) return;
 $commentauthor_ID = $comment->user_id;
 
 if ($commentauthor_ID ==0) {
@@ -1205,7 +1354,7 @@ function re_add_openschema() {
 						$usercount = (!empty($user_rates['criteria'][0]['count'])) ? $user_rates['criteria'][0]['count'] : '';
 					}
 					if($usercount !=''){
-						$jsonload["@type"] = "Product";
+						$jsonload["@type"] = "Blog";
 						$jsonload["name"] = $post->post_title;
 						$jsonload["description"] = $post->post_excerpt;					
 						$jsonload["aggregateRating"] = array(
@@ -1218,7 +1367,7 @@ function re_add_openschema() {
 					}
 				}
 				elseif(rehub_option('type_schema_review') == 'user' && rehub_option('type_user_review') == 'simple'){
-					$jsonload["@type"] = "Product";
+					$jsonload["@type"] = "Blog";
 					$jsonload["name"] = $post->post_title;
 					$jsonload["description"] = $post->post_excerpt;						
 					$rate = get_post_meta($post->ID, 'rehub_user_rate', true );
@@ -1265,20 +1414,24 @@ function re_add_openschema() {
 
 	$using_jetpack_publicize = ( class_exists( 'Jetpack' ) && in_array( 'publicize', Jetpack::get_active_modules()) ) ? true : false;
 	if ( !defined('WPSEO_VERSION') && !class_exists('NY_OG_Admin') && $using_jetpack_publicize == false) {
-		echo "<meta property='og:site_name' content='". get_bloginfo('name') ."'/>"; // Sets the site name to the one in your WordPress settings
-		echo "<meta property='og:url' content='" . get_permalink() . "'/>"; // Gets the permalink to the post/page
+		echo '<meta property="og:site_name" content="'. get_bloginfo('name') .'"/>'; // Sets the site name to the one in your WordPress settings
+		echo '<meta property="og:url" content="' . get_permalink() . '"/>'; // Gets the permalink to the post/page
 
 		if (is_singular()) { // If we are on a blog post/page
-	        echo "<meta property='og:title' content='" . get_the_title() . "'/>"; // Gets the page title
-	        echo "<meta property='og:type' content='article'/>"; // Sets the content type to be article.
+	        echo '<meta property="og:title" content="' . get_the_title() . '"/>'; // Gets the page title
+	        echo '<meta property="og:type" content="article"/>'; // Sets the content type to be article.
 	    } elseif(is_front_page() or is_home()) { // If it is the front page or home page
-	    	echo "<meta property='og:title' content='" . get_bloginfo("name") . "'/>"; // Get the site title
-	    	echo "<meta property='og:type' content='website'/>"; // Sets the content type to be website.
+	    	echo '<meta property="og:title" content="' . get_bloginfo('name') . '"/>'; // Get the site title
+	    	echo '<meta property="og:type" content="website"/>'; // Sets the content type to be website.
 	    }
 
 		if(has_post_thumbnail( get_the_ID() )) { // If the post has a featured image.
-			$thumbnail = wp_get_attachment_url(get_post_thumbnail_id($post->ID));
-			echo "<meta property='og:image' content='" . esc_attr($thumbnail) . "'/>"; // If it has a featured image, then display this for Facebook
+			$thumbnail = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'full');
+			if (!empty($thumbnail[1])){
+				echo '<meta property="og:image" content="' . $thumbnail[0] . '"/>'; 
+				echo '<meta property="og:image:width" content="'.$thumbnail[1].'" />';
+				echo '<meta property="og:image:height" content="'.$thumbnail[2].'" />';
+			}
 		} 
 	}
 }
@@ -1300,6 +1453,10 @@ if (class_exists('WPBakeryVisualComposerAbstract')) {
 			wp_enqueue_style('rehub_vc', get_template_directory_uri() .'/functions/vc/vc.css', array(), time(), 'all');
 		}
 	}
+	function rhVCSetAsTheme() {
+	    vc_set_as_theme();
+	}
+	add_action( 'vc_before_init', 'rhVCSetAsTheme' );		
 	add_action('init','add_rehub_to_vc', 5);
 	add_action('admin_enqueue_scripts', 'rehub_vc_styles');
 	

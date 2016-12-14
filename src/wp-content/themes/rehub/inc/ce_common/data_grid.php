@@ -1,3 +1,4 @@
+<?php use ContentEgg\application\helpers\TemplateHelper;?>
 <article class="small_post">
     <div>
         <figure>
@@ -22,7 +23,7 @@
                 <?php if(!empty($offer_price)) : ?>
                     <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                         <span class="price_count">
-                            <ins><span><?php echo $currency; ?></span> <?php echo $offer_price ?></ins>
+                            <ins><?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?></ins>
                             <?php if(!empty($offer_price_old)) : ?>
                             <del>
                                 <span class="amount"><?php echo $offer_price_old ?></span>

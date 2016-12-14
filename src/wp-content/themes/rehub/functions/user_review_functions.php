@@ -73,19 +73,25 @@ function add_criteria_raitings_comment_fields($fields) {
 }
 
 //add inputs to comment form
-if (rehub_option('allowtorate') == 'guests' ) {
-	if (!is_user_logged_in()) {
-		add_filter('comment_form_default_fields', 'add_criteria_raitings_comment_fields');
+add_action('init', 'rh_add_review_form_to_comments');
+function rh_add_review_form_to_comments(){
+	if (rehub_option('allowtorate') == 'guests' ) {
+		if (!is_user_logged_in()) {
+			add_filter('comment_form_default_fields', 'add_criteria_raitings_comment_fields');
+		}
 	}
-}
-elseif (rehub_option('allowtorate') == 'users') {
-	if (is_user_logged_in()) {
-		add_filter('comment_form_logged_in', 'add_criteria_raitings_comment_fields');
+	elseif (rehub_option('allowtorate') == 'users') {
+		if (is_user_logged_in()) {
+			add_filter('comment_form_logged_in', 'add_criteria_raitings_comment_fields');
+		}
 	}
-}
-else {
-	add_filter('comment_form_default_fields', 'add_criteria_raitings_comment_fields');
-	add_filter('comment_form_logged_in', 'add_criteria_raitings_comment_fields');
+	else {
+		if (!is_user_logged_in()) {
+			add_filter('comment_form_default_fields', 'add_criteria_raitings_comment_fields');
+		}else{
+			add_filter('comment_form_logged_in', 'add_criteria_raitings_comment_fields');			
+		}
+	}
 }
 
 /* saving data when add comment */
@@ -323,10 +329,20 @@ function attach_comment_criteria_raitings($text='') {
 		///
 		$textsec = '';
 		if(isset($pros_review) && $pros_review != '') {
-			$textsec .= '<div class="user_reviews_view_pros"><span class="user_reviews_view_pc_title">'.__('+ PROS:', 'rehub_framework').' </span><span> '.$pros_review.'</span></div>';
+			$pros_reviews = explode(PHP_EOL, $pros_review);
+			$proscomment = '';
+			foreach ($pros_reviews as $pros) {
+				$proscomment .='<span class="pros_comment_item">'.$pros.'</span>';
+			}
+			$textsec .= '<div class="user_reviews_view_pros"><span class="user_reviews_view_pc_title mb5">'.__('+ PROS:', 'rehub_framework').' </span><span> '.$proscomment.'</span></div>';
 		};
 		if(isset($cons_review) && $cons_review != '') {
-			$textsec .= '<div class="user_reviews_view_cons"><span class="user_reviews_view_pc_title">'.__('- CONS:', 'rehub_framework').'</span><span> '.$cons_review.'</span></div>';
+			$cons_reviews = explode(PHP_EOL, $cons_review);
+			$conscomment = '';
+			foreach ($cons_reviews as $cons) {
+				$conscomment .='<span class="cons_comment_item">'.$cons.'</span>';
+			}			
+			$textsec .= '<div class="user_reviews_view_cons"><span class="user_reviews_view_pc_title mb5">'.__('- CONS:', 'rehub_framework').'</span><span> '.$conscomment.'</span></div>';
 		};	
 		if (rehub_option('enable_btn_userreview') == '1') {
 			$textsec .= getCommentLike_re('');	
@@ -371,5 +387,151 @@ function myplugin_comment_column( $column, $comment_ID )
 	}
 }
 add_filter( 'manage_comments_custom_column', 'myplugin_comment_column', 10, 2 );
+
+
+/* Save Admin Review Comment fields */
+function rehub_admin_save_comment( $location, $comment_id ) {
+    // Not allowed, return regular value without updating meta
+    if ( !check_admin_referer('update-comment_' . $comment_id) ) 
+		return $location;
+
+    // Update meta
+    update_comment_meta( 
+        $comment_id, 
+        'pros_review', 
+        sanitize_text_field( $_POST['pros_review'] ) 
+    );
+    update_comment_meta( 
+        $comment_id, 
+        'cons_review', 
+        sanitize_text_field( $_POST['cons_review'] ) 
+    );
+    update_comment_meta( 
+        $comment_id, 
+        'user_criteria', 
+        ( $_POST['user_criteria'] ) 
+    );
+	
+	// Run update Post rating
+	rh_update_post_rating( $comment_id );
+	
+    // Return regular value after updating  
+    return $location;
+}
+add_filter( 'comment_edit_redirect',  'rehub_admin_save_comment', 10, 2 );
+
+/* Add Admin Comment Review meta box */
+function rh_review_add_custom_box() {
+	add_meta_box( 
+		'rh_review_section',
+		__( 'Review Data' ),
+		'rh_review_inner_custom_box',
+		'comment',
+		'normal'
+	);	
+}
+add_action( 'add_meta_boxes', 'rh_review_add_custom_box' );
+
+/* Render meta box with Review fields */
+if( !function_exists('rh_review_inner_custom_box') ) {
+	function rh_review_inner_custom_box( $comment ) {
+ 		if ( !isset( $comment->comment_ID ) ) return;
+ 		if ( !isset( $comment->comment_post_ID ) ) return;		
+		$reviewType = get_post_meta( $comment->comment_post_ID, 'rehub_framework_post_type', true );
+		if ($reviewType && $reviewType == 'review') {
+			$userCriteria = get_comment_meta( $comment->comment_ID, 'user_criteria', true );
+			$pros_review = get_comment_meta( $comment->comment_ID, 'pros_review', true );
+			$cons_review = get_comment_meta( $comment->comment_ID, 'cons_review', true );
+			$prosconsRow = $criteriaRow = '';
+			
+			if( !empty($pros_review) || !empty($cons_review) ) {
+				$prosconsRow .= '<tr><td colspan="2"><label for="pros_review">';
+				$prosconsRow .= __('+ PROS:', 'rehub_framework');
+				$prosconsRow .= '</label><br /><textarea id="pros_review" name="pros_review" rows="5" cols="50">';
+				$prosconsRow .= esc_attr( $pros_review );
+				$prosconsRow .= '</textarea></td><td colspan="2"><label for="cons_review">';
+				$prosconsRow .= __('- CONS:', 'rehub_framework');
+				$prosconsRow .= '</label><br /><textarea id="cons_review" name="cons_review" rows="5" cols="50">';
+				$prosconsRow .= esc_attr( $cons_review );
+				$prosconsRow .= '</textarea></td></tr>';
+			}
+			
+			if( is_array($userCriteria) && !empty($userCriteria) ) {
+				$criteriaRow = '<tr>';
+				for( $i = 0; $i < count($userCriteria); $i++ ) {
+					$criteriaRow .= '<td><label for="criteria_input_'. $i .'">'. $userCriteria[$i]['name'] .':</label><br />';
+					$criteriaRow .= '<input type="hidden" name="user_criteria['.$i.'][name]" value="'. $userCriteria[$i]['name'] .'">';
+					$criteriaRow .= '<input type="number" id="criteria_input_'. $i .'" name="user_criteria['.$i.'][value]" value="'. $userCriteria[$i]['value'] .'" min="1" max="10"></td>';
+					$criteriaRow .= (is_int(($i+1)/4)) ? '</tr><tr>' : '';
+				}
+				$criteriaRow .= '</tr>';
+			} 
+
+			if(!empty($userCriteria) || !empty($pros_review) || !empty($cons_review)){
+				echo '<fieldset>',
+					'<table class="form-table editcomment">',
+						'<tbody>',
+							$prosconsRow,
+							$criteriaRow,
+						'</tbody></table><br>',
+					'</fieldset>';	
+			}	
+		}
+
+
+	}
+}
+
+/* Update Total score of the Post and the Comment */
+if( !function_exists('rh_update_post_rating') ) {
+	function rh_update_post_rating( $comment_id ) {
+		$comment = get_comment( $comment_id );
+		$comment_id = $comment->comment_ID;
+		$comment_post_id = $comment->comment_post_ID;
+		$postUserRaitingsArray = get_post_meta($comment_post_id, 'post_user_raitings', false);
+		$postUserRaitings = $postUserRaitingsArray[0];
+		$commentRaitingsArray = get_comment_meta($comment_id, 'user_criteria', false);
+		$commentRaitings = $commentRaitingsArray[0];
+		$postData = array();
+		$postCriteriaAverage = $postAverage = $commentTotal = '';
+		
+		for($i = 0; $i < count($commentRaitings); $i++) {
+			$postData['criteria'][$i]['name'] = $commentRaitings[$i]['name'];
+			if(isset($postUserRaitings['criteria'][$i])) {
+				$count = (int) $postUserRaitings['criteria'][$i]['count'] + 1;
+				$total = (float) $commentRaitings[$i]['value'] + (float) $postUserRaitings['criteria'][$i]['value'];
+				$postData['criteria'][$i]['count'] = $count;
+				$postData['criteria'][$i]['value'] = $total;
+				$postData['criteria'][$i]['average'] = bcdiv($total, $count, 1);
+			}
+			else {
+				$postData['criteria'][$i]['count'] = 1;
+				$postData['criteria'][$i]['value'] = (float) $commentRaitings[$i]['value'];
+				$postData['criteria'][$i]['average'] = (float) $commentRaitings[$i]['value'];
+			};
+			$postCriteriaAverage += $postData['criteria'][$i]['average'];
+			$commentTotal += $commentRaitings[$i]['value'];
+		};
+
+		if( isset($commentRaitings) && count($commentRaitings) > 0 ) {
+			$postAverage = bcdiv($postCriteriaAverage, count($commentRaitings), 1);
+			$commentAverage = bcdiv($commentTotal, count($commentRaitings), 1); 
+			update_post_meta($comment_post_id, 'post_user_raitings', $postData);
+			update_post_meta($comment_post_id, 'post_user_average', $postAverage);
+			update_comment_meta($comment_id, 'user_average', $commentAverage);
+			update_comment_meta($comment_id, 'counted', 1);
+			if(rehub_option('type_total_score')=='average'){
+				$editorrate = get_post_meta($comment_post_id, 'rehub_review_editor_score', true);
+				if($editorrate){
+					$overallupdate = ($editorrate + $postAverage) / 2;
+					update_post_meta($comment_post_id, 'rehub_review_overall_score', $overallupdate);
+				}
+			}
+			elseif(rehub_option('type_total_score')=='user'){
+				update_post_meta($comment_post_id, 'rehub_review_overall_score', $postAverage);
+			}			
+		}
+	}
+}
 
 ?>

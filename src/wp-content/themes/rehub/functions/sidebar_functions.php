@@ -63,7 +63,27 @@ function rehub_register_sidebars() {
 		'after_widget' => '</div>',
 		'before_title' => '<div class="title">',
 		'after_title' => '</div>',
-	));		
+	));
+	if(rehub_option('enable_brand_taxonomy') == 1 || REHUB_NAME_ACTIVE_THEME == 'RECASH'){
+		register_sidebar(array(
+			'id' => 'dealstore-sidebar',
+			'name' => __('Deal store archive sidebar', 'rehub_framework'),
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget' => '</div>',
+			'before_title' => '<div class="title">',
+			'after_title' => '</div>',
+		));	
+	}
+	if (class_exists('Woocommerce')) {
+		register_sidebar(array(
+			'id' => 'woostore-sidebar',
+			'name' => __('Woo brand archive sidebar', 'rehub_framework'),
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget' => '</div>',
+			'before_title' => '<div class="title">',
+			'after_title' => '</div>',
+		));	
+	}				
 }
 }
 add_action( 'widgets_init', 'rehub_register_sidebars' );
@@ -264,8 +284,8 @@ function rehub_get_social_links($icon_size='big'){
 			<a href="<?php echo rehub_option('rehub_instagram'); ?>" class="ins" rel="nofollow" target="_blank"><i class="fa fa-instagram"></i></a>
 		<?php endif;?>
 
-		<?php if ( rehub_option('rehub_tumblr') != '' ) :?>
-			<a href="<?php echo rehub_option('rehub_tumblr'); ?>" class="tm" rel="nofollow" target="_blank"><i class="fa fa-tumblr"></i></a>
+		<?php if ( rehub_option('rehub_wa') != '' ) :?>
+			<a href="<?php echo rehub_option('rehub_wa'); ?>" class="wa" rel="nofollow" target="_blank"><i class="fa fa-whatsapp"></i></a>
 		<?php endif;?>	
 
 		<?php if ( rehub_option('rehub_youtube') != '' ) :?>
@@ -326,22 +346,58 @@ function rehub_top_offers_widget_block_post($tags = '', $number = '5', $order = 
 	$offers = new WP_Query($args);
 	if($offers->have_posts()): ?>
 	
-	<div class="tabs-item">
-		<?php  while ($offers->have_posts()) : $offers->the_post(); ?>
-		
-			<div class="clearfix">
-	            <figure><a href="<?php the_permalink();?>"><?php WPSM_image_resizer::show_static_resized_image(array('thumb'=> true, 'crop'=> false, 'width'=> 100, 'no_thumb_url' => get_template_directory_uri() . '/images/default/noimage_123_90.png'));?></a></figure>
-	            <div class="detail">
-		            <h5><a href="<?php the_permalink();?>"><?php the_title();?></a></h5>
-	            	<div class="post-meta">
-	              		<?php $category = get_the_category(get_the_ID()); 
-	              			if($category){
-	              				$first_cat = $category[0]->term_id;
-	              				meta_small( false, $first_cat, true, false );
-	              			}?>	                	
-	                </div>
-	                <?php rehub_format_score('small') ?>
-
+	<div class="rh_deal_block">
+		<?php  while ($offers->have_posts()) : $offers->the_post(); global $post; ?>	
+			<?php $offer_coupon = get_post_meta( $post->ID, 'rehub_offer_product_coupon', true ) ?>
+			<?php $offer_price_old = get_post_meta( $post->ID, 'rehub_offer_product_price_old', true );?>
+			<?php $offer_price = get_post_meta( $post->ID, 'rehub_offer_product_price', true );?>
+			<?php $offer_post_url = get_post_meta( $post->ID, 'rehub_offer_product_url', true );
+				$offer_url = apply_filters('rh_post_offer_url_filter', $offer_post_url );
+				$offer_btn_text = get_post_meta( $post->ID, 'rehub_offer_btn_text', true );
+			?>
+			<div class="deal_block_row">
+				<div class="deal-pic-wrapper">
+					<a href="<?php the_permalink();?>">
+						<?php WPSM_image_resizer::show_static_resized_image(array('thumb'=> true, 'crop'=> false, 'width'=> 70, 'height'=> 70, 'no_thumb_url' => get_template_directory_uri() . '/images/default/noimage_70_70.png'));?>
+	            	</a>				
+				</div>
+	            <div class="rh-deal-details">
+					<div class="rh-deal-name"><h5><a href="<?php the_permalink();?>"><?php the_title();?></a></h5></div>	            					
+					<?php if(!empty($offer_coupon)) : ?>
+						<div class="redemptionText"><?php _e('Use Coupon Code:', 'rehub_framework');?><span class="code"><?php echo $offer_coupon ?></span></div>	
+				  	<?php endif;?>
+					<div class="rh-deal-pricetable">
+						<div class="rh-deal-left">
+							<?php if($offer_price):?>
+								<div class="rh-deal-price">
+									<span>
+										<ins><?php echo esc_html($offer_price) ?></ins>
+										<?php if($offer_price_old !='') :?>
+											<del><?php echo esc_html($offer_price_old) ; ?></del>
+										<?php endif ;?>
+									</span>
+								</div>
+							<?php endif;?>												
+							<div class="rh-deal-tag">
+								<?php WPSM_Postfilters::re_show_brand_tax('list'); //show brand logo?>					
+							</div>
+						</div>
+						<div class="rh-deal-right">						
+							<?php if($offer_post_url):?>
+								<div class="rh-deal-btn">
+				                    <a href="<?php echo esc_url ($offer_url) ?>" class="re_track_btn rh-deal-compact-btn btn_offer_block" target="_blank" rel="nofollow">
+				                        <?php if($offer_btn_text !='') :?>
+				                            <?php echo $offer_btn_text ; ?>
+				                        <?php elseif(rehub_option('rehub_btn_text') !='') :?>
+				                            <?php echo rehub_option('rehub_btn_text') ; ?>
+				                        <?php else :?>
+				                            <?php _e('Buy this item', 'rehub_framework') ?>
+				                        <?php endif ;?>
+				                    </a>		            					
+								</div>
+							<?php endif;?>						
+						</div>					
+					</div>
 	            </div>
             </div>
 		
@@ -380,8 +436,7 @@ function rehub_top_offers_widget_block_thirsty($tags = '', $number = '5', $order
 	global $post;
 	$wp_query = new WP_Query($args);
 	if($wp_query->have_posts()): ?>
-	<div class="woo_sidebar_deals_links">
-	<div class="deals_woo_rehub">
+	<div class="rh_deal_block">
 		<?php  while ($wp_query->have_posts()) : $wp_query->the_post(); ?>
 		
 			<?php 	$attachments = get_posts( array(
@@ -394,8 +449,8 @@ function rehub_top_offers_widget_block_thirsty($tags = '', $number = '5', $order
 			$term_list = wp_get_post_terms($post->ID, 'thirstylink-category', array("fields" => "names")); 
 			$term_ids =  wp_get_post_terms($post->ID, 'thirstylink-category', array("fields" => "ids")); if (!empty($term_ids) && !is_wp_error($term_ids)) {$term_brand = $term_ids[0]; $term_brand_image = get_option("taxonomy_term_$term_ids[0]");} else {$term_brand_image ='';}
 			?>
-			<div class="woorow_aff">
-				<div class="product-pic-wrapper">
+			<div class="deal_block_row">
+				<div class="deal-pic-wrapper">
 					<a href="<?php the_permalink();?>">
 						<?php if (!empty($aff_thumb_list) ) :?>	
 	            			<img src="<?php $params = array( 'width' => 100, 'height' => 100 ); echo bfi_thumb( $aff_thumb_list, $params ); ?>" alt="<?php the_title_attribute(); ?>" />
@@ -406,25 +461,29 @@ function rehub_top_offers_widget_block_thirsty($tags = '', $number = '5', $order
 	            		<?php endif?>
 	            	</a>				
 				</div>
-				<div class="product-details">
-					<div class="product-name">
-						<div class="aff_name"><a href="<?php the_permalink();?>"><?php the_title();?></a></div>
+				<div class="rh-deal-details">
+					<div class="rh-deal-text">
+						<div class="rh-deal-name"><a href="<?php the_permalink();?>"><?php the_title();?></a></div>
 						<p><?php echo get_post_meta( $post->ID, 'rehub_aff_desc', true );?></p>
 					</div>
-					<div class="left_data_aff">
-						<div class="wooprice_count">
-							<?php $product_price = get_post_meta( $post->ID, 'rehub_aff_price', true );?>
-							<?php echo $product_price ;?>
-						</div>					
-						<div class="wooaff_tag">
-				            <?php if (!empty($term_list[0])) :?> 
-				            	<?php echo $term_list[0]; ?>
-				            <?php endif; ?> 							
+					<div class="rh-deal-pricetable">
+						<div class="rh-deal-left">
+							<div class="rh-deal-price">
+								<?php $product_price = get_post_meta( $post->ID, 'rehub_aff_price', true );?>
+								<?php echo $product_price ;?>
+							</div>					
+							<div class="wooaff_tag">
+					            <?php if (!empty($term_list[0])) :?> 
+					            	<?php echo $term_list[0]; ?>
+					            <?php endif; ?> 							
+							</div>
+						</div>	
+						<?php $offer_btn_text = get_post_meta( $post->ID, 'rehub_aff_btn_text', true ) ?>
+						<div class="rh-deal-right">				
+							<div class="woobuy_butt">
+								<a class="re_track_btn rh-deal-compact-btn" href="<?php the_permalink();?>" target="_blank" rel="nofollow"><?php if($offer_btn_text !='') :?><?php echo $offer_btn_text ; ?><?php elseif(rehub_option('rehub_btn_text') !='') :?><?php echo rehub_option('rehub_btn_text') ; ?><?php else :?><?php _e('See it', 'rehub_framework') ?><?php endif ;?></a>
+							</div>
 						</div>
-					</div>	
-					<?php $offer_btn_text = get_post_meta( $post->ID, 'rehub_aff_btn_text', true ) ?>				
-					<div class="woobuy_butt">
-						<a class="re_track_btn woobtn_offer_block" href="<?php the_permalink();?>" target="_blank" rel="nofollow"><?php if($offer_btn_text !='') :?><?php echo $offer_btn_text ; ?><?php elseif(rehub_option('rehub_btn_text') !='') :?><?php echo rehub_option('rehub_btn_text') ; ?><?php else :?><?php _e('See it', 'rehub_framework') ?><?php endif ;?></a>
 					</div>
 				</div>
 			</div>
@@ -432,7 +491,7 @@ function rehub_top_offers_widget_block_thirsty($tags = '', $number = '5', $order
 		<?php endwhile; ?>
 		<?php wp_reset_query(); ?>
 		<?php endif; ?>
-	</div></div>
+	</div>
 
 <?php
 }
@@ -441,7 +500,7 @@ function rehub_top_offers_widget_block_thirsty($tags = '', $number = '5', $order
 if( !function_exists('rehub_top_offers_widget_block_woo') ) {
 function rehub_top_offers_widget_block_woo($tags = '', $number = '5', $order = '', $random = '') { ?>
 
-		<?php $args = array (
+	<?php $args = array (
 			'showposts' => $number,
 			'product_tag' => $tags,
 			'ignore_sticky_posts' => '1',
@@ -458,66 +517,72 @@ function rehub_top_offers_widget_block_woo($tags = '', $number = '5', $order = '
 	    $args['meta_query'] = array(
 	    	array(
 	       		'key' => 're_post_expired',
-	       		'value' => '0',
+	       		'value' => '1',
+	       		'compare' => '!=',
 	    	),	    	
 		);
 
 
 	$wp_query = new WP_Query($args);
 	if($wp_query->have_posts()): ?>
-	<div class="woo_sidebar_deals_links">
-	<div class="deals_woo_rehub">
-		<?php  while ($wp_query->have_posts()) : $wp_query->the_post(); global $product; ?>
-	        <?php $offer_coupon = get_post_meta( get_the_ID(), 'rehub_woo_coupon_code', true ) ?>
-	        <?php $offer_url = esc_url( $product->add_to_cart_url() ); ?>			
-			<div class="woorow_aff">
-
-				<div class="product-pic-wrapper">
+	
+	<div class="rh_deal_block">
+		<?php  while ($wp_query->have_posts()) : $wp_query->the_post(); global $post; global $product; ?>	
+			<?php $offer_coupon = get_post_meta( $post->ID, 'rehub_woo_coupon_code', true ) ?>
+			<?php $offer_post_url = esc_url( $product->add_to_cart_url() );
+				$offer_url = apply_filters('rh_woo_offer_url_filter', $offer_post_url );
+			?>
+			<div class="deal_block_row">
+				<div class="deal-pic-wrapper">
 					<a href="<?php the_permalink();?>">
-						<?php wpsm_thumb ('med_thumbs') ?>
+						<?php WPSM_image_resizer::show_static_resized_image(array('thumb'=> true, 'crop'=> false, 'width'=> 70, 'height'=> 70, 'no_thumb_url' => get_template_directory_uri() . '/images/default/noimage_70_70.png'));?>
 	            	</a>				
 				</div>
-
-				<div class="product-details">
-					<div class="product-name">
-						<div class="aff_name"><a href="<?php the_permalink();?>"><?php the_title();?></a></div>
-					</div>			            
+	            <div class="rh-deal-details">
+					<div class="rh-deal-name"><h5><a href="<?php the_permalink();?>"><?php the_title();?></a></h5></div>	            					
 					<?php if(!empty($offer_coupon)) : ?>
-						<div class="redemptionText"><?php _e('Use Coupon Code:', 'rehub_framework');?><span class="code"><?php echo $offer_coupon ?></span></div>	
-				  	<?php endif;?>						
-					<div class="left_data_aff">
-						<div class="wooprice_count">
-							<?php if ( $price_html = $product->get_price_html() ) : ?>
-								<span class="price"><?php echo $price_html; ?></span>
-							<?php endif; ?>
-						</div>					
-						<div class="wooaff_tag">
-							<?php WPSM_Woohelper::re_show_brand_tax(); //show brand taxonomy?> 							
+						<div class="redemptionText">
+							<span class="redemptionTextLabel"><?php _e('Use Coupon Code:', 'rehub_framework');?></span>
+							<span class="code"><?php echo $offer_coupon ?></span></div>	
+				  	<?php endif;?>
+					<div class="rh-deal-pricetable">
+						<div class="rh-deal-left">
+								<div class="rh-deal-price">
+									<?php if ( $price_html = $product->get_price_html() ) : ?>
+										<span class="price"><?php echo $price_html; ?></span>
+									<?php endif; ?>
+								</div>												
+							<div class="rh-deal-tag">
+								<?php WPSM_Woohelper::re_show_brand_tax('list'); //show brand taxonomy?>					
+							</div>
 						</div>
-					</div>					
-					<div class="woobuy_butt">
-			            <?php if ( $product->is_in_stock() ) : ?>
-			             <?php  echo apply_filters( 'woocommerce_loop_add_to_cart_link',
-			                    sprintf( '<a href="%s" rel="nofollow" data-product_id="%s" data-product_sku="%s" class="re_track_btn woobtn_offer_block btn_offer_block %s %s product_type_%s"%s>%s</a>',
-			                    esc_url( $product->add_to_cart_url() ),
-			                    esc_attr( $product->id ),
-			                    esc_attr( $product->get_sku() ),
-							    $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
-							    $product->supports( 'ajax_add_to_cart' ) ? 'ajax_add_to_cart' : '',
-			                    esc_attr( $product->product_type ),
-			                    $product->product_type =='external' ? ' target="_blank"' : '',
-			                    esc_html( $product->add_to_cart_text() )
-			                    ),
-			            $product );?>
-			            <?php endif; ?>		            					
+						<div class="rh-deal-right">						
+							<div class="rh-deal-btn">
+					            <?php if ( $product->is_in_stock() ) : ?>
+					             <?php  echo apply_filters( 'woocommerce_loop_add_to_cart_link',
+					                    sprintf( '<a href="%s" rel="nofollow" data-product_id="%s" data-product_sku="%s" class="re_track_btn rh-deal-compact-btn btn_offer_block %s %s product_type_%s"%s>%s</a>',
+					                    esc_url( $product->add_to_cart_url() ),
+					                    esc_attr( $product->id ),
+					                    esc_attr( $product->get_sku() ),
+									    $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
+									    $product->supports( 'ajax_add_to_cart' ) ? 'ajax_add_to_cart' : '',
+					                    esc_attr( $product->product_type ),
+					                    $product->product_type =='external' ? ' target="_blank"' : '',
+					                    esc_html( $product->add_to_cart_text() )
+					                    ),
+					            $product );?>
+					            <?php endif; ?>			            					
+							</div>						
+						</div>					
 					</div>
-				</div>
-			</div>
+	            </div>
+            </div>
 		
 		<?php endwhile; ?>
 		<?php wp_reset_query(); ?>
 		<?php endif; ?>
-	</div></div>
+	</div>
+
 
 <?php
 }

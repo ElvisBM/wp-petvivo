@@ -18,12 +18,12 @@
         <!-- /Main Side -->  
         <!-- Sidebar -->
         <aside class="sidebar">					
-                    <!-- SIDEBAR WIDGET AREA -->
-					<?php if ( is_active_sidebar( 'sidebar-6' ) ) : ?>
-						<?php dynamic_sidebar( 'sidebar-6' ); ?>
-					<?php else : ?>
-						<p><?php _e('No widgets added. Add widgets inside MDTF sidebar in Appearance - Widgets', 'rehub_framework'); ?></p>
-					<?php endif; ?>                      				
+            <!-- SIDEBAR WIDGET AREA -->
+			<?php if ( is_active_sidebar( 'sidebar-6' ) ) : ?>
+				<?php dynamic_sidebar( 'sidebar-6' ); ?>
+			<?php else : ?>
+				<p><?php _e('No widgets added. Add widgets inside MDTF sidebar in Appearance - Widgets', 'rehub_framework'); ?></p>
+			<?php endif; ?>                      				
         </aside>
         <!-- /Sidebar -->  
     </div>

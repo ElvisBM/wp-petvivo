@@ -16,7 +16,7 @@ usort($items, function($a, $b) {
 <?php  wp_enqueue_script('masonry'); wp_enqueue_script('imagesloaded'); wp_enqueue_script('masonry_init'); ?>
 <div class="masonry_grid_fullwidth three-col-gridhub egg_grid">
 <?php $i=0; foreach ($items as $key => $item): ?>
-    <?php $offer_price = (!empty($item['price'])) ? TemplateHelper::price_format_i18n($item['price']) : ''; ?>
+    <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
     <?php $offer_price_old = (!empty($item['priceOld'])) ? TemplateHelper::price_format_i18n($item['priceOld']) : ''; ?>
     <?php $clean_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
     <?php $currency = (!empty($item['currency'])) ? $item['currency'] : ''; ?>

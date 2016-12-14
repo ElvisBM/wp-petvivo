@@ -121,14 +121,8 @@
                                     $showimg->use_thumb = true;
                                     $width_figure_rating = apply_filters( 'wpsm_top_rating_figure_width', 120 );
                                     $height_figure_rating = apply_filters( 'wpsm_top_rating_figure_height', 120 );
-                                    if( rehub_option( 'aq_resize_crop') == '1') {
-                                        $showimg->width = $width_figure_rating;
-                                    } 
-                                    else {
-                                        $showimg->width = $width_figure_rating;
-                                        $showimg->height = $height_figure_rating;
-                                        $showimg->crop = true;
-                                    }
+                                    $showimg->height = $height_figure_rating;
+                                    $showimg->crop = true;
                                     $showimg->show_resized_image();                                    
                                     ?>
                                 </a>

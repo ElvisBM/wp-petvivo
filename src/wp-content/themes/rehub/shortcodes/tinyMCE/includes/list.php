@@ -9,7 +9,19 @@ jQuery(document).ready(function() {
 		var shortcode = '[wpsm_list';
 		
 			var value = jQuery('#form').find('#list-type').val();
-				shortcode += ' type="' + value + '"';
+			shortcode += ' type="' + value + '"';
+
+			if(jQuery('#list-hover').is(":checked")) {
+				shortcode += ' hover="1"';
+			}
+
+			if(jQuery('#list-dark').is(":checked")) {
+				shortcode += ' darklink="1"';
+			}	
+
+			if(jQuery('#list-gap').is(":checked")) {
+				shortcode += ' gap="small"';
+			}									
 		
 		shortcode += ']<ul>';
 		
@@ -46,6 +58,18 @@ jQuery(document).ready(function() {
         <label><?php _e('List Text', 'rehub_framework') ;?></label>
         <textarea name="list-text" id="list-text" rows="6"></textarea><br /><small><?php _e('Separated by a new-line (by Enter)', 'rehub_framework') ;?></small>
     </p>
+	<p class="half_left">
+		<label><?php _e('Pretty hover?', 'rehub_framework') ;?></label>
+        <input id="list-hover" name="list-hover" type="checkbox" class="checks" value="false" />
+	</p> 
+	<p class="half_left second_half">
+		<label><?php _e('Make links dark?', 'rehub_framework') ;?></label>
+        <input id="list-dark" name="list-dark" type="checkbox" class="checks" value="false" />
+	</p> 
+	<p>
+		<label><?php _e('Make small gap between items?', 'rehub_framework') ;?></label>
+        <input id="list-gap" name="list-gap" type="checkbox" class="checks" value="false" />
+	</p> 
 	 <p>
         <label>&nbsp;</label>
         <input type="button" id="submit" class="button" value="<?php _e('Insert', 'rehub_framework') ;?>" name="submit" />

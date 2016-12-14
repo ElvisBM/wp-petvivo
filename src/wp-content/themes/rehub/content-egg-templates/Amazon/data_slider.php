@@ -69,7 +69,7 @@ use ContentEgg\application\helpers\TemplateHelper;
                                 <div>
                                     <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
                                         <?php echo $btn_txt ; ?>
-                                        <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon($item['url']); ?></span>
+                                        <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon('http://amazon.com'); ?></span>
                                     </a>                                                
                                 </div>
                             </div>

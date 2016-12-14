@@ -22,23 +22,16 @@ elseif ($product_keyword_update) {
 }
 ?>
 
-<div class="rehub_feat_block egg_sort_list"><a name="aff-link-list"></a>
-    <div class="title_deal_wrap">
-        <div class="title_deal">
-            <?php $deal_list_title = (rehub_option('rehub_choosedeal_text') !='') ? esc_html(rehub_option('rehub_choosedeal_text')) : __('Choose your deal', 'rehub_framework'); ?>
-            <?php echo $deal_list_title ;?>
-        </div>
-    </div>
+<div class="rehub_feat_block egg_sort_list notitle_sort_list"><a name="aff-link-list"></a>
     <div class="aff_offer_links">
         <?php $i=0; foreach ($items as $key => $item): ?>
-            <?php $offer_price = (!empty($item['price'])) ? TemplateHelper::price_format_i18n($item['price']) : ''; ?>
+            <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
             <?php $offer_price_old = (!empty($item['priceOld'])) ? TemplateHelper::price_format_i18n($item['priceOld']) : ''; ?>
             <?php $clean_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
             <?php $currency = (!empty($item['currency'])) ? $item['currency'] : ''; ?>
             <?php $currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : ''; ?>          
             <?php $availability = (!empty($item['availability'])) ? $item['availability'] : ''; ?>
             <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
-            <?php $logo = (!empty($item['extra']['MerchantLogoURL'])) ? $item['extra']['MerchantLogoURL'] : ''; ?>
             <?php $afflink = (!empty($item['url'])) ? $item['url'] : '' ;?>
             <?php $aff_thumb = (!empty($item['img'])) ? $item['img'] : '' ;?>
             <?php $offer_title = (!empty($item['title'])) ? wp_trim_words( $item['title'], 12, '...' ) : ''; ?> 

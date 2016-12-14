@@ -32,9 +32,19 @@ $posts_per_page  = $columns = 6;
 $upsells = implode(',',$upsells);
 
 echo '<h3>'.__( 'You may also like&hellip;', 'woocommerce' ).'</h3>';
-if(rehub_option('woo_single_sidebar') !='1') {
-	echo do_shortcode('[wpsm_woocolumns ids="'.$upsells.'" columns="5_col" data_source="ids" show="5" show_coupons_only="2"]');	
+if(rehub_option('woo_single_sidebar') =='1') {
+	if (rehub_option('woo_design') == 'grid') {
+		echo do_shortcode('[wpsm_woogrid ids="'.$upsells.'" columns="3_col" data_source="ids" show="3" show_coupons_only="2"]');	
+	}
+	else{
+		echo do_shortcode('[wpsm_woocolumns ids="'.$upsells.'" columns="3_col" data_source="ids" show="3" show_coupons_only="2"]');			
+	}		
 }
 else{
-	echo do_shortcode('[wpsm_woocolumns ids="'.$upsells.'" columns="3_col" data_source="ids" show="3" show_coupons_only="2"]');	
+	if (rehub_option('woo_design') == 'grid') {
+		echo do_shortcode('[wpsm_woogrid ids="'.$upsells.'" columns="5_col" data_source="ids" show="5" show_coupons_only="2"]');		
+	}
+	else{
+		echo do_shortcode('[wpsm_woocolumns ids="'.$upsells.'" columns="5_col" data_source="ids" show="5" show_coupons_only="2"]');		
+	}			
 }

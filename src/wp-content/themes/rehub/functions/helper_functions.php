@@ -1,9 +1,24 @@
 <?php
 
+
+//////////////////////////////////////////////////////////////////
+// Check plugin active
+//////////////////////////////////////////////////////////////////
+function rh_is_plugin_active( $plugin ) {
+    return in_array( $plugin, (array) get_option( 'active_plugins', array() ) ) || rh_is_plugin_active_for_network( $plugin );
+}
+function rh_is_plugin_active_for_network( $plugin ) {
+    if ( !is_multisite() )
+        return false;
+    $plugins = get_site_option( 'active_sitewide_plugins');
+    if ( isset($plugins[$plugin]) )
+        return true;
+    return false;
+}
+
 //////////////////////////////////////////////////////////////////
 // Helper Functions
 //////////////////////////////////////////////////////////////////
-
 function rehub_kses($html)
 {
     $allow = array_merge(wp_kses_allowed_html( 'post' ), array(
@@ -603,16 +618,132 @@ if (!function_exists('rehub_get_site_favicon')) {
     function rehub_get_site_favicon($url) {
         $shop = parse_url($url, PHP_URL_HOST);
         $shop = preg_replace('/^www\./', '', $shop);
-        $shop_str = '<img src="//www.google.com/s2/favicons?domain=http://' . $shop . '"> ';
-        $shop_str .= $shop;
-        return $shop_str;
+
+        if ($shop){
+            if($shop == 'dl.flipkart.com'){
+                $shop = 'flipkart.com';
+            }
+            elseif($shop == 'click.linksynergy.com'){
+                $shop = 'linkshare.com';
+            } 
+            elseif($shop == 'rover.ebay.com'){
+                $shop = 'ebay.com';
+            }             
+            elseif($shop == 'pdt.tradedoubler.com'){
+                $shop = 'tradedoubler.com';
+            }
+            elseif($shop == 'partners.webmasterplan.com'){
+                $shop = 'affili.net';
+            } 
+            elseif($shop == 'ad.zanox.com'){
+                $shop = 'zanox.com';
+            }                                                
+            $d = explode('.', $shop);
+            $title = $d[0]; 
+            $logo_urls_trans = get_transient('ce_favicon_urls');
+            if (empty($logo_urls_trans)){
+                $logo_urls_trans = array();
+            }
+            if(array_key_exists($shop, $logo_urls_trans)){
+                return '<img src="'.$logo_urls_trans[$shop].'" height=16 width=16 alt='.$title.' /> '.$shop;
+            }
+            else {         
+                $img_uri = '//www.google.com/s2/favicons?domain=http://'.$shop;                  
+                $new_logo_url = rh_ae_saveimg_towp($img_uri, $title);
+                if(!empty($new_logo_url)){
+                    $logo_urls_trans[$shop] = $new_logo_url;
+                    set_transient('ce_favicon_urls', $logo_urls_trans, 180 * DAY_IN_SECONDS); 
+                    return '<img src="'.$new_logo_url.'" height=16 width=16 alt='.$title.' /> '.$shop;
+                }
+            }            
+        }
     }
 } 
 
+if (!function_exists('rehub_get_site_favicon_icon')) {
+
+    function rehub_get_site_favicon_icon($url) {
+        $shop = parse_url($url, PHP_URL_HOST);
+        $shop = preg_replace('/^www\./', '', $shop);
+        if ($shop){
+            if($shop == 'dl.flipkart.com'){
+                $shop = 'flipkart.com';
+            }
+            elseif($shop == 'click.linksynergy.com'){
+                $shop = 'linkshare.com';
+            } 
+            elseif($shop == 'rover.ebay.com'){
+                $shop = 'ebay.com';
+            }             
+            elseif($shop == 'pdt.tradedoubler.com'){
+                $shop = 'tradedoubler.com';
+            }
+            elseif($shop == 'partners.webmasterplan.com'){
+                $shop = 'affili.net';
+            }  
+            elseif($shop == 'ad.zanox.com'){
+                $shop = 'zanox.com';
+            }                        
+            $d = explode('.', $shop);
+            $title = $d[0]; 
+            $logo_urls_trans = get_transient('ce_favicon_urls');
+            if (empty($logo_urls_trans)){
+                $logo_urls_trans = array();
+            }
+            if(array_key_exists($shop, $logo_urls_trans)){
+                return '<img src="'.$logo_urls_trans[$shop].'" height=16 width=16 alt='.$title.' />';
+            }
+            else {         
+                $img_uri = '//www.google.com/s2/favicons?domain=http://'.$shop;                  
+                $new_logo_url = rh_ae_saveimg_towp($img_uri, $title);
+                if(!empty($new_logo_url)){
+                    $logo_urls_trans[$shop] = $new_logo_url;
+                    set_transient('ce_favicon_urls', $logo_urls_trans, 180 * DAY_IN_SECONDS); 
+                    return '<img src="'.$new_logo_url.'" height=16 width=16 alt='.$title.' />';
+                }
+            }            
+        }       
+    }
+} 
+
+if(!function_exists('rh_fix_domain')){
+    function rh_fix_domain($merchant, $domain){
+        if($merchant){
+            $merchant = trim($merchant);
+        }
+        if($merchant == 'Ferrari Store UK'){
+            $domain = 'ferrari.com';
+        }  
+        if($domain == 'dl.flipkart.com'){
+            $domain = 'flipkart.com';
+        }
+        elseif($domain == 'click.linksynergy.com'){
+            $domain = 'linkshare.com';
+        } 
+        elseif($domain == 'pdt.tradedoubler.com'){
+            $domain = 'tradedoubler.com';
+        }
+        elseif($domain == 'rover.ebay.com'){
+            $domain = 'ebay.com';
+        }         
+        elseif($domain == 'partners.webmasterplan.com'){
+            $domain = 'affili.net';
+        }  
+        elseif($domain == 'ad.zanox.com'){
+            $domain = 'zanox.com';
+        }   
+        elseif($domain == 'catalog.paytm.com'){
+            $domain = 'paytm.com';
+        }                     
+        return $domain;
+    }
+}
+
 //Get social buttons
 if( !function_exists('rehub_social_inimage') ) {
-function rehub_social_inimage($small = '', $favorite = '')
+function rehub_social_inimage($small = '', $favorite = '', $rh_favorite = '')
 {   
+    global $post;
     if ($small == 'minimal') {
         $small_class = ' social_icon_inimage small_social_inimage';
         $text_fb = $text_tw = '';
@@ -635,12 +766,15 @@ function rehub_social_inimage($small = '', $favorite = '')
             $output .='<div class="favour_in_row">'.get_favorites_button().'</div>';
         } 
     }
+    if ($rh_favorite == '1' && !function_exists('get_favorites_button')) {
+        $output .= getHotThumb($post->ID, false, false, true);
+    }    
     $output .= do_action('rh_social_inimage_before');
-    $output .='<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode(get_permalink()).'" class="fb share-link-image" data-service="facebook"><i class="fa fa-facebook"></i></a>';
-    $output .='<a href="https://twitter.com/share?url='.urlencode(get_permalink()).'&text='.urlencode(get_the_title()).'" class="tw share-link-image" data-service="twitter"><i class="fa fa-twitter"></i></a>';
-    $output .='<a href="https://pinterest.com/pin/create/button/?url='.urlencode(get_permalink()).'&amp;media='.get_post_thumb().'&amp;description='.urlencode(get_the_title()).'" class="pn share-link-image" data-service="pinterest"><i class="fa fa-pinterest-p"></i></a>';
+    $output .='<span data-href="https://www.facebook.com/sharer/sharer.php?u='.urlencode(get_permalink()).'" class="fb share-link-image" data-service="facebook"><i class="fa fa-facebook"></i></span>';
+    $output .='<span data-href="https://twitter.com/share?url='.urlencode(get_permalink()).'&text='.urlencode(html_entity_decode(get_the_title(), ENT_COMPAT, 'UTF-8')).'" class="tw share-link-image" data-service="twitter"><i class="fa fa-twitter"></i></span>';
+    $output .='<span data-href="https://pinterest.com/pin/create/button/?url='.urlencode(get_permalink()).'&amp;media='.get_post_thumb().'&amp;description='.urlencode(get_the_title()).'" class="pn share-link-image" data-service="pinterest"><i class="fa fa-pinterest-p"></i></span>';
     if ($small =='row' || $small =='flat' ) {
-        $output .='<a href="https://plus.google.com/share?url='.urlencode(get_permalink()).'" class="gp share-link-image" data-service="googleplus"><i class="fa fa-google-plus"></i></a>';
+        $output .='<span data-href="https://plus.google.com/share?url='.urlencode(get_permalink()).'" class="gp share-link-image" data-service="googleplus"><i class="fa fa-google-plus"></i></span>';
     }
     $output .= do_action('rh_social_inimage_after');
     $output .='</div>';         
@@ -701,9 +835,27 @@ if ( !function_exists( 'rh_ae_logo_get' ) ) {
             elseif ($domain == 'snapdeal.com'){
                 return get_template_directory_uri().'/images/logos/snapdeal.png';
             }  
+            elseif ($domain == 'banggood.com'){
+                return get_template_directory_uri().'/images/logos/banggood.png';
+            }             
             elseif ($domain == 'shopclues.com'){
                 return get_template_directory_uri().'/images/logos/shopclues.png';
-            }                                                   
+            }  
+            elseif ($domain == 'etsy.com'){
+                return get_template_directory_uri().'/images/logos/etsy.png';
+            }  
+            elseif ($domain == 'wiggle.com' || $domain == 'wiggle.co.uk'){
+                return get_template_directory_uri().'/images/logos/wiggle.jpg';
+            } 
+            elseif ($domain == 'iherb.com' || $domain == 'ru.iherb.com'){
+                return get_template_directory_uri().'/images/logos/iherb.jpg';
+            }  
+            elseif ($domain == 'airbnb.com' || $domain == 'ru.airbnb.com'){
+                return get_template_directory_uri().'/images/logos/airbnb.jpg';
+            } 
+            elseif ($domain == 'infibeam.com'){
+                return get_template_directory_uri().'/images/logos/infibeam.png';
+            }                                                                                                        
             $logo_urls_trans = get_transient('ae_logo_store_urls');
             if (empty($logo_urls_trans)){
                 $logo_urls_trans = array();
@@ -780,4 +932,169 @@ if(!function_exists('wpsm_inline_list_shortcode')) {
     } 
     // add the shortcode to system
     add_shortcode('wpsm_inline_list', 'wpsm_inline_list_shortcode');
+}
+
+if(!function_exists('wpsm_stickypanel_shortcode')) {
+    function wpsm_stickypanel_shortcode($atts, $content) {  
+        $content = do_shortcode($content); 
+        wp_enqueue_script('rehubwaypoints' );   
+        return '<div id="content-sticky-panel"><span id="mobileactivate"><i class="fa fa-ellipsis-v" aria-hidden="true"></i></span>' . $content . '</div>';  
+    } 
+    // add the shortcode to system
+    add_shortcode('wpsm_stickypanel', 'wpsm_stickypanel_shortcode');
+}
+
+
+add_filter( 'gmw_pt_map_icon', 'rh_gmw_post_mapin', 10, 2);
+if (!function_exists('rh_gmw_post_mapin')){
+    function rh_gmw_post_mapin ($post, $gmw_form){
+        global $post;
+        $postid = $post->ID;
+        return get_template_directory_uri() . '/images/default/mappostpin.png';        
+    }
+}
+
+if (!function_exists('rh_gmw_post_in_popup')){
+    function rh_gmw_post_in_popup ($output, $post, $gmw_form){
+        $address   = ( !empty( $post->formatted_address ) ) ? $post->formatted_address : $post->address;
+        $permalink = get_permalink( $post->ID );
+        $thumb     = get_the_post_thumbnail( $post->ID );
+        
+        $output                  = array();
+        $output['start']         = "<div class=\"gmw-pt-info-window-wrapper wppl-pt-info-window\">";
+        $output['thumb']         = "<div class=\"thumb wppl-info-window-thumb\">{$thumb}</div>";
+        $output['content_start'] = "<div class=\"content wppl-info-window-info\"><table>";
+        $output['title']         = "<tr><td><div class=\"title wppl-info-window-permalink\"><a href=\"{$permalink}\">{$post->post_title}</a></div></td></tr>";
+        $output['address']       = "<tr><td><span class=\"address\">{$gmw_form['labels']['info_window']['address']}</span>{$address}</td></tr>";
+        
+        if ( isset( $post->distance ) ) {
+            $output['distance'] = "<tr><td><span class=\"distance\">{$gmw_form['labels']['info_window']['distance']}</span>{$post->distance} {$gmw_form['units_array']['name']}</td></tr>";
+        }
+        
+        if ( !empty( $gmw_form['search_results']['additional_info'] ) ) {
+        
+            foreach ( $gmw_form['search_results']['additional_info'] as $field ) {
+                if ( isset( $post->$field ) ) {
+                    $output[$gmw_form['labels']['info_window'][$field]] = "<tr><td><span class=\"{$gmw_form['labels']['info_window'][$field]}\">{$gmw_form['labels']['info_window'][$field]}</span>{$post->$field}</td></tr>";
+                }
+            }
+        }
+        
+        $output['content_end'] = "</table></div>";
+        $output['end']         = "</div>";
+        return $output;
+    }
+}
+//add_filter( 'gmw_pt_info_window_content', 'rh_gmw_post_in_popup', 10, 3);
+
+//////////////////////////////////////////////////////////////////
+// PRICE HELPER
+//////////////////////////////////////////////////////////////////
+if(!class_exists('PriceTemplateHelper')){
+class RhPriceTemplateHelper {
+
+    static public function currencyTyping($c)
+    {
+        $types = array("RUB" => "руб.", "UAH" => "грн.", "USD" => "$", "CAD" => "C$", "GBP" => "&pound;", "EUR" => "&euro;", "JPY" => "&yen;", "CNY" => "&yen;", "INR" => "&#8377;", "AUD" => "AU $", "RUR" => 'руб.');
+        if (key_exists($c, $types))
+            return $types[$c];
+        else
+            return $c;
+    }
+
+    public static function number_format_i18n($number, $decimals = 0)
+    {
+        $decimal_point = __('number_format_decimal_point', 'rehub_framework');
+        $thousands_sep = __('number_format_thousands_sep', 'rehub_framework');
+
+        if ($decimal_point == 'number_format_decimal_point')
+            $decimal_point = '.';
+
+        if ($thousands_sep == 'number_format_thousands_sep')
+            $thousands_sep = ',';
+
+        return number_format($number, absint($decimals), $decimal_point, $thousands_sep);
+    }
+
+    public static function price_format_i18n($number, $currency = null)
+    {
+        if ($currency && in_array($currency, array('RUB', 'UAH', 'INR', 'RUR')))
+            $decimal = 0;
+        else
+            $decimal = 2;
+        return self::number_format_i18n($number, $decimal);
+    }
+
+    public static function formatPriceCurrency($price, $currencyCode)
+    {
+        $return = '';
+        $currency = self::currencyTyping($currencyCode);
+        $price = self::price_format_i18n($price, $currencyCode);
+
+        if (in_array($currencyCode, array('RUB', 'UAH', 'RUR')))
+            return $price . ' ' . $currency;
+        else
+            return $currency . '' . $price;
+    }
+}
+}
+
+
+//////////////////////////////////////////////////////////////////
+// Hex to RGBA
+//////////////////////////////////////////////////////////////////
+if (!function_exists('hex2rgba')){
+function hex2rgba($color, $opacity = false) {
+ 
+    $default = 'rgb(0,0,0)';
+ 
+    //Return default if no color provided
+    if(empty($color))
+          return $default; 
+ 
+    //Sanitize $color if "#" is provided 
+        if ($color[0] == '#' ) {
+            $color = substr( $color, 1 );
+        }
+ 
+        //Check if color has 6 or 3 characters and get values
+        if (strlen($color) == 6) {
+                $hex = array( $color[0] . $color[1], $color[2] . $color[3], $color[4] . $color[5] );
+        } elseif ( strlen( $color ) == 3 ) {
+                $hex = array( $color[0] . $color[0], $color[1] . $color[1], $color[2] . $color[2] );
+        } else {
+                return $default;
+        }
+ 
+        //Convert hexadec to rgb
+        $rgb =  array_map('hexdec', $hex);
+ 
+        //Check if opacity is set(rgba or rgb)
+        if($opacity){
+            if(abs($opacity) > 1)
+                $opacity = 1.0;
+            $output = 'rgba('.implode(",",$rgb).','.$opacity.')';
+        } else {
+            $output = 'rgb('.implode(",",$rgb).')';
+        }
+ 
+        //Return rgb(a) color string
+        return $output;
+}
+}
+
+
+//////////////////////////////////////////////////////////////////
+// CSS minify
+//////////////////////////////////////////////////////////////////
+if (!function_exists('rehub_quick_minify')){ 
+function rehub_quick_minify( $css ) {
+    $css = preg_replace( '/\s+/', ' ', $css );
+    $css = preg_replace( '/\/\*[^\!](.*?)\*\//', '', $css );
+    $css = preg_replace( '/(,|:|;|\{|}) /', '$1', $css );
+    $css = preg_replace( '/ (,|;|\{|})/', '$1', $css );
+    $css = preg_replace( '/(:| )0\.([0-9]+)(%|em|ex|px|in|cm|mm|pt|pc)/i', '${1}.${2}${3}', $css );
+    $css = preg_replace( '/(:| )(\.?)0(%|em|ex|px|in|cm|mm|pt|pc)/i', '${1}0', $css );
+    return trim( $css );
+}
 }

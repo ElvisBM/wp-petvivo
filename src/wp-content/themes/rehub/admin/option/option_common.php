@@ -124,7 +124,7 @@ return array(
 							),	
 							array(
 								'value' => 'header_seven',
-								'label' => __('Shop header (logo + search + login + cart)', 'rehub_framework'),
+								'label' => __('Shop/Comparison header (logo + search + login + cart/compare icon)', 'rehub_framework'),
 							),																												
 						),
 							'default' => array(
@@ -141,6 +141,16 @@ return array(
 							'function' => 'rehub_framework_is_header_seven',
 						),						
 					),
+					array(
+						'type' => 'toggle',
+						'name' => 'header_seven_compare_btn',
+						'label' => __('Change cart to compare button', 'rehub_framework'),
+						'default' => '0',
+						'dependency' => array(
+							'field'    => 'rehub_header_style',
+							'function' => 'rehub_framework_is_header_seven',
+						),							
+					),					
 					array(
 						'type' => 'textbox',
 						'name' => 'header_seven_btn_login_url',
@@ -434,68 +444,6 @@ return array(
 
 			array(
 				'type' => 'section',
-				'title' => __('Header top line Options', 'rehub_framework'),
-				'fields' => array(						
-					array(
-						'type' => 'select',
-						'name' => 'header_topline_style',
-						'label' => __('Choose color style of header top line', 'rehub_framework'),							
-						'items' => array(
-							array(
-								'value' => '0',
-								'label' => __('White style and dark fonts', 'rehub_framework'),
-							),
-							array(
-								'value' => '1',
-								'label' => __('Dark style and white fonts', 'rehub_framework'),
-							),
-						),
-						'default' => array(
-							'0',
-						),
-					),
-					 array(
-						'type' => 'color',
-						'name' => 'rehub_custom_color_top',
-						'label' => __('Custom color for top line of header', 'rehub_framework'),
-						'description' => __('Or leave blank for default color', 'rehub_framework'),
-						'format' => 'hex',
-						
-					),	
-					 array(
-						'type' => 'color',
-						'name' => 'rehub_custom_color_top_font',
-						'label' => __('Custom color of menu font for top line of header', 'rehub_framework'),
-						'description' => __('Or leave blank for default color', 'rehub_framework'),
-						'format' => 'hex',				
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_header_social',
-						'label' => __('Enable Header Social Icons', 'rehub_framework'),
-						'description' => __('You can set your social media URLs in the Social Media Options tab.', 'rehub_framework'),
-						'default' => '1',
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_logged_enable_intop',
-						'label' => __('Replace top menu when user logined', 'rehub_framework'),
-						'description' => __('Default top menu will be replaced with /User Logged In Menu/', 'rehub_framework'),
-						'default' => '0',
-					),												
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_header_top',
-						'label' => __('Disable top line', 'rehub_framework'),
-						'description' => __('You can disable top line', 'rehub_framework'),
-						'default' => '0',
-					),									
-	
-				),
-			),
-
-			array(
-				'type' => 'section',
 				'title' => __('Header main menu Options', 'rehub_framework'),
 				'fields' => array(
 					array(
@@ -553,7 +501,7 @@ return array(
 							),															
 						),
 							'default' => array(
-							'menu',
+							'no',
 						),
 					),
 					array(
@@ -579,6 +527,68 @@ return array(
 					),							
 
 
+				),
+			),			
+
+			array(
+				'type' => 'section',
+				'title' => __('Header top line Options', 'rehub_framework'),
+				'fields' => array(						
+					array(
+						'type' => 'select',
+						'name' => 'header_topline_style',
+						'label' => __('Choose color style of header top line', 'rehub_framework'),							
+						'items' => array(
+							array(
+								'value' => '0',
+								'label' => __('White style and dark fonts', 'rehub_framework'),
+							),
+							array(
+								'value' => '1',
+								'label' => __('Dark style and white fonts', 'rehub_framework'),
+							),
+						),
+						'default' => array(
+							'0',
+						),
+					),
+					 array(
+						'type' => 'color',
+						'name' => 'rehub_custom_color_top',
+						'label' => __('Custom color for top line of header', 'rehub_framework'),
+						'description' => __('Or leave blank for default color', 'rehub_framework'),
+						'format' => 'hex',
+						
+					),	
+					 array(
+						'type' => 'color',
+						'name' => 'rehub_custom_color_top_font',
+						'label' => __('Custom color of menu font for top line of header', 'rehub_framework'),
+						'description' => __('Or leave blank for default color', 'rehub_framework'),
+						'format' => 'hex',				
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'rehub_header_social',
+						'label' => __('Enable Header Social Icons', 'rehub_framework'),
+						'description' => __('You can set your social media URLs in the Social Media Options tab.', 'rehub_framework'),
+						'default' => '1',
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'rehub_logged_enable_intop',
+						'label' => __('Replace top menu when user logined', 'rehub_framework'),
+						'description' => __('Default top menu will be replaced with /User Logged In Menu/', 'rehub_framework'),
+						'default' => '0',
+					),												
+					array(
+						'type' => 'toggle',
+						'name' => 'rehub_header_top',
+						'label' => __('Disable top line', 'rehub_framework'),
+						'description' => __('You can disable top line', 'rehub_framework'),
+						'default' => '0',
+					),									
+	
 				),
 			),				
 
@@ -797,8 +807,8 @@ return array(
 					),
 					array(
 						'type' => 'textbox',
-						'name' => 'rehub_tumblr',
-						'label' => __('Tumblr link', 'rehub_framework'),
+						'name' => 'rehub_wa',
+						'label' => __('WhatsApp link', 'rehub_framework'),
 						'validation' => 'url',
 					),
 					array(
@@ -1175,14 +1185,7 @@ return array(
 			array(
 				'type' => 'section',
 				'title' => __('Global disabling parts on single pages', 'rehub_framework'),
-				'fields' => array(
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_disable_fulltitle',
-						'label' => __('Disable full width title?', 'rehub_framework'),
-						'description' => __('This option disables big full width title and places it inside content', 'rehub_framework'),
-						'default' => '0',
-					),												
+				'fields' => array(												
 					array(
 						'type' => 'toggle',
 						'name' => 'rehub_disable_breadcrumbs',
@@ -1378,9 +1381,9 @@ return array(
 		),
 	),
 	array(
-		'title' => __('Reviews/Affiliate', 'rehub_framework'),
+		'title' => __('Reviews', 'rehub_framework'),
 		'name' => 'menu_10',
-		'icon' => 'font-awesome:fa-money',
+		'icon' => 'font-awesome:fa-signal',
 		'controls' => array(
 			array(
 				'type' => 'section',
@@ -1546,14 +1549,7 @@ return array(
 							'field'    => 'color_type_review',
 							'function' => 'rehub_framework_rev_color_is_multi',
 						),							
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'enable_adsense_opt',
-						'label' => __('Enable adsense optimized layout for desktop', 'rehub_framework'),
-						'description' => __('Use this only if you have adsense as main money income source', 'rehub_framework'),							
-						'default' => '0',							
-					),																																														
+					),																		
 				),
 			),
 			array(
@@ -1575,7 +1571,14 @@ return array(
 						'default' => '',
 					),																	
 				),
-			),
+			),		
+		),
+	),
+	array(
+		'title' => __('Affiliate', 'rehub_framework'),
+		'name' => 'menu_aff',
+		'icon' => 'font-awesome:fa-money',
+		'controls' => array(
 			array(
 				'type' => 'section',
 				'title' => __('Content Egg synchronization', 'rehub_framework'),
@@ -1629,7 +1632,115 @@ return array(
 							array(
 								'value' => 'Shareasale',
 								'label' => 'Shareasale',
-							),																																																																											
+							),
+							array(
+								'value' => 'Flipkart',
+								'label' => 'Flipkart',
+							),	
+							array(
+								'value' => 'PayTM',
+								'label' => 'Paytm.com',
+							),								
+							array(
+								'value' => 'AdmitadProducts',
+								'label' => 'Admitad Products',
+							),																
+							array(
+								'label' => 'AE: Amazon.com',
+								'value' => 'AE__amazoncom',
+							),
+							array(
+								'label' => 'AE: Amazon.de',
+								'value' => 'AE__amazonde',
+							),
+							array(
+								'label' => 'AE: Amazon.it',
+								'value' => 'AE__amazonit',
+							),
+							array(
+								'label' => 'AE: Amazon.fr',
+								'value' => 'AE__amazonfr',
+							),
+							array(
+								'label' => 'AE: Amazon.in',
+								'value' => 'AE__amazonin',
+							),	
+							array(
+								'label' => 'AE: Amazon.es',
+								'value' => 'AE__amazones',
+							),
+							array(
+								'label' => 'AE: Groupon US',
+								'value' => 'AE__grouponus',
+							),
+							array(
+								'label' => 'AE: Banggood',
+								'value' => 'AE__banggood',
+							),
+							array(
+								'label' => 'AE: Ebay.com',
+								'value' => 'AE__ebaycom',
+							),	
+							array(
+								'label' => 'AE: Ebay.de',
+								'value' => 'AE__ebayde',
+							),
+							array(
+								'label' => 'AE: Ebay.in',
+								'value' => 'AE__ebayin',
+							),
+							array(
+								'label' => 'AE: Ebay.es',
+								'value' => 'AE__ebayes',
+							),
+							array(
+								'label' => 'AE: Ebay.com.au',
+								'value' => 'AE__ebaycomau',
+							),
+							array(
+								'label' => 'AE: Booking.com',
+								'value' => 'AE__booking',
+							),	
+							array(
+								'label' => 'AE: Airbnb.com',
+								'value' => 'AE__airbnbcom',
+							),							
+							array(
+								'label' => 'AE: Etsy.com',
+								'value' => 'AE__etsy',
+							),	
+							array(
+								'label' => 'AE: Infibeam.com',
+								'value' => 'AE__infibeam',
+							),
+							array(
+								'label' => 'AE: Jabong.com',
+								'value' => 'AE__jabongcom',
+							),
+							array(
+								'label' => 'AE: Shopclues.com',
+								'value' => 'AE__shopclues',
+							),
+							array(
+								'label' => 'AE: Snapdeal.com',
+								'value' => 'AE__snapdeal',
+							),							
+							array(
+								'label' => 'AE: Bodybuilding.com',
+								'value' => 'AE__bodybuildingcom',
+							),							
+							array(
+								'label' => 'AE: Suppz.com',
+								'value' => 'AE__suppzcom',
+							),	
+							array(
+								'label' => 'AE: Wiggle.com',
+								'value' => 'AE__wigglecom',
+							),	
+							array(
+								'label' => 'AE: Ru.Iherb.com',
+								'value' => 'AE__ruiherbcom',
+							),
 						),
 						'default' => 'none',
 					),	
@@ -1641,7 +1752,111 @@ return array(
 						'default' => '0',
 					),																
 				),
-			),			
+			),	
+			array(
+				'type' => 'section',
+				'title' => __('Other', 'rehub_framework'),
+				'fields' => array(
+					array(
+						'type' => 'toggle',
+						'name' => 'enable_multioffer',
+						'label' => __('Enable multi offer option', 'rehub_framework'),
+						'description' => __('Use this if you want to add multi offers instead of single in Post Offer section', 'rehub_framework'),							
+						'default' => '0',							
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'rehub_post_exclude_expired',
+						'label' => __('Delete all expired offers', 'rehub_framework'),
+						'description' => __('This will delete expired offers from archives', 'rehub_framework'),
+						'default' => '0',							
+					),						
+					array(
+						'type' => 'toggle',
+						'name' => 'enable_brand_taxonomy',
+						'label' => __('Enable brand(store) taxonomy for posts', 'rehub_framework'),
+						'description' => __('When enabled, save permalinks in Settings - Permalinks', 'rehub_framework'),													
+						'default' => '0',							
+					),	
+					array(
+						'type' => 'textbox',
+						'name' => 'rehub_deal_store_tag',
+						'label' => __('Set custom taxonomy slug for brand. Update permalinks after this in Settings - permalinks', 'rehub_framework'),							
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'enable_blog_posttype',
+						'label' => __('Enable separate blog post type', 'rehub_framework'),
+						'description' => __('When enabled, save permalinks in Settings - Permalinks', 'rehub_framework'),													
+						'default' => '0',							
+					),
+					array(
+						'type' => 'textbox',
+						'name' => 'blog_posttype_slug',
+						'label' => __('Set custom blog permalink slug for Blog. Update permalinks after this in Settings - permalinks', 'rehub_framework'),	
+						'dependency' => array(
+                        	'field' => 'enable_blog_posttype',
+                        	'function' => 'vp_dep_boolean',
+                        ),												
+					),	
+					array(
+						'type' => 'textbox',
+						'name' => 'blog_posttypecat_slug',
+						'label' => __('Set custom blog permalink slug for Blog Category. Update permalinks after this in Settings - permalinks', 'rehub_framework'),	
+						'dependency' => array(
+                        	'field' => 'enable_blog_posttype',
+                        	'function' => 'vp_dep_boolean',
+                        ),												
+					),	
+					array(
+						'type' => 'textbox',
+						'name' => 'blog_posttypetag_slug',
+						'label' => __('Set custom blog permalink slug for Blog Tag. Update permalinks after this in Settings - permalinks', 'rehub_framework'),	
+						'dependency' => array(
+                        	'field' => 'enable_blog_posttype',
+                        	'function' => 'vp_dep_boolean',
+                        ),												
+					),													
+					array(
+						'type' => 'select',
+						'name' => 'blog_archive_layout',
+						'label' => __('Select Blog Archive Layout', 'rehub_framework'),
+						'description' => __('Select what kind of post string layout you want to use for blog, archives', 'rehub_framework'),
+						'items' => array(
+							array(
+								'value' => 'big_blog',
+								'label' => __('Big images Blog Layout', 'rehub_framework'),
+							),								
+							array(
+								'value' => 'list_blog',
+								'label' => __('List Layout with left thumbnails', 'rehub_framework'),
+							),	
+							array(
+								'value' => 'grid_blog',
+								'label' => __('Grid layout', 'rehub_framework'),
+							),
+							array(
+								'value' => 'gridfull_blog',
+								'label' => __('Full width Grid layout', 'rehub_framework'),
+							),																							
+						),
+						'default' => array(
+							'list_blog',
+						),
+						'dependency' => array(
+                        	'field' => 'enable_blog_posttype',
+                        	'function' => 'vp_dep_boolean',
+                        ),						
+					),																											
+					array(
+						'type' => 'toggle',
+						'name' => 'enable_adsense_opt',
+						'label' => __('Enable adsense optimized layout for desktop', 'rehub_framework'),
+						'description' => __('Use this only if you have adsense as main money income source', 'rehub_framework'),							
+						'default' => '0',							
+					),															
+				),
+			),						
 		),
 	),
 	array(
@@ -1715,7 +1930,13 @@ return array(
 						'name' => 'rehub_choosedeal_text',
 						'label' => __('Set text for deals list title', 'rehub_framework'),
 						'description' => __('It will be used in list of offers instead CHOOSE YOUR DEAL', 'rehub_framework'),
-					),																	
+					),	
+					array(
+						'type' => 'textbox',
+						'name' => 'buy_best_text',
+						'label' => __('Set text for comparison list layout', 'rehub_framework'),
+						'description' => __('It will be used instead BUY FOR BEST PRICE', 'rehub_framework'),
+					),																					
 					array(
 						'type' => 'textbox',
 						'name' => 'rehub_review_text',
@@ -1802,7 +2023,7 @@ return array(
 						'type' => 'toggle',
 						'name' => 'bp_deactivateemail_confirm',
 						'label' => __('Disable email activation in BP?', 'rehub_framework'),
-						'description' => __('Use this only if you plan to use theme login/register popup instead BP register page', 'rehub_framework'),
+						'description' => __('Use this only if you plan to to use BP Register page and deactivate email activation', 'rehub_framework'),
 						'default' => '0',
 					),																																																											
 				),
@@ -1826,11 +2047,34 @@ return array(
 						'default' => '0',
 					),
 					array(
+						'type' => 'toggle',
+						'name' => 'userpopup_xprofile',
+						'label' => __('Add xprofile fields to register form?', 'rehub_framework'),
+						'description' => __('Set additional fields in User - Profile fields. Works only with enabled Buddypress', 'rehub_framework'),
+						'default' => '0',
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'userpopup_xprofile_hidename',
+						'label' => __('Hide xprofile name field?', 'rehub_framework'),
+						'default' => '0',
+						'dependency' => array(
+                        	'field' => 'userpopup_xprofile',
+                        	'function' => 'vp_dep_boolean',
+                        ),						
+					),										
+					array(
 						'type' => 'textbox',
 						'name' => 'custom_msg_popup',
 						'label' => __('Add custom message', 'rehub_framework'),
 						'description' => __('Add text or shortcode in registration popup', 'rehub_framework'),							
-					),					
+					),	
+					array(
+						'type' => 'textbox',
+						'name' => 'custom_register_link',
+						'label' => __('Add custom register link', 'rehub_framework'),
+						'description' => __('Add custom link if you want to use custom register page instead of sign up in popup', 'rehub_framework'),							
+					),									
 					array(
 						'type' => 'select',
 						'name' => 'rehub_login_icon',
@@ -1989,7 +2233,7 @@ return array(
 			),				
 			array(
 				'type' => 'section',
-				'title' => __('Options for dynamic comparison functions', 'rehub_framework'),
+				'title' => __('Options for single group dynamic comparison', 'rehub_framework'),
 				'fields' => array(
 					array(
 						'type' => 'select',
@@ -2004,47 +2248,35 @@ return array(
 								),
 							),
 						),													
-					),
+					),																				
+				),
+			),
+			array(
+				'type' => 'section',
+				'title' => __('Options for multigroup dynamic comparison', 'rehub_framework'),
+				'fields' => array(
 					array(
-						'type' => 'select',
-						'name' => 'compare_btn_color',
-						'label' => __('Choose color of button in compare panel', 'rehub_framework'),
-						'items' => array(
-							array(
-							'value' => 'green',
-							'label' => __('Green', 'rehub_framework'),
-							),
-							array(
-							'value' => 'red',
-							'label' => __('Red', 'rehub_framework'),
-							),
-							array(
-							'value' => 'orange',
-							'label' => __('Orange', 'rehub_framework'),
-							),
-							array(
-							'value' => 'blue',
-							'label' => __('Blue', 'rehub_framework'),
-							),
-							array(
-							'value' => 'rosy',
-							'label' => __('Rosy', 'rehub_framework'),
-							),
-							array(
-							'value' => 'purple',
-							'label' => __('Purple', 'rehub_framework'),
-							),
-							array(
-							'value' => 'gold',
-							'label' => __('Gold', 'rehub_framework'),
-							),
-							array(
-							'value' => 'brown',
-							'label' => __('Brown', 'rehub_framework'),
-							),																																																								
-						),
-						'default' => 'green',
-					),						
+						'type' => 'toggle',
+						'name' => 'compare_multicats_toggle',
+						'label' => __('Enable Multicategory compare', 'rehub_framework'),
+						'description' => __('Before set, please, create pages for each comparison group', 'rehub_framework'),
+					),	
+					array(
+						'type' => 'textarea',
+						'name' => 'compare_multicats_textarea',
+						'label' => __('Assign categories to pages', 'rehub_framework'),
+						'description' => __('Example: 1,2,3;Title;23, where 1,2,3 - category IDs, Title - a general name for category group, 23 - a page ID of comparison. You can add also custom taxonomy in the end. By default, categories will be used. Delimiter is ";"', 'rehub_framework'),
+						'dependency' => array(
+                        	'field' => 'compare_multicats_toggle',
+                        	'function' => 'vp_dep_boolean',
+                        ),							
+					),																					
+				),
+			),	
+			array(
+				'type' => 'section',
+				'title' => __('Common', 'rehub_framework'),
+				'fields' => array(						
 					array(
 						'type' => 'toggle',
 						'name' => 'compare_btn_single',
@@ -2060,9 +2292,15 @@ return array(
                         	'field' => 'compare_btn_single',
                         	'function' => 'vp_dep_boolean',
                         ),
+					),					
+					array(
+						'type' => 'toggle',
+						'name' => 'compare_disable_button',
+						'label' => __('Disable button in right side', 'rehub_framework'),
+						'description' => __('You can disable button with compare icon on right side of site. You can place this icon in header. Use Shop/Comparison header in theme option - header and menu - Header layout', 'rehub_framework'),
 					),																					
 				),
-			),
+			),					
 		),
 	),
 	array(
@@ -2129,9 +2367,22 @@ return array(
 					array(
 						'type' => 'toggle',
 						'name' => 'woo_single_sidebar',
-						'label' => __('Enable sidebar on single product page?', 'rehub_framework'),
+						'label' => __('Enable sidebar on single product pages?', 'rehub_framework'),
 						'default' => '0',
-					),						
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'woo_archive_sidebar',
+						'label' => __('Disable sidebar on archive product pages?', 'rehub_framework'),
+						'default' => '0',
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'woo_rhcompare',
+						'label' => __('Enable dynamic comparison?', 'rehub_framework'),
+						'description' => __('You need also to enable and configure options in Theme option - Dynamic comparison and use [wpsm_woocharts] on page for comparison', 'rehub_framework'),
+						'default' => '0',
+					),														
 					array(
 						'type' => 'toggle',
 						'name' => 'woo_btn_disable',
@@ -2151,6 +2402,12 @@ return array(
 						'label' => __('Show thumbs counter?', 'rehub_framework'),
 						'default' => '0',
 					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'woo_enable_share',
+						'label' => __('Enable share buttons on product page?', 'rehub_framework'),
+						'default' => '0',
+					),					
 					array(
 						'type' => 'select',
 						'name' => 'woo_cart_place',
@@ -2176,7 +2433,32 @@ return array(
 						'name' => 'rehub_woo_print',
 						'label' => __('Enable print coupon function?', 'rehub_framework'),
 						'default' => '0',
-					),																																	
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'wooregister_xprofile',
+						'label' => __('Add xprofile fields to register form?', 'rehub_framework'),
+						'description' => __('Set additional fields in User - Profile fields. Works only with enabled Buddypress', 'rehub_framework'),
+						'default' => '0',
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'wooregister_xprofile_hidename',
+						'label' => __('Hide xprofile name field?', 'rehub_framework'),
+						'default' => '0',
+						'dependency' => array(
+                        	'field' => 'wooregister_xprofile',
+                        	'function' => 'vp_dep_boolean',
+                        ),						
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'post_sync_with_user_location',
+						'label' => __('Synchronize product and user location?', 'rehub_framework'),
+						'description' => __('This works for Geo My wordpress plugin. If user has location and adds a product, product will have also his location automatically', 'rehub_framework'),
+						'default' => '0',
+					),						
+
 				),
 			),
 			array(
@@ -2213,7 +2495,13 @@ return array(
 						'name' => 'rehub_wcv_related',
 						'label' => __('Enable related products by vendor?', 'rehub_framework'),
 						'default' => '0',
-					),																											
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'rehub_wcv_dash_redirect',
+						'label' => __('Redirect users after registration form to vendor dashboard?', 'rehub_framework'),
+						'default' => '0',
+					),																															
 				),
 			),			
 			array(

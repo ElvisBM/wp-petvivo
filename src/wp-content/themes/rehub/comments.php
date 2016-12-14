@@ -22,12 +22,26 @@
     <div id="tab-1">
         <ol class="commentlist">
             <?php
-                $comments_v = get_comments(array(
+
+                $commenter = wp_get_current_commenter();
+                $comment_author_email = $commenter['comment_author_email'];
+                $user_ID = get_current_user_id();
+
+                $comment_args = array(
                   'post_id' => get_the_ID(),
-                  'status'  => 'approve',
                   'orderby' => 'comment_date',
                   'order'   => 'DESC',
-                ));
+                  'update_comment_meta_cache' => false,
+                  'status'  => 'approve',                    
+                );
+
+                if ( $user_ID ) {
+                    $comment_args['include_unapproved'] = array( $user_ID );
+                } elseif ( ! empty( $comment_author_email ) ) {
+                    $comment_args['include_unapproved'] = array( $comment_author_email );
+                }                
+
+                $comments_v = get_comments($comment_args);                
 
                 wp_list_comments(array(
                   'avatar_size'   => 50,

@@ -6,7 +6,7 @@
 
 <?php wp_enqueue_style('eggrehub'); ?>
 
-<div class="tabs-item egg_widget_grid"> 
+<div class="tabs-item egg_widget_grid rh_deal_block"> 
     <?php $i=0; foreach ($items as $key => $item): ?>
         <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
         <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';} ?>
@@ -27,15 +27,17 @@
                     </a>                    
                 </h5>
                 <div class="post-meta">
-                    <div class="wooprice_count">
-                        <span><?php echo $item['currency']; ?></span> <?php echo $offer_price ?>
-                        <?php if(!empty($offer_price_old)) : ?>
-                        <strike>
-                            <span class="amount"><?php echo $offer_price_old ?></span>
-                        </strike>
-                        <?php endif ;?>                                
-                    </div>
-                    <div class="wooaff_tag">
+                    <?php if(!empty($offer_price)) : ?>
+                        <div class="rh-deal-price">
+                            <ins><span><?php echo $item['currency']; ?></span><?php echo $offer_price ?></ins>
+                            <?php if(!empty($offer_price_old)) : ?>
+                            <del>
+                                <?php echo $offer_price_old ?>
+                            </del>
+                            <?php endif ;?>                                
+                        </div>
+                    <?php endif ;?>                  
+                    <div class="rh-deal-tag">
                         <?php echo rehub_get_site_favicon($item['orig_url']); ?>                             
                     </div>                    
                 </div>

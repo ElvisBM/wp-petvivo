@@ -1,7 +1,7 @@
 <?php
 return array(
 	'id'          => 'rehub_post',
-	'types'       => array('post'),
+	'types'       => array('post', 'blog'),
 	'title'       => __('Post Type', 'rehub_framework'),
 	'priority'    => 'high',
 	'mode'        => WPALCHEMY_MODE_EXTRACT,
@@ -213,7 +213,7 @@ return array(
 					'items' => array(
 						array(
 						'value' => 'review_post_review_simple',
-						'label' => __('Simple Review', 'rehub_framework'),
+						'label' => __('No connections', 'rehub_framework'),
 						),
 						array(
 						'value' => 'review_woo_product',
@@ -233,7 +233,7 @@ return array(
 					'type' => 'notebox',
 					'name' => 'offer_add',
 					'label' => __('Important', 'rehub_framework'),
-					'description' => __('You can also connect post with offer if you add offer in Post offer section below. Post offer section can be connected to any post format. Check <a href="http://rehub.wpsoul.com/documentation/docs.html#affoveral" target="_blank">help for affiliate functions of theme</a>', 'rehub_framework'),
+					'description' => __('You can connect review with woocommerce product in select above. If you want to add offer directly to post, use Post offer section below. Check <a href="http://rehub.wpsoul.com/documentation/docs.html#affoveral" target="_blank">help for affiliate functions of theme</a>', 'rehub_framework'),
 					'status' => 'info',
 				),				 
 
@@ -257,8 +257,13 @@ return array(
 					),
 					'fields'    => array(
 						
-						rehub_woo_select_one(),
-
+						array(
+							'type' => 'textbox',
+							'name' => 'review_woo_link',
+							'label' => __('Set woocommerce product', 'rehub_framework'),
+							'description' => __('Type name of woocommerce product', 'rehub_framework'),
+							'default' => '',
+						),
 						array(
 							'type' => 'toggle',
 							'name' => 'review_woo_slider',
@@ -298,9 +303,12 @@ return array(
 						'function' => 'review_post_schema_type_is_woo_list',
 					),
 					'fields'    => array(
-						
-						rehub_woo_select_two(),					
-
+						array(
+							'type' => 'textbox',
+							'name' => 'review_woo_list_links',
+							'label' => __('Set woocommerce products', 'rehub_framework'),
+							'description' => __('Type woocommerce names', 'rehub_framework'),		
+						),					
 						array(
 							'type' => 'toggle',
 							'name' => 'review_woo_list_shortcode',

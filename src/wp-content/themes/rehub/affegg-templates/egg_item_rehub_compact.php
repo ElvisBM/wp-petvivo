@@ -37,10 +37,10 @@
                         <?php if(!empty($offer_price)) : ?>
                             <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                 <span class="price_count">
-                                    <ins><span><?php echo $item['currency']; ?></span> <?php echo $offer_price ?></ins>
+                                    <ins><?php echo $item['price_formatted'] ?></ins>
                                     <?php if(!empty($offer_price_old)) : ?>
                                     <del>
-                                        <span class="amount"><?php echo $offer_price_old ?></span>
+                                        <span class="amount"><?php echo $item['old_price_formatted'] ?></span>
                                     </del>
                                     <?php endif ;?>                                      
                                 </span> 

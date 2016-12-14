@@ -29,21 +29,24 @@ use ContentEgg\application\helpers\TemplateHelper;
 ?>
 <?php $deal_list_title = (rehub_option('rehub_choosedeal_text') !='') ? esc_html(rehub_option('rehub_choosedeal_text')) : __('Choose your deal', 'rehub_framework'); ?>
 <div class="rehub_feat_block"><a name="aff-link-list"></a>
-    <div class="title_deal_wrap">
-        <div class="title_deal">
-            <?php echo $deal_list_title ;?>
-        </div>
-    </div>
-<div class="egg_sort_list re_sort_list simple_sort_list mb20">
+<div class="egg_sort_list re_sort_list simple_sort_list notitle_sort_list">
     <div class="aff_offer_links">
         <?php  foreach ($all_items as $key => $item): ?>
-
             <?php $afflink = $item['url'] ;?>
             <?php $aff_thumb = $item['img'] ;?>
             <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
             <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
             <?php $manufacturer = (!empty($item['manufacturer'])) ? $item['manufacturer'] : ''; ?>
-            <?php if (!empty($item['extra']['logo'])) :?>
+            <?php if (!empty($item['domain'])):?>
+                <?php $domain = $item['domain'];?>
+            <?php elseif (!empty($item['extra']['domain'])):?>
+                <?php $domain = $item['extra']['domain'];?>
+            <?php else:?>
+                <?php $domain = '';?>        
+            <?php endif;?>              
+            <?php if (!empty($item['logo'])) :?>
+                <?php $logo = $item['logo']; ?>            
+            <?php elseif (!empty($item['extra']['logo'])) :?>
                 <?php $logo = $item['extra']['logo']; ?>
             <?php elseif (!empty($item['extra']['MerchantLogoURL'])) :?>
                 <?php $logo = $item['extra']['MerchantLogoURL']; ?>  
@@ -54,7 +57,13 @@ use ContentEgg\application\helpers\TemplateHelper;
             <?php elseif(isset($item['module_id']) && $item['module_id'] =='Aliexpress') :?>
                 <?php $logo = get_template_directory_uri().'/images/logos/aliexpress.jpg' ;?> 
             <?php elseif(isset($item['module_id']) && $item['module_id'] =='Ebay') :?>
-                <?php $logo = get_template_directory_uri().'/images/logos/ebay.jpg' ;?>                               
+                <?php $logo = get_template_directory_uri().'/images/logos/ebay.jpg' ;?>
+            <?php elseif(isset($item['module_id']) && $item['module_id'] =='Flipkart') :?>
+                <?php $logo = get_template_directory_uri().'/images/logos/flipkart.png' ;?> 
+            <?php elseif(isset($item['module_id']) && $item['module_id'] =='PayTM') :?>
+                <?php $logo = get_template_directory_uri().'/images/logos/paytm.jpg' ;?>            
+            <?php elseif(isset($item['module_id']) && !empty($domain)) :?>
+                <?php $logo = rh_ae_logo_get('http://'.$domain); ?>                                                 
             <?php else :?>
                 <?php $logo = ''; ?>
             <?php endif;?>

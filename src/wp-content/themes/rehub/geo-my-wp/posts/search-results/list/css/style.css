@@ -89,7 +89,7 @@ ul.gmw-pagination li span {
 .rh-gmw-post-list .post-meta span{margin: 0 5px 0 0}
 .rh-gmw-post-list .simplefavorite-button{background-color: #FEF3F3; color: #cc0000; font-size: 13px;padding: 1px 7px;border-radius: 3px; margin: 0 6px 0 0}
 .rh-gmw-post-list .simplefavorite-button i{font-size: 12px}
-.rh-gmw-post-list .wpsm-button-compare{margin: 6px 0 0 0; background: none transparent !important; border: none !important; box-shadow: none !important; display: block !important;}
+.rh-gmw-post-list .wpsm-button-new-compare{margin: 6px 0 0 0; background: none transparent !important; border: none !important; box-shadow: none !important; display: block !important;}
 .rh-gmw-post-list .wppl-address{font-size: 85%; line-height: 20px}
 .rh-gmw-list-additional > div{margin: 0 0 10px 0}
 .rh-gmw-list-additional .radius-dis{margin: 0 0 5px 0; display: inline-block;}

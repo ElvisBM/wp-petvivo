@@ -37,7 +37,7 @@ $mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_user
 			<?php if ( bp_is_active( 'activity' ) && bp_activity_do_mentions() ) : ?>
 				<h2 class="user-nicename">
 				<?php bp_displayed_user_mentionname(); ?>
-				<?php if (!empty($mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo mycred_get_users_rank_id($author_ID); ?>"><?php echo $mycredrank ;?></span><?php endif;?>
+				<?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?>
 				</h2>
 			<?php endif; ?>	
         	<?php if ( function_exists( 'rh_mycred_display_users_badges' ) ) : ?>

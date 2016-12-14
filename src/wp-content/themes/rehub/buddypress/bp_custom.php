@@ -155,12 +155,15 @@ function deals_screen_link() {
 		<div id="posts-list" class="bp-post-wrapper posts">
 
 			<?php 
-				$containerid = 'rh_deallistwoo_' . uniqid();  
+				$containerid = 'rh_woocolumn_' . uniqid();  
 				$infinitescrollwrap = ' re_aj_pag_clk_wrap';    
-				$show = $ajaxoffset = 12;	
+				$show = $ajaxoffset = 8;	
+				$columns = '4_col';
+				$additional_vars = array();
+				$additional_vars['columns'] = $columns;
 				$args = array(
 					'post_type' => 'product',
-					'posts_per_page' => 12,
+					'posts_per_page' => 8,
 					'author' => bp_displayed_user_id(),
 					);
 			    $loop = new WP_Query($args);
@@ -168,15 +171,18 @@ function deals_screen_link() {
 			<?php if ( $loop->have_posts() ) : ?>
 				<?php 
 					$jsonargs = json_encode($args);
-				?> 	
-				<div class="wpsm_recent_posts_list <?php  echo $infinitescrollwrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="simplepostlist" id="<?php echo $containerid;?>">
+					$json_innerargs = json_encode($additional_vars);
+				?> 
+				<div class="woocommerce">
+				<div class="rh-flex-eq-height column_woo products col_wrap_fourth <?php  echo $infinitescrollwrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="woocolumnpart" data-innerargs='<?php echo $json_innerargs;?>' id="<?php echo $containerid;?>">
 
 					<?php while ( $loop->have_posts() ) : $loop->the_post(); global $product; ?>
-						<?php include(locate_template('inc/parts/simplepostlist.php')); ?>
+						<?php include(locate_template('inc/parts/woocolumnpart.php')); ?>
 					<?php endwhile; ?>
 
 					<div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
 
+				</div>
 				</div>
 				<div class="clearfix"></div>
 			<?php endif; wp_reset_query(); ?>
@@ -232,7 +238,7 @@ if( ! function_exists( 'rh_nologedin_add_buttons' ) ) :
 		if( ! is_user_logged_in() && rehub_option('userlogin_enable') == '1') {
 		?>
 			<div class="generic-button">
-				<a href="#" title="Add Friend" rel="add" class="act-rehub-login-popup friendship-button"><?php echo __( 'Add Friend', 'budypress' ); ?></a>
+				<a href="#" title="Add Friend" rel="add" class="act-rehub-login-popup friendship-button"><?php _e( 'Add Friend', 'budypress' ); ?></a>
 			</div>
 			<div class="generic-button">
 				<a href="#" title="Send a private message to this user." class="act-rehub-login-popup send-message"><?php echo __( 'Private Message', 'buddypress' ); ?></a>
@@ -294,3 +300,18 @@ function rh_customize_product_tracking_args() {
     ) );
 }
 add_action( 'bp_init', 'rh_customize_product_tracking_args' );
+
+add_filter('bp_get_messages_content_value', 'rh_custom_message_placeholder_in_bp_message' );
+function rh_custom_message_placeholder_in_bp_message(){
+	if(!empty($_GET['ref'])){
+		$content = __('I am interesting in: ', 'rehub_framework').urldecode($_GET['ref']);
+		$content = esc_html($content);
+	}
+	elseif(!empty( $_POST['content'] )){
+		$content = $_POST['content'];
+	}
+	else{
+		$content = '';
+	}
+	return $content;	
+}

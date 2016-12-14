@@ -64,7 +64,7 @@ elseif ($product_keyword_update) {
                     <?php endif ;?>                        
                 </div>
                 <div class="desc_col shop_simple_col">
-                    <div class="aff_tag mt10"><?php echo rehub_get_site_favicon($item['url']); ?></div> 
+                    <div class="aff_tag mt10"><?php echo rehub_get_site_favicon('http://amazon.com'); ?></div> 
                     <small class="small_size available_stock"><?php if ($item['availability']): ?><span class="yes_available"><?php _e('In stock', 'rehub_framework') ;?></span><?php endif; ?></small>
                 </div>
                 <div class="buttons_col">

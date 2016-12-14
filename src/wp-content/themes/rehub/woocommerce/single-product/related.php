@@ -25,7 +25,13 @@ global $product, $woocommerce_loop;
 if (rehub_option('rehub_wcv_related') == '1'){
 	$artist = get_the_author_meta('ID');
 	$classes = array();
-	$classes[] = 'rh-flex-eq-height column_woo';
+	if (rehub_option('woo_design') == 'grid') {
+		$classes[] = 'grid_woo';
+	}
+	else{
+		$classes[] = 'column_woo';		
+	}
+	$classes[] = 'rh-flex-eq-height';
 	if(rehub_option('woo_single_sidebar') =='1') {
 		$posts_per_page = 3;
 		$classes[] = 'col_wrap_three';
@@ -44,10 +50,15 @@ if (rehub_option('rehub_wcv_related') == '1'){
 	) );
 	$products = new WP_Query( $args );
 	if ( $products->have_posts() ) : 
-		echo '<h3>'.__( 'Related Products', 'woocommerce' ).'</h3>';
+		echo '<div class="clearfix"></div><h3>'.__( 'Related Products', 'woocommerce' ).'</h3>';
 		echo '<div class="products '.implode(' ',$classes).'">';
 		while ( $products->have_posts() ) : $products->the_post();
-			include(locate_template('inc/parts/woocolumnpart.php'));
+			if (rehub_option('woo_design') == 'grid') {
+				include(locate_template('inc/parts/woogridpart.php'));
+			}
+			else{
+				include(locate_template('inc/parts/woocolumnpart.php'));		
+			}		
 		endwhile; 
 		echo '<div>';
 	endif;
@@ -59,9 +70,19 @@ else {
 	$related = implode(',',$related);
 	echo '<h3>'.__( 'Related Products', 'woocommerce' ).'</h3>';
 	if(rehub_option('woo_single_sidebar') =='1') {
-		echo do_shortcode('[wpsm_woocolumns ids="'.$related.'" columns="3_col" data_source="ids" show="3" show_coupons_only="2"]');	
+		if (rehub_option('woo_design') == 'grid') {
+			echo do_shortcode('[wpsm_woogrid ids="'.$related.'" columns="3_col" data_source="ids" show="3" show_coupons_only="2"]');	
+		}
+		else{
+			echo do_shortcode('[wpsm_woocolumns ids="'.$related.'" columns="3_col" data_source="ids" show="3" show_coupons_only="2"]');			
+		}		
 	}
 	else{
-		echo do_shortcode('[wpsm_woocolumns ids="'.$related.'" columns="5_col" data_source="ids" show="5" show_coupons_only="2"]');	
+		if (rehub_option('woo_design') == 'grid') {
+			echo do_shortcode('[wpsm_woogrid ids="'.$related.'" columns="5_col" data_source="ids" show="5" show_coupons_only="2"]');		
+		}
+		else{
+			echo do_shortcode('[wpsm_woocolumns ids="'.$related.'" columns="5_col" data_source="ids" show="5" show_coupons_only="2"]');		
+		}			
 	}
 }

@@ -33,11 +33,10 @@ if ( ! function_exists( 'rh_mycred_display_users_badges' ) ) :
         do_action( 'mycred_before_users_badges', $user_id, $users_badges );
         echo '<div class="rh_mycred-users-badges">';
             foreach ( $users_badges as $badge_id => $level ) {
-                $level_image = get_post_meta( $badge_id, 'level_image' . $level, true );
-                if ( $level_image == '' )
-                    $level_image = get_post_meta( $badge_id, 'main_image', true );
-                $badge = '<img src="' . $level_image . '" class="mycred-badge earned badge-id-' . $badge_id . ' level-' . $level . '" alt="' . get_the_title( $badge_id ) . '" title="' . get_the_title( $badge_id ) . '" />';
-                echo apply_filters( 'mycred_the_badge', $badge, $badge_id, $level, $user_id );
+                $badge = mycred_get_badge( $badge_id, $level );
+                if ( $badge->level_image !== false ) {
+                    echo apply_filters( 'mycred_the_badge', $badge->level_image, $badge_id, $badge, $user_id );
+                }
             }
         echo '</div>';
         do_action( 'mycred_after_users_badges', $user_id, $users_badges );
@@ -61,8 +60,10 @@ if(!function_exists('rh_author_detail_box')){
                     <?php endif; ?>                
                     <h4>
                         <?php the_author_posts_link(); ?>
-                        <?php if (!empty($mycredrank)) :?>
-                            <span class="rh-user-rank-mc rh-user-rank-<?php echo mycred_get_users_rank_id($author_ID); ?>"><?php echo $mycredrank ;?></span>
+                        <?php if (!empty($mycredrank) && is_object( $mycredrank)) :?>
+                            <span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>">
+                                <?php echo $mycredrank->title ;?>
+                            </span>
                         <?php endif;?>                        
                     </h4>
                     <div class="social_icon small_i">
@@ -495,3 +496,33 @@ function rh_gmw_fl_delete_location() {
     die( __( 'Location successfully deleted!', 'GMW' ) );
 }
 add_action('wp_ajax_rh_gmw_fl_delete_location', 'rh_gmw_fl_delete_location');
+
+
+/**
+ * GMW Function - Update post, product location base on user location
+ */
+function rh_gmw_friends_pass_map_data( $post_id, $post ) {
+    if ( !function_exists( 'gmw_get_member_info_from_db' ) ) 
+        return;
+    if ( !defined( 'GMW_PT_PATH' ) ) 
+        return;
+    
+    $user_id = $post->post_author;
+    $member_info = gmw_get_member_info_from_db( $user_id );
+
+    if(!empty($member_info)){
+        include_once( GMW_PT_PATH .'/includes/gmw-pt-update-location.php' );
+        if ( function_exists( 'gmw_pt_update_location' ) ) {
+            $args = array(
+                'post_id'         => $post_id,
+                'address'         => $member_info->address,
+                'map_icon'        => $member_info->map_icon,
+            );
+            gmw_pt_update_location( $args );
+        }        
+    }
+}
+if(rehub_option('post_sync_with_user_location') == 1){
+    add_action( 'publish_post', 'rh_gmw_friends_pass_map_data', 10, 2 );
+    add_action( 'publish_product', 'rh_gmw_friends_pass_map_data', 10, 2 );    
+}

@@ -22,13 +22,7 @@ elseif ($product_keyword_update) {
 }
 ?>
 
-<div class="rehub_feat_block egg_sort_list"><a name="aff-link-list"></a>
-    <div class="title_deal_wrap">
-        <div class="title_deal">
-            <?php $deal_list_title = (rehub_option('rehub_choosedeal_text') !='') ? esc_html(rehub_option('rehub_choosedeal_text')) : __('Choose your deal', 'rehub_framework'); ?>
-            <?php echo $deal_list_title ;?>
-        </div>
-    </div>
+<div class="rehub_feat_block egg_sort_list notitle_sort_list"><a name="aff-link-list"></a>
     <div class="aff_offer_links">
         <?php $i=0; foreach ($items as $key => $item): ?>
             <?php $offer_price = (!empty($item['price'])) ? TemplateHelper::price_format_i18n($item['price']) : ''; ?>
@@ -41,7 +35,13 @@ elseif ($product_keyword_update) {
             <?php $afflink = (!empty($item['url'])) ? $item['url'] : '' ;?>
             <?php $aff_thumb = (!empty($item['img'])) ? $item['img'] : '' ;?>
             <?php $offer_title = (!empty($item['title'])) ? wp_trim_words( $item['title'], 12, '...' ) : ''; ?>
-            <?php $logo = (!empty($item['extra']['logo'])) ? $item['extra']['logo'] : ''; ?>   
+            <?php if (!empty($item['logo'])) :?>
+                <?php $logo = $item['logo']; ?>             
+            <?php elseif (!empty($item['extra']['logo'])) :?>
+                <?php $logo = $item['extra']['logo']; ?>
+            <?php else:?>
+                <?php $logo = ''; ?>                
+            <?php endif;?>  
             <?php if(rehub_option('rehub_btn_text') !='') :?><?php $btn_txt = rehub_option('rehub_btn_text') ; ?><?php else :?><?php $btn_txt = __('Buy this item', 'rehub_framework') ;?><?php endif ;?>
             <?php $i++;?>  
  

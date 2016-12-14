@@ -86,7 +86,7 @@
                                 $first_col_value = '<div';  
                                 if (isset ($row['sticky_header']) && $row['sticky_header'] == 1) {$first_col_value .= ' class="sticky-cell"';} 
                                 $first_col_value .= '>'.esc_html($row["column_name"]).'';
-                                if (isset ($row['enable_diff']) && $row['enable_diff'] == 1) {$first_col_value .= '<label class="diff-label"><input class="re-compare-show-diff" name="re-compare-show-diff" type="checkbox" />'.__('Show only differences', 'rehub_framework').'</label>';}                                                              
+                                if (isset ($row['enable_diff']) && $row['enable_diff'] == 1) {$first_col_value .= '<br /><label class="diff-label"><input class="re-compare-show-diff" name="re-compare-show-diff" type="checkbox" />'.__('Show only differences', 'rehub_framework').'</label>';}                                                              
                                 $first_col_value .= '</div>';                
                                 echo '<li class="row_chart_'.$nameid.' '.$element_type.'_row_chart">'.$first_col_value.'</li>';
                                 $nameid++;
@@ -109,6 +109,8 @@
                                         include(locate_template('inc/top/metarow.php'));
                                     } else if ($element == 'image') {
                                         include(locate_template('inc/top/imagerow.php'));
+                                    } else if ($element == 'imagefull') {
+                                        include(locate_template('inc/top/imagefullrow.php'));                         
                                     } else if ($element == 'title') {
                                         include(locate_template('inc/top/titlerow.php'));   
                                     } else if ($element == 'taxonomy_value') {

@@ -29,7 +29,9 @@
 		<?php do_action( 'gmw_search_form_start', $gmw ); ?>
 		
 		<?php do_action( 'gmw_search_form_before_address', $gmw ); ?>
-				
+	
+		<?php gmw_fl_xprofile_fields( $gmw, $class='' ); ?>
+
 		<div class="address-locator-wrapper">
 			<!-- Address Field -->
 			<?php gmw_search_form_address_field( $gmw, $id='', $class='' ); ?>
@@ -53,8 +55,6 @@
 		
 		<!--distance units-->
 		<?php gmw_search_form_units( $gmw, $class='' ); ?>	
-				
-		<?php gmw_fl_xprofile_fields( $gmw, $class='' ); ?>
 		
 		<?php gmw_form_submit_fields( $gmw, false ); ?>
 		

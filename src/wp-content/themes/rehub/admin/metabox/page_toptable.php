@@ -225,7 +225,7 @@ return array(
 			        'type' => 'notebox',
 			        'name' => 'nb_1',
 			        'label' => __('Possible shortcodes functions', 'rehub_framework'),
-			        'description' => __('[rehub_title] generates title of post. <br />[rehub_title link="post"] generates title with link on post. <br />[rehub_title link="affiliate"] generates title with link on affiliate product. <br /> [rehub_exerpt length="120"] generates exerpt with 120 symbols. <br />[rehub_exerpt lenght="120" reviewtext="1"] will grab description from your review. <br />[wpsm_compare_button] will show add to compare button(you must setup also comparison charts in theme option - dynamic comparison). <br />Also, you can wrap shortcode with html tags. Example, &lt;h2&gt;[rehub_title]&lt;/h2&gt;&lt;p&gt;[rehub_exerpt length="120"]&lt;/p&gt;', 'rehub_framework'),
+			        'description' => __('[rehub_title] generates title of post. <br />[rehub_title link="post"] generates title with link on post. <br />[rehub_title link="affiliate"] generates title with link on affiliate product. <br /> [rehub_exerpt length="120"] generates exerpt with 120 symbols. <br />[rehub_exerpt reviewtext="1"] will grab description from your review. <br />[rehub_exerpt reviewheading="1"] will grab heading from your review. <br />[rehub_exerpt reviewpros="1"] will grab PROS field from your review. <br />[rehub_exerpt reviewcons="1"] will grab CONS field from your review. <br />[wpsm_compare_button] will show add to compare button(you must setup also comparison charts in theme option - dynamic comparison). <br />Also, you can wrap shortcode with html tags. Example, &lt;h2&gt;[rehub_title]&lt;/h2&gt;&lt;p&gt;[rehub_exerpt length="120"]&lt;/p&gt;', 'rehub_framework'),
 			        'status' => 'normal',
 			    ),
 				array(
@@ -485,6 +485,12 @@ return array(
 			'label' => __('Insert content after block', 'rehub_framework'),
 			'description' => __('Add content which you want to display after module or leave blank', 'rehub_framework'),				
 		),
+		array(
+			'type' => 'toggle',
+			'name' => 'top_review_filter_disable',
+			'label' => __('Disable table filters?', 'rehub_framework'),
+			'default' => '0',
+		),		
 		array(
 			'type' => 'toggle',
 			'name' => 'top_review_width',

@@ -44,6 +44,10 @@ return array(
 							'label' => __('Thumbnail with title', 'rehub_framework'),
 						),
 						array(
+							'value' => 'imagefull',
+							'label' => __('Thumbnail with title, review score, button and price', 'rehub_framework'),
+						),						
+						array(
 							'value' => 'title',
 							'label' => __('Title', 'rehub_framework'),
 						),																		

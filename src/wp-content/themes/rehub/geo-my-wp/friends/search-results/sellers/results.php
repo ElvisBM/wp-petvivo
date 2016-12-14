@@ -65,7 +65,7 @@
                 <div class="vendor_user_meta">
                     <h5>
                         <a href="<?php bp_member_permalink(); ?>" class="wcvendors_cart_sold_by_meta">
-                            <?php bp_member_name(); ?>
+                            <?php the_author_meta( 'display_name',$vendor_id); ?>
                         </a>
                     </h5>
                     <div class="seller-adress-gmw">

@@ -22,80 +22,102 @@ function rehub_login_register_modal() {
 						
 		<?php if(get_option('users_can_register')){ ?>
 			<div id="rehub-login-popup-block">
-				<!-- Register form -->
-				<div id="rehub-register-popup">
-				<div class="rehub-register-popup">	 
-					<div class="re_title_inmodal"><?php _e('Register New Account', 'rehub_framework'); ?></div>
-					<?php if (rehub_option('custom_msg_popup') !='') {
-						echo '<div class="mb15 mt15 rh_custom_msg_popup">';
-						echo do_shortcode(rehub_option('custom_msg_popup'));
-						echo '</div>';
-						} ?>
-					<form id="rehub_registration_form_modal" action="<?php echo home_url( '/' ); ?>" method="POST">
-						<?php do_action( 'wordpress_social_login' ); ?>
-						<div class="re-form-group mb20">
-							<label><?php _e('Username', 'rehub_framework'); ?></label>
-							<input class="re-form-input required" name="rehub_user_login" type="text"/>
-						</div>
-						<div class="re-form-group mb20">
-							<label for="rehub_user_email"><?php _e('Email', 'rehub_framework'); ?></label>
-							<input class="re-form-input required" name="rehub_user_email" id="rehub_user_email" type="email"/>
-						</div>
-						<div class="re-form-group mb20">
-							<label for="rehub_user_signonpassword"><?php _e('Password', 'rehub_framework'); ?><span class="alignright font90"><?php _e('Minimum 6 symbols', 'rehub_framework');  ?></span></label>
-							<input class="re-form-input required" name="rehub_user_signonpassword" id="rehub_user_signonpassword" type="password"/>
-						</div>
-						<div class="re-form-group mb20">
-							<label for="rehub_user_confirmpassword"><?php _e('Confirm password', 'rehub_framework'); ?></label>
-							<input class="re-form-input required" name="rehub_user_confirmpassword" id="rehub_user_confirmpassword" type="password"/>
-						</div>						
-						<?php
-
-						if($captcha_enabled =='1'){ ?>
+				<?php if (rehub_option('custom_register_link') ==''):?>
+					<!-- Register form -->
+					<div id="rehub-register-popup">
+					<div class="rehub-register-popup">	 
+						<div class="re_title_inmodal"><?php _e('Register New Account', 'rehub_framework'); ?></div>
+						<?php if (rehub_option('custom_msg_popup') !='') {
+							echo '<div class="mb15 mt15 rh_custom_msg_popup">';
+							echo do_shortcode(rehub_option('custom_msg_popup'));
+							echo '</div>';
+							} ?>
+						<form id="rehub_registration_form_modal" action="<?php echo home_url( '/' ); ?>" method="POST">
+							<?php do_action( 'wordpress_social_login' ); ?>
 							<div class="re-form-group mb20">
-							    <script type="text/javascript">
-							      var onloadCaptchamodail = function() {
-							        grecaptcha.render('recaptchamodail', {
-							          'sitekey' : '<?php echo rehub_option("userlogin_gapi_sitekey") ?>'
-							        });
-							      };
-							    </script>
-								<div class="recaptchamodail"></div>
-							    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCaptchamodail&render=explicit" async defer></script>
-							</div><?php
-						}
-
-						if($show_terms_conditions){ ?>
-							<div class="re-form-group mb20">
-								<div class="checkbox">
-									<label><input name="rehub_terms" type="checkbox"> <?php echo sprintf( __( 'I accept the <a target="_blank" href="%s">Terms & Conditions</a>', 'rehub_framework' ), esc_url(get_the_permalink(rehub_option('userlogin_term_page'))) ) ?></label>
-								</div>
-							</div><?php
-						}
-
-						if (defined('wcv_plugin_dir')) { ?>
-							<?php do_action( 'wcvendors_apply_for_vendor_before' ); ?>
-							<div class="re-form-group mb20">
-								<div class="checkbox">
-									<label><input name="wcv_apply_as_vendor" type="checkbox"> <?php _e('Apply as vendor?', 'rehub_framework'); ?></label>
-								</div>
+								<label><?php _e('Username', 'rehub_framework'); ?></label>
+								<input class="re-form-input required" name="rehub_user_login" type="text"/>
 							</div>
-							<?php do_action( 'wcvendors_apply_for_vendor_after' ); ?>
+							<div class="re-form-group mb20">
+								<label for="rehub_user_email"><?php _e('Email', 'rehub_framework'); ?></label>
+								<input class="re-form-input required" name="rehub_user_email" id="rehub_user_email" type="email"/>
+							</div>
+							<div class="re-form-group mb20">
+								<label for="rehub_user_signonpassword"><?php _e('Password', 'rehub_framework'); ?><span class="alignright font90"><?php _e('Minimum 6 symbols', 'rehub_framework');  ?></span></label>
+								<input class="re-form-input required" name="rehub_user_signonpassword" id="rehub_user_signonpassword" type="password"/>
+							</div>
+							<div class="re-form-group mb20">
+								<label for="rehub_user_confirmpassword"><?php _e('Confirm password', 'rehub_framework'); ?></label>
+								<input class="re-form-input required" name="rehub_user_confirmpassword" id="rehub_user_confirmpassword" type="password"/>
+							</div>	
+							<?php if ( class_exists( 'BuddyPress' ) && rehub_option('userpopup_xprofile') == 1):?>
+								<?php if ( bp_is_active( 'xprofile' ) ) : ?>
+									<div id="xp-woo-profile-details-section"<?php if(rehub_option('userpopup_xprofile_hidename') == 1){echo ' class="xprofile_hidename"';}?>>
+										<?php if ( bp_has_profile( array( 'profile_group_id' => 1, 'fetch_field_data' => false ) ) ) : while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
+											<?php while ( bp_profile_fields() ) : bp_the_profile_field(); ?>
+												<div<?php bp_field_css_class( 'editfield re-form-group mb20' ); ?>>
+													<?php
+														$field_type = bp_xprofile_create_field_type( bp_get_the_profile_field_type() );
+														$field_type->edit_field_html();
+													?>
+													<p class="xp-woo-description"><?php bp_the_profile_field_description(); ?></p>
+												</div>
+											<?php endwhile; ?>
+											<input type="hidden" name="signup_profile_field_ids" id="signup_profile_field_ids" value="<?php bp_the_profile_field_ids(); ?>" />
+										<?php endwhile; endif; ?>
+										<?php do_action( 'bp_signup_profile_fields' ); ?>
+									</div><!-- #profile-details-section -->
+									<?php do_action( 'bp_after_signup_profile_fields' ); ?>
+								<?php endif; ?>
+							<?php endif; ?>										
 							<?php
-						}
 
-						 ?>
+							if($captcha_enabled =='1'){ ?>
+								<div class="re-form-group mb20">
+								    <script type="text/javascript">
+								      var onloadCaptchamodail = function() {
+								        grecaptcha.render('recaptchamodail', {
+								          'sitekey' : '<?php echo rehub_option("userlogin_gapi_sitekey") ?>'
+								        });
+								      };
+								    </script>
+									<div class="recaptchamodail"></div>
+								    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCaptchamodail&render=explicit" async defer></script>
+								</div><?php
+							}
 
-						<div class="re-form-group mb20">
-							<input type="hidden" name="action" value="rehub_register_member_popup_function"/>
-							<button class="wpsm-button rehub_main_btn" type="submit"><?php _e('Sign up', 'rehub_framework'); ?></button>
-						</div>
-						<?php wp_nonce_field( 'ajax-login-nonce', 'register-security' ); ?>
-					</form>
-					<div class="rehub-errors"></div>
-					<div class="rehub-login-popup-footer"><?php _e('Already have an account?', 'rehub_framework'); ?> <span class="act-rehub-login-popup color_link" data-type="login"><?php _e('Login', 'rehub_framework'); ?></span></div>
-				</div>
-				</div>
+							if($show_terms_conditions){ ?>
+								<div class="re-form-group mb20">
+									<div class="checkbox">
+										<label><input name="rehub_terms" type="checkbox"> <?php echo sprintf( __( 'I accept the <a target="_blank" href="%s">Terms & Conditions</a>', 'rehub_framework' ), esc_url(get_the_permalink(rehub_option('userlogin_term_page'))) ) ?></label>
+									</div>
+								</div><?php
+							}
+
+							if (defined('wcv_plugin_dir')) { ?>
+								<?php do_action( 'wcvendors_apply_for_vendor_before' ); ?>
+								<div class="re-form-group mb20">
+									<div class="checkbox">
+										<label><input name="wcv_apply_as_vendor" type="checkbox"> <?php _e('Apply as vendor?', 'rehub_framework'); ?></label>
+									</div>
+								</div>
+								<?php do_action( 'wcvendors_apply_for_vendor_after' ); ?>
+								<?php
+							}
+
+							 ?>
+
+							<div class="re-form-group mb20">
+								<input type="hidden" name="action" value="rehub_register_member_popup_function"/>
+								<button class="wpsm-button rehub_main_btn" type="submit"><?php _e('Sign up', 'rehub_framework'); ?></button>
+							</div>
+							<?php wp_nonce_field( 'ajax-login-nonce', 'register-security' ); ?>
+						</form>
+						<div class="rehub-errors"></div>
+						<div class="rehub-login-popup-footer"><?php _e('Already have an account?', 'rehub_framework'); ?> <span class="act-rehub-login-popup color_link" data-type="login"><?php _e('Login', 'rehub_framework'); ?></span></div>
+					</div>
+					</div>
+				<?php endif;?>
 
 				<!-- Login form -->
 				<div id="rehub-login-popup">
@@ -117,13 +139,23 @@ function rehub_login_register_modal() {
 							<?php endif;?>							
 						</div>
 						<div class="re-form-group mb20">
+							<label for="rehub_remember"><input name="rehub_remember" id="rehub_remember" type="checkbox" value="forever" />
+							<?php _e('Remember me', 'rehub_framework'); ?></label>
+						</div>						
+						<div class="re-form-group mb20">
 							<input type="hidden" name="action" value="rehub_login_member_popup_function"/>
 							<button class="wpsm-button rehub_main_btn" type="submit"><?php _e('Login', 'rehub_framework'); ?></button>
 						</div>
 						<?php wp_nonce_field( 'ajax-login-nonce', 'loginsecurity' ); ?>
 					</form>
 					<div class="rehub-errors"></div>
-					<div class="rehub-login-popup-footer"><?php _e('Don\'t have an account?', 'rehub_framework'); ?> <span class="act-rehub-login-popup color_link" data-type="register"><?php _e('Sign Up', 'rehub_framework'); ?></span></div>
+					<div class="rehub-login-popup-footer"><?php _e('Don\'t have an account?', 'rehub_framework'); ?> 
+					<?php if (rehub_option('custom_register_link') !=''):?>
+						<span class="act-rehub-login-popup color_link" data-type="url" data-customurl="<?php echo esc_html(rehub_option('custom_register_link'));?>"><?php _e('Sign Up', 'rehub_framework'); ?></span>						
+					<?php else:?>
+						<span class="act-rehub-login-popup color_link" data-type="register"><?php _e('Sign Up', 'rehub_framework'); ?></span>
+					<?php endif;?>
+					</div>
 				</div>
 				</div>
 
@@ -170,6 +202,7 @@ function rehub_login_member_popup_function(){
 	// Get variables
 	$user_login		= sanitize_user($_POST['rehub_user_login']);	
 	$user_pass		= sanitize_text_field($_POST['rehub_user_pass']);
+	$remember 	= !empty($_POST['rehub_remember']) ? true : false;
 
 	// Check CSRF token
 	if( !check_ajax_referer( 'ajax-login-nonce', 'loginsecurity', false) ){
@@ -183,7 +216,7 @@ function rehub_login_member_popup_function(){
 
  	else{
  		$secure_cookie = (!is_ssl()) ? false : '';
- 		$user = wp_signon( array('user_login' => $user_login, 'user_password' => $user_pass), $secure_cookie );
+ 		$user = wp_signon( array('user_login' => $user_login, 'user_password' => $user_pass, 'remember' => $remember ), $secure_cookie );
 	    if(is_wp_error($user)){
 			echo json_encode(array('error' => true, 'message'=> '<div class="wpsm_box warning_type"><i></i>'.$user->get_error_message().'</div>'));
 		}
@@ -268,28 +301,64 @@ function rehub_register_member_popup_function(){
 		$display_errors .= '</div>';
 		echo json_encode(array('error' => true, 'message' => $display_errors));
 	}else{
-		if ($wcv_apply_as_vendor){
-			$manual = WC_Vendors::$pv_options->get_option( 'manual_vendor_registration' );
-			$role   = apply_filters( 'wcvendors_pending_role', ( $manual ? 'pending_vendor' : 'vendor' ) );			
-			$user_id = wp_update_user( array( 'ID' => $errors, 'role' => $role ));
-			do_action( 'wcvendors_application_submited', $user_id );
-			if ($role == 'vendor'){
-				$secure_cookie = (!is_ssl()) ? false : '';
-				wp_signon( array('user_login' => $user_login, 'user_password' => $user_signonpassword), $secure_cookie );
-			    if (class_exists('WCV_Vendors') && class_exists('WCVendors_Pro') && WCV_Vendors::is_vendor( $user_id ) ) {
-			        $redirect_to = get_permalink(WCVendors_Pro::get_option( 'dashboard_page_id' ));
-			    }
-			    elseif (class_exists('WCV_Vendors') && WCV_Vendors::is_vendor( $user_id ) ) {
-			    	$redirect_to = get_permalink(WC_Vendors::$pv_options->get_option( 'vendor_dashboard_page' ));
-			    }				
-				echo json_encode(array('error' => false, 'message' => '<div class="wpsm_box green_type">'.__( 'Congratulations! You are now a vendor. Be sure to configure your store settings before adding products.', 'rehub_framework').'</div>', 'redirecturl' => $redirect_to));				
-			}
-			else{
-				$secure_cookie = (!is_ssl()) ? false : '';
-				wp_signon( array('user_login' => $user_login, 'user_password' => $user_signonpassword), $secure_cookie );
-				echo json_encode(array('error' => true, 'message' => '<div class="wpsm_box green_type">'.__( 'Your application has been received. You will be notified by email the results of your application. Currently you can use site as Pending vendor. Please, reload page now.', 'rehub_framework').'</div>'));
-			}
+		if (!empty($_POST['signup_profile_field_ids'])){
+			$signup_profile_field_ids = explode(',', $_POST['signup_profile_field_ids']);
+			foreach ((array)$signup_profile_field_ids as $field_id) {
+				if ( ! isset( $_POST['field_' . $field_id] ) ) {
+					if ( ! empty( $_POST['field_' . $field_id . '_day'] ) && ! empty( $_POST['field_' . $field_id . '_month'] ) && ! empty( $_POST['field_' . $field_id . '_year'] ) ) {
+						// Concatenate the values.
+						$date_value = $_POST['field_' . $field_id . '_day'] . ' ' . $_POST['field_' . $field_id . '_month'] . ' ' . $_POST['field_' . $field_id . '_year'];
 
+						// Turn the concatenated value into a timestamp.
+						$_POST['field_' . $field_id] = date( 'Y-m-d H:i:s', strtotime( $date_value ) );
+						
+					}
+				}
+				if(!empty($_POST['field_' . $field_id])){
+					$field_val = $_POST['field_' . $field_id];
+					xprofile_set_field_data($field_id, $errors, $field_val);
+				}			
+			}
+		}		
+		if ($wcv_apply_as_vendor){
+			$secure_cookie = (!is_ssl()) ? false : '';
+			$manual = WC_Vendors::$pv_options->get_option( 'manual_vendor_registration' );
+			$role   = apply_filters( 'wcvendors_pending_role', ( $manual ? 'pending_vendor' : 'vendor' ) );	
+			if (class_exists('WCVendors_Pro') ) {
+				if ($role == 'pending_vendor'){
+					$role = 'customer';
+				}
+			}		
+			$user_id = wp_update_user( array( 'ID' => $errors, 'role' => $role ));
+			do_action( 'wcvendors_application_submited', $errors );
+		    if (class_exists('WCVendors_Pro') ) {
+		        $redirect_to = get_permalink(WCVendors_Pro::get_option( 'dashboard_page_id' ));
+		    }
+		    else {
+		    	$redirect_to = get_permalink(WC_Vendors::$pv_options->get_option( 'vendor_dashboard_page' ));
+		    }
+		    $errorshow = false;
+			if ($role == 'vendor'){
+				$status = 'approved';				
+				$message = '<div class="wpsm_box green_type">'.__( 'Congratulations! You are now a vendor. Be sure to configure your store settings before adding products.', 'rehub_framework').'</div>';				
+			}
+			elseif ($role == 'customer'){
+				$status = 'customer';				
+				$message = '<div class="wpsm_box green_type">'.__( 'Congratulations! Now you must add some settings before application', 'rehub_framework').'</div>';
+			}			
+			else{
+                $status = 'pending';
+				$message = '<div class="wpsm_box green_type">'.__( 'Your application has been received. You will be notified by email the results of your application. Currently you can use site as Pending vendor.', 'rehub_framework').'</div>';
+			}
+			if ($status != 'customer' && $status != ''){
+				global $woocommerce;
+	            $mails = $woocommerce->mailer()->get_emails();
+	            if (!empty( $mails ) ) {
+	                $mails[ 'WC_Email_Approve_Vendor' ]->trigger($errors, $status );
+	            }
+			}			
+			wp_signon( array('user_login' => $user_login, 'user_password' => $user_signonpassword), $secure_cookie );
+			echo json_encode(array('error' => $errorshow, 'message' => $message, 'redirecturl' => $redirect_to));			
 		}else{
 			update_user_meta($errors, '_um_cool_but_hard_to_guess_plain_pw', $user_signonpassword);
 			$secure_cookie = (!is_ssl()) ? false : '';

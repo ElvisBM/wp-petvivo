@@ -4,11 +4,7 @@
  */
 
 use ContentEgg\application\helpers\TemplateHelper;
-
 ?>
-
-
-
 <?php foreach ($items as $item): ?>
     <?php $afflink = $item['url'] ;?>
     <?php $aff_thumb = $item['img'] ;?>

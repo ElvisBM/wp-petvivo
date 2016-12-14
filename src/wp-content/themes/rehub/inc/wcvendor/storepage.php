@@ -1,4 +1,5 @@
-<?php 	
+<?php
+	$vendormap = $verified_vendor = $verified_vendor_label = $wcfreephone = $wcfreeadress = $vacation_mode = $vacation_msg =''; 	
 	$shop_name 	       =  get_user_meta( $vendor_id, 'pv_shop_name', true ); 
 	$shop_url = WCV_Vendors::get_vendor_shop_page( $vendor_id );
 	$has_html          = get_user_meta( $vendor_id, 'pv_shop_html_enabled', true );
@@ -17,7 +18,21 @@
 	$count_likes = ( get_user_meta( $vendor_id, 'overall_post_likes', true) ) ? get_user_meta( $vendor_id, 'overall_post_likes', true) : '0';
 	if ( class_exists( 'WCVendors_Pro' ) ) {
 		$vendor_meta = array_map( function( $a ){ return $a[0]; }, get_user_meta($vendor_id ) );
+		$verified_vendor 	= ( array_key_exists( '_wcv_verified_vendor', $vendor_meta ) ) ? $vendor_meta[ '_wcv_verified_vendor' ] : false; 
+		$verified_vendor_label 	= WCVendors_Pro::get_option( 'verified_vendor_label' );	
+		$vacation_mode 		= get_user_meta( $vendor_id , '_wcv_vacation_mode', true ); 
+		$vacation_msg 		= ( $vacation_mode ) ? get_user_meta( $vendor_id , '_wcv_vacation_mode_msg', true ) : '';			
 	}	
+	else{
+		$wcfreephone	= get_user_meta( $vendor_id, 'rh_vendor_free_phone', true );
+		$wcfreeadress	= get_user_meta( $vendor_id, 'rh_vendor_free_address', true );
+	}
+	if (function_exists('gmw_get_member_info_from_db')){
+		$gmw_member_info = gmw_get_member_info_from_db($vendor_id);
+		if ( isset( $gmw_member_info ) && $gmw_member_info != false ){
+			$vendormap = true;
+		}
+	}
 	
 ?>
 <div class="wcvendor_store_wrap_bg">
@@ -29,34 +44,51 @@
 	    			<a href="<?php echo $shop_url;?>"><img src="<?php echo rh_show_vendor_avatar($vendor_id, 150, 150);?>" class="vendor_store_image_single" width=150 height=150 /></a>	        
 	    		</div>
 	    		<div id="wcvendor_profile_act_desc" class="wcvendor_profile_cell">
-	    			<div class="wcvendor_store_name"><h1><?php echo esc_html($shop_name);?></h1></div>
-				    <?php if ( class_exists( 'WCVendors_Pro' ) ) :?>
-					    <div class="wcvendor_store_stars">
-						    <?php if ( ! WCVendors_Pro::get_option( 'ratings_management_cap' ) ) echo WCVendors_Pro_Ratings_Controller::ratings_link( $vendor_id, true );?>
-					    </div>
-					    <?php 
-					    $address1 			= ( array_key_exists( '_wcv_store_address1', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_address1' ] : '';
-					    $address2 			= ( array_key_exists( '_wcv_store_address2', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_address2' ] : '';
-					    $city	 			= ( array_key_exists( '_wcv_store_city', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_city' ]  : '';
-					    $state	 			= ( array_key_exists( '_wcv_store_state', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_state' ] : '';
-					    $phone				= ( array_key_exists( '_wcv_store_phone', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_phone' ]  : '';
-					    $store_postcode		= ( array_key_exists( '_wcv_store_postcode', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_postcode' ]  : '';
+	    			<div class="wcvendor_store_name">
+						<?php if ( $verified_vendor ) : ?>	   			
+							<div class="wcv-verified-vendor">
+								<i class="fa fa-check" aria-hidden="true"></i> <?php echo $verified_vendor_label; ?>
+							</div>
+						<?php endif; ?>	    			
+	    				<h1><?php echo esc_html($shop_name);?></h1> 	    				
+	    			</div>
+	    			<div class="wcvendor_store_desc">
+					    <?php if ( class_exists( 'WCVendors_Pro' ) ) :?>
+						    <div class="wcvendor_store_stars">
+							    <?php if ( ! WCVendors_Pro::get_option( 'ratings_management_cap' ) ) echo WCVendors_Pro_Ratings_Controller::ratings_link( $vendor_id, true );?>
+						    </div>
+						    <?php 
+						    $address1 			= ( array_key_exists( '_wcv_store_address1', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_address1' ] : '';
+						    $address2 			= ( array_key_exists( '_wcv_store_address2', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_address2' ] : '';
+						    $city	 			= ( array_key_exists( '_wcv_store_city', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_city' ]  : '';
+						    $state	 			= ( array_key_exists( '_wcv_store_state', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_state' ] : '';
+						    $phone				= ( array_key_exists( '_wcv_store_phone', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_phone' ]  : '';
+						    $store_postcode		= ( array_key_exists( '_wcv_store_postcode', $vendor_meta ) ) ? $vendor_meta[ '_wcv_store_postcode' ]  : '';
 
-					    $twitter_username 	= get_user_meta( $vendor_id , '_wcv_twitter_username', true );
-					    $instagram_username = get_user_meta( $vendor_id , '_wcv_instagram_username', true );
-					    $facebook_url 		= get_user_meta( $vendor_id , '_wcv_facebook_url', true );
-					    $linkedin_url 		= get_user_meta( $vendor_id , '_wcv_linkedin_url', true );
-					    $youtube_url 		= get_user_meta( $vendor_id , '_wcv_youtube_url', true );
-					    $googleplus_url 	= get_user_meta( $vendor_id , '_wcv_googleplus_url', true );
-					    $pinterest_url 		= get_user_meta( $vendor_id , '_wcv_pinterest_url', true );
-
-					    $social_icons = empty( $twitter_username ) && empty( $instagram_username ) && empty( $facebook_url ) && empty( $linkedin_url ) && empty( $youtube_url ) && empty( $googleplus_url ) && empty( $pinterst_url ) ? false : true;
-					    $address 			= ( $address1 != '') ? $address1 .', ' . $city .', '. $state .', '. $store_postcode : '';
-					    ?>
-					    <div class="wcvendor_store_desc"><?php echo $address; ?></div>
-					<?php else:?>
-					    <div class="wcvendor_store_desc"><?php rehub_truncate('maxchar=200&text='.$shop_description_short.''); ?></div>
-					<?php endif;?>
+						    $twitter_username 	= get_user_meta( $vendor_id , '_wcv_twitter_username', true );
+						    $instagram_username = get_user_meta( $vendor_id , '_wcv_instagram_username', true );
+						    $facebook_url 		= get_user_meta( $vendor_id , '_wcv_facebook_url', true );
+						    $linkedin_url 		= get_user_meta( $vendor_id , '_wcv_linkedin_url', true );
+						    $youtube_url 		= get_user_meta( $vendor_id , '_wcv_youtube_url', true );
+						    $googleplus_url 	= get_user_meta( $vendor_id , '_wcv_googleplus_url', true );
+						    $pinterest_url 		= get_user_meta( $vendor_id , '_wcv_pinterest_url', true );	
+						    $social_icons = empty( $twitter_username ) && empty( $instagram_username ) && empty( $facebook_url ) && empty( $linkedin_url ) && empty( $youtube_url ) && empty( $googleplus_url ) && empty( $pinterst_url ) ? false : true;
+						    $address 			= ( $address1 != '') ? $address1 .', ' . $city .', '. $state .', '. $store_postcode : '';
+						    ?>
+					    	<?php echo $address; ?>				    	
+						<?php else:?>
+							<?php if ($vendormap == true) :?>
+								<?php echo do_shortcode('[gmw_member_info user_id="'.$vendor_id.'" info="formatted_address"]');?>
+							<?php else:?>
+								<?php echo $wcfreeadress; ?>
+							<?php endif;?>
+						<?php endif;?>
+				    	<?php if ($vendormap == true) :?>
+					    	<span class="rh_gmw_map_in_wcv_profile">
+								<?php _e('(Show on map)', 'rehub_framework');?>
+							</span>
+						<?php endif;?>					
+					</div>
 	    		</div>	        			        		
 	    		<div id="wcvendor_profile_act_btns" class="wcvendor_profile_cell">
 	    			<span class="wpsm-button medium red"><?php echo getShopLikeButton($vendor_id);?></span>	    			
@@ -99,7 +131,8 @@
 					<li><a href="<?php echo $url;?>"><?php _e('Reviews', 'rehub_framework');?></a></li>	
 				<?php endif;?>
 			<?php endif;?>
-			<li><a href="#vendor-about" aria-controls="vendor-about" role="tab" data-toggle="tab" aria-expanded="true" data-scrollto="#vendor-about"><?php _e('About', 'rehub_framework');?></a></li>
+			<li><a href="#vendor-about" aria-controls="vendor-about" role="tab" data-toggle="tab" aria-expanded="true" data-scrollto="#vendor-about"><?php _e('About', 'rehub_framework');?></a>
+			</li>
 			</ul>
 
 		</div>
@@ -114,7 +147,7 @@
 	    <aside class="vcwendor_profile_sidebar user-profile-div">
 	    	<div class="rh-cartbox">
 	            <div>
-	            	<div class="wcvendor_ownertitle"><h5>Shop owner</h5></div>
+	            	<div class="wcvendor_ownertitle"><h5><?php _e('Shop owner:', 'rehub_framework');?></h5></div>
 	                <div class="profile-avatar">
 	                    <?php echo get_avatar( $vendor_email, '128' ); ?>
 	                </div>
@@ -123,7 +156,7 @@
 	                    <?php if ( function_exists('bp_core_get_user_domain') ) : ?>
 	                    	<a href="<?php echo bp_core_get_user_domain( $vendor_id ); ?>">
 	                    <?php endif;?>
-	                        <?php echo $vendor_name; ?> <?php if (!empty($mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo mycred_get_users_rank_id($vendor_id); ?>"><?php echo $mycredrank ;?></span><?php endif;?>
+	                        <?php echo $vendor_name; ?> <?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?>
 	                        <?php if ( function_exists('bp_core_get_user_domain') ) : ?></a><?php endif;?>
 	                    </div>
 	                </div>
@@ -159,6 +192,19 @@
 			                     </div>
 			                </div>
 		           		<?php endif;?>
+		           	<?php else:?>
+						<div class="profile-description">
+							<div>
+								<span><?php _e( 'Contacts', 'rehub_framework' ); ?></span>
+								<p>
+									<?php echo $wcfreeadress; ?>
+									<?php if ($wcfreephone):?>
+										<br />
+										<a href="tel:<?php echo $wcfreephone; ?>"><i class="fa fa-phone"></i> <?php echo $wcfreephone; ?></a>
+									<?php endif;?>
+								</p>
+							</div>
+						</div>		           		
 					<?php endif;?>
 	            <?php if ( !empty( $vendor->description ) ) : ?>
 	                <div class="profile-description">
@@ -176,6 +222,25 @@
 	                </div>
 	            <?php endif; ?>
                 <?php if ( function_exists('bp_core_get_user_domain') ) : ?>
+                	<?php if ( bp_is_active( 'xprofile' ) ) : ?>
+						<?php if ( bp_has_profile( array( 'profile_group_id' => 1, 'fetch_field_data' => true, 'user_id'=>$vendor_id ) ) ) : while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
+							<?php $numberfields = explode(',', bp_get_the_profile_field_ids());?>
+							<?php $count = (!empty($numberfields)) ? count($numberfields) : '';?>
+							<?php if ($count > 1) :?>
+								<ul id="xprofile-in-wcstore">
+									<?php $fieldid = 0; while ( bp_profile_fields() ) : bp_the_profile_field(); $fieldid++; ?>
+										<?php if ($fieldid == 1) continue;?>
+										<?php if ( bp_field_has_data() ) : ?>
+											<li>
+											<div class="floatleft mr5"><?php bp_the_profile_field_name() ?>: </div>
+											<div class="floatleft"><?php bp_the_profile_field_value() ?></div>									
+											</li>
+										<?php endif; ?>
+									<?php endwhile; ?>
+								</ul>
+							<?php endif; ?>
+						<?php endwhile; endif; ?>
+                	<?php endif;?>
                     <div class="profile-usermenu">
 	                    <ul class="user-menu-tab" role="tablist">
 	                        <li class="text-center">
@@ -236,6 +301,13 @@
 	    </aside>
 	    <div class="vcwendor_profile_content woocommerce page clearfix">
 	        <article class="post" id="page-<?php the_ID(); ?>">
+	        	<?php if ($vacation_msg) :?>
+	        		<div class="wpsm_box green_type nonefloat_box">
+	        			<div>
+	        				<?php echo $vacation_msg; ?>
+						</div>
+					</div>
+	        	<?php endif;?>
 	        	<div role="tabvendor" class="tab-pane active" id="vendor-items">
 				<?php if ( have_posts() ) : ?>
 					<?php
@@ -272,6 +344,9 @@
 				<div role="tabvendor" class="tab-pane" id="vendor-about">
 					<?php echo $shop_description;?>
 				</div>
+				<div role="tabvendor" id="vendor-location">
+					<?php echo do_shortcode('[gmw_member_location display_name=0 map_width=100% user_id='.$vendor_id.']');?>
+				</div>				
 			</article>
 		</div>
 		<!-- /Main Side --> 

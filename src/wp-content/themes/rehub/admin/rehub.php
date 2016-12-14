@@ -105,6 +105,48 @@ if ( ! class_exists( 'Rehub_Admin' ) ) {
 						}
 					}
 				}
+
+				//Child theme updater
+				if(!defined('PLUGIN_REPO')){
+					define('PLUGIN_REPO', 'http://rehub.wpsoul.com/plugins/');
+				}
+		        if (REHUB_NAME_ACTIVE_THEME == 'RECASH') {
+		            if(!defined('THEMESHILD_SLUG')){
+						define('THEMESHILD_SLUG', 'rehub-cash');
+					} 
+					require_once ( locate_template( 'admin/update-checker.php' ) );					
+		        }
+		        elseif (REHUB_NAME_ACTIVE_THEME == 'REPICK') {
+		            if(!defined('THEMESHILD_SLUG')){
+						define('THEMESHILD_SLUG', 'rehub-pick');
+					} 
+					require_once ( locate_template( 'admin/update-checker.php' ) );					
+		        }
+		        elseif (REHUB_NAME_ACTIVE_THEME == 'RETHING') {
+		            if(!defined('THEMESHILD_SLUG')){
+						define('THEMESHILD_SLUG', 'rehub-things');
+					}
+					require_once ( locate_template( 'admin/update-checker.php' ) );					
+		        }
+		        elseif (REHUB_NAME_ACTIVE_THEME == 'REVENDOR') {
+		            if(!defined('THEMESHILD_SLUG')){
+						define('THEMESHILD_SLUG', 'rehub-vendor');
+					} 
+					require_once ( locate_template( 'admin/update-checker.php' ) );					
+		        }   
+		        elseif (REHUB_NAME_ACTIVE_THEME == 'REDIRECT') {
+		            if(!defined('THEMESHILD_SLUG')){
+						define('THEMESHILD_SLUG', 'rehub-direct');
+					} 
+					require_once ( locate_template( 'admin/update-checker.php' ) );					
+		        }           
+		        elseif (REHUB_NAME_ACTIVE_THEME == 'REWISE') {
+		            if(!defined('THEMESHILD_SLUG')){
+						define('THEMESHILD_SLUG', 'rehub-wise');
+					}
+					require_once ( locate_template( 'admin/update-checker.php' ) );					 
+		        }
+
 			}
 		}
 

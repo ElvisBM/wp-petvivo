@@ -92,14 +92,30 @@ $post_custom_meta_fields = array(
         'desc'  => __('Currency in ISO 4217. This is only for schema markup. Example: USD or EUR', 'rehub_framework'),
         'id'    => 'rehub_main_product_currency',
         'type'  => 'text'
-    ),       
+    ),       	
     array(
-        'label'=> __('Enable shortcode inserting', 'rehub_framework'),
-        'desc'  => __('If enable you can insert offer box in any place of content with shortcode [quick_offer]. If disable - it will be before review box. You can also use post ID to insert offer from this post to another post. Example: [quick_offer id=11]', 'rehub_framework'),
-        'id'    => $postprefixrehub.'shortcode',
-        'type'  => 'checkbox'
-    ),	    
+        'label'=> __('Shortcode for this offer section', 'rehub_framework'),
+        'id'    => $postprefixrehub.'shortcode_generate',
+        'type'  => 'helper'
+    ),         
 );
+if (rehub_option('enable_multioffer') == 1 && rh_is_plugin_active('content-egg/content-egg.php')){
+    $post_custom_meta_fields =  array(
+        array(
+            'label'=> __('Synchronization with Content Egg', 'rehub_framework'),
+            'id'    => '_rh_post_offer_sync_ce',
+            'type'  => 'cesync'
+        )
+    );
+}
+elseif (rh_is_plugin_active('content-egg/content-egg.php')){
+    $post_custom_meta_fields[] =  array(
+        'label'=> __('Synchronization with Content Egg', 'rehub_framework'),
+        'id'    => '_rh_post_offer_sync_ce',
+        'type'  => 'cesync'
+    );
+}
+
 
 // The Callback
 function show_rehub_post_meta_box() {
@@ -127,11 +143,43 @@ echo '<input type="hidden" name="custom_post_meta_box_nonce" value="'.wp_create_
 					    echo '<input type="checkbox" name="'.$field['id'].'" value ="1" id="'.$field['id'].'" ',$meta ? ' checked="checked"' : '','/>
 					        <label for="'.$field['id'].'">'.$field['desc'].'</label>';
 					break;
+                    case 'helper':
+                        _e('By default, only next Post layouts will show offerbox automatically: Compact, Button in corner, Big post offer block in top, Offer and review score. You can also add next shortcode to render offerbox:', 'rehub_framework');
+                        echo '<br><br>';                    
+                        echo '[quick_offer id='.$post->ID.']';
+                    break;                    
 					// date
 					case 'date':
 						echo '<input type="text" class="rehubdatepicker" name="'.$field['id'].'" id="'.$field['id'].'" value="'.$meta.'" size="70" />
 								<br /><span class="description">'.$field['desc'].'</span>';
 					break;	
+                    //Sync with CE
+                    case 'cesync':
+                        $cegg_field_array = rehub_option('save_meta_for_ce');
+                        $cegg_fields = array();
+                        if (!empty($cegg_field_array) && is_array($cegg_field_array)) {
+                            foreach ($cegg_field_array as $cegg_field) {
+                                $cegg_field_value = get_post_meta ($post->ID, '_cegg_data_'.$cegg_field.'', true);
+                                if (!empty ($cegg_field_value) && is_array($cegg_field_value)) {
+                                    $cegg_fields += $cegg_field_value;
+                                }       
+                            }
+                            echo '<select name="'.$field['id'].'" id="'.$field['id'].'">'; 
+                            echo '<option value="lowest" '.selected('lowest', $meta).'>Sync with lowest price offer</option>';                           
+                            if (!empty($cegg_fields) && is_array($cegg_fields)) {
+                                foreach ($cegg_fields as $cegg_field_key => $cegg_field_value) {
+                                    $currency_code = (!empty($cegg_field_value['currencyCode'])) ? $cegg_field_value['currencyCode'] : '';                                
+                                    $offer_price = (!empty($cegg_field_value['price'])) ? RhPriceTemplateHelper::formatPriceCurrency($cegg_field_value['price'], $currency_code) : '';
+                                    $domain = (!empty($cegg_field_value['extra']['domain'])) ? $cegg_field_value['extra']['domain'] : '';
+                                    $title = (!empty($cegg_field_value['title'])) ? $cegg_field_value['title'] : '';
+                                    echo '<option value="'.$cegg_field_key.'" '.selected($cegg_field_key, $meta).'>'.wp_trim_words($title, 10, '...' ).' - '.$offer_price.$currency_code.' - '.$domain.'</option>';                                                                        
+                                }
+                            }
+                            echo '<option value="none" '.selected('none', $meta).'>Disable synchronization for this post</option>';
+                            echo '</select>';
+
+                        }
+                    break;                    
 					// image
 					case 'image':
 						$image = get_template_directory_uri().'/images/default/noimage_100_70.png';

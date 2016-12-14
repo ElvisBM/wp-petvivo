@@ -24,7 +24,7 @@ $mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_user
                 </div>
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name">
-                        <?php echo $author_name; ?> <?php if (!empty($mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo mycred_get_users_rank_id($author_ID); ?>"><?php echo $mycredrank ;?></span><?php endif;?>
+                        <?php echo $author_name; ?> <?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?>
                     </div>
                 </div>
                 <div class="profile-stats">

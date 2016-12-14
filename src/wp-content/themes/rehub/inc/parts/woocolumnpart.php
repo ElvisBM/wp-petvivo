@@ -2,7 +2,6 @@
 <?php if (empty( $product ) || ! $product->is_visible() ) {return;}?>
 <?php $classes = array('product', 'col_item');?>
 <?php if (rehub_option('woo_btn_disable') == '1'){$classes[] = 'non_btn';}?>
-
 <?php $woolinktype = (isset($woolinktype)) ? $woolinktype : '';?>
 <?php $custom_img_width = (isset($custom_img_width)) ? $custom_img_width : '';?>
 <?php $custom_img_height = (isset($custom_img_height)) ? $custom_img_height : '';?>
@@ -17,7 +16,7 @@
 <?php $coupon_style = $expired = ''; if(!empty($offer_coupon_date)) : ?>
     <?php 
     $timestamp1 = strtotime($offer_coupon_date); 
-    $seconds = $timestamp1 - time(); 
+    $seconds = $timestamp1 - (int)current_time('timestamp',0); 
     $days = floor($seconds / 86400);
     $seconds %= 86400;
     if ($days > 0) {
@@ -29,7 +28,7 @@
       $coupon_style = '';
     }
     else {
-        $coupon_text = __('Coupon is Expired', 'rehub_framework');
+        $coupon_text = __('Expired', 'rehub_framework');
         $coupon_style = ' expired_coupon';
         $expired = '1';
     }                 
@@ -44,20 +43,21 @@
     <figure class="full_image_woo">
         <a href="<?php echo $woolink ;?>"<?php echo $wootarget ;?>>
             <?php if ( $product->is_featured() ) : ?>
-                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . esc_html__( 'Featured!', 'woocommerce' ) . '</span>', $post, $product ); ?>
+                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . __( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
             <?php endif; ?>        
-            <?php if ( $product->is_on_sale() ) : ?>
+            <?php if ( $product->is_on_sale()) : ?>
                 <?php 
                 $percentage=0;
                 $featured = ($product->is_featured()) ? ' onsalefeatured' : '';
                 if ($product->regular_price) {
                     $percentage = round( ( ( $product->regular_price - $product->sale_price ) / $product->regular_price ) * 100 );
                 }
-                if ($percentage) {
-                    $sales_html = '<span class="onsale'.$featured.'"><span>- ' . $percentage . '%</span></span>';
-                } else {
-                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $post, $product );
+                if ($percentage && $percentage>0 && !$product->is_type( 'variable' )) {
+                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'"><span>- ' . $percentage . '%</span></span>', $post, $product );
                 }
+                else{
+                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'">' . esc_html__( 'Sale!', 'rehub_framework' ) . '</span>', $post, $product );  
+                }              
                 ?>
                 <?php echo $sales_html; ?>
             <?php endif; ?>
@@ -90,14 +90,8 @@
         </a>
         <div class="yith_float_btns">
             <div class="button_action"> 
-                <?php if (in_array( 'yith-woocommerce-compare/init.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )  { ?>
-                    <?php 
-                        $yith_compare = new YITH_Woocompare_Frontend();
-                        add_shortcode( 'yith_compare_button', array( $yith_compare , 'compare_button_sc' ) );
-                        echo do_shortcode('[yith_compare_button]'); 
-                    ?>                
-                <?php } ?>
-                <?php if (in_array( 'yith-woocommerce-wishlist/init.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )  { ?> 
+                <?php if(rehub_option('woo_rhcompare') == 1) {echo wpsm_comparison_button(array('class'=>'rhwooloopcompare'));}?>
+                <?php if ( defined( 'YITH_WCWL' )){ ?> 
                     <?php echo do_shortcode('[yith_wcwl_add_to_wishlist]'); ?> 
                 <?php } ?>                                          
             </div> 

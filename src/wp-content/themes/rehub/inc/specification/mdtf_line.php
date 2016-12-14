@@ -12,9 +12,7 @@
                 <?php echo $section_title;?>
             </div>
             <div class="wpsm_spec_meta_value">
-
             <?php foreach ($section_fields as $section_field) :?>
-
                 <?php $value = ($section_field['is_reflected'] !=0 && $section_field['is_reflected'] !='') ? get_post_meta($postID, $section_field['is_reflected'], true) : get_post_meta($postID, $section_field['meta_key'], true);?>
                 <?php if ($value && $section_field['type'] !='checkbox') :?>
                     <?php if (!empty($section_field['name'])) :?><span class="wpsm_spec_mdtf_value_pre"><?php echo $section_field['name'];?>: </span><?php endif;?> 

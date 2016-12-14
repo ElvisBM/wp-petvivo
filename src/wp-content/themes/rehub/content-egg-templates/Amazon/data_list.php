@@ -13,13 +13,7 @@ usort($items, function($a, $b) {
     return $a['price'] - $b['price'];
 });
 ?>
-<?php $deal_list_title = (rehub_option('rehub_choosedeal_text') !='') ? esc_html(rehub_option('rehub_choosedeal_text')) : __('Choose your deal', 'rehub_framework'); ?>
-<div class="rehub_feat_block egg_sort_list"><a name="aff-link-list"></a>
-    <div class="title_deal_wrap">
-        <div class="title_deal">
-            <?php echo $deal_list_title ;?>
-        </div>
-    </div>
+<div class="rehub_feat_block egg_sort_list notitle_sort_list"><a name="aff-link-list"></a>
     <div class="aff_offer_links">
         <?php $i=0; foreach ($items as $key => $item): ?>
             <?php $offer_price = (!empty($item['price'])) ? TemplateHelper::price_format_i18n($item['price']) : ''; ?>
@@ -130,7 +124,7 @@ usort($items, function($a, $b) {
                                     <?php endif;?>
                                     <?php if(!empty($item['extra']['coupon']['code_date'])) {echo '<div class="time_offer">'.$coupon_text.'</div>';} ?>    
                                 <?php endif ;?> 
-                                <div class="aff_tag mt10"><?php echo rehub_get_site_favicon($item['url']); ?></div>                         
+                                <div class="aff_tag mt10"><?php echo rehub_get_site_favicon('http://amazon.com'); ?></div>                         
                             </div>
                         </div>
                     </div>

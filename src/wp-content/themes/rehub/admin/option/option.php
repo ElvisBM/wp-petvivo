@@ -12,8 +12,7 @@ $theme_options =  array(
 				array(
 					'type' => 'section',
 					'title' => __('General Options', 'rehub_framework'),
-					'fields' => array(
-					
+					'fields' => array(				
 						array(
 							'type' => 'select',
 							'name' => 'rehub_framework_archive_layout',
@@ -90,7 +89,24 @@ $theme_options =  array(
 							'default' => array(
 								'rehub_framework_archive_list',
 							),
-						),							
+						),
+						array(
+							'type' => 'select',
+							'name' => 'post_layout_style',
+							'label' => __('Post layout', 'rehub_framework'),
+							'default' => 'normal_post',
+							'items' => array(
+								'data' => array(
+									array(
+										'source' => 'function',
+										'value'  => 'rehub_get_post_layout_array',
+									),
+								),
+							),
+							'default' => array(
+								'default',
+							),
+						),													
 											
 						array(
 							'type' => 'codeeditor',

@@ -24,9 +24,9 @@ $onclick = 'link_image';
 $img_size = 'thumbnail';
 $attributes = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $attributes );
-
 $default_src = vc_asset_url( 'vc/no_image.png' );
 
+$autoplayclass = ($autoplay) ? ' autoplayfs' : '';
 $gal_images = '';
 $link_start = '';
 $link_end = '';
@@ -80,6 +80,7 @@ if ( '' === $images ) {
 $pretty_rel_random = ' rel="prettyPhoto[rel-' . get_the_ID() . '-' . rand() . ']"';
 
 if ( 'custom_link' === $onclick ) {
+	$custom_links = vc_value_from_safe( $custom_links );
 	$custom_links = explode( ',', $custom_links );
 }
 
@@ -147,7 +148,7 @@ $output = '';
 $output .= '<div class="' . $css_class . '">';
 $output .= '<div class="wpb_wrapper">';
 $output .= wpb_widget_title( array( 'title' => $title, 'extraclass' => 'wpb_gallery_heading' ) );
-$output .= '<div class="wpb_gallery_slides' . $type . '">' . $slides_wrap_start . $gal_images . $slides_wrap_end . '</div>';
+$output .= '<div class="wpb_gallery_slides' . $type . $autoplayclass .'">' . $slides_wrap_start . $gal_images . $slides_wrap_end . '</div>';
 $output .= '</div>';
 $output .= '</div>';
 

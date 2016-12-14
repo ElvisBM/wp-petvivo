@@ -48,13 +48,16 @@ use ContentEgg\application\helpers\TemplateHelper;
         <div class="wpsm-table wpsm-icecat-spec">
             <table>
                 <?php foreach($data['spec'] as $id=>$s): ?>
+                    <tr class="heading-th-spec-line">
+                        <th colspan="2"></th>
+                    </tr>                    
                     <tr class="heading-th-spec">
                         <th title="Icecat specification category ID: <?php echo $id;?>" colspan="2"><?php echo $s['name'];?></th>
                     </tr>
                     <?php $i = 0; foreach($s['features'] as $id=>$f): ?>
                     <?php $i++; $odd = ($i % 2 == 1) ? ' class="odd"' : '';?>
                         <tr<?php echo $odd;?>>
-                            <td title="Icecat specification feature ID: <?php echo $id;?>"><?php echo $f['name'];?></td>
+                            <td title="Icecat specification feature ID: <?php echo $id;?>" class="icecat-spec-val"><?php echo $f['name'];?></td>
                             <td><?php echo $f['pres_value'];?></td>
                         </tr>
                     <?php endforeach; ?>

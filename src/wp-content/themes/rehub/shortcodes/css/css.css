@@ -67,7 +67,7 @@ display: inline; width: auto; height: auto; line-height: normal; vertical-align:
 
 /* Buttons
 ================================================== */
-.wpsm-button { font-family: Arial, sans-serif; margin: 0 5px 8px 0; cursor: pointer; display: inline-block; white-space: nowrap; text-align: center; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5); outline: none; border: 1px solid #7e7e7e; background: #aaaaaa; text-decoration: none !important; transition: all 0.4s ease 0s;
+.wpsm-button { font-family: Arial, sans-serif; margin: 0 5px 8px 0; cursor: pointer; display: inline-block; white-space: nowrap; text-align: center; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5); outline: none; background: #aaaaaa; text-decoration: none !important; transition: all 0.4s ease 0s;
 border: 1px solid #7e7e7e;color: #fff !important;font-weight: bold !important; padding: 4px 10px; line-height: 0.8em; text-decoration: none; text-align: center; white-space: normal; text-shadow: 0 1px 0 rgba(0,0,0,0.25); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); position: relative; font-size: 15px; box-sizing:border-box; font-style: normal; }
 .wpsm-button.white{border: 1px solid #ccc; background-color: #fff; color: #111 !important; text-shadow: none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);}
 .wpsm-button.white:hover{background-color: #f5f5f5; border: 1px solid #111; }
@@ -150,7 +150,7 @@ border: 1px solid #7e7e7e;color: #fff !important;font-weight: bold !important; p
 
 /* Numbox
 ================================================== */
-.wpsm-numbox, .wpsm-numhead { clear: both; margin: 10px 0; min-height: 56px; padding: 0 0 0 60px !important; position: relative; }
+.wpsm-numbox, .wpsm-numhead { clear: both; margin: 25px 0 38px 0; padding: 0 0 0 60px !important; position: relative; }
 .wpsm-numbox span.num, .wpsm-numhead span { border-radius: 50%; display: block; font-size: 20px; font-weight: 600; height: 38px; left: 0; line-height: 38px; position: absolute; text-align: center; top: 0; width: 38px; }
 .wpsm-numbox.wpsm-style1 span.num, .wpsm-numhead.wpsm-style1 span, .wpsm-numcircle.wpsm-style1 { color: #CCCCCC; border: 3px solid #CCCCCC; }
 .wpsm-numbox.wpsm-style2 span.num, .wpsm-numhead.wpsm-style2 span, .wpsm-numcircle.wpsm-style2 { border: 3px solid #363636; color: #363636; }
@@ -159,12 +159,13 @@ border: 1px solid #7e7e7e;color: #fff !important;font-weight: bold !important; p
 .wpsm-numbox.wpsm-style5 span.num, .wpsm-numbox.wpsm-style6 span.num{ border: none; color: #fff; font-size: 55px; height: 55px; line-height: 55px; font-weight: normal; font-family: Roboto, Arial }
 .wpsm-numbox.wpsm-style6 span.num{color: #111; }
 .wpsm-numbox.wpsm-style5 h3, .wpsm-numbox.wpsm-style6 h3, .wpsm-numbox.wpsm-style5 h2, .wpsm-numbox.wpsm-style6 h2, .wpsm-numbox.wpsm-style6 h4, .wpsm-numbox.wpsm-style5 h4{margin: 0 0 10px 0}
-.wpsm-numhead span{top:-9px;}
+.wpsm-numhead span{top:-6px;}
+.wpsm-numhead h2{margin: 0}
 .wpsm-numcircle{font-weight:bold;border-radius: 50%;margin-right: 8px;font-size: 20px;width: 35px;height: 35px;line-height: 35px;display: inline-block;text-align: center; }
 
 /* Titlebox
 ================================================== */
-.wpsm-titlebox { margin: 30px 0; padding: 15px 20px 12px; position: relative; }
+.wpsm-titlebox { margin: 0 0 30px 0; padding: 15px 20px 12px; position: relative; }
 .wpsm-titlebox > strong:first-child { background: none repeat scroll 0 0 white; float: left; font-size: 16px; font-weight: 600; left: 11px; line-height: 18px; margin: 0 0 -9px !important; padding: 0 10px; position: absolute; text-transform: uppercase; top: -10px; }
 .wpsm-titlebox.wpsm_style_1 { border: 3px solid #E7E4DF; }
 .wpsm-titlebox.wpsm_style_1 > strong:first-child { color: #c0c0c0; }
@@ -226,11 +227,19 @@ pre.wpsm-code.wpsm_code_2 { border: none; border-left: 4px solid #61BAEA; }
 
 /* #list style
 ================================================== */
-.wpsm_checklist ul li, .wpsm_starlist ul li, .wpsm_arrowlist ul li, .wpsm_bulletlist ul li { list-style-type: none; margin: 0 0 10px; padding: 1px 0 0 25px; }
-.wpsm_checklist ul li { background: url("../images/tick_16.png") no-repeat scroll left center transparent }
-.wpsm_starlist ul li { background: url("../images/star_16.png") no-repeat scroll left center transparent }
-.wpsm_arrowlist ul li { background: url("../images/arrow_16.png") no-repeat scroll left center transparent }
-.wpsm_bulletlist ul li { background: url("../images/bullet_16.png") no-repeat scroll left center transparent }
+.wpsm_pretty_list ul li a{display: inline-block;line-height: 18px; text-decoration: none; transition: none }
+.darklink ul li a{color: #111}
+.wpsm_pretty_list.small_gap_list ul li{padding: 6px 12px 6px 27px;}
+.wpsm_pretty_list ul li { position:relative;list-style-type: none; margin: 0; padding: 0;padding: 10px 20px 10px 38px; border-radius: 100px}
+.wpsm_pretty_list ul li:before{ font-family: FontAwesome; position: absolute;top: 0;bottom: 0;left: 12px;width: 15px;height: 15px;margin: auto;line-height: 1;}
+.rtl .wpsm_pretty_list ul li a:before{left: auto; right: 12px}
+.rtl .wpsm_pretty_list ul li{padding: 12px 35px 12px 20px;}
+.rtl .wpsm_pretty_list.small_gap_list ul li{padding: 6px 27px 6px 12px;}
+.wpsm_arrowlist ul li:before {content: "\f105"}
+.wpsm_checklist ul li:before {content: "\f00c"; color: #1abf3d}
+.wpsm_starlist ul li:before { content: "\f005" }
+.wpsm_bulletlist ul li:before { content: "\f192" }
+.wpsm_pretty_hover ul li:hover:before{color: #fff !important}
 /* #tooltip
 ================================================== */
 .wpsm-tooltip { border-bottom: 1px dotted #666; font-weight: bold; }
@@ -369,18 +378,20 @@ div.wpsm-tabs ul.ui-tabs-nav li{float:none !important}
 
 /* PROS&CONS
 ================================================== */
-.wpsm_pros .title_pros{color:#8bb900; margin: 0 0 10px 0; font-size: 16px; font-weight: bold; font-style: italic;}
+.wpsm_pros .title_pros{color:#58c649; margin: 0 0 15px 0; font-size: 16px; font-weight: bold; font-style: italic;}
 .wpsm_pros{padding-left: 15px}
-.wpsm_cons .title_cons{color:#cc0000; margin: 0 0 10px 0; font-size: 16px; font-weight: bold; font-style: italic;}
+.prosconswidget .wpsm_pros{padding: 0}
+.wpsm_cons .title_cons{color:#f24f4f; margin: 0 0 15px 0; font-size: 16px; font-weight: bold; font-style: italic;}
 .wpsm_pros, .wpsm_cons{margin: 0}
 .wpsm_pros ul li, .wpsm_cons ul li{list-style: none !important; margin: 0 0 10px 0;}
 .wpsm_pros ul, .wpsm_cons ul{margin: 0 0 15px 0} 
-.wpsm_pros ul li:before{content:'\f00c'; font-family: 'FontAwesome'; color: #8bb900; padding-right: 6px}
-.wpsm_cons ul li:before{content:'\f068'; font-family: 'FontAwesome'; color: #cc0000; padding-right: 8px}
+.wpsm_pros ul li:before{content:'\f00c'; font-family: 'FontAwesome'; color: #58c649; padding-right: 8px}
+.wpsm_cons ul li:before{content:'\f068'; font-family: 'FontAwesome'; color: #f24f4f; padding-right: 8px}
+.prosconswidget{font-family: Roboto;}
 
 /*Widgets
 ==============================*/
-.wpb_content_element h2.widgettitle{ font-size: 16px; margin-bottom: 22px; font-family: Arial }
+.wpb_content_element h2.widgettitle{margin-bottom: 25px; }
 
 /*SEP LINE*/
 .wpsm_sep_line{margin: 0 auto;padding: 0;position: relative;overflow: hidden;-webkit-box-sizing: border-box; box-sizing: border-box;}

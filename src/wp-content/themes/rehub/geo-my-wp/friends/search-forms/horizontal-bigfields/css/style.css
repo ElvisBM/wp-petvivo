@@ -53,11 +53,13 @@ div.gmw-fl-horizontal-big-form-wrapper form .editfield label {
 	display:block;
 }
 
+div.gmw-fl-horizontal-big-form-wrapper form .editfield{margin: 0 0 10px 0}
 div.gmw-fl-horizontal-big-form-wrapper form .editfield span.label,
 div.gmw-fl-horizontal-big-form-wrapper form .editfield label {
 	display: block;
+	font-size: 16px;
 	font-weight: bold;
-	margin: 15px 0 0px 0;
+	margin: 0 0 5px 0;
 }
 
 div.gmw-fl-horizontal-big-form-wrapper form .editfield div.checkbox label,
@@ -95,6 +97,8 @@ div.gmw-fl-horizontal-big-form-wrapper select {
 	box-sizing: border-box;
 }
 
+.gmw-fl-form-xprofile-fields div.gmw-fl-horizontal-big-form-wrapper select, .gmw-fl-form-xprofile-fields div.gmw-fl-horizontal-big-form-wrapper input[type="text"]{width: 100%}
+
 div.gmw-fl-horizontal-big-form-wrapper input[type="text"] {
      margin-top:6px;
     padding: 10px 30px 10px 18px;	
@@ -115,6 +119,7 @@ border: 1px solid #ccc;
     line-height: 30px;
     background: url(select.png) right center no-repeat #fff;
     -webkit-appearance: none; 
+    height: 52px;
 }
 
 div.gmw-fl-horizontal-big-form-wrapper .gmw-dropdown-taxonomy-wrapper label, 
@@ -302,17 +307,22 @@ div.gmw-fl-horizontal-big-form-wrapper gmw-checkbox-taxonomy-wrapper span.label 
 	width:100%;
 	padding:10px 0px;
 }
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-big-form-wrapper input.gmw-submit{margin: 10px 0 0 0}
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-big-form-wrapper div.xfield-trigger{display: block; margin: 0}
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-big-form-wrapper div.xfield-trigger-wrapper{display: block; margin: 0 0px 10px 0px;}
 
 div.gmw-fl-horizontal-big-form-wrapper input.gmw-submit{    
     height: 54px;
     padding: 0 35px;
-    margin-left: 5px;
+    margin-left: 10px;
     font-size: 18px;
     font-weight: normal;
-    line-height: 54px
+    line-height: 54px;
     position: relative;
     top: -2px
 }
+
+
 
 @media (max-width:600px) {
 	

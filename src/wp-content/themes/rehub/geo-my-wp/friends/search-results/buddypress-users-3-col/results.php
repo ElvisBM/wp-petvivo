@@ -65,7 +65,7 @@
                 $mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_users_fcred($author_ID ) : '';
             ?>
             <div class="member-inner-list" style="<?php rh_cover_image_url( 'members', 120, true ); ?>">
-                <?php if (!empty($mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo mycred_get_users_rank_id($author_ID); ?>"><?php echo $mycredrank ;?></span><?php endif;?>            
+                <?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?>           
                 <div class="item-avatar">
                     <a href="<?php bp_member_permalink(); ?>"><?php bp_member_avatar(); ?></a>
                     <?php // <i class="online-status fa fa-circle"></i> ?>
@@ -74,7 +74,7 @@
                 <div class="item">
                     <div class="item-title">
                         <a href="<?php bp_member_permalink(); ?>">
-                            <?php bp_member_name(); ?>                          
+                            <?php the_author_meta( 'display_name',$author_ID); ?>                          
                         </a>
                     </div>
 
@@ -87,8 +87,8 @@
                     <?php if (defined('wcv_plugin_dir')):?>
                         <?php if(WCV_Vendors::is_vendor( $author_ID)):?>
                         <div class="store_member_in_m_loop">
-                            <span class="store_member_in_m_loop_l"><?php _e('Shop owner:', 'rehub_framework');?></span>
-                            <a href="<?php echo WCV_Vendors::get_vendor_shop_page( $author_ID );?>" class="store_member_in_m_loop_a"><?php echo WCV_Vendors::get_vendor_sold_by( $author_ID );?></a>
+                            <span class="store_member_in_m_loop_l"><?php _e('Owner of shop:', 'rehub_framework');?></span>
+                            <a href="<?php echo WCV_Vendors::get_vendor_shop_page( $author_ID );?>" class="store_member_in_m_loop_a"><?php echo get_user_meta( $author_ID, 'pv_shop_name', true );?></a>
                         </div>
                         <?php endif;?>
                     <?php endif;?>                  

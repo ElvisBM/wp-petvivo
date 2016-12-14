@@ -7,10 +7,11 @@
         'orig_url' => $aff_url_exist,
         'egg_id' => $re_egg_id,
     );
-    $offer_url = (in_array('affiliate-egg/affiliate-egg.php', apply_filters('active_plugins', get_option('active_plugins')))) ? Keywordrush\AffiliateEgg\LinkHandler::createAffUrl($item) : esc_url($offer_url_exist);
+    $offer_url = (rh_is_plugin_active('affiliate-egg/affiliate-egg.php')) ? Keywordrush\AffiliateEgg\LinkHandler::createAffUrl($item) : esc_url($offer_url_exist);
     $offer_price = get_post_meta( get_the_ID(), 'affegg_product_price', true );
     $offer_price_old = get_post_meta( get_the_ID(), 'affegg_product_old_price', true );
-    $offer_currency = (in_array('affiliate-egg/affiliate-egg.php', apply_filters('active_plugins', get_option('active_plugins')))) ? Keywordrush\AffiliateEgg\TemplateHelper::currencyTyping($re_egg_currency) : $re_egg_currency;
+    $offer_formated_price = (rh_is_plugin_active('affiliate-egg/affiliate-egg.php')) ? Keywordrush\AffiliateEgg\TemplateHelper::formatPriceCurrency($offer_price, $re_egg_currency) : $re_egg_currency.$offer_price;
+    $offer_formated_priceold = (rh_is_plugin_active('affiliate-egg/affiliate-egg.php')) ? Keywordrush\AffiliateEgg\TemplateHelper::formatPriceCurrency($offer_price_old, $re_egg_currency) : $re_egg_currency.$offer_price;    
     $offer_coupon = get_post_meta( get_the_ID(), 'affegg_product_product_coupon', true );
     $offer_coupon_date = get_post_meta( get_the_ID(), 'affegg_product_product_coupon_date', true );
     $offer_last_update = get_post_meta( get_the_ID(), 'affegg_product_last_update', true );
@@ -29,7 +30,7 @@
             $coupon_style = '';
         }
         else {
-            $coupon_text = __('Coupon is Expired', 'rehubchild');
+            $coupon_text = __('Expired', 'rehub_framework');
             $coupon_style = 'expired_coupon';
         }
     ?>
@@ -38,8 +39,8 @@
     <?php if(!empty($offer_price) && $offer_price !='0' && $showme !='button') : ?>
         <p>
             <span class="price_count">
-                <ins><?php echo ' <span>'.esc_html($offer_currency).' </span>' ?><?php echo esc_html($offer_price) ?></ins>
-                <?php if(!empty($offer_price_old) && $offer_price_old !='0') :?> <del><?php echo esc_html($offer_price_old) ; ?></del><?php endif ;?>
+                <ins><?php echo $offer_formated_price;?></ins>
+                <?php if(!empty($offer_price_old) && $offer_price_old !='0') :?> <del><?php echo $offer_formated_priceold; ?></del><?php endif ;?>
             </span>
         </p>
     <?php endif ;?>

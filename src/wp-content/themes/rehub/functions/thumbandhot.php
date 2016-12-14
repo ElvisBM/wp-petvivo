@@ -67,7 +67,19 @@ function hot_count() {
                     update_user_meta( $postauthor, "overall_post_likes", --$overall_post_likes ); // -1 count to post author overall likes                 
                 } 
                 else {
-                    //update_post_meta( $post_id, "post_hot_count", $post_hot_count-2 );
+                    if(!empty($_POST['heart'])){
+                        update_post_meta( $post_id, "post_hot_count", $post_hot_count-1 );
+                        update_user_meta( $postauthor, "overall_post_likes", --$overall_post_likes );
+                        update_user_meta( $user_id, "_user_like_count", $user_likes-1 );
+                        
+                        $userkeyip = 'user-'.$user_id;
+                        unset($liked_USERS[$userkeyip]);
+                        update_post_meta( $post_id, "_user_liked", $liked_USERS );
+
+                        $postkeyip = 'post-'.$post_id;
+                        unset($liked_POSTS[$postkeyip]);
+                        update_post_meta( $user_id, "_liked_posts", $liked_POSTS );                        
+                    }
                 }                                       
             }           
             
@@ -111,7 +123,18 @@ function hot_count() {
                     update_user_meta( $postauthor, "overall_post_likes", --$overall_post_likes ); // -1 count to post author overall likes                    
                 } 
                 else {
-                    //update_post_meta( $post_id, "post_hot_count", $post_hot_count-2 );
+                    if(!empty($_POST['heart'])){
+                        update_post_meta( $post_id, "post_hot_count", $post_hot_count-1 );
+                        update_user_meta( $postauthor, "overall_post_likes", --$overall_post_likes );   
+
+                        $keyip = 'ip-'.$ip;
+                        unset($meta_IPS[$keyip]);
+                        update_post_meta( $post_id, "_user_IP", $meta_IPS );
+
+                        unset($guest_likes_transient[$post_id]);
+                        set_transient('re_guest_likes_' . $ip, $guest_likes_transient, 30 * DAY_IN_SECONDS);
+
+                    }
                 }                                       
             }
         }
@@ -185,15 +208,15 @@ function getHotLike( $post_id ) {
     $output .= '">'.$icontemp.$temp.'<span class="gradus_icon"></span></span></span> ';
     $output .= '<span class="table_cell_hot cell_minus_hot">';
     if ( AlreadyHot( $post_id ) ) { // already liked, set up unlike addon
-        $output .= '<button class="hotminus alreadyhot" alt="Vote Down" title="Vote Down" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+        $output .= '<button class="hotminus alreadyhot" alt="'.__('Vote down', 'rehub_framework').'" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
     } else { // normal like button
-        $output .= '<button class="hotminus" alt="Vote Down" title="Vote Down" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+        $output .= '<button class="hotminus" alt="'.__('Vote down', 'rehub_framework').'" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
     }
     $output .= '</span><span class="table_cell_hot cell_plus_hot">';
     if ( AlreadyHot( $post_id ) ) { // already liked, set up unlike addon
-        $output .= '<button class="hotplus alreadyhot" alt="Vote Up" title="Vote Up" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+        $output .= '<button class="hotplus alreadyhot" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
     } else { // normal like button
-        $output .= '<button class="hotplus" alt="Vote Up" title="Vote Up" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+        $output .= '<button class="hotplus" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
     }
     $output .= '</span>';
     $output .= '<span id="textinfo'.$post_id.'" class="textinfo table_cell_hot"></span>';
@@ -259,7 +282,7 @@ function getHotLikeTitle( $post_id ) {
 }
 
 if (!function_exists('getHotThumb')){
-function getHotThumb( $post_id, $comment_meta = false, $deal_score = false, $onlyone = false ) {    
+function getHotThumb( $post_id, $comment_meta = false, $deal_score = false, $onlyone = false, $wishlistadd = '',$wishlistadded = '' ) {    
     $like_count = get_post_meta( $post_id, "post_hot_count", true ); // get post likes
     if ( ( !$like_count ) || ( $like_count && $like_count == "0" ) ) { // no votes, set up empty variable
         $temp = '0';
@@ -268,6 +291,7 @@ function getHotThumb( $post_id, $comment_meta = false, $deal_score = false, $onl
     }
     $deal_score_wrap = ($deal_score == true) ? ' dealScoreWrap': '';
     $onlyonewrap = ($onlyone == true) ? ' heart_thumb_wrap' : '';
+    $onlyheartclass = ($onlyone == true) ? ' heartplus' : '';
     $output = '<div class="post_thumbs_wrap'.$deal_score_wrap.$onlyonewrap.'">';
     if ($comment_meta == true){
         $output .='<span class="post_thumbs_comm"><span>'.get_comments_number().'</span></span>';
@@ -288,18 +312,18 @@ function getHotThumb( $post_id, $comment_meta = false, $deal_score = false, $onl
         
     }    
     $output .= '<span class="table_cell_thumbs">';
-        if ( AlreadyHot( $post_id ) ) { // already liked, set up unlike addon
-            $output .= '<button class="thumbplus alreadyhot" alt="Vote Up" title="Vote Up" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
-        } else { // normal like button
-            $output .= '<button class="thumbplus" alt="Vote Up" title="Vote Up" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
-        }   
         if ($onlyone == false) {
             if ( AlreadyHot( $post_id ) ) { // already liked, set up unlike addon
-                $output .= '<button class="thumbminus alreadyhot" alt="Vote Down" title="Vote Down" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+                $output .= '<button class="thumbminus alreadyhot" alt="'.__('Vote down', 'rehub_framework').'" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
             } else { // normal like button
-                $output .= '<button class="thumbminus" alt="Vote Down" title="Vote Down" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+                $output .= '<button class="thumbminus" alt="'.__('Vote down', 'rehub_framework').'" title="'.__('Vote down', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
             }
-        }
+        }    
+        if ( AlreadyHot( $post_id ) ) { // already liked, set up unlike addon
+            $output .= '<button class="thumbplus alreadyhot'.$onlyheartclass.'" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+        } else { // normal like button
+            $output .= '<button class="thumbplus'.$onlyheartclass.'" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';
+        }   
     $output .= '</span>';
     if ($deal_score == false) {
         $output .= '<span id="thumbscount'.$post_id.'" class="thumbscount';
@@ -308,11 +332,20 @@ function getHotThumb( $post_id, $comment_meta = false, $deal_score = false, $onl
         endif;  
         $output .= '">'.$temp.'</span> ';        
     }
+    if ($wishlistadd) {
+        $output .= '<span class="wishlistadd'.$post_id.'">'; 
+        $output .= '">'.$wishlistadd.'</span> ';        
+    }  
+    if ($wishlistadded) {
+        $output .= '<span class="wishlistadded'.$post_id.'">'; 
+        $output .= '">'.$wishlistadded.'</span> ';        
+    }      
     $output .= '</div></div>';    
 
     return $output;
 }
 }
+add_shortcode('getHotThumb', 'getHotThumb');
 
 if (!function_exists('getHotSingleButton')){
 function getHotSingleButton( $post_id ) {    
@@ -326,7 +359,7 @@ function getHotSingleButton( $post_id ) {
     $output .= '<span class="post_thumbs_meter">';    
     $output .= '<span class="table_cell_thumbs">';
     $alreadyhotclass = ( AlreadyHot( $post_id ) ) ? ' alreadyhot' : '';
-    $output .= '<button class="thumbplus heartplus'.$alreadyhotclass.'" alt="Vote Up" title="Vote Up" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';   
+    $output .= '<button class="thumbplus heartplus'.$alreadyhotclass.'" alt="'.__('Vote up', 'rehub_framework').'" title="'.__('Vote up', 'rehub_framework').'" data-post_id="'.$post_id.'" data-informer="'.$temp.'"></button>';   
     $output .= '</span>';
         $output .= '<span id="thumbscount'.$post_id.'" class="thumbscount';
         if ($temp < 0) :

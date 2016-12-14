@@ -46,6 +46,7 @@ border: 1px solid #ccc;
     line-height: 30px;
     background: url(select.png) right center no-repeat #fff;
     -webkit-appearance: none; 
+    height: 52px;
 }
 
 div.gmw-pt-horizontal-big-form-wrapper .gmw-dropdown-taxonomy-wrapper label, 
@@ -93,7 +94,7 @@ div.gmw-pt-horizontal-big-form-wrapper.gmw-form-wrapper .gmw-locator-btn-within-
 	position: absolute;
 	right:0px;
 	top:0px;
-	padding: 2px 5px ;
+	padding: 15px 5px 0 0;
 	width:initial;
 	height: initial;
 }

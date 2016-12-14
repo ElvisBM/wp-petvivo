@@ -7,12 +7,7 @@
 		$value = apply_filters('the_editor_content', $value);
 	}
 	else {
-		if (function_exists('format_for_editor')) {
-			$value = format_for_editor($value);
-		}
-		else {
-			$value = wp_richedit_pre($value);
-		}
+		$value = wp_richedit_pre($value);
 	}
 ?>
 <div class="customEditor">

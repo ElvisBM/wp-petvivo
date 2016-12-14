@@ -3,7 +3,7 @@
  */
 div.gmw-fl-horizontal-gray-form-wrapper {
  	background: #f8f8f8;
-	padding:15px 10px 5px;
+	padding:15px 15px 5px;
 	border-top:1px solid #eee;
 	border-bottom:1px solid #eee;
 	margin-bottom: 1px
@@ -23,7 +23,7 @@ div.gmw-fl-horizontal-gray-form-wrapper .gmw-keywords-field,
 div.gmw-fl-horizontal-gray-form-wrapper .gmw-distance-select,
 div.gmw-fl-horizontal-gray-form-wrapper .gmw-posts-dropdown {
 	display:inline-block;
-	margin:0 5px 10px 0px;
+	margin:0 8px 10px 0px;
 }
 
 div.gmw-fl-horizontal-gray-form-wrapper div.xfield-trigger-wrapper{display: inline-block;}
@@ -31,7 +31,7 @@ div.gmw-fl-horizontal-gray-form-wrapper div.xfield-trigger {
 	display: inline-block;
 	padding: 6px 16px;
 	border: 1px solid #ccc;
-	margin: 0 5px 10px 0;
+	margin: 0 8px 10px 0;
 	color:#555;
 	font-size: 14px;
 	background: #fafafa;
@@ -56,11 +56,13 @@ div.gmw-fl-horizontal-gray-form-wrapper form .editfield label {
 	display:block;
 }
 
+div.gmw-fl-horizontal-gray-form-wrapper form .editfield{margin: 0 0 10px 0}
 div.gmw-fl-horizontal-gray-form-wrapper form .editfield span.label,
 div.gmw-fl-horizontal-gray-form-wrapper form .editfield label {
 	display: block;
+	font-size: 14px;
 	font-weight: bold;
-	margin: 15px 0 0px 0;
+	margin: 0 0 5px 0;
 }
 
 div.gmw-fl-horizontal-gray-form-wrapper form .editfield div.checkbox label,
@@ -86,8 +88,6 @@ div.gmw-fl-horizontal-gray-form-wrapper .gmw-fl-form-xprofile-fields {
 	background-color: rgb(254, 254, 254);
 	border: 1px solid rgb(238, 238, 238);
 	padding: 15px;
-	background-position: initial initial;
-	background-repeat: initial initial;
 	margin-bottom: 10px;
 }
 
@@ -113,8 +113,11 @@ div.gmw-fl-horizontal-gray-form-wrapper select {
 	border: 1px solid #ccc;
 	font-size: 14px;
 	color:#555;
-	padding: 9px;
-	line-height: 24px
+	padding: 6px 25px 6px 15px;
+	line-height: 24px;
+	-webkit-appearance: none; 
+	background: url(select.png) right center no-repeat #fff;
+	height: 38px;
 }
 
 div.gmw-fl-horizontal-gray-form-wrapper .gmw-dropdown-taxonomy-wrapper label, 
@@ -282,7 +285,8 @@ div.gmw-fl-horizontal-gray-form-wrapper gmw-checkbox-taxonomy-wrapper span.label
 .widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper .gmw-submit-wrapper,
 .widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper .gmw-custom-field-wrapper,
 .widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper .gmw-keywords-field,
-.widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper .gmw-distance-select {
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper .gmw-distance-select,
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper div.xfield-trigger-wrapper {
 	display:block;
 	margin:0 0px 10px 0px;
 }
@@ -294,18 +298,29 @@ div.gmw-fl-horizontal-gray-form-wrapper gmw-checkbox-taxonomy-wrapper span.label
 }
 
 .widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper input[type="text"], 
-.widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper select {
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper select,
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper div.xfield-trigger {
 	width:100%;
+	margin: 0;
 }
 
 .widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper .gmw-submit-button {
 	width:100%;
 	padding:10px 0px;
 }
+.widget_gmw_search_form_widget div.gmw-fl-horizontal-gray-form-wrapper input.gmw-submit{margin:  15px 0 0 0}
 
-div.gmw-fl-horizontal-gray-form-wrapper input.gmw-submit{height: 38px;
+
+div.gmw-fl-horizontal-gray-form-wrapper input.gmw-submit{	
+	height: 38px;
     padding: 0 16px;
-    margin-left: 5px; font-size: 14px; font-weight: normal; line-height: 38px}
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 38px;
+    top:-1px;
+    position: relative;}
+
 
 @media (max-width:600px) {
 	

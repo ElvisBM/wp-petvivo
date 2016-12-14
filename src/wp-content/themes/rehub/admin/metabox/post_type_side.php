@@ -15,7 +15,22 @@ return array(
 			'label' => __('Read More custom text', 'rehub_framework'),
 			'description' => __('Will be used in some blocks instead of default read more text', 'rehub_framework'),
 			'default' => '',
-		),		
+		),	
+
+		array(
+			'type' => 'select',
+			'name' => '_post_layout',
+			'label' => __('Post layout', 'rehub_framework'),
+			'default' => 'normal_post',
+			'items' => array(
+				'data' => array(
+					array(
+						'source' => 'function',
+						'value'  => 'rehub_get_post_layout_array',
+					),
+				),
+			),			
+		),			
 
 		array(
 			'type' => 'radiobutton',

@@ -1,6 +1,4 @@
 /*custom row layout*/
-.controls_row .vc_control-set-column.l_34_14{background-image: url(img/34_14.gif);}
-.controls_row .vc_control-set-column.l_23_13 {background-image: url(img/23_13.gif) !important;}
 .wpb_gal_carousel .attachment-thumbnails img {height: 20px;width: auto;}
 .wpb_gal_carousel .attachment-thumbnails li{height: 20px;width: 20px;overflow: hidden;margin-right: 1px;margin-bottom: 0;display: inline-block;}
 .icon-n-w-thumbs.vc_element-icon {background-image: url(img/icon-n-w-thumbs.png);}
@@ -46,18 +44,3 @@
 .icon-mdtf.vc_element-icon{background-image: url(img/icon-mdtf.png);}
 .icon-button_popup.vc_element-icon{background-image: url(img/icon-button_popup.png);}
 #TB_window {z-index: 100500 !important;}
-.img_row_sidebar .vc_templates-image{background-image: url(img/row_sidebar.png);}
-.img_demo_home_1 .vc_templates-image{background-image: url(img/homepage.png);}
-.img_demo_home_2 .vc_templates-image{background-image: url(img/homepage2.png);}
-.call_centered_icon .vc_templates-image{background-image: url(img/call_centered_icon.png);}
-.call_bg_block .vc_templates-image{background-image: url(img/call_-with_bg.png);}
-.iconed_block .vc_templates-image{background-image: url(img/icons_block.png);}
-.images_grid .vc_templates-image{background-image: url(img/image_grid_w_title.png);}
-.icons_contacts .vc_templates-image{background-image: url(img/contacts_icons.png);}
-.woo_tabs_grid .vc_templates-image{background-image: url(img/woo_w_tabs_block.png);}
-.search_block .vc_templates-image{background-image: url(img/search_block.png);}
-.call_img_t_price .vc_templates-image{background-image: url(img/call_img_t_price.png);}
-.call_t_btn .vc_templates-image{background-image: url(img/call_t_btn.png);}
-.call_t_mega .vc_templates-image{background-image: url(img/call_t_mega.png);}
-.call_bars .vc_templates-image{background-image: url(img/call_bars.png);}
-.b-w-links-block .vc_templates-image{background-image: url(img/b-w-links-block.png);}

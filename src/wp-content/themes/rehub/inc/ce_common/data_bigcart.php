@@ -48,9 +48,15 @@
                         </a>                                                
                     </div>
                 </div>
-            </div>                
-            <?php if ($description): ?>
-                <p><?php echo $description; ?></p>                    
+            </div> 
+            <?php if(!empty($keyspecs)):?>
+                <ul class="featured_list">
+                    <?php foreach ($keyspecs as $keyspec) :?>
+                        <li><?php echo $keyspec; ?></li>
+                    <?php endforeach; ?>   
+                </ul>                       
+            <?php elseif ($description): ?>
+                <p><?php echo $description; ?></p> 
             <?php endif; ?>              
         </div>           
     </div> 

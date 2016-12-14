@@ -72,6 +72,10 @@ function rehub_ajax_search() {
         'no_found_rows' => true     
     );
 
+    if (!empty($_POST['catid'])) {
+        $args['cat'] = ''.esc_html($_POST['catid']).'';
+    }   
+
     $search_query = new WP_Query($args);
 
     //build the results
@@ -101,13 +105,19 @@ function rehub_ajax_search() {
                 $buffer .= '<div class="re-search-result-excerpt">'.rehub_truncate("maxchar=150&text=$post->post_content&echo=false").'</div>';
             } else {
                 $buffer .= '<div class="re-search-result-excerpt">'.rehub_truncate("maxchar=150&text=$post->post_excerpt&echo=false").'</div>'; 
-            }            
-
+            }          
             if ( '' != $the_price ) {
                 $buffer .= '<span class="re-search-result-price">'.$the_price.'</span>';
-            } else {
-                $buffer .= '<span class="re-search-result-meta">'.get_the_time(get_option( 'date_format' ), $post->ID).'</span>';
+                if(!empty($_POST['enable_compare'])){
+                    $buffer .= '<span class="re-search-result-compare">'.do_shortcode('[wpsm_compare_button id='.$post->ID.']').'</span>';
+                }                
             }
+            elseif(!empty($_POST['enable_compare'])){
+                $buffer .= '<span class="re-search-result-compare">'.do_shortcode('[wpsm_compare_button id='.$post->ID.']').'</span>';
+            }
+            else {
+                $buffer .= '<span class="re-search-result-meta">'.get_the_time(get_option( 'date_format' ), $post->ID).'</span>';
+            }         
             $buffer .= '</div></div>';
         }
     }
@@ -116,6 +126,9 @@ function rehub_ajax_search() {
         //no results
         $buffer = '<div class="re-aj-search-result-msg no-result">' . __('No results', 'rehub_framework') . '</div>';
     } else {
+        if(is_array($posttypes)){
+            $posttypes = implode(',', $posttypes);
+        }
         $buffer_msg .= '<div class="re-aj-search-result-msg"><a href="' . esc_url(home_url('/?s=' . $re_string.'&post_type='.$posttypes )) . '">' . __('View all results', 'rehub_framework') . '</a></div>';
         //add wrap
         $buffer = '<div class="re-aj-search-wrap-results">' . $buffer . '</div>' . $buffer_msg;
@@ -168,6 +181,52 @@ function ajax_action_re_filterpost() {
             $args['orderby'] = 'meta_value_num date';
             $args['meta_key'] = $filtermetakey;
         }
+        if($filtertype =='deals') { //if meta key sorting
+            unset($args['meta_key']);
+            unset($args['orderby']);
+            $args['meta_query']['relation'] = 'AND';  
+            if(!empty($args['post_type']) && $args['post_type']=='product'){
+                $args['meta_query'][] = array(
+                    'key'     => 'rehub_woo_coupon_code',
+                    'compare' => 'NOT EXISTS',
+                ); 
+            }  
+            else{
+                $args['meta_query'][] = array(
+                    'key'     => 'rehub_offer_product_coupon',
+                    'compare' => 'NOT EXISTS',
+                );                
+            }
+            $args['meta_query'][] = array(
+                'key'     => 're_post_expired',
+                'value'   => '1',
+                'compare' => '!=',
+            );
+        }  
+        if($filtertype =='coupons') { //if meta key sorting
+            unset($args['meta_key']);
+            unset($args['orderby']);            
+            $args['meta_query']['relation'] = 'AND';  
+            if(!empty($args['post_type']) && $args['post_type']=='product'){
+                $args['meta_query'][] = array(
+                    'key'     => 'rehub_woo_coupon_code',
+                    'value' => '',
+                    'compare' => '!=',
+                ); 
+            }  
+            else{
+                $args['meta_query'][] = array(
+                    'key'     => 'rehub_offer_product_coupon',
+                    'value' => '',
+                    'compare' => '!=',
+                );                
+            }
+            $args['meta_query'][] = array(
+                'key'     => 're_post_expired',
+                'value'   => '1',
+                'compare' => '!=',
+            );
+        }              
         if($filtertype =='tax' && !empty($filtertaxkey) && !empty($filtertaxtermslug)) { //if taxonomy sorting
             if (!empty($args['tax_query'])) {
                 unset($args['tax_query']);
@@ -332,7 +391,7 @@ function coupon_get_code(){
                 $printout .= '</div>';
                 $printout .= '<div class="storeprint">'.$shop.'</div>';
                 $printout .= '</div><div class="printcouponcentral">';
-                if ($product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0) :
+                if ($product->is_on_sale() && !$product->is_type( 'variable' ) && $product->get_regular_price() && $product->get_price() > 0 ) :
                     $printout .= '<span class="save_proc_woo_print">';   
                     $offer_price_calc = (float) $product->get_price();
                     $offer_price_old_calc = (float) $product->get_regular_price();
@@ -410,3 +469,78 @@ die();
 }
 add_action('wp_ajax_ajax_code', 'coupon_get_code');
 add_action('wp_ajax_nopriv_ajax_code', 'coupon_get_code');
+
+
+//////////////////////////////////////////////////////////////////
+// Frontend deal submit
+//////////////////////////////////////////////////////////////////
+
+if( !function_exists('rh_ajax_action_send_offer') ) {
+    function rh_ajax_action_send_offer() {
+        
+        if ( empty($_POST) || !wp_verify_nonce($_POST['offer_nonce'], 'rh_ajax_action_send_offer') ) {
+            die('Sorry, but the inspection data is not match.');
+            exit;
+           
+        } else {
+            $postid = intval( $_POST['post_id'] );
+            $from_user = intval( $_POST['from_user'] );
+            $product_name = sanitize_text_field( $_POST['rehub_product_name'] );
+            $product_url = esc_url( $_POST['rehub_product_url'] );
+            $product_price = sanitize_text_field( $_POST['rehub_product_price'] );
+            $product_desc = sanitize_text_field( $_POST['rehub_product_desc'] );
+            
+            $set_user_offer_array = array(
+                'show_offer' => 0,
+                'featured_multioffer' => 0,
+                'multioffer_url' => $product_url,
+                'multioffer_name' => $product_name,
+                'multioffer_desc' => $product_desc,
+                'multioffer_price_old' => '',
+                'multioffer_price' => $product_price,
+                'multioffer_coupon' => '',
+                'multioffer_date' => '',
+                'multioffer_btn_text' => '',
+                'multioffer_user' => $from_user,
+                'offer_assign'=> 'user'
+            );
+            
+            $offer_group_array = (array)get_post_meta( $postid, 'rehub_multioffer_group', true );
+            $multioffer_names = array();
+            if (!empty($offer_group_array)){
+                $multioffer_names = wp_list_pluck( $offer_group_array, 'multioffer_user' );
+                if (true === in_array($from_user, $multioffer_names)){
+                    return;
+                }                
+            }
+            
+            if( !empty($offer_group_array)) {
+                if( array_filter($offer_group_array[0]) ) {
+                     array_unshift( $offer_group_array, $set_user_offer_array );
+                } else {
+                    $offer_group_array[0] = $set_user_offer_array;
+                }
+            } else {
+                $offer_group_array[] = $set_user_offer_array;
+            }
+            $postarray = array('rehub_multioffer_group', '_multioffer_shortcode');
+            update_post_meta( $postid, 'post_rehub_offers_fields', $postarray);            
+            update_post_meta( $postid, 'rehub_multioffer_group', $offer_group_array );
+            $emailto = get_option('admin_email');
+            $subject = __('Someone added offer in your post', 'rehub_framework');
+            $message = '';
+            $user_info = get_userdata($from_user);
+            if ($user_info && $emailto){
+                $message .=  $user_info->user_login;
+                $message .= __(' added offer in you post: ', 'rehub_framework');
+                $message .= '<a href="'.get_admin_url().'post.php?post='.$postid.'&action=edit">'.get_the_title($postid).'</a>';
+                $message .= get_the_title($postid);
+                $mail = wp_mail($emailto, $subject, $message);
+            }
+            
+        }
+        exit;
+    }
+    add_action( 'wp_ajax_rh_ajax_action_send_offer', 'rh_ajax_action_send_offer' );
+    add_action( 'wp_ajax_nopriv_rh_ajax_action_send_offer', 'rh_ajax_action_send_offer' );
+}

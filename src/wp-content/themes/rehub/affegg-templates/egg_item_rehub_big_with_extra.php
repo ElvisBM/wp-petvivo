@@ -42,12 +42,12 @@
 
 	            <?php if(!empty($offer_price)) : ?>
 	                <div class="deal-box-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-	                    <sup class="cur_sign"><?php echo $item['currency']; ?></sup><?php echo $offer_price ?>
-	                    <?php if(!empty($offer_price_old)) : ?>
-	                    <span class="retail-old">
-	                      <strike><span class="value"><?php echo $offer_price_old ?></span></strike>
-	                    </span>
-	                    <?php endif ;?>                
+                        <?php echo $item['price_formatted'] ?>
+                        <?php if(!empty($offer_price_old)) : ?>
+                        <span class="retail-old">
+                          <strike><span class="value"><?php echo $item['old_price_formatted']; ?></span></strike>
+                        </span>
+                        <?php endif ;?>                
 	                    <meta itemprop="price" content="<?php echo $item['price_raw'] ?>">
 	                    <meta itemprop="priceCurrency" content="<?php echo $item['currency']; ?>">
 	                    <?php if ($item['in_stock']): ?>
@@ -135,13 +135,6 @@
                 </div>
             <?php endif ;?>
             <?php if (!empty ($gallery_images)) :?>
-                <script>
-                jQuery(document).ready(function($) {
-                    'use strict'; 
-                    $('.rehub_woo_review .pretty_woo a').attr('rel', 'prettyPhoto[rehub_product_gallery_<?php echo rand(1, 50);?>]');
-                    $(".rehub_woo_review .pretty_woo a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
-                });
-                </script>
                 <div class="rehub_woo_review_tabs pretty_woo">
                     <?php wp_enqueue_script('prettyphoto');
                         foreach ($gallery_images as $gallery_img) {
@@ -153,6 +146,13 @@
                         }
                     ?>
                 </div>
+                <script>
+                jQuery(document).ready(function($) {
+                    'use strict'; 
+                    $('.rehub_woo_review .pretty_woo a').attr('rel', 'prettyPhoto[rehub_product_gallery_<?php echo rand(1, 50);?>]');
+                    $(".rehub_woo_review .pretty_woo a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
+                });
+                </script>                
             <?php endif ;?>
             <?php if (!empty ($import_comments)) :?>
                 <div class="rehub_woo_review_tabs affrev">

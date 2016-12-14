@@ -601,7 +601,24 @@ if( !function_exists('rehub_vc_filter_formodules') ) {
                 'element' => 'tax_name',
                 'not_empty' => true,
             ),
-        ),                                  
+        ), 
+        array(
+            "type" => "dropdown",
+            "class" => "",
+            "heading" => __('Deal filter', 'rehub_framework'),
+            "admin_label" => true,
+            "param_name" => "show_coupons_only",
+            "value" => array(
+                __('Show all', 'rehub_framework') => "all",
+                __('Show discounts (not expired)', 'rehub_framework') => "1",
+                __('Only offers, excluding coupons (not expired)', 'rehub_framework') => "5",                
+                __('Only coupons (not expired)', 'rehub_framework') => "2",                  
+                __('Show all except expired', 'rehub_framework') => "3", 
+                __('Only expired offers (which have expired date)', 'rehub_framework') => "4",
+                __('Only with reviews', 'rehub_framework') => "6",                 
+            ), 
+            'description' => __( 'Choose deal type if you use Posts as offers', 'rehub_framework' ),
+        ),                                         
         array(
             'type' => 'dropdown',
             'heading' => __( 'Order by', 'js_composer' ),
@@ -671,22 +688,7 @@ if( !function_exists('rehub_vc_filter_formodules') ) {
             "value" => '',
             'description' => __('Number of products to offset', 'rehub_framework'),
             'group' => __( 'Data settings', 'js_composer' ),          
-        ),  
-        array(
-            "type" => "dropdown",
-            "class" => "",
-            "heading" => __('Deal filter', 'rehub_framework'),
-            "admin_label" => true,
-            "param_name" => "show_coupons_only",
-            "value" => array(
-                __('Show all', 'rehub_framework') => "all",
-                __('Show deals (offers with old and sale price)', 'rehub_framework') => "1",
-                __('Only coupons (actual, with date)', 'rehub_framework') => "2",                  
-                __('Mix of simple products, deals and coupons (not expired)', 'rehub_framework') => "3", 
-                __('Only expired offers (which have expired date)', 'rehub_framework') => "4",                               
-            ), 
-            'group' => __( 'Data settings', 'js_composer' ),            
-        ),                
+        ),                  
         array(
             "type" => "dropdown",
             "class" => "",
@@ -827,11 +829,13 @@ if( !function_exists('rehub_woo_vc_filter_formodules') ) {
                 "param_name" => "show_coupons_only",
                 "value" => array(
                     __('Show all', 'rehub_framework') => "all",
-                    __('Show deals (offers with old and sale price)', 'rehub_framework') => "1",
-                    __('Only coupons (actual, with date)', 'rehub_framework') => "4",                  
-                    __('Mix of simple products, deals and coupons (not expired)', 'rehub_framework') => "2", 
-                    __('Only expired offers (which have expired date)', 'rehub_framework') => "3",                               
+                    __('Show discounts (not expired)', 'rehub_framework') => "1",
+                    __('Only offers, excluding coupons (not expired)', 'rehub_framework') => "5",                
+                    __('Only coupons (not expired)', 'rehub_framework') => "4",                  
+                    __('Show all except expired', 'rehub_framework') => "2", 
+                    __('Only expired offers (which have expired date)', 'rehub_framework') => "3",         
                 ), 
+                "description" => __( 'Choose deal type if you use Posts as offers', 'rehub_framework' ),         
             ),            
             array(
                 'type' => 'dropdown',
@@ -1028,7 +1032,9 @@ if( !function_exists('rehub_vc_aj_filter_btns_formodules') ) {
                         __('Show all posts', 'rehub_framework') => "all",
                         __('Sort by comments count', 'rehub_framework') => "comment",
                         __('Sort by meta field', 'rehub_framework') => "meta",  
-                        __('Sort by taxonomy', 'rehub_framework') => "tax",                
+                        __('Sort by taxonomy', 'rehub_framework') => "tax", 
+                        __('Show only deals', 'rehub_framework') => "deals", 
+                        __('Show only coupons', 'rehub_framework') => "coupons",            
                     ), 
                     "description" =>  __('Some important meta keys: <br /><strong>rehub_main_product_price</strong> - key where stored price of main offer, <br /><strong>rehub_review_overall_score</strong> - key for overall review score, <br /><strong>post_hot_count</strong> - hot or thumb counter, <br /><strong>post_user_average</strong> - user rating score(based on full review criterias), <br /><strong>rehub_views</strong> - post view counter, <br /><strong>affegg_product_price</strong> - price of main offer for Affiliate Egg plugin, <br /><strong>_price</strong> - key for price of woocommerce products, <br /><strong>total_sales</strong> - key for sales of woocommerce products', 'rehub_framework'),
                 ),
@@ -1105,10 +1111,28 @@ if( !function_exists('rehub_vc_aj_filter_btns_formodules') ) {
     }
 }
 
-add_action( 'vc_before_init', 'rehub_integrateWithVC' );
-function rehub_integrateWithVC() {
+//IMAGE SLIDER
+add_action( 'vc_after_init', 're_remove_slider_type' ); 
+function re_remove_slider_type() {
+    $param = WPBMap::getParam( 'vc_gallery', 'type' );
+    unset($param['value'][__( 'Flex slider fade', 'js_composer' )]);
+    unset($param['value'][__( 'Nivo slider', 'js_composer' )]);
+    vc_update_shortcode_param( 'vc_gallery', $param );
+}
 
-vc_set_as_theme(true);  
+add_action( 'vc_before_init', 'rehub_integrateWithVC' );
+function rehub_integrateWithVC() { 
+
+vc_remove_param("vc_gallery", "interval");
+vc_add_param("vc_gallery", 
+    array(
+        "type" => "checkbox",
+        "class" => "",
+        "heading" => __('Autoplay?', 'rehub_framework'),
+        "value" => array(__("Yes", "rehub_framework") => true ),
+        "param_name" => "autoplay",         
+    ) 
+);
 
 //Where to open window
 $target_arr = array(__("Same window", "js_composer") => "_self", __("New window", "js_composer") => "_blank");
@@ -2301,7 +2325,6 @@ vc_add_params("compactgrid_loop_mod", array(
 )); 
 vc_add_params("compactgrid_loop_mod", rehub_vc_aj_filter_btns_formodules()); 
 
-
 //SMALL NEWS WITHOUT THUMBNAIL
 vc_map( array(
     "name" => __('Simple list of posts', 'rehub_framework'),
@@ -2319,6 +2342,14 @@ vc_add_param("wpsm_recent_posts_list", array(
     "heading" => __("Make center alignment?", "rehub_framework"),
     "value" => array(__("Yes", "rehub_framework") => true ),
     "param_name" => "center",
+));
+vc_add_param("wpsm_recent_posts_list", array(
+    "type" => "checkbox",
+    "class" => "",
+    "group" => __('Control', 'rehub_framework'), 
+    "heading" => __("Add image?", "rehub_framework"),
+    "value" => array(__("Yes", "rehub_framework") => true ),
+    "param_name" => "image",
 ));
 vc_add_params("wpsm_recent_posts_list", rehub_vc_aj_filter_btns_formodules());
 
@@ -2444,15 +2475,6 @@ vc_map( array(
         ),                                                                                                              
     )
 ) );
-
-//IMAGE SLIDER
-add_action( 'init', 're_remove_slider_type' ); 
-function re_remove_slider_type() {
-    $param = WPBMap::getParam( 'vc_gallery', 'type' );
-    unset($param['value'][__( 'Flex slider fade', 'js_composer' )]);
-    vc_update_shortcode_param( 'vc_gallery', $param );
-}
-vc_remove_param("vc_gallery", "interval");
 
 
 if(class_exists( 'WooCommerce' )) {//WOOBLOCKS
@@ -2840,7 +2862,14 @@ vc_map( array(
             "description" => __('You can set several with commas. Be aware of taxonomies with too much items.', 'rehub_framework'),
             "param_name" => "tax",
             "dependency" => array("element" => "search_type", "value" => array("tax")),          
-        ),         
+        ),  
+        array(
+            "type" => "textfield",
+            "heading" => __('Only inside category', 'rehub_framework'),
+            "description" => __('You can search items only in category Ids, separate by comma', 'rehub_framework'),
+            "param_name" => "catid",
+            "dependency" => array("element" => "by", "value" => array("post")),          
+        ),                
         array(
             "type" => "checkbox",
             "class" => "",
@@ -2848,7 +2877,16 @@ vc_map( array(
             "value" => array(__("Yes", "rehub_framework") => true ),
             "dependency" => array("element" => "search_type", "value" => array("post")),            
             "param_name" => "enable_ajax",         
-        ),          
+        ), 
+        array(
+            "type" => "checkbox",
+            "class" => "",
+            "heading" => __('Add compare button in results?', 'rehub_framework'),
+            "description" => __('Check this only if you use dynamic comparison function of theme (Theme option - dynamic comparison) and want to have compare button in results', 'rehub_framework'),            
+            "value" => array(__("Yes", "rehub_framework") => true ),
+            "dependency" => array("element" => "enable_ajax", 'not_empty' => true),            
+            "param_name" => "enable_compare",         
+        ),                  
         array(
             "type" => "textfield",
             "heading" => __('Placeholder', 'rehub_framework'),
@@ -2921,6 +2959,30 @@ vc_map( array(
                 __('Bullet', 'rehub_framework') => "bullet"
             )
         ),
+        array(
+            "type" => "dropdown",
+            "class" => "",
+            "heading" => __('Type of gap', 'rehub_framework'),
+            "param_name" => "gap",
+            "value" => array(
+                __('Default', 'rehub_framework') => "default",
+                __('Small', 'rehub_framework') => "small"
+            )
+        ), 
+        array(
+            "type" => "checkbox",
+            "class" => "",
+            "heading" => __('Pretty hover?', 'rehub_framework'),
+            "value" => array(__("Yes", "rehub_framework") => true ),
+            "param_name" => "hover",         
+        ), 
+        array(
+            "type" => "checkbox",
+            "class" => "",
+            "heading" => __('Make link with dark color?', 'rehub_framework'),
+            "value" => array(__("Yes", "rehub_framework") => true ),
+            "param_name" => "darklink",         
+        ),                        
         array(
             'type' => 'textarea_html',
             'heading' => __( 'Content', 'rehub_framework' ),

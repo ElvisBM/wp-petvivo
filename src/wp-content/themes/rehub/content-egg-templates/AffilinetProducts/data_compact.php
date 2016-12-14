@@ -17,7 +17,13 @@ use ContentEgg\application\helpers\TemplateHelper;
     <?php $afflink = (!empty($item['url'])) ? $item['url'] : '' ;?>
     <?php $aff_thumb = (!empty($item['img'])) ? $item['img'] : '' ;?>
     <?php $offer_title = (!empty($item['title'])) ? wp_trim_words( $item['title'], 12, '...' ) : ''; ?>
-    <?php $logo = (!empty($item['extra']['logo'])) ? $item['extra']['logo'] : ''; ?> 
+    <?php if (!empty($item['logo'])) :?>
+        <?php $logo = $item['logo']; ?>             
+    <?php elseif (!empty($item['extra']['logo'])) :?>
+        <?php $logo = $item['extra']['logo']; ?>
+    <?php else:?>
+        <?php $logo = ''; ?>                
+    <?php endif;?>
     <?php if(rehub_option('rehub_btn_text') !='') :?><?php $btn_txt = rehub_option('rehub_btn_text') ; ?><?php else :?><?php $btn_txt = __('Buy this item', 'rehub_framework') ;?><?php endif ;?>
     <div class="rehub_woo_review compact_w_deals">
         <div class="rehub_feat_block table_view_block">

@@ -22,11 +22,11 @@ class WPS_Shortcode
 	function filter_mce_button( $buttons ) {
 		// add a separation before our button, here our button's id is "kt_shortcode_button"
 		array_push(
-				$buttons,		
-				"ads1",
-				"ads2",
-				"review",
+				$buttons,
+				"toplist",	
 				"contents",
+				"sticky",				
+				"linkhider",	
 				"update"
 			); 
 			return $buttons;
@@ -102,6 +102,7 @@ function add_my_custom_button( ) {
 							<option class="shortcode_option" value="codebox"><?php _e('Code box', 'rehub_framework') ;?></option>
 							<option class="shortcode_option" value="cartbox"><?php _e('Cart Box', 'rehub_framework') ;?></option>
 							<option class="shortcode_option" value="offerbox"><?php _e('Offer box', 'rehub_framework') ;?></option>
+							<option class="shortcode_option" value="offerscorebox"><?php _e('Post offer scorebox', 'rehub_framework') ;?></option>							
 							<option class="shortcode_option" value="afflist"><?php _e('List of offers', 'rehub_framework') ;?></option>
 							<option class="shortcode_option" value="woobox"><?php _e('Woocommerce Offer box', 'rehub_framework') ;?></option>
 							<option class="shortcode_option" value="woolist"><?php _e('Woocommerce Offers list', 'rehub_framework') ;?></option>

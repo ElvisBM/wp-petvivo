@@ -1,4 +1,5 @@
 <?php 
+global $post;
 if (isset($aff_link) && $aff_link == '1') {
     $link = rehub_create_affiliate_link ();
     $target = ' rel="nofollow" target="_blank"';
@@ -19,7 +20,12 @@ else {
         <?php do_action( 'rehub_after_grid_column_title' ); ?>
         <?php if($disable_meta !='1'):?>
             <div class="post-meta">
-                <?php meta_small( true, false, true ); ?>
+                <?php if ('post' == get_post_type($post->ID) && rehub_option('exclude_cat_meta') != 1) :?>
+                    <?php $category = get_the_category($post->ID);  ?>
+                    <?php if ($category) {$first_cat = $category[0]->term_id; meta_small( true, $first_cat, true, false );} ?> 
+                <?php else:?>
+                    <?php meta_small( true, false, true, false );?>          
+                <?php endif; ?>
             </div> 
             <?php do_action( 'rehub_after_grid_column_meta' ); ?>
         <?php endif?>                       

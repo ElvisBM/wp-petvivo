@@ -1,18 +1,12 @@
 <?php
 /*
-  Name: Sorted simple list
+  Name: Simple list
  */
 
 ?>
 
 <?php
 use ContentEgg\application\helpers\TemplateHelper;
-// sort items by price
-usort($items, function($a, $b) {
-    if (!$a['price']) return 1;
-    if (!$b['price']) return -1;
-    return $a['price'] - $b['price'];
-});
 ?>
 
 <div class="egg_sort_list simple_sort_list re_sort_list mb20"><a name="aff-link-list"></a>
@@ -57,7 +51,7 @@ usort($items, function($a, $b) {
                         <?php endif ;?>                        
                     </div>
                     <div class="desc_col shop_simple_col">
-                        <div class="aff_tag mt10"><?php echo rehub_get_site_favicon($item['url']); ?></div> 
+                        <div class="aff_tag mt10"><?php echo rehub_get_site_favicon('http://amazon.com'); ?></div> 
                         <small class="small_size available_stock"><?php if ($item['availability']): ?><span class="yes_available"><?php _e('In stock', 'rehub_framework') ;?></span><?php endif; ?></small>
                     </div>
                     <div class="buttons_col">

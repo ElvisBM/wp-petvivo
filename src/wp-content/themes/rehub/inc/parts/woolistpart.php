@@ -1,14 +1,14 @@
 <?php global $product; global $post;?>
 <?php if (empty( $product ) || ! $product->is_visible() ) {return;}?>
-<?php $woolink = ($product->product_type =='external' && $product->add_to_cart_url() !='') ? $product->add_to_cart_url() : get_post_permalink(get_the_ID()) ;?>
-<?php $offer_coupon = get_post_meta( get_the_ID(), 'rehub_woo_coupon_code', true ) ?>
-<?php $offer_coupon_date = get_post_meta( get_the_ID(), 'rehub_woo_coupon_date', true ) ?>
-<?php $offer_coupon_mask = get_post_meta( get_the_ID(), 'rehub_woo_coupon_mask', true ) ?>
+<?php $woolink = ($product->product_type =='external' && $product->add_to_cart_url() !='') ? $product->add_to_cart_url() : get_post_permalink($post->ID) ;?>
+<?php $offer_coupon = get_post_meta( $post->ID, 'rehub_woo_coupon_code', true ) ?>
+<?php $offer_coupon_date = get_post_meta( $post->ID, 'rehub_woo_coupon_date', true ) ?>
+<?php $offer_coupon_mask = get_post_meta( $post->ID, 'rehub_woo_coupon_mask', true ) ?>
 <?php $offer_coupon_url = esc_url( $product->add_to_cart_url() ); ?>
 <?php $coupon_style = $expired =''; if(!empty($offer_coupon_date)) : ?>
     <?php
     $timestamp1 = strtotime($offer_coupon_date);
-    $seconds = $timestamp1 - time();
+    $seconds = $timestamp1 - (int)current_time('timestamp',0);
     $days = floor($seconds / 86400);
     $seconds %= 86400;
     if ($days > 0) {
@@ -20,7 +20,7 @@
       $coupon_style = '';
     }
     else {
-      $coupon_text = __('Coupon is Expired', 'rehub_framework');
+      $coupon_text = __('Expired', 'rehub_framework');
       $coupon_style = ' expired_coupon';
       $expired = '1';
     }
@@ -37,23 +37,17 @@ if (!empty($offer_coupon)) {
 }
 elseif ($product->is_on_sale()){
     $deal_type = ' saledealtype';
-    $deal_type_string = __('Deal', 'rehub_framework');
+    $deal_type_string = __('Sale', 'rehub_framework');
 }
 else {
     $deal_type = ' defdealtype';
     $deal_type_string = __('Deal', 'rehub_framework');
 }
 ?>
-<div class="rehub_feat_block table_view_block <?php echo $reveal_enabled; echo $coupon_style; echo $deal_type; ?>">
+<div class="rehub_feat_block woocommerce table_view_block <?php echo $reveal_enabled; echo $coupon_style; echo $deal_type; ?>">
     <div class="yith_re_block">
-        <?php if (in_array( 'yith-woocommerce-compare/init.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )  { ?>
-            <?php 
-                $yith_compare = new YITH_Woocompare_Frontend();
-                add_shortcode( 'yith_compare_button', array( $yith_compare , 'compare_button_sc' ) );
-                echo do_shortcode('[yith_compare_button]'); 
-            ?>
-        <?php } ?>
-        <?php if (in_array( 'yith-woocommerce-wishlist/init.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) )  { ?>
+        <?php if(rehub_option('woo_rhcompare') == 1) {echo wpsm_comparison_button(array('class'=>'rhwooloopcompare'));}?>
+        <?php if ( defined( 'YITH_WCWL' )){ ?>
             <?php echo do_shortcode('[yith_wcwl_add_to_wishlist]'); ?>
         <?php } ?>
     </div>          
@@ -61,7 +55,7 @@ else {
         <div class="offer_thumb"> 
             <div class="deal_img_wrap">       
             <a href="<?php echo $woolink; ?>"<?php if ($product->product_type =='external'){echo ' target="_blank" rel="nofollow" '; echo $outsidelinkpart; } ?>>
-            <?php if (!has_post_thumbnail() && $product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0) :?>
+            <?php if (!has_post_thumbnail() && $product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0 && !$product->is_type( 'variable' )) :?>
                 <span class="sale_tag_inwoolist">
                     <h5>
                     <?php   
@@ -74,7 +68,7 @@ else {
                     </h5>
                 </span>
             <?php else :?>
-                <?php if ($product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0) : ?>
+                <?php if ($product->is_on_sale() && !$product->is_type( 'variable' ) && $product->get_regular_price() && $product->get_price() > 0) : ?>
                 <span class="sale_a_proc">
                     <?php   
                         $offer_price_calc = (float) $product->get_price();
@@ -114,11 +108,6 @@ else {
         <div class="price_col">
             <?php if ($product->get_price() !='') : ?>
             <p><span class="price_count"><?php echo $product->get_price_html(); ?></span></p>
-            <?php
-                $price_clean = $product->get_price();
-                $price_clean = rehub_price_clean($price_clean); 
-                $result_min[] = $price_clean;
-            ?>
             <?php endif ;?> 
             <div class="brand_logo_small">       
                 <?php WPSM_Woohelper::re_show_brand_tax('list'); //show brand taxonomy?>

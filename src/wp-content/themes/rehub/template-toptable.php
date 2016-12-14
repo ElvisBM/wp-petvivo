@@ -3,6 +3,7 @@
 ?>
 <?php 
     $module_cats = vp_metabox('rehub_top_table.top_review_cat');
+    $disable_filters = vp_metabox('rehub_top_table.top_review_filter_disable');
     $module_tag = vp_metabox('rehub_top_table.top_review_tag');
     $module_fetch = intval(vp_metabox('rehub_top_table.top_review_fetch'));
     $module_width = vp_metabox('rehub_top_table.top_review_width');
@@ -128,8 +129,13 @@
                     }
                     else { $wp_query = new WP_Query($query); }    
                     $i=0; if ($wp_query->have_posts()) :?>
-                    <?php wp_enqueue_script('tablesorter'); wp_enqueue_style('tabletoggle'); ?>
-                    <table  data-tablesaw-sortable data-tablesaw-sortable-switch class="tablesaw top_table_block<?php if ($module_width =='1') : ?> full_width_rating<?php else :?> with_sidebar_rating<?php endif;?> tablesorter" cellspacing="0">
+                    <?php if($disable_filters !=1):?>
+                        
+                    <?php endif;?>
+                    <?php $sortable_col = ($disable_filters !=1) ? ' data-tablesaw-sortable-col' : '';?>
+                    <?php $sortable_switch = ($disable_filters !=1) ? ' data-tablesaw-sortable-switch' : '';?>
+                    <?php wp_enqueue_script('tablesorter');?><?php wp_enqueue_style('tabletoggle'); ?>
+                    <table  data-tablesaw-sortable<?php echo $sortable_switch; ?> class="tablesaw top_table_block<?php if ($module_width =='1') : ?> full_width_rating<?php else :?> with_sidebar_rating<?php endif;?> tablesorter" cellspacing="0">
                         <thead> 
                         <tr class="top_rating_heading">
                             <?php if ($first_column_enable):?><th class="product_col_name" data-tablesaw-priority="persist"><?php echo $first_column_name; ?></th><?php endif;?>
@@ -137,12 +143,12 @@
                                 $nameid=0;                       
                                 foreach ($rows as $row) {                       
                                 $col_name = (!empty($rows[$nameid]['column_name'])) ? $rows[$nameid]['column_name'] : '';
-                                echo '<th class="col_name" data-tablesaw-sortable-col data-tablesaw-priority="1">'.esc_html($col_name).'</th>';
+                                echo '<th class="col_name"'.$sortable_col.' data-tablesaw-priority="1">'.esc_html($col_name).'</th>';
                                 $nameid++;
                                 } 
                             }
                             ?>
-                            <?php if ($last_column_enable):?><th class="buttons_col_name" data-tablesaw-sortable-col data-tablesaw-priority="1"><?php echo $last_column_name; ?></th><?php endif;?>                      
+                            <?php if ($last_column_enable):?><th class="buttons_col_name"<?php echo $sortable_col; ?> data-tablesaw-priority="1"><?php echo $last_column_name; ?></th><?php endif;?>                      
                         </tr>
                         </thead>
                         <tbody>
@@ -158,16 +164,9 @@
                                             <?php 
                                             $showimg = new WPSM_image_resizer();
                                             $showimg->use_thumb = true;
-                                            $width_figure_table = apply_filters( 'wpsm_top_table_figure_width', 120 );
                                             $height_figure_table = apply_filters( 'wpsm_top_table_figure_height', 120 );
-                                            if( rehub_option( 'aq_resize_crop') == '1') {
-                                                $showimg->width = $width_figure_table;
-                                            } 
-                                            else {
-                                                $showimg->width = $width_figure_table;
-                                                $showimg->height = $height_figure_table;
-                                                $showimg->crop = true;
-                                            }
+                                            $showimg->height = $height_figure_table;
+                                            $showimg->crop = true;
                                             $showimg->show_resized_image();                                    
                                             ?>                                                                  
                                         </a>

@@ -5,36 +5,7 @@ include (locate_template( 'inc/widgets/dealwoo.php' ));
 include (locate_template( 'inc/widgets/woocategory.php' ));
 
 //CREATE BRAND TAXONOMY
-function woo_product_store_init() {
-	register_taxonomy(
-		'store',
-		'product',
-		array(
-			'labels' => array(
-				'name'              => __( 'Store', 'rehub_framework' ),
-				'singular_name'     => __( 'Store', 'rehub_framework' ),
-				'search_items'      => __( 'Search store', 'rehub_framework' ),
-				'all_items'         => __( 'All stores', 'rehub_framework' ),
-				'parent_item'       => __( 'Parent store', 'rehub_framework' ),
-				'parent_item_colon' => __( 'Parent store:', 'rehub_framework' ),
-				'edit_item'         => __( 'Edit store', 'rehub_framework' ),
-				'update_item'       => __( 'Update store', 'rehub_framework' ),
-				'add_new_item'      => __( 'Add new store', 'rehub_framework' ),
-				'new_item_name'     => __( 'New store name', 'rehub_framework' ),
-				'menu_name'         => __( 'Store', 'rehub_framework' ),
-			),		
-			'show_ui' => true,
-			'show_admin_column' => true,
-			'update_count_callback' => '_update_post_term_count',
-			'hierarchical' => true,
-			'public' => true,
-			'query_var' => true,
-			'show_in_quick_edit' => true,
-			'rewrite' => array( 'slug' => 'store' ),
-		)
-	);
-}
-add_action( 'init', 'woo_product_store_init' );
+include( 'woo_store_taxonomy_class.php' );
 
 
 //////////////////////////////////////////////////////////////////
@@ -89,6 +60,7 @@ add_action( 'woocommerce_checkout_before_customer_details', 'rehub_woo_before_ch
 add_action( 'woocommerce_checkout_after_customer_details', 'rehub_woo_average_checkout' );
 add_action( 'woocommerce_checkout_after_order_review', 'rehub_woo_after_checkout' );
 add_action( 'woocommerce_after_add_to_cart_button', 'rehub_woo_countdown' );
+add_action( 'woocommerce_product_query', 'rh_change_product_query' ); //Here we change and extend product loop data
 
 if (rehub_option('woo_single_sidebar') == 1){
 	add_action( 'woocommerce_single_product_summary', 'rehub_woo_info_wrap_start', 4 );
@@ -120,8 +92,7 @@ function rh_change_breadcrumb_delimiter( $defaults ) {
 	return $defaults;
 }
 
-if (defined('wcv_plugin_dir')) {
-	add_action( 'woocommerce_product_query', 'wcv_search_inside_vendor_shop' );	
+if (defined('wcv_plugin_dir')) {	
 	if ( class_exists( 'WCVendors_Pro' ) ) {
 		remove_action( 'woocommerce_before_single_product', array($wcvendors_pro->wcvendors_pro_vendor_controller, 'store_single_header'));		
 		remove_action( 'woocommerce_after_shop_loop_item', array('WCV_Vendor_Shop', 'template_loop_sold_by'), 9 );
@@ -137,6 +108,9 @@ if (defined('wcv_plugin_dir')) {
 		add_action( 'rehub_vendor_show_action', array('WCV_Vendor_Shop', 'template_loop_sold_by'), 9);
 	}
 	add_action( 'woocommerce_single_product_summary', 'rh_show_vendor_info_single', 15);
+	if( !class_exists('WCVendors_Pro') && class_exists('WC_Vendors') ) {
+		require_once ( locate_template( 'inc/wcvendor/wc-vendor-free-brand/class-shop-branding.php' ) );
+	}	
 }
 
 //Change position of YITH Buttons
@@ -144,7 +118,10 @@ if ( defined( 'YITH_WCWL' )){
 	add_filter('yith_wcwl_positions', 'rh_wishlist_change_position');
 	function rh_wishlist_change_position($so_array=array()){
         $so_array   =   array(
-            "shortcode" => array("hook"=>'shortcode', 'priority'=>0)
+            "shortcode" => array('hook'=>'shortcode', 'priority'=>0),
+            "add-to-cart"=> array('hook'=>'shortcode', 'priority'=>0),
+            "thumbnails"=> array('hook'=>'shortcode', 'priority'=>0),
+            "summary"=> array('hook'=>'shortcode', 'priority'=>0),
         );
 	    return $so_array;
 	}	
@@ -159,12 +136,23 @@ if ( class_exists('YITH_Woocompare_Frontend')){
 	//$frontend = new YITH_Woocompare_Frontend();
 	global $yith_woocompare;
 	remove_action( 'woocommerce_single_product_summary', array( $yith_woocompare->obj , 'add_compare_link' ), 35 );
-	if (rehub_option('woo_single_sidebar') == 1){
+	/**if (rehub_option('woo_single_sidebar') == 1){
 		add_action( 'woocommerce_single_product_summary', array($yith_woocompare->obj, 'add_compare_link'), 8 );
 	}
 	else{
 		add_action( 'woocommerce_single_product_summary', array($yith_woocompare->obj, 'add_compare_link'), 12 );
+	}**/
+}
+if(rehub_option('woo_rhcompare') == 1) {
+	if (rehub_option('woo_single_sidebar') == 1){
+		add_action( 'woocommerce_single_product_summary', 'rehub_woo_single_compare', 8 );				
 	}
+	else {
+		add_action( 'woocommerce_single_product_summary', 'rehub_woo_single_compare', 12 );
+	}
+}
+function rehub_woo_single_compare(){
+	echo wpsm_comparison_button(array('class'=>'rhwoosinglecompare'));
 }
 
 function rehub_woo_title_start() {
@@ -348,16 +336,17 @@ if (rehub_option('woo_cart_place') =='1' || rehub_option('woo_cart_place') =='2'
 //////////////////////////////////////////////////////////////////
 // Redirect Vendors to Vendor Dashboard on Login
 //////////////////////////////////////////////////////////////////
-add_filter('woocommerce_login_redirect', 'login_redirect', 10, 2);
-function login_redirect( $redirect_to, $user ) {
-    
-    if (class_exists('WCV_Vendors') && class_exists('WCVendors_Pro') && WCV_Vendors::is_vendor( $user->id ) ) {
-        $redirect_to = get_permalink(WCVendors_Pro::get_option( 'dashboard_page_id' ));
-    }
-    elseif (class_exists('WCV_Vendors') && WCV_Vendors::is_vendor( $user->id ) ) {
-    	$redirect_to = get_permalink(WC_Vendors::$pv_options->get_option( 'vendor_dashboard_page' ));
-    }
-    return $redirect_to;
+if (rehub_option('rehub_wcv_dash_redirect') == 1){
+	add_filter('woocommerce_login_redirect', 'rh_wcv_login_redirect', 10, 2);
+	function rh_wcv_login_redirect( $redirect_to, $user ) {
+	    if (class_exists('WCV_Vendors') && class_exists('WCVendors_Pro') && WCV_Vendors::is_vendor( $user->id ) ) {
+	        $redirect_to = get_permalink(WCVendors_Pro::get_option( 'dashboard_page_id' ));
+	    }
+	    elseif (class_exists('WCV_Vendors') && WCV_Vendors::is_vendor( $user->id ) ) {
+	    	$redirect_to = get_permalink(WC_Vendors::$pv_options->get_option( 'vendor_dashboard_page' ));
+	    }
+	    return $redirect_to;
+	}
 }
 
 //////////////////////////////////////////////////////////////////
@@ -365,142 +354,7 @@ function login_redirect( $redirect_to, $user ) {
 //////////////////////////////////////////////////////////////////
 if( !function_exists('woo_dealslinks_rehub') ) {
 function woo_dealslinks_rehub($shortcode_include='yes') {
-?>
-	<?php $rehub_woo_post_ids = vp_metabox('rehub_framework_woo.review_woo_list_links'); 
-	if (!empty($rehub_woo_post_ids) && !is_array($rehub_woo_post_ids)) { $rehub_woo_post_ids = explode(',', $rehub_woo_post_ids); }
-	$rehub_aff_post_ids = vp_metabox('rehub_framework_woo.review_woo_links');
-	$rehub_woodeals_short = get_post_meta(get_the_ID(), 'rehub_woodeals_short', true );
-	?>
-    <?php if (!empty ($rehub_woodeals_short) && $shortcode_include=='yes') :?>
-    	<div class="deals_woo_short">
-    		<?php echo do_shortcode($rehub_woodeals_short);?>
-    	</div>
-    <?php endif;?>	
-	<?php if(!empty($rehub_woo_post_ids) || (function_exists('thirstyInit') && !empty($rehub_aff_post_ids))) :?>
-		<div class="deals_woo_rehub">
-			<?php if(!empty($rehub_woo_post_ids)) :?>
-				<div class="wooaff_offer_links">
-				<?php  $args = array(
-		            'post__in' => $rehub_woo_post_ids,
-		            'numberposts' => '-1',
-		            'orderby' => 'post__in', 
-		            'post_type' => 'product',
-		            'ignore_sticky_posts'   => 1,
-		            'no_found_rows' => 1,           
-		        ); 
-		        global $post; global $woocommerce; $backup=$post;
-		        ?>
-		        <?php $i=1; $wp_query = new WP_Query( $args ); if ( $wp_query->have_posts() ) : ?>                      
-				<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  global $product;  ?>
-				<?php $woolink = ($product->product_type =='external') ? $product->add_to_cart_url() : get_post_permalink(get_the_ID()) ;?>  
-					<div class="woorow_aff">
-						<div class="product-pic-wrapper">
-							<a href="<?php echo $woolink; ?>" target="_blank"<?php if ($product->product_type =='external'){echo ' rel="nofollow"';} ?>>
-								<?php WPSM_image_resizer::show_static_resized_image(array('thumb'=>true, 'width'=> 100, 'no_thumb_url' => rehub_woocommerce_placeholder_img_src('')));?>
-			            	</a>				
-						</div>
-						<div class="product-details">
-							<div class="product-name">
-								<div class="aff_name"><a href="<?php echo $woolink; ?>" target="_blank"<?php if ($product->product_type =='external'){echo ' rel="nofollow"';} ?>><?php the_title(); ?></a></div>
-								<p><?php kama_excerpt('maxchar=150'); ?></p>
-							</div>
-							<div class="left_data_aff">
-								<div class="wooprice_count">
-								<?php if ($product->get_price() !='') : ?>
-									<?php echo $product->get_price_html(); ?>
-								<?php endif; ?>	
-								</div>					
-								<div class="wooaff_tag">
- 									<?php WPSM_Woohelper::re_show_brand_tax(); //show brand taxonomy?>
-								</div>
-							</div>					
-							<div class="woobuy_butt">
-		                    <?php if ( $product->is_in_stock() &&  $product->add_to_cart_url() !='') : ?>
-		                        <?php  echo apply_filters( 'woocommerce_loop_add_to_cart_link',
-		                            sprintf( '<a href="%s" data-product_id="%s" data-product_sku="%s" class="re_track_btn woobtn_offer_block %s product_type_%s"%s%s>%s</a>',
-		                            esc_url( $product->add_to_cart_url() ),
-		                            esc_attr( $product->id ),
-		                            esc_attr( $product->get_sku() ),
-		                            $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
-		                            esc_attr( $product->product_type ),
-		                            $product->product_type =='external' ? ' target="_blank"' : '',
-		                            $product->product_type =='external' ? ' rel="nofollow"' : '',                            
-		                            $product->add_to_cart_text() ? esc_html( $product->add_to_cart_text()) : __('See it', 'rehub_framework')
-		                            ),
-		                        $product );?>
-		                    <?php endif; ?>
-							</div>
-						</div>
-					</div>
-				<?php endwhile; endif; wp_reset_postdata(); $post=$backup; ?> 
-				</div>
-			<?php endif ;?>
-			<?php if(function_exists('thirstyInit') && !empty($rehub_aff_post_ids)) :?>		
-				<div class="wooaff_offer_links">
-				<?php 
-				$rehub_aff_posts = get_posts(array(
-					'post_type'        => 'thirstylink',
-					'post__in' => $rehub_aff_post_ids,
-					'meta_key' => 'rehub_aff_sticky',
-					'orderby' => 'meta_value',
-					'order' => 'DESC',
-					'numberposts' => '-1'			
-				));
-				foreach($rehub_aff_posts as $aff_post) { ?>	
-					<?php 	$attachments = get_posts( array(
-			            'post_type' => 'attachment',
-						'post_mime_type' => 'image',
-			            'posts_per_page' => -1,
-			            'post_parent' => $aff_post->ID,
-		        	) );
-					if (!empty($attachments)) {$aff_thumb_list = wp_get_attachment_url( $attachments[0]->ID );} else {$aff_thumb_list ='';}
-					$term_list = wp_get_post_terms($aff_post->ID, 'thirstylink-category', array("fields" => "names")); 
-					$term_ids =  wp_get_post_terms($aff_post->ID, 'thirstylink-category', array("fields" => "ids")); if (!empty($term_ids)) {$term_brand = $term_ids[0]; $term_brand_image = get_option("taxonomy_term_$term_ids[0]");} else {$term_brand_image ='';}
-					?>
-					<div class="woorow_aff">
-						<div class="product-pic-wrapper">
-							<a href="<?php echo get_post_permalink($aff_post) ?>">
-								<?php if (!empty($aff_thumb_list) ) :?>									
-			            			<?php WPSM_image_resizer::show_static_resized_image(array('src'=> $aff_thumb_list, 'width'=> 100, 'height' => 100, 'title' => $aff_post->post_title));?>	
-			            		<?php elseif (!empty($term_brand_image['brand_image'])) :?>
-			            			<?php WPSM_image_resizer::show_static_resized_image(array('src'=> $term_brand_image['brand_image'], 'width'=> 100, 'height' => 100, 'title' => $aff_post->post_title));?>				            		
-			            		<?php else :?>
-			            			<?php WPSM_image_resizer::show_static_resized_image(array('width'=> 100, 'no_thumb_url' => get_template_directory_uri().'/images/default/noimage_100_70.png'));?>
-			            		<?php endif?>
-			            	</a>				
-						</div>
-						<div class="product-details">
-							<div class="product-name">
-								<div class="aff_name"><a href="<?php echo get_post_permalink($aff_post) ?>"><?php echo $aff_post->post_title; ?></a></div>
-								<p><?php echo get_post_meta( $aff_post->ID, 'rehub_aff_desc', true );?></p>
-							</div>
-							<div class="left_data_aff">
-								<div class="wooprice_count">
-									<?php $product_price = get_post_meta( $aff_post->ID, 'rehub_aff_price', true );?>
-									<?php echo $product_price ;?>
-								</div>					
-								<div class="wooaff_tag">
-						            <?php if (!empty($term_brand_image['brand_image'])) :?>
-						            	<?php WPSM_image_resizer::show_static_resized_image(array('src'=> $aff_thumb_list, 'height' => 35));?>							            	
-						            <?php elseif (!empty($term_list[0])) :?> 
-						            	<?php echo $term_list[0]; ?>
-						            <?php endif; ?> 							
-								</div>
-							</div>	
-							<?php $offer_btn_text = get_post_meta( $aff_post->ID, 'rehub_aff_btn_text', true ) ?>				
-							<div class="woobuy_butt">
-								<a class="re_track_btn woobtn_offer_block" href="<?php echo get_post_permalink($aff_post) ?>" target="_blank" rel="nofollow"><?php if($offer_btn_text !='') :?><?php echo $offer_btn_text ; ?><?php elseif(rehub_option('rehub_btn_text') !='') :?><?php echo rehub_option('rehub_btn_text') ; ?><?php else :?><?php _e('See it', 'rehub_framework') ?><?php endif ;?></a>
-							</div>
-						</div>
-					</div>	
-				<?php 
-				}
-				?>
-				</div>
-			<?php endif;?>
-		</div>
-    <?php endif;?>	
-<?php
+return false;
 }
 }
 
@@ -562,6 +416,62 @@ function rehub_add_woo_custom_scripts() {
 		        </script>';	         
 		    echo $output;
 		}
+	    if ( 'post' === $post->post_type ) { //Easy woo chooser for reviews
+	    	if(REHUB_NAME_ACTIVE_THEME == 'RECASH' || REHUB_NAME_ACTIVE_THEME == 'REDIRECT' ){
+
+	    	}
+	    	else{
+		    	$path_script = get_template_directory_uri() . '/jsonids/json-ids.php';
+	            $review_woo_link = vp_metabox('rehub_post.review_post.0.review_woo_product.0.review_woo_link');
+	            $review_woo_links = vp_metabox('rehub_post.review_post.0.review_woo_list.0.review_woo_list_links');
+	            if(!empty($review_woo_link)){
+	            	$woobox_array = array();
+					$woobox_title = get_the_title($review_woo_link);
+					$woobox_array[] = array( 'id' => $review_woo_link, 'name' => $woobox_title );  		       	
+	            	$wooboxpre = json_encode( $woobox_array );   
+	            }
+	            if(!empty($review_woo_links)){
+	            	$review_woo_linkss = explode(',', $review_woo_links);
+	            	$woolist_array = array();
+					foreach($review_woo_linkss as $review_woo_linksid){
+						$woolist_title = get_the_title($review_woo_linksid);
+						$woolist_array[] = array( 'id' => $review_woo_linksid, 'name' => $woolist_title );
+					}  		       	
+	            	$woolistpre = json_encode( $woolist_array );   
+	            }            
+	            $wooboxprep = (!empty($wooboxpre)) ? $wooboxpre : 'null';	
+	            $woolistprep = (!empty($woolistpre)) ? $woolistpre : 'null';    	
+			    $output = '
+			    <link rel="stylesheet" href="'.get_template_directory_uri().'/jsonids/css/token-input.css" />
+			    <script data-cfasync="false" src="'.get_template_directory_uri().'/jsonids/js/jquery.tokeninput.min.js"></script>         
+			    <script data-cfasync="false">
+					jQuery(function () {
+						jQuery("input[name=\"rehub_post[review_post][0][review_woo_product][0][review_woo_link]\"]").tokenInput("'.$path_script.'", { 
+							minChars: 3,
+							preventDuplicates: true,
+							theme: "rehub",
+							prePopulate: '.$wooboxprep.',
+							tokenLimit: 1,
+							onSend: function(params) {
+								params.data.posttype = "product";
+								params.data.postnum = 5;
+							}
+						});
+						jQuery("input[name=\"rehub_post[review_post][0][review_woo_list][0][review_woo_list_links]\"]").tokenInput("'.$path_script.'", { 
+							minChars: 3,
+							preventDuplicates: true,
+							theme: "rehub",
+							prePopulate: '.$woolistprep.',
+							onSend: function(params) {
+								params.data.posttype = "product";
+								params.data.postnum = 5;
+							}
+						});					
+					});
+				</script>';	         
+			    echo $output;
+	    	}
+		}		
 	}
 }
 }
@@ -681,31 +591,6 @@ function woo_change_expired_function($expired=''){
 }
 }
 
-if (rehub_option('woo_exclude_expired') == '1') {
-	//exclude from main archives
-	if (!function_exists('woo_exclude_expired')) {
-		function woo_exclude_expired($query) {
-			if( ! is_admin() && $query->is_main_query() ) {
-			    if (is_post_type_archive('product') || is_product_category()) {
-				    $query->set( 'meta_query', array(
-				    	'relation' => 'OR',
-				    	array(
-				       		'key' => 're_post_expired',
-				       		'value' => '1',
-				       		'compare' => '!=',
-				    	),
-				    	array(
-				       		'key' => 're_post_expired',
-				       		'compare' => 'NOT EXISTS',
-				    	),				    	 				    	   	
-				    ));
-				}
-			}
-		}
-	add_action('pre_get_posts','woo_exclude_expired');		
-	}
-}
-
 add_filter( 'post_class', 're_expired_post_classes' );
 function re_expired_post_classes( $classes ){
 	if(is_singular('product')){
@@ -722,6 +607,7 @@ if (!function_exists('rh_show_vendor_info_single')) {
 function rh_show_vendor_info_single() {
 	//global $post; 
 	//$author_id=$post->post_author; 
+	$vendor_verified_label = $vacation_mode = $vacation_msg = '';
 	$vendor_id = get_the_author_meta( 'ID' );
 	$sold_by_label = WC_Vendors::$pv_options->get_option( 'sold_by_label' );
 	echo '<div class="vendor_store_details">';
@@ -733,19 +619,31 @@ function rh_show_vendor_info_single() {
 	$sold_by = WCV_Vendors::is_vendor( $vendor_id )
 			? sprintf( '<h5><a href="%s" class="wcvendors_cart_sold_by_meta">%s</a></h5>', WCV_Vendors::get_vendor_shop_page( $vendor_id ), WCV_Vendors::get_vendor_sold_by( $vendor_id ) )
 			: '<h5>'.get_bloginfo( 'name' ).'</h5>';
-	echo '<span class="vendor_store_details_title">'.$sold_by.'</span>';
+	if ( class_exists( 'WCVendors_Pro' ) ) {
+		$vendor_meta = array_map( function( $a ){ return $a[0]; }, get_user_meta($vendor_id ) );
+		$verified_vendor 	= ( array_key_exists( '_wcv_verified_vendor', $vendor_meta ) ) ? $vendor_meta[ '_wcv_verified_vendor' ] : false;
+		if ($verified_vendor){
+			$vendor_verified_label = '<i class="fa fa-check-square-o" aria-hidden="true"></i>';
+		} 
+		$vacation_mode 		= get_user_meta( $vendor_id , '_wcv_vacation_mode', true ); 
+		$vacation_msg 		= ( $vacation_mode ) ? get_user_meta( $vendor_id , '_wcv_vacation_mode_msg', true ) : '';		
+	}			
+	echo '<span class="vendor_store_details_title">'.$vendor_verified_label.$sold_by.'</span>';
 	echo '</div>';
 	if ( class_exists( 'BuddyPress' ) ) {
 		echo '<span class="vendor_store_details_contact"><span class="vendor_store_owner_label">@ </span>';
 		echo '<a href="'.bp_core_get_user_domain( $vendor_id ).'" class="vendor_store_owner_name"><span>'. get_the_author_meta('display_name') .'</span></a> ';
 		if ( bp_is_active( 'messages' )){
-			$link = (is_user_logged_in()) ? wp_nonce_url( bp_loggedin_user_domain() . bp_get_messages_slug() . '/compose/?r=' . bp_core_get_username( $vendor_id)) : '#';
+			$link = (is_user_logged_in()) ? wp_nonce_url( bp_loggedin_user_domain() . bp_get_messages_slug() . '/compose/?r=' . bp_core_get_username( $vendor_id) .'&ref='. urlencode(get_permalink())) : '#';
 			$class = (!is_user_logged_in() && rehub_option('userlogin_enable') == '1') ? ' act-rehub-login-popup' : '';
 				echo ' <a href="'.$link.'" class="vendor_store_owner_contactlink'.$class.'"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span>'. __('Ask owner', 'rehub_framework') .'</span></a>';			
 		}
 		echo '</span>';		
 	}
 	echo '</div></div>';
+	if ($vacation_msg) :
+	    echo '<div class="wpsm_box green_type nonefloat_box"><div>'.$vacation_msg.'</div></div>';
+	endif;	
 
 }}
 
@@ -753,7 +651,7 @@ function rh_show_vendor_info_single() {
 if (!function_exists('rh_show_vendor_ministore')) {
 function rh_show_vendor_ministore($vendor_id, $label='') { 
 	$totaldeals = count_user_posts( $vendor_id, $post_type = 'product' );
-
+	$vendor_verified_label = '';
 	if(WCV_Vendors::is_vendor( $vendor_id ) && $totaldeals>0){
 		echo '<div class="vendor_store_in_bp">';
 		echo '<div class="vendor-list-like">'.getShopLikeButton( $vendor_id ).'</div>';
@@ -763,7 +661,14 @@ function rh_show_vendor_ministore($vendor_id, $label='') {
 		$sold_by = WCV_Vendors::is_vendor( $vendor_id )
 				? sprintf( '<h5><a href="%s" class="wcvendors_cart_sold_by_meta">%s</a></h5>', WCV_Vendors::get_vendor_shop_page( $vendor_id ), WCV_Vendors::get_vendor_sold_by( $vendor_id ) )
 				: get_bloginfo( 'name' );
-		echo '<span class="vendor_store_in_bp_title">'.$sold_by.'</span>';
+		if ( class_exists( 'WCVendors_Pro' ) ) {
+			$vendor_meta = array_map( function( $a ){ return $a[0]; }, get_user_meta($vendor_id ) );
+			$verified_vendor 	= ( array_key_exists( '_wcv_verified_vendor', $vendor_meta ) ) ? $vendor_meta[ '_wcv_verified_vendor' ] : false;
+			if ($verified_vendor){
+				$vendor_verified_label = '<i class="fa fa-check-square-o" aria-hidden="true"></i>';
+			} 
+		}				
+		echo '<span class="vendor_store_in_bp_title">'.$vendor_verified_label.$sold_by.'</span>';
 		echo '</div>';
 		echo '<div class="vendor_store_in_bp_last_products">';
 			$totaldeals = $totaldeals - 4;
@@ -803,20 +708,26 @@ function rh_show_vendor_ministore($vendor_id, $label='') {
 if (!function_exists('rh_show_vendor_avatar')) {
 function rh_show_vendor_avatar($vendor_id, $width=150, $height=150) {
 	if(!$vendor_id) return;
+	$store_icon_url = '';
 	if ( class_exists( 'WCVendors_Pro' ) ) {
 		$store_icon_src 	= wp_get_attachment_image_src( get_user_meta( $vendor_id, '_wcv_store_icon_id', true ), array( 150, 150 ) );
 		if ( is_array( $store_icon_src ) ) { 
 			$store_icon_url= $store_icon_src[0]; 
 		}
-		else{
-			$store_icon_url = get_template_directory_uri() . '/images/default/wcvendoravatar.png';
-		}
-	}
-	elseif(rehub_option('wcv_vendor_avatar') !=''){
-		$store_icon_url = esc_url(rehub_option('wcv_vendor_avatar'));
 	}
 	else{
-		$store_icon_url = get_template_directory_uri() . '/images/default/wcvendoravatar.png';
+		$store_icon_src 	= wp_get_attachment_image_src( get_user_meta( $vendor_id, 'rh_vendor_free_logo', true ), array( 150, 150 ) );
+		if ( is_array( $store_icon_src ) ) { 
+			$store_icon_url= $store_icon_src[0]; 
+		}
+	}
+	if(!$store_icon_url){
+		if(rehub_option('wcv_vendor_avatar') !=''){
+			$store_icon_url = esc_url(rehub_option('wcv_vendor_avatar'));
+		}	
+		else{
+			$store_icon_url = get_template_directory_uri() . '/images/default/wcvendoravatar.png';
+		}	
 	}
     $showimg = new WPSM_image_resizer();
     $showimg->src = $store_icon_url;
@@ -832,9 +743,9 @@ if (!function_exists('rh_show_vendor_bg')) {
 function rh_show_vendor_bg($vendor_id) {
 	if(!$vendor_id) return;
 	if ( class_exists( 'WCVendors_Pro' ) ) {
-		$store_icon_src 	= wp_get_attachment_image_src( get_user_meta( $vendor_id, '_wcv_store_banner_id', true ), 'full'); 
-		if ( is_array( $store_icon_src ) ) { 
-			$store_bg= $store_icon_src[0]; 
+		$store_banner_src 	= wp_get_attachment_image_src( get_user_meta( $vendor_id, '_wcv_store_banner_id', true ), 'full'); 
+		if ( is_array( $store_banner_src ) ) { 
+			$store_bg= $store_banner_src[0]; 
 		}
 		else { 
 			//  Getting default banner 
@@ -843,32 +754,149 @@ function rh_show_vendor_bg($vendor_id) {
 		}	
 		$store_bg_styles = 'background-image: url('.$store_bg.'); background-repeat: no-repeat;background-size: cover;';	
 	}
-	elseif(rehub_option('wcv_vendor_bg') !=''){
-		$store_bg = esc_url(rehub_option('wcv_vendor_bg'));
-		$store_bg_styles = 'background-image: url('.$store_bg.'); background-repeat: no-repeat;background-size: cover;';
-	}
-	else{
-		$store_bg_styles = 'background-image: url('.get_template_directory_uri() . '/images/default/brickwall.png); background-repeat:repeat;';
+	else {
+		$store_banner_src  = wp_get_attachment_image_src( get_user_meta( $vendor_id, 'rh_vendor_free_header', true ), 'full');
+		if ( is_array( $store_banner_src ) ) { 
+			$store_bg= $store_banner_src[0]; 
+			$store_bg_styles = 'background-image: url('.$store_bg.'); background-repeat: no-repeat;background-size: cover;';
+		}		
+		elseif(rehub_option('wcv_vendor_bg') !=''){
+			$store_bg = esc_url(rehub_option('wcv_vendor_bg'));
+			$store_bg_styles = 'background-image: url('.$store_bg.'); background-repeat: no-repeat;background-size: cover;';
+		}
+		else{
+			$store_bg_styles = 'background-image: url('.get_template_directory_uri() . '/images/default/brickwall.png); background-repeat:repeat;';
+		}
 	}
 	return $store_bg_styles;	
 }}
 
-function wcv_search_inside_vendor_shop($q){
-	$string = (isset($_GET['rh_wcv_search'])) ? esc_html($_GET['rh_wcv_search']) : '';
-	$cat_string = (isset($_GET['rh_wcv_vendor_cat'])) ? esc_html($_GET['rh_wcv_vendor_cat']) : '';
-	if($string){
-		$q->set( 's', $string);
-	}	
-	if($cat_string){
-		$catarray = array(
-			array(
-    				'taxonomy' => 'product_cat', 
-    				'terms' => array($cat_string), 
-    				'field' => 'term_id'				
-				)
-			);
-		$q->set( 'tax_query', $catarray);
-	}	
+if (!function_exists('rh_change_product_query')){
+	function rh_change_product_query($q){
+		if (defined('wcv_plugin_dir')) {
+			$string = (isset($_GET['rh_wcv_search'])) ? esc_html($_GET['rh_wcv_search']) : '';
+			$cat_string = (isset($_GET['rh_wcv_vendor_cat'])) ? esc_html($_GET['rh_wcv_vendor_cat']) : '';
+			if($string){
+				$q->set( 's', $string);
+			}	
+			if($cat_string){
+				$catarray = array(
+					array(
+		    				'taxonomy' => 'product_cat', 
+		    				'terms' => array($cat_string), 
+		    				'field' => 'term_id'				
+						)
+					);
+				$q->set( 'tax_query', $catarray);
+			}
+		}
+		if (rehub_option('woo_exclude_expired') == '1') {
+			//exclude from woo archives expired products
+		    if (is_post_type_archive('product') || is_product_category()) {
+			    $q->set( 'meta_query', array(
+			    	'relation' => 'OR',
+			    	array(
+			       		'key' => 're_post_expired',
+			       		'value' => '1',
+			       		'compare' => '!=',
+			    	),
+			    	array(
+			       		'key' => 're_post_expired',
+			       		'compare' => 'NOT EXISTS',
+			    	),				    	 				    	   	
+			    ));
+			}
+		}
+		if (is_tax('store')){ //Here we change number of posts in brand store archives
+			$q->set( 'posts_per_page', 30);
+		}	
+	}
 }
+
+if (rehub_option('wooregister_xprofile') == 1){
+
+	//Synchronization with Woocommerce register form and Xprofiles
+	add_action('woocommerce_register_form','rh_add_xprofile_to_woocommerce_register');
+	add_action('wcvendors_settings_before_paypal','rh_add_xprofile_to_wcvendor');
+
+	function rh_add_xprofile_to_woocommerce_register() {
+	if ( class_exists( 'BuddyPress' ) ) {
+		?>
+		<?php if ( bp_is_active( 'xprofile' ) ) : ?>
+			<div id="xp-woo-profile-details-section"<?php if(rehub_option('wooregister_xprofile_hidename') == 1){echo ' class="xprofile_hidename"';}?>>
+				<?php if ( bp_has_profile( array( 'profile_group_id' => 1, 'fetch_field_data' => false ) ) ) : while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
+					<?php while ( bp_profile_fields() ) : bp_the_profile_field(); ?>
+						<div<?php bp_field_css_class( 'editfield form-row' ); ?>>
+							<?php
+								$field_type = bp_xprofile_create_field_type( bp_get_the_profile_field_type() );
+								$field_type->edit_field_html();
+							?>
+							<p class="xp-woo-description"><?php bp_the_profile_field_description(); ?></p>
+						</div>
+					<?php endwhile; ?>
+					<input type="hidden" name="signup_profile_field_ids" id="signup_profile_field_ids" value="<?php bp_the_profile_field_ids(); ?>" />
+				<?php endwhile; endif; ?>
+				<?php do_action( 'bp_signup_profile_fields' ); ?>
+			</div><!-- #profile-details-section -->
+			<?php do_action( 'bp_after_signup_profile_fields' ); ?>
+		<?php endif; ?>
+		<?php
+	}
+	}
+
+	function rh_add_xprofile_to_wcvendor() {
+	if ( class_exists( 'BuddyPress' ) ) {
+		?>
+		<?php if ( bp_is_active( 'xprofile' ) ) : ?>
+			<div id="xp-wcvendor-profile"<?php if(rehub_option('wooregister_xprofile_hidename') == 1){echo ' class="xprofile_hidename"';}?>>
+				<?php $user_id = get_current_user_id();?>
+				<?php if ( bp_has_profile( array( 'user_id'=> $user_id, 'profile_group_id' => 1, 'fetch_field_data' => true, 'fetch_fields'=>true ) ) ) : while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
+					<?php while ( bp_profile_fields() ) : bp_the_profile_field(); ?>
+						<div<?php bp_field_css_class( 'editfield form-row' ); ?>>
+							<?php
+								$field_type = bp_xprofile_create_field_type( bp_get_the_profile_field_type() );
+								$field_type->edit_field_html(array( 'user_id'=> $user_id));
+							?>
+							<p class="xp-woo-description"><?php bp_the_profile_field_description(); ?></p>
+						</div>
+					<?php endwhile; ?>
+					<input type="hidden" name="signup_profile_field_ids" id="signup_profile_field_ids" value="<?php bp_the_profile_field_ids(); ?>" />
+				<?php endwhile; endif; ?>
+				<?php do_action( 'bp_signup_profile_fields' ); ?>
+			</div><!-- #profile-details-section -->
+			<?php do_action( 'bp_after_signup_profile_fields' ); ?>
+		<?php endif; ?>
+		<?php
+	}
+	}	
+
+
+	//Updating use meta after registration successful registration
+	add_action('woocommerce_created_customer','rh_save_xprofile_to_woocommerce_register');
+	add_action( 'wcvendors_shop_settings_saved', 'rh_save_xprofile_to_woocommerce_register' );
+	function rh_save_xprofile_to_woocommerce_register($user_id) {
+		if (!empty($_POST['signup_profile_field_ids'])){
+			$signup_profile_field_ids = explode(',', $_POST['signup_profile_field_ids']);
+			foreach ((array)$signup_profile_field_ids as $field_id) {
+				if ( ! isset( $_POST['field_' . $field_id] ) ) {
+					if ( ! empty( $_POST['field_' . $field_id . '_day'] ) && ! empty( $_POST['field_' . $field_id . '_month'] ) && ! empty( $_POST['field_' . $field_id . '_year'] ) ) {
+						// Concatenate the values.
+						$date_value = $_POST['field_' . $field_id . '_day'] . ' ' . $_POST['field_' . $field_id . '_month'] . ' ' . $_POST['field_' . $field_id . '_year'];
+
+						// Turn the concatenated value into a timestamp.
+						$_POST['field_' . $field_id] = date( 'Y-m-d H:i:s', strtotime( $date_value ) );
+						
+					}
+				}
+				if(!empty($_POST['field_' . $field_id])){
+					$field_val = $_POST['field_' . $field_id];
+					xprofile_set_field_data($field_id, $user_id, $field_val);
+				}			
+			}
+		}
+	}
+
+}
+
 
 ?>

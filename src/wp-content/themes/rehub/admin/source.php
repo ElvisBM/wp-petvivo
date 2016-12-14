@@ -378,43 +378,10 @@ function rehub_get_cpost_type()
 	return $data;
 }
 
-
-//Functions for woocommerce
-
-VP_Security::instance()->whitelist_function('rehub_get_woo');
-function rehub_get_woo()
-{
-global $woocommerce;
-if($woocommerce) {
-	$woo_posts = get_posts(array(
-		'posts_per_page' => -1,
-		'post_type'        => 'product',
-		'post_status'     => 'publish',
-		'cache_results' => false,
-		'update_post_meta_cache' => false,
-		'update_post_term_cache' => false,
-		'no_found_rows' => true		
-	));
-
-	$result = array();
-	foreach ($woo_posts as $woo_post)
-	{
-		$result[] = array('value' => $woo_post->ID, 'label' => $woo_post->post_title);
-	}
-	return $result;
-}
-else {
-	$result[] = array('value' => 'none', 'label' => 'You need to install plugin Woocommerce');
-	return $result;
-}
-}
-
 VP_Security::instance()->whitelist_function('top_list_shortcode');
 function top_list_shortcode()
 {
-	
-		$result = ''.__("You can use shortcode to insert this top list to another page", "rehub_framework").' <strong>[wpsm_top id="'.get_the_ID().'" full_width="1"]</strong><br />'.__("Delete full_width attribute if you insert shortcode in page with sidebar", "rehub_framework").'';
-
+	$result = ''.__("You can use shortcode to insert this top list to another page", "rehub_framework").' <strong>[wpsm_top id="'.get_the_ID().'" full_width="1"]</strong><br />'.__("Delete full_width attribute if you insert shortcode in page with sidebar", "rehub_framework").'';
 	return $result;
 }
 
@@ -433,6 +400,13 @@ function top_charts_shortcode()
 	
 		$result = ''.__("You can use shortcode to insert this top charts to another page", "rehub_framework").' <strong>[wpsm_charts id="'.get_the_ID().'"]</strong>';
 
+	return $result;
+}
+
+VP_Security::instance()->whitelist_function('rh_meta_multioffer_shortcode');
+function rh_meta_multioffer_shortcode()
+{
+	$result = ''.__("You can use shortcode to insert this offer list in content or to another page - ", "rehub_framework").' <strong>[quick_offer id='.get_the_ID().']</strong>';
 	return $result;
 }
 
@@ -534,7 +508,7 @@ $woo_product_select = array(
 	'type' => 'textbox',
 	'name' => 'review_woo_link',
 	'label' => __('Set woocommerce product ID', 'rehub_framework'),
-	'description' => __('Type Id of woocommerce product', 'rehub_framework'),
+	'description' => __('Type name of woocommerce product', 'rehub_framework'),
 	'default' => '',
 );
 
@@ -548,7 +522,7 @@ $woo_products_select =	array(
 	'type' => 'textbox',
 	'name' => 'review_woo_list_links',
 	'label' => __('Set woocommerce product IDs', 'rehub_framework'),
-	'description' => __('Insert woocommerce IDs of offers that you want to show in list with commas. Example, 22,33,45', 'rehub_framework'),		
+	'description' => __('Insert woocommerce names of offers that you want to show in list with commas. Example, 22,33,45', 'rehub_framework'),		
 );
 return $woo_products_select;
 }
@@ -594,12 +568,111 @@ function admin_badge_preview_html($label = '', $color = '')
 	else {
 		$background = ($color) ? ' style="background-color:'.$color.'"' : '';
 		$result = '<div class="starburst_admin_wrapper">';
-		$result .= '<span class="re-starburst"'.$background.'><span'.$background.'><span'.$background.'><span'.$background.'><span'.$background.'><span'.$background.'><span'.$background.'><span'.$background.'><span'.$background.'><strong>'.$label.'</strong></span></span></span></span></span></span></span></span></span></span>';
-		$result .= '<span class="re-line-badge re-line-table-badge"'.$background.'>'.$label.'</span>';
 		$result .= '<span class="re-ribbon-badge"><span'.$background.'>'.$label.'</span></span>';
 		$result .= '</div>';
 	}
 	return $result;
+}
+
+VP_Security::instance()->whitelist_function('rehub_get_offer_user_info');
+function rehub_get_offer_user_info( $user_id ){
+	if( empty($user_id) || !is_numeric($user_id) )
+		return;
+	$author_obj = get_userdata($user_id );
+	if($author_obj){
+		$user_data = '<strong>User name: </strong>' . $author_obj->display_name . '<br>';
+		$user_data .= '<strong>User roles: </strong>' . implode(', ', $author_obj->roles) . '<br>';
+		return $user_data;		
+	}
+
+}
+
+VP_Security::instance()->whitelist_function('rehub_get_dealstore_tax_array');
+function rehub_get_dealstore_tax_array($type)
+{
+	$args = array( 'hide_empty' => false, 'order' => 'ASC', 'taxonomy'=> 'dealstore');
+	$terms = get_terms($args );
+    $data  = array();
+    if(!empty( $terms ) && !is_wp_error($terms)){
+		foreach ($terms as $term) {
+			$data[] = array(
+				'value' => $term->term_id,
+				'label' => $term->name,
+			);
+	    } 	
+    }
+	return $data;    
+}
+
+VP_Security::instance()->whitelist_function('rehub_get_post_layout_array');
+function rehub_get_post_layout_array($type)
+{
+	$postlayout = apply_filters( 'rehub_post_layout_array', array(
+		array(
+			'value' => 'default',
+			'label' => __('Simple', 'rehub_framework'),
+		),
+		array(
+			'value' => 'meta_outside',
+			'label' => __('Title is outside content', 'rehub_framework'),
+		),
+		array(
+			'value' => 'meta_center',
+			'label' => __('Center aligned (Rething style)', 'rehub_framework'),
+		),		
+		array(
+			'value' => 'meta_compact',
+			'label' => __('Compact (Recash style)', 'rehub_framework'),
+		),
+		array(
+			'value' => 'meta_compact_dir',
+			'label' => __('Compact (Redirect style)', 'rehub_framework'),
+		),				
+		array(
+			'value' => 'corner_offer',
+			'label' => __('Button in corner (Repick style)', 'rehub_framework'),
+		),								
+		array(
+			'value' => 'meta_in_image',
+			'label' => __('Title Inside image', 'rehub_framework'),
+		),	
+		array(
+			'value' => 'meta_in_imagefull',
+			'label' => __('Title Inside full image', 'rehub_framework'),
+		),
+		array(
+			'value' => 'big_post_offer',
+			'label' => __('Big post offer block in top', 'rehub_framework'),
+		),		
+		array(
+			'value' => 'offer_and_review',
+			'label' => __('Offer and review score', 'rehub_framework'),
+		),				
+		array(
+			'value' => 'meta_ce_compare',
+			'label' => __('Price comparison (Content Egg or Multioffer)', 'rehub_framework'),
+		),
+	));
+
+	if (rh_is_plugin_active('content-egg/content-egg.php')){
+		$postlayoutce = array(
+			array(
+				'value' => 'meta_ce_compare_full',
+				'label' => __('Full width Content Egg(beta)', 'rehub_framework'),
+			),		
+			array(
+				'value' => 'meta_ce_compare_auto',
+				'label' => __('Auto Tabs Content Egg(beta)', 'rehub_framework'),
+			),
+			array(
+				'value' => 'meta_ce_compare_auto_sec',
+				'label' => __('Auto content Content Egg(beta)', 'rehub_framework'),
+			),				
+		);
+		$postlayout = array_merge($postlayout, $postlayoutce);
+	}
+
+	return $postlayout;   
 }
 
 ////////

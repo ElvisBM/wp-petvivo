@@ -100,7 +100,7 @@ $theme_url = 'https://wpsoul.com/';
 			<div class="theme">
 				<div class="theme-screenshot">
 					<img src="<?php echo get_template_directory_uri()?>/admin/screens/images/rhfrontend.png" alt="">
-					<div class="plugin-info">For frontend posting<br>Version: 2.3										</div>
+					<div class="plugin-info">For frontend posting<br>Version: 3.23										</div>
 				</div>
 				<h3 class="theme-name">RH Frontend Posting</h3>
 				<div class="theme-actions">

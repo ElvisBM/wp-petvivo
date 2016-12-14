@@ -71,7 +71,7 @@ $term_ids =  wp_get_post_terms($post->ID, 'thirstylink-category', array("fields"
             <?php if(!empty($offer_coupon_date)) : ?>
                 <?php 
                     $timestamp1 = strtotime($offer_coupon_date); 
-                    $seconds = $timestamp1 - time(); 
+                    $seconds = $timestamp1 - (int)current_time('timestamp',0); 
                     $days = floor($seconds / 86400);
                     $seconds %= 86400;
                     if ($days > 0) {
@@ -83,7 +83,7 @@ $term_ids =  wp_get_post_terms($post->ID, 'thirstylink-category', array("fields"
                         $coupon_style = '';
                     }
                     else {
-                        $coupon_text = __('Coupon is Expired', 'rehub_framework');
+                        $coupon_text = __('Expired', 'rehub_framework');
                         $coupon_style = 'expired_coupon';
                     }                                   
                 ?>

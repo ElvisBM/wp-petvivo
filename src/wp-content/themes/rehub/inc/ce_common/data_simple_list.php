@@ -1,3 +1,4 @@
+<?php use ContentEgg\application\helpers\TemplateHelper;?>
 <div class="rehub_feat_block table_view_block<?php if ($i == 1){echo' best_price_item';}?>">               
         <div class="offer_thumb">   
             <a rel="nofollow" target="_blank" class="re_track_btn" href="<?php echo esc_url($afflink) ?>">
@@ -15,7 +16,7 @@
             <?php if($clean_price) : ?>
                 <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                     <span class="price_count">
-                        <span><?php echo $currency; ?></span> <?php echo $offer_price ?>
+                        <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?>
                         <?php if(!empty($offer_price_old)) : ?>
                         <strike>
                             <span class="amount"><?php echo $offer_price_old ?></span>

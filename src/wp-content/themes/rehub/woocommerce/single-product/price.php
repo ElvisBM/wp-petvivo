@@ -31,14 +31,14 @@ global $product;
 	<link itemprop="availability" href="http://schema.org/<?php echo $product->is_in_stock() ? 'InStock' : 'OutOfStock'; ?>" />
 
 </div>
-<?php if ($product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0) : ?>
+<?php if ($product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0 && !$product->is_type( 'variable' )) : ?>
     <span class="save_proc_woo">
         <?php   
             $offer_price_calc = (float) $product->get_price();
             $offer_price_old_calc = (float) $product->get_regular_price();
             $sale_proc = 100 - ($offer_price_calc / $offer_price_old_calc) * 100; 
             $sale_proc = round($sale_proc); 
-            _e('Save', 'rehub_framework'); echo $sale_proc; echo '% ';
+            _e('Save ', 'rehub_framework'); echo $sale_proc; echo '% ';
         ;?>
     </span>
 <?php endif ?>

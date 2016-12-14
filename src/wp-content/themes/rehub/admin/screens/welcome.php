@@ -88,4 +88,15 @@ if( $tf_username !== "" && $tf_purchase_code !== "" ) {
 			<span class="rehub-loader"><i class="dashicons dashicons-update loader-icon"></i><span></span></span>			
 		</div>
 	</div>
+    <div class="feature-section">
+        <strong>Some important tutorials to make your site better:</strong>
+        <ul>
+            <li><a href="https://wpsoul.com/how-optimize-speed-of-wordpress/" target="_blank">How to optimize speed of site</a></li>
+            <li><a href="https://wpsoul.com/optimize-seo-wordpress/" target="_blank">How to make the best SEO optimization on site</a></li>
+            <li><a href="https://wpsoul.com/creating-business-directory-site-with-search-filters/" target="_blank">Creating Directory site with Rehub</a></li>    
+            <li><a href="https://wpsoul.com/how-to-create-multi-vendor-shop-on-wordpress/" target="_blank">Creating Multivendor site with Rehub</a></li> 
+            <li><a href="https://wpsoul.com/sites-autopilot-make-money-making-site-easy-wordpress/" target="_blank">More easy ways to create price comparison, affiliate sites with Rehub and Content Egg</a></li>
+
+        </ul>
+    </div>	
 </div>

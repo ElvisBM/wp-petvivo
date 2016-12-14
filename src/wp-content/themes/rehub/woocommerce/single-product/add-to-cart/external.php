@@ -21,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php $coupon_style = $expired = ''; if(!empty($offer_coupon_date)) : ?>
 	<?php 
 	$timestamp1 = strtotime($offer_coupon_date); 
-	$seconds = $timestamp1 - time(); 
+	$seconds = $timestamp1 - (int)current_time('timestamp',0); 
 	$days = floor($seconds / 86400);
 	$seconds %= 86400;
 	if ($days > 0) {
@@ -33,7 +33,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	  $coupon_style = '';
 	}
 	else {
-	  	$coupon_text = __('Coupon is Expired', 'rehub_framework');
+	  	$coupon_text = __('Expired', 'rehub_framework');
 	  	$coupon_style = ' expired_coupon';
 	  	$expired = '1';	  
 	}                 
@@ -63,7 +63,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 				  				<div class="storeprint"><?php WPSM_Woohelper::re_show_brand_tax(); //show brand taxonomy?></div>
 				  			</div>
 				  			<div class="printcouponcentral">
-								<?php if ($product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0) : ?>
+								<?php if ($product->is_on_sale() && $product->get_regular_price() && $product->get_price() > 0 && !$product->is_type( 'variable' )) : ?>
 								    <span class="save_proc_woo_print">
 								        <?php   
 								            $offer_price_calc = (float) $product->get_price();

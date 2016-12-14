@@ -1,3 +1,4 @@
+<?php use ContentEgg\application\helpers\TemplateHelper;?>
 <div class="rehub_woo_review compact_w_deals">
     <div class="rehub_feat_block table_view_block">
         <div class="rehub_woo_review_tabs" style="display:table-row">
@@ -13,7 +14,14 @@
                     </a>
                 </h4>
                 <?php if ($description): ?>
-                    <p><?php echo $description; ?></p>                    
+                    <p><?php echo $description; ?></p> 
+                <?php elseif(!empty($keyspecs)):?>
+                    <p class="featured_list">
+                        <?php $total_spec = count($keyspecs); $count = 0;?>
+                        <?php foreach ($keyspecs as $keyspec) :?>
+                            <?php echo $keyspec; $count ++; ?><?php if ($count != $total_spec) :?>, <?php endif;?>
+                        <?php endforeach; ?>   
+                    </p>                                   
                 <?php endif; ?>
                 <small class="small_size">
                     <?php if ($availability): ?>
@@ -26,7 +34,7 @@
                     <?php if(!empty($offer_price)) : ?>
                         <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                             <span class="price_count">
-                                <ins><span><?php echo $currency; ?></span> <?php echo $offer_price ?></ins>
+                                <ins><?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?></ins>
                                 <?php if(!empty($offer_price_old)) : ?>
                                 <del>
                                     <span class="amount"><?php echo $offer_price_old ?></span>

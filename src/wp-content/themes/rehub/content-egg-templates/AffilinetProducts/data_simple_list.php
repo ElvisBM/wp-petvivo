@@ -1,18 +1,13 @@
 <?php
 /*
-  Name: Sorted simple list
+  Name: Simple list
  */
 
 ?>
 
 <?php
 use ContentEgg\application\helpers\TemplateHelper;
-// sort items by price
-usort($items, function($a, $b) {
-    if (!$a['price']) return 1;
-    if (!$b['price']) return -1;
-    return $a['price'] - $b['price'];
-});
+
 $product_price_update = get_post_meta( get_the_ID(), '_cegg_last_update_AffilinetProducts', true );
 $product_keyword_update = get_post_meta( get_the_ID(), '_cegg_last_bykeyword_update_AffilinetProducts', true );
 if ($product_price_update) {
@@ -30,7 +25,13 @@ elseif ($product_keyword_update) {
             <?php $aff_thumb = $item['img'] ;?>
             <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
             <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
-            <?php $logo = (!empty($item['extra']['logo'])) ? $item['extra']['logo'] : ''; ?>
+            <?php if (!empty($item['logo'])) :?>
+                <?php $logo = $item['logo']; ?>             
+            <?php elseif (!empty($item['extra']['logo'])) :?>
+                <?php $logo = $item['extra']['logo']; ?>
+            <?php else:?>
+                <?php $logo = ''; ?>                
+            <?php endif;?>
             <?php $i++;?>  
             <?php if(rehub_option('rehub_btn_text') !='') :?><?php $btn_txt = rehub_option('rehub_btn_text') ; ?><?php else :?><?php $btn_txt = __('Buy this item', 'rehub_framework') ;?><?php endif ;?>  
             <div class="rehub_feat_block table_view_block<?php if ($i == 1){echo' best_price_item';}?>">

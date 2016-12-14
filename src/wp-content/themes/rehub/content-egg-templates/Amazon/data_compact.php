@@ -115,7 +115,7 @@ use ContentEgg\application\helpers\TemplateHelper;
 	                            <?php endif;?>
 	                            <?php if(!empty($item['extra']['coupon']['code_date'])) {echo '<div class="time_offer">'.$coupon_text.'</div>';} ?>    
 	                        <?php endif ;?> 
-                    		<div class="aff_tag mt10"><?php echo rehub_get_site_favicon($item['url']); ?></div>	                        
+                    		<div class="aff_tag mt10"><?php echo rehub_get_site_favicon('http://amazon.com'); ?></div>	                        
                         </div>
                     </div>
                 </div>

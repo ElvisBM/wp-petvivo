@@ -19,7 +19,8 @@ jQuery(document).ready(function($) {
       var $change_mecode = $(".rehub_offer_coupon.masked_coupon:not(.expired_coupon)[data-codetext='" + affcoupontrigger +"']");
       var couponcode = $change_mecode.data('clipboard-text'); 
       var coupondestination = $change_mecode.data('dest');
-      $change_mecode.removeClass('masked_coupon').removeClass('btn_offer_block').addClass('not_masked_coupon').html( '<i class="fa fa-scissors fa-rotate-180"></i><span class="coupon_text">'+ decodeURIComponent(couponcode) +'</span>' );                
+      $change_mecode.removeClass('masked_coupon woo_loop_btn coupon_btn btn_offer_block wpsm-button').addClass('not_masked_coupon').html( '<i class="fa fa-scissors fa-rotate-180"></i><span class="coupon_text">'+ decodeURIComponent(couponcode) +'</span>' );
+      $change_mecode.closest('.reveal_enabled').removeClass('reveal_enabled');      
       $.pgwModal({
          titleBar: false,
          mainClassName : 'pgwModal coupon-reveal-popup',

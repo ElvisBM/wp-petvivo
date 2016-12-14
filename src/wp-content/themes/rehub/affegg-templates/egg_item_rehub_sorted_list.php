@@ -14,12 +14,7 @@ $product_price_update = $items[0]['last_update'];
 ?>
 
 <?php $deal_list_title = (rehub_option('rehub_choosedeal_text') !='') ? esc_html(rehub_option('rehub_choosedeal_text')) : __('Choose your deal', 'rehub_framework'); ?>
-<div class="rehub_feat_block egg_sort_list"><a name="aff-link-list"></a>
-    <div class="title_deal_wrap">
-        <div class="title_deal">
-            <?php echo $deal_list_title ;?>
-        </div>
-    </div>
+<div class="rehub_feat_block egg_sort_list notitle_sort_list"><a name="aff-link-list"></a>
     <div class="aff_offer_links">
         <?php $i=0; foreach ($items as $key => $item): ?>
             <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>

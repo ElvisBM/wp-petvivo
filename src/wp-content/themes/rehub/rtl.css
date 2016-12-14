@@ -5,7 +5,7 @@
 	Description: A Hybrid magazine/shop/review/news Wordpress Theme
 	Author: Sizam
 	Author URI: https://wpsoul.com/
-	Version: 6.1.2	
+	Version: 6.4	
 	Tags: two-columns, fluid-layout, custom-background, threaded-comments, translation-ready, custom-menu
 	License: 
 	License URI:
@@ -58,7 +58,6 @@ header .header_second_style .logo { margin-left: 9px; margin-right: 0px; }
 header .mediad { float: left;  }
 .top-search-onclick, .rate_bar_wrap .your_total_score .user_reviews_view_score { float: left; }
 .header_top_wrap .icon-in-header-small { float: left; }
-i.re-top-menu-collapse {margin: 9px 10px 10px 7px; }
 form.search-form input[type="text"] { padding: 2px 7px 2px 37px; }
 form.search-form [type="submit"] { left: 0; right: inherit; vertical-align: middle; }
 header .search { float: left; }
@@ -123,7 +122,7 @@ span.date_meta:before, span.cat_link_meta:before, span.comm_count_meta:before, s
 .news_block .big_img { float: right; }
 .news figure { float: right; }
 .news .detail { float: left; }
-.news .detail h3 { float: right; padding: 0 0 0 36px; }
+.news .detail h3 {padding: 0 0 0 36px; }
 .news .detail h3 i { padding-right: 0px; padding-left: 5px }
 .news .detail .comment_two { left: 0; right: inherit }
 .wpsm_three_col_posts .custom_col_label{ position: absolute; left: auto; right:20px;}
@@ -179,7 +178,7 @@ ul.newsticker li { float: right; margin-right: 0px !important; margin-left: 75px
 .news_lettr input[type="text"] { padding-left: 0px; padding-right: 10px; }
 .news_lettr input[type="submit"] { left: 3px; right: inherit }
 .news_lettr i { padding-right: 0px; padding-left: 5px; }
-.sidebar .widget.top_offers .title:before{ padding-right: 0px; padding-left: 10px; }
+.sidebar .widget.top_offers .title:before{ padding-right: 10px; padding-left: 10px; }
 .widget.top_offers .title:after { right: 50%; left: inherit; margin-left: 0px; margin-right: -8px;}
 .widget.better_menu li{ padding-left: 0px; padding-right: 12px;}
 .widget.better_menu .title i{ padding-right: 0px; padding-left: 8px;}
@@ -235,9 +234,9 @@ ul.postpagination li { float: right; margin-left: 0px; margin-right: 5px; }
 ****************************************************************************/
 
 .single .tags p .tags-title-post, .single .tags p a{margin: 0 0 0 4px}
-.favour_in_row, .row_social_inpost a{float: right; margin: 0 0 6px 6px}
+.favour_in_row{ margin: 0 0 6px 6px}
 .post .android.red-rbn { padding: 0px 10px 6px 19px; }
-.post .comment_two, .stream_title .comment_two, .top_single_area .comment_two{ float: left; }
+.post .comment_two, .stream_title .comment_two, .title_single_area .comment_two{ float: left; }
 .post li { margin: 0px 15px 5px 0px; }
 .post ol, .post ul { margin: 0px 5px 15px 0px }
 .share-buttons ul {float:right}
@@ -425,7 +424,7 @@ article.post .wpsm_toplist_heading:before{ float: right; margin: -8px 0 10px 15p
 .user-rate { float: left; }
 .rate-bar-title { left: initial; right: 0 }
 .rate-bar-percent { right: initial; left: 0 }
-.rate_bar_wrap .review-top .overall-score { float: right; margin: 0px 0px 10px 20px; }
+.review-top .overall-score { float: right; margin: 0px 0px 10px 20px; }
 .rate-line .line { margin-left: 0px; margin-right: 27px }
 .rate-line .line span { float: right; }
 .rate-line.rate-line-inner .line span { padding-right: 0px; padding-left: 5px; text-align: left; }
@@ -466,25 +465,17 @@ span.stars-rate span { float: right; }
 /**WOO VC BLOCKS **/
 
 .woocommerce .button_action { left: auto; right: 10px }
-.yith_float_btns div.compare-button, .yith_float_btns div.yith-wcwl-add-to-wishlist { float: right; margin: -10px 0 0 5px; }
-.yith_float_btns:hover div.compare-button, .woocommerce ul.products li:hover div.yith-wcwl-add-to-wishlist, .woocommerce ul.products li:hover div.compare-button, .yith_float_btns:hover div.yith-wcwl-add-to-wishlist{ margin: 0 0 0 5px; opacity: 1; }
+.yith_float_btns div.compare-button, .yith_float_btns div.yith-wcwl-add-to-wishlist, .yith_float_btns .wpsm-button.rhwooloopcompare { float: right; margin: -10px 0 0 5px; }
+.yith_float_btns:hover div.compare-button, .woocommerce ul.products li:hover div.yith-wcwl-add-to-wishlist, .woocommerce ul.products li:hover div.compare-button, .yith_float_btns:hover div.yith-wcwl-add-to-wishlist, .yith_float_btns:hover .wpsm-button.rhwooloopcompare{ margin: 0 0 0 5px; opacity: 1; }
 .woocommerce .sale_tag{ right: auto; left: 10px }
 
 /*WOO DEALS*/
 
-.deals_woo_rehub .product-pic-wrapper{ float: right; }
-.deals_woo_rehub .product-details{ float: left; }
-.deals_woo_rehub .product-name{ float: right; }
-.deals_woo_rehub .left_data_aff{ float: right; }
-.deals_woo_rehub .woobuy_butt { float: left; }
-.deals_woo_rehub .wooprice_count, .deals_woo_rehub .wooaff_tag { float: right }
-.woo_sidebar_deals_links .deals_woo_rehub .product-pic-wrapper{ float: right;}
-.woo_sidebar_deals_links .deals_woo_rehub .product-details{ float: left;}
-.woo_sidebar_deals_links .deals_woo_rehub .left_data_aff{ float: right;}
-.woo_sidebar_deals_links .deals_woo_rehub .woobuy_butt { float: left; }
-.woo_sidebar_deals_links .deals_woo_rehub .product-name{ float:right;}
-.woo_sidebar_deals_links .deals_woo_rehub .wooprice_count, .woo_sidebar_deals_links .deals_woo_rehub .wooaff_tag { text-align: right; }
-.woo_sidebar_deals_links .deals_woo_rehub .woobuy_butt{ text-align: left;}
+.rh_deal_block .deal-pic-wrapper{ float: right; margin: 0 0 0 15px}
+.rh_deal_block .deal-details{ float: left; }
+.rh_deal_block .rh-deal-btn, .rh_deal_block .rh-deal-right .rh-deal-price {text-align: left; }
+.rh_deal_block .rh-deal-right{padding: 0 15px 0 0}
+.rh_deal_block .redemptionText .code{float: left;}
 .rtl.woocommerce div.product .summary div.yith-wcwl-add-to-wishlist, .dealScore, .woocommerce div.product div.images, .re_wooinner_info, .woocommerce .star-rating, .woocommerce-page .star-rating, .summary .woocommerce-review-link{float: right;}
 .woocommerce div.product div.summary, .re_wooinner_cta_wrapper{float: left;}
 .rtl.woocommerce div.product .summary div.yith-wcwl-add-to-wishlist, .woocommerce .star-rating, .woocommerce-page .star-rating, .dealScore, .thumbplus{margin: 0 0 0 10px}
@@ -705,7 +696,13 @@ div.pp_default .pp_content_container .pp_right { padding-right: 20px }
 .rh_bp_notice_profile{left: auto;right: -5px}
 .user-dropdown-intop-menu .menu-item.bp-profile-menu-item a:before{margin: 0 0 0 4px}
 span.date_meta:before, span.cat_link_meta:before, span.comm_count_meta:before, span.postview_meta:before, span.admin_meta:before{display: none;}
+span.date_meta:after, span.cat_link_meta:after, span.comm_count_meta:after, span.postview_meta:after, span.admin_meta:after{ font-size: 3px;line-height: 12px;vertical-align: middle; padding-left: 5px; content: "\f111"; font-family: FontAwesome}
+.admin_meta .admin img{vertical-align: middle; margin-left: 5px; border-radius: 50%}
+span.postview_meta:after{content: "\f06e"; font-size: 12px; font-style: normal;}
+.title_single_area span.comm_count_meta:after{content: "\f0e6"; font-size: 12px;font-style: normal;}
+.post-meta span:first-child:after{display: none;}
 .post-meta span{margin: 0 0 0 5px;}
+.title_single_area .post-meta span {margin: 0 0 0 12px;}
 .rh_code_incart .widget_logo_list .price_simple_col{padding: 0 0 0 8px}
 .rtl.woocommerce div.product .summary form.cart div.quantity{margin: 0 0 5px 15px;float: right; }
 .widget_logo_list .buttons_col{text-align: left !important;}
@@ -719,3 +716,23 @@ span.date_meta:before, span.cat_link_meta:before, span.comm_count_meta:before, s
 .floatright{float: left;}
 .floatleft{float: right;}
 .summary .rh-user-favor-shop{margin: 8px}
+
+/* PROS&CONS
+================================================== */
+.wpsm_pros .title_pros{ font-style: none; }
+.wpsm_pros{padding-left: 0; padding-right: 15px}
+.wpsm_cons .title_cons{ font-style: none;}
+.wpsm_pros ul li:before, .wpsm_cons ul li:before{display: none;}
+.wpsm_pros ul li:after{ padding-right: 0; padding-left: 8px;content: '\f00c';font-family: 'FontAwesome';color: #58c649;}
+.wpsm_cons ul li:after{ padding-right: 0; padding-left: 8px; content: '\f068'; font-family: 'FontAwesome';color: #f24f4f;}
+
+.re-line-badge.re-line-small-label{margin: 0 0 5px 5px;}
+a.rh-cat-label-title, .rh-cat-label-title a{margin: 0 0 5px 5px;}
+.wpsm-button.small i.fa{padding: 0 0 0 5px}
+.rh_post_layout_default .wpsm-button {
+    float: left;
+    margin: 0 15px 5px 0;
+}
+.row_social_inpost span.fb:after, .row_social_inpost span.tw:after{margin: 0 8px 0 0 }
+.row_social_inpost span.share-link-image{margin: 0 0 6px 6px;}
+.rh_price_holder_add_links{top: 0; right: auto; left: 0}

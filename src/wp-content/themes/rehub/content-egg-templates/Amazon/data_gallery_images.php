@@ -14,22 +14,24 @@ jQuery(document).ready(function($) {
 });
 </script>
 <div class="gallery_images_zon">
+<div class="pretty_woo">
 <?php foreach ($items as $item): ?>
     <?php $offer_title = (!empty($item['title'])) ? $item['title'] : ''; ?> 
     <?php $gallery_images = (!empty ($item['extra']['imageSet'])) ? $item['extra']['imageSet'] : ''?>
             <?php if (!empty ($gallery_images)) :?>
-                <div class="pretty_woo">
-                    <?php wp_enqueue_script('prettyphoto');
-                        foreach ($gallery_images as $gallery_img) {
-                            ?> 
-                            <a href="<?php echo esc_attr($gallery_img['LargeImage']) ;?>"> 
-                            <img src="<?php echo esc_attr($gallery_img['MediumImage']) ;?>" alt="<?php echo esc_attr($offer_title); ?>" />  
-                            </a>
-                            <?php
-                        }
-                    ?>
-                </div>
+                
+                <?php wp_enqueue_script('prettyphoto');
+                    foreach ($gallery_images as $gallery_img) {
+                        ?> 
+                        <a href="<?php echo esc_attr($gallery_img['LargeImage']) ;?>"> 
+                        <img src="<?php echo esc_attr($gallery_img['MediumImage']) ;?>" alt="<?php echo esc_attr($offer_title); ?>" />  
+                        </a>
+                        <?php
+                    }
+                ?>
+                
             <?php endif ;?>      
 <?php endforeach; ?>
+</div>
 </div>
 <div class="clearfix"></div>

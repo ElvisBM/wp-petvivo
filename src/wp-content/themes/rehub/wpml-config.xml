@@ -18,6 +18,12 @@
 	  <key name="rehub_commenttitle_text" />
 	  <key name="rehub_userposts_text" />
 	  <key name="rehub_userdeals_text" />
+	  <key name="rehub_currency" />
+	  <key name="buy_best_text" />
+	  <key name="badge_label_1" />
+	  <key name="badge_label_2" />
+	  <key name="badge_label_3" />
+	  <key name="badge_label_4" />	  	  	  	  
 	 </key>
 	</admin-texts>  
 </wpml-config>

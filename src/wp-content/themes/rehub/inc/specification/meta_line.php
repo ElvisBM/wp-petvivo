@@ -11,7 +11,27 @@
 ?>
 
 <?php if ($meta_line_key):?>
-    <div class="wpsm_spec_meta_row">
+    <?php if ($meta_line_type =='usermeta'):?>
+        <?php 
+            $post_tmp = get_post($postID);
+            $author_id = $post_tmp->post_author;
+            $value = get_user_meta($author_id, $meta_line_key, true);
+        ?>
+    <?php elseif ($meta_line_type =='bpmeta'):?>
+        <?php 
+            $post_tmp = get_post($postID);
+            $author_id = $post_tmp->post_author;
+            $args = array(
+                'field'   => $meta_line_key, // Field name or ID.
+                'user_id' => $author_id
+            );                
+            $value = (function_exists('bp_get_profile_field_data')) ? bp_get_profile_field_data( $args ) : '';
+        ?>            
+    <?php else:?>
+        <?php $value = get_post_meta($postID, $meta_line_key, true);?>
+    <?php endif;?> 
+    <?php $visible_class = ($value == '') ? ' meta_row_empty' : '';?>   
+    <div class="wpsm_spec_meta_row<?php echo $visible_class;?>">
         <div class="wpsm_spec_meta_label">
             <?php echo $meta_line_label;?>
             <?php if ($meta_line_tooltip) :?>
@@ -23,26 +43,6 @@
         <style scoped>
             .wpsm_spec_row_<?php echo $id;?>_<?php echo $pbid;?> .wpsm_spec_meta_value{font-size: <?php echo $meta_line_size;?>px; color: <?php echo $meta_line_color;?>; line-height: <?php echo $meta_line_size;?>px;}
         </style>
-        <?php endif;?>
-        
-        <?php if ($meta_line_type =='usermeta'):?>
-            <?php 
-                $post_tmp = get_post($postID);
-                $author_id = $post_tmp->post_author;
-                $value = get_user_meta($author_id, $meta_line_key, true);
-            ?>
-        <?php elseif ($meta_line_type =='bpmeta'):?>
-            <?php 
-                $post_tmp = get_post($postID);
-                $author_id = $post_tmp->post_author;
-                $args = array(
-                    'field'   => $meta_line_key, // Field name or ID.
-                    'user_id' => $author_id
-                );                
-                $value = (function_exists('bp_get_profile_field_data')) ? bp_get_profile_field_data( $args ) : '';
-            ?>            
-        <?php else:?>
-            <?php $value = get_post_meta($postID, $meta_line_key, true);?>
         <?php endif;?>
 
         <?php if ($value && $meta_line_type =='text') :?>

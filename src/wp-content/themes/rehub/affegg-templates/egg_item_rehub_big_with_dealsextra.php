@@ -45,7 +45,7 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                             <?php if(!empty($best_price_value)) : ?>
                                 <div class="deals-box-pricebest">
                                 <span><?php _e('Start from: ', 'rehub_framework');?></span>
-                                    <?php echo $best_price_currency; ?> <?php echo $best_price_value; ?>                        
+                                    <?php echo $items[0]['price_formatted']; ?>                        
                                 </div>                                                       
                             <?php endif ;?> 
                             <?php if(!empty($offer_url_first)) : ?> 
@@ -66,7 +66,7 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                 <?php if(!empty($best_price_value)) : ?>
                     <div class="deals-box-pricebest">
                     <span><?php _e('Start from: ', 'rehub_framework');?></span>
-                        <?php echo $best_price_currency; ?> <?php echo $best_price_value; ?>                     
+                        <?php echo $items[0]['price_formatted']; ?>                    
                     </div>                                                       
                 <?php endif ;?> 
                 <?php if(!empty($offer_url_first)) : ?> 
@@ -130,10 +130,10 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                                     <?php if(!empty($offer_price)) : ?>
                                         <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                             <span class="price_count">
-                                                <span><?php echo $item['currency']; ?></span> <?php echo $offer_price; ?>
+                                                <?php echo $item['price_formatted']; ?>
                                                 <?php if(!empty($offer_price_old)) : ?>
                                                 <strike>
-                                                    <span class="amount"><?php echo $offer_price_old ?></span>
+                                                    <span class="amount"><?php echo $item['old_price_formatted']; ?></span>
                                                 </strike>
                                                 <?php endif ;?>                                      
                                             </span> 
@@ -220,13 +220,6 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
 
 
         <?php if (!empty ($gallery_images)) :?>
-            <script>
-            jQuery(document).ready(function($) {
-                'use strict'; 
-                $('.rehub_woo_review .pretty_woo a').attr('rel', 'prettyPhoto[rehub_product_gallery_<?php echo rand(1, 50);?>]');
-                $(".rehub_woo_review .pretty_woo a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
-            });
-            </script>
             <div class="rehub_woo_review_tabs pretty_woo">
                 <?php wp_enqueue_script('prettyphoto');
                     foreach ($gallery_images as $gallery_img) {
@@ -238,6 +231,13 @@ if (!empty($items[0]['extra']['comments'])) {$import_comments = $items[0]['extra
                     }
                 ?>
             </div>
+            <script>
+            jQuery(document).ready(function($) {
+                'use strict'; 
+                $('.rehub_woo_review .pretty_woo a').attr('rel', 'prettyPhoto[rehub_product_gallery_<?php echo rand(1, 50);?>]');
+                $(".rehub_woo_review .pretty_woo a[rel^='prettyPhoto']").prettyPhoto({social_tools:false});
+            });
+            </script>            
         <?php endif ;?>
         <?php if (!empty ($import_comments)) :?>
             <div class="rehub_woo_review_tabs affrev">

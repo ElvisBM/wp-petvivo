@@ -6,7 +6,7 @@ use ContentEgg\application\helpers\TemplateHelper;
 ?>
 
 <?php foreach ($items as $item): ?>
-    <?php $offer_price = (!empty($item['price'])) ? TemplateHelper::price_format_i18n($item['price']) : ''; ?>
+    <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
     <?php $offer_price_old = (!empty($item['priceOld'])) ? TemplateHelper::price_format_i18n($item['priceOld']) : ''; ?>
     <?php $clean_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
     <?php $currency = (!empty($item['currency'])) ? $item['currency'] : ''; ?>

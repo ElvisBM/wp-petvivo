@@ -1,4 +1,5 @@
-<div class="rehub_feat_block table_view_block<?php if ($i == 1){echo' best_price_item';}?>">
+<?php use ContentEgg\application\helpers\TemplateHelper;?>
+<div class="rehub_feat_block compact_w_deals table_view_block<?php if ($i == 1){echo' best_price_item';}?>">
     <div class="rehub_woo_review_tabs" style="display:table-row">
         <div class="offer_thumb">   
             <a rel="nofollow" target="_blank" class="re_track_btn" href="<?php echo esc_url($afflink) ?>">
@@ -12,7 +13,14 @@
                 </a>
             </h4>
             <?php if ($description): ?>
-                <p><?php echo $description; ?></p>                    
+                <p><?php echo $description; ?></p> 
+            <?php elseif(!empty($keyspecs)):?>
+                <p class="featured_list">
+                    <?php $total_spec = count($keyspecs); $count = 0;?>
+                    <?php foreach ($keyspecs as $keyspec) :?>
+                        <?php echo $keyspec; $count ++; ?><?php if ($count != $total_spec) :?>, <?php endif;?>
+                    <?php endforeach; ?>   
+                </p>                                   
             <?php endif; ?>                        
             <small class="small_size">
             <?php if ($availability): ?>
@@ -25,7 +33,7 @@
                 <?php if(!empty($offer_price)) : ?>
                     <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                         <span class="price_count">
-                            <ins><span><?php echo $currency; ?></span> <?php echo $offer_price ?></ins>
+                            <ins><?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?></ins>
                             <?php if(!empty($offer_price_old)) : ?>
                             <del>
                                 <span class="amount"><?php echo $offer_price_old ?></span>
@@ -43,9 +51,14 @@
                     <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
                         <?php echo $btn_txt ; ?>
                     </a>
-                    <?php if($logo) :?>
-                        <div class="egg-logo mt10"><img src="<?php echo $logo; ?>" alt="<?php echo esc_attr($offer_title); ?>" /></div>
-                    <?php elseif ($merchant) :?>
+                    <div class="egg-logo mt10">
+                    <?php if(!empty($logo)) :?>
+                        <img src="<?php echo $logo; ?>" alt="<?php echo esc_attr($offer_title); ?>" />
+                    <?php else:?>
+                        <img src="<?php echo esc_attr(TemplateHelper::getMerhantLogoUrl($item, true)); ?>" alt="<?php echo esc_attr($offer_title); ?>" />
+                    <?php endif;?>
+                    </div>
+                    <?php if ($merchant) :?>
                         <div class="aff_tag mt10"><?php echo $merchant; ?></div>
                     <?php endif ;?>                        
                 </div>

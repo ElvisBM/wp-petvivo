@@ -8,7 +8,7 @@
 <?php $coupon_style = $expired = ''; if(!empty($offer_coupon_date)) : ?>
     <?php 
     $timestamp1 = strtotime($offer_coupon_date); 
-    $seconds = $timestamp1 - time(); 
+    $seconds = $timestamp1 - (int)current_time('timestamp',0); 
     $days = floor($seconds / 86400);
     $seconds %= 86400;
     if ($days > 0) {
@@ -20,7 +20,7 @@
       $coupon_style = '';
     }
     else {
-        $coupon_text = __('Coupon is Expired', 'rehub_framework');
+        $coupon_text = __('Expired', 'rehub_framework');
         $coupon_style = ' expired_coupon';
         $expired = '1';
     }                 
@@ -35,13 +35,13 @@
     	<div>
         <figure>
         <a href="<?php the_permalink();?>">
-            <?php if ( $product->is_on_sale() ) : ?>
+            <?php if ( $product->is_on_sale()) : ?>
                 <?php 
                 $percentage=0;
                 if ($product->regular_price) {
                     $percentage = round( ( ( $product->regular_price - $product->sale_price ) / $product->regular_price ) * 100 );
                 }
-                if ($percentage) {
+                if ($percentage && $percentage>0 && !$product->is_type( 'variable' )) {
                     $sales_html = '<span class="onsale"><span>- ' . $percentage . '%</span></span>';
                 } else {
                     $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $post, $product );
@@ -51,9 +51,9 @@
             <?php endif; ?>
             <?php if ( $product->is_featured() ) : ?>
                 <?php if ($product->is_on_sale()) :?>
-                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured onsalefeatured">' . esc_html__( 'Featured!', 'woocommerce' ) . '</span>', $post, $product ); ?>
+                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured onsalefeatured">' . esc_html__( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
                 <?php else :?>
-                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . esc_html__( 'Featured!', 'woocommerce' ) . '</span>', $post, $product ); ?>
+                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . __( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
                 <?php endif ;?>
             <?php endif; ?>        
         <?php 
@@ -110,6 +110,7 @@
             <?php wc_get_template( 'loop/rating.php' );?>    
         </div>
 	    <div class="woolistmain_desc"><?php kama_excerpt('maxchar=180'); ?></div>
+        <?php if(rehub_option('woo_rhcompare') == 1) {echo wpsm_comparison_button(array('class'=>'rhwoolistcompare'));}?>        
         <?php do_action( 'rehub_vendor_show_action' ); ?>
 	    <?php do_action( 'rehub_after_wooleft_list_thumb' ); ?>  
     </div>

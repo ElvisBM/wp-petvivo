@@ -56,14 +56,14 @@ function widget( $args, $instance ) {
 		<?php  while ($loop->have_posts()) : $loop->the_post(); ?>	
 			<div class="slide">
 				<?php if($post_type):?>
-					<?php global $product;?>
-					<div class="wrap woo_feat_slider text-center mt15">
+					<?php global $post, $product;?>
+					<div class="wrap woo_feat_slider woocommerce text-center mt15">
 						<?php $wootarget = ($product->product_type =='external') ? ' target="_blank" rel="nofollow"' : '' ;?>
 						<?php $woolink = ($product->product_type =='external') ? $product->add_to_cart_url() : get_post_permalink($post->ID) ;?>
 					    <figure class="centered_image_woo">
 					        <a href="<?php echo $woolink ;?>"<?php echo $wootarget ;?>>
 					            <?php if ( $product->is_featured() ) : ?>
-					                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . esc_html__( 'Featured!', 'woocommerce' ) . '</span>', $post, $product ); ?>
+					                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . __( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
 					            <?php endif; ?>        
 					            <?php if ( $product->is_on_sale() ) : ?>
 					                <?php 
@@ -72,10 +72,10 @@ function widget( $args, $instance ) {
 					                if ($product->regular_price) {
 					                    $percentage = round( ( ( $product->regular_price - $product->sale_price ) / $product->regular_price ) * 100 );
 					                }
-					                if ($percentage) {
-					                    $sales_html = '<span class="onsale'.$featured.'"><span>- ' . $percentage . '%</span></span>';
+					                if ($percentage && $percentage>0 && !$product->is_type( 'variable' )) {
+        								$sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'"><span>- ' . $percentage . '%</span></span>', $post, $product );
 					                } else {
-					                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $post, $product );
+					                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'">' . esc_html__( 'Sale!', 'rehub_framework' ) . '</span>', $post, $product );
 					                }
 					                ?>
 					                <?php echo $sales_html; ?>

@@ -40,10 +40,10 @@
 
 	            <?php if(!empty($offer_price)) : ?>
 	                <div class="deal-box-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-	                    <sup class="cur_sign"><?php echo $item['currency']; ?></sup><?php echo $offer_price ?>
+	                    <?php echo $item['price_formatted'] ?>
 	                    <?php if(!empty($offer_price_old)) : ?>
 	                    <span class="retail-old">
-	                      <strike><span class="value"><?php echo $offer_price_old ?></span></strike>
+	                      <strike><span class="value"><?php echo $item['old_price_formatted']; ?></span></strike>
 	                    </span>
 	                    <?php endif ;?>                
 	                    <meta itemprop="price" content="<?php echo $item['price_raw'] ?>">

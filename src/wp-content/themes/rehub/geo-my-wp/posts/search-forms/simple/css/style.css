@@ -53,6 +53,7 @@ div.gmw-pt-horizontal-gray-form-wrapper select {
 	line-height: 24px;
 	-webkit-appearance: none; 
 	background: url(select.png) right center no-repeat #fff;
+	height: 38px;
 }
 
 div.gmw-pt-horizontal-gray-form-wrapper .gmw-dropdown-taxonomy-wrapper label, 

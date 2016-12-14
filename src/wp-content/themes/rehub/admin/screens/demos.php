@@ -59,9 +59,9 @@ if ( ! is_wp_error( $demos_json ) ) {
 			<a href="https://wordpress.org/plugins/wp-clone-by-wp-academy/" target="_blank"><?php echo __( "WP Clone plugin", "rehub_framework" ); ?></a>. 
 			<?php echo __( "Choose demo stack and click on Link button to see direct link of clone zip file. Just insert this link in plugin field - Restore from URL. ", "rehub_framework" ); ?>
 			<br /><br />
-			<?php echo __( "Note, after installing, use login:rehubdemo, pass: RehubPass999777 to get access to admin page. I recommend to create new admin account.", "rehub_framework" ); ?>
+			<strong style="color:red; font-size: 16px"><?php echo __( "Note, after installing, use login:rehubdemo, pass: RehubPass999777 to get access to admin page.", "rehub_framework" ); ?></strong> <?php echo __( "After installing demo clone - delete rehubdemo account. For this, create new account in Users - Add new, make it as administrator. Log out from rehubdemo and login as new account. Delete rehubdemo account in Users - all users. Assign all content to your new account while deleting", "rehub_framework" ); ?>
 			<br /><br />
-			<span class="re-show-hide"><?php echo __( "Common issues - read before install", "rehub_framework" ); ?></span>		
+			<span class="re-show-hide"><?php echo __( "Common issues - read before install!!!!!!", "rehub_framework" ); ?></span>		
 			<span class="open-re-onclk">
 			<br />
 			1)	<?php echo __( "If you have problem with redirect after importing, place such code in wp-config.php in root folder of your site", "rehub_framework" ); ?><br />  
@@ -69,15 +69,12 @@ if ( ! is_wp_error( $demos_json ) ) {
 					define('WP_SITEURL','http://yoursite.com');
 				</code>
 			<br /><br />
-			2) <?php echo __( "Sometimes, you will see that posts are imported, but home page is not as on demo site. Usually, this is because theme options was not imported. 
-So, go to theme options - Utility and import there contents of file ", "rehub_framework" ); ?><a href="<?php echo REHUB_ADMIN_DIR . 'screens/images/theme_option.txt'; ?>" target="blank">theme_option.txt</a>
+			2) <?php echo __( "Infinite loading or 500 error while installing. Usually, this means that your server has too low PHP Time Limit. Ask your hoster to increase it ", "rehub_framework" ); ?> <a href="http://codex.wordpress.org/Common_WordPress_Errors#Maximum_execution_time_exceeded" target="_blank">How to increase php limit</a>
 			<br /><br />
-			3) <?php echo __( "Infinite loading or 500 error while installing. Usually, this means that your server has too low PHP Time Limit. Ask your hoster to increase it ", "rehub_framework" ); ?> <a href="http://codex.wordpress.org/Common_WordPress_Errors#Maximum_execution_time_exceeded" target="_blank">How to increase php limit</a>
-			<br /><br />
-			4) <?php echo __( "Nothing was changed after export. Usually, this is because your server can't install clone from external link. So, download zip file to computer and upload it to your site manually by ftp to folder /wp-content/uploads/wp-clone/. Then use link t", "rehub_framework" ); ?> <a href="http://codex.wordpress.org/Common_WordPress_Errors#Maximum_execution_time_exceeded" target="_blank">How to increase php limit</a>			
+			3) <?php echo __( "If you use localhost, sometimes it better to upload zip file manually to folder /wp-content/uploads/wp-clone/. Then, click on button Scan and repopulate in WP Clone page. You will see backup file in list.", "rehub_framework" ); ?>		
 			</span>
-			<br /><br />
-			<?php echo __( "If you need just default xml wordpress file with posts, you can find it in Demo_data folder inside full theme package from Themeforest", "rehub_framework" ); ?>
+			<h3>Alternative way</h3>
+			If you have php 7.0 on server or you have any other problems with WP CLone, you can use alternative plugin <a href="https://wordpress.org/plugins/all-in-one-wp-migration/" target="_blank">Wp all In One Migration</a>. Then, download on computer one of available demo clone files from <a href="https://www.dropbox.com/sh/kcenyglpw40e8io/AABqzjkHdF6myicmVDLMcwrYa?dl=0" target="_blank">Dropbox</a>, and use this file to backup site. If while uploading file, process is stoped, try to upload file from ftp to folder /wp-content/ai1wm-backups, then, you can restore site from All-in-One-Migration - Backups
 
 		</p>
 	<?php else :?>

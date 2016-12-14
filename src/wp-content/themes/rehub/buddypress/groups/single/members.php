@@ -14,7 +14,7 @@
 
 	<?php do_action( 'bp_before_group_members_list' ); ?>
 
-	<ul id="member-list" class="item-list col_wrap_three">
+	<ul id="member-list" class="item-list col_wrap_fourth">
 		<?php while ( bp_group_members() ) : bp_group_the_member(); ?>
 			<li class="col_item">
 				<div class="member-inner-list">

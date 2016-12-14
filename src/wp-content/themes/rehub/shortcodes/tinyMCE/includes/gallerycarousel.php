@@ -38,7 +38,7 @@ jQuery(document).ready(function() {
     </p> 
     <p><label><?php _e('Images ids', 'rehub_framework') ;?></label>
         <input type="text" name="minigallery-ids" value="" id="minigallery-ids" /><br />
-        <small><?php _e('Insert ids of images with commas.', 'rehub_framework') ;?>. <a href="http://rehub.wpsoul.com/documentation/docs.html#51" target="_blank">Tip - How to get images ids very fast</small>
+        <small><?php _e('Insert ids of images with commas.', 'rehub_framework') ;?>. <a href="http://rehub.wpsoul.com/documentation/docs.html#51" target="_blank">Tip - How to get images ids very fast</a></small>
     </p> 
     <p>
         <label><?php _e('Enable prettyphoto?', 'rehub_framework') ;?></label>

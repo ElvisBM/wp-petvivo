@@ -15,7 +15,7 @@
             <div class="wpsm-title middle-size-title wpsm-cat-title"><h5><span><?php _e('Category:', 'rehub_framework'); ?></span> <?php single_cat_title(); ?></h5></div>
             <?php /* If this is a tag archive */ } elseif( is_tag() ) { ?>
             <div class="wpsm-title middle-size-title wpsm-cat-title"><h5><span><?php _e('Tag:', 'rehub_framework'); ?></span> <?php single_tag_title(); ?></h5></div>
-            <div class='top_rating_text'><?php echo tag_description(); ?></div>				
+            <article class='top_rating_text'><?php echo tag_description(); ?></article>				
             <?php /* If this is a daily archive */ } elseif (is_day()) { ?>
             <div class="wpsm-title middle-size-title wpsm-cat-title"><h5><span><?php _e('Archive:', 'rehub_framework'); ?></span> <?php the_time('F jS, Y'); ?></h5></div>
             <?php /* If this is a monthly archive */ } elseif (is_month()) { ?>

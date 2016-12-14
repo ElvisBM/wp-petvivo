@@ -792,15 +792,21 @@ if( !function_exists('wpsm_list_shortcode') ) {
 function wpsm_list_shortcode( $atts, $content = null ) {
 
 		extract( shortcode_atts( array(
-			'type' => 'arrow'
+			'type' => 'arrow',
+			'hover' => '',
+			'gap' => '',
+			'darklink' => ''
 		), $atts ) ); 
 		// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
 		$content = do_shortcode($content);
         $content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
 		$Old     = array( '<br />', '<br>' );
 		$New     = array( '','' );
-		$content = str_replace( $Old, $New, $content );		
-    return '<div class="wpsm_'.$type.'list">'.do_shortcode($content).'</div>';  
+		$content = str_replace( $Old, $New, $content );
+		$gapclass = ($gap == 'small') ? ' small_gap_list' : '';	
+		$hoverclass = ($hover) ? ' wpsm_pretty_hover' : '';	
+		$darklinkclass = ($darklink) ? ' darklink' : '';
+    return '<div class="wpsm_'.$type.'list wpsm_pretty_list'.$gapclass.$hoverclass.$darklinkclass.'">'.do_shortcode($content).'</div>';  
 }  
 add_shortcode("wpsm_list", "wpsm_list_shortcode");
 }
@@ -886,7 +892,7 @@ add_shortcode('wpsm_member', 'wpsm_member_shortcode');
 //////////////////////////////////////////////////////////////////
 if( !function_exists('wpsm_shortcode_is_logged_in') ) {
 function wpsm_shortcode_is_logged_in( $atts, $content = null ) {
-	@extract($atts);
+	//@extract($atts);
 	// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
 	$content = do_shortcode($content);
 	$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
@@ -909,7 +915,7 @@ add_shortcode('wpsm_is_user', 'wpsm_shortcode_is_logged_in');
 //////////////////////////////////////////////////////////////////
 if( !function_exists('wpsm_shortcode_is_guest') ) {
 function wpsm_shortcode_is_guest( $atts, $content = null ) {
-	@extract($atts);
+	//@extract($atts);
 	// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
 	$content = do_shortcode($content);
 	$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
@@ -932,7 +938,7 @@ add_shortcode('wpsm_is_guest', 'wpsm_shortcode_is_guest');
 //////////////////////////////////////////////////////////////////
 if( !function_exists('wpsm_shortcode_is_vendor') ) {
 function wpsm_shortcode_is_vendor( $atts, $content = null ) {
-	@extract($atts);
+	//@extract($atts);
 	// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
 	$content = do_shortcode($content);
 	$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
@@ -954,9 +960,33 @@ add_shortcode('wpsm_is_vendor', 'wpsm_shortcode_is_vendor');
 //////////////////////////////////////////////////////////////////
 // Vendor content
 //////////////////////////////////////////////////////////////////
+if( !function_exists('wpsm_shortcode_is_pending_vendor') ) {
+function wpsm_shortcode_is_pending_vendor( $atts, $content = null ) {
+	//@extract($atts);
+	// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
+	$content = do_shortcode($content);
+	$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
+	$Old     = array( '<br />', '<br>' );
+	$New     = array( '','' );
+	$content = str_replace( $Old, $New, $content );
+	$user = wp_get_current_user();
+	if ( in_array( 'pending_vendor', (array) $user->roles )  && !is_null( $content ) && !is_feed()) {
+		return $content;
+	}		
+	else { 
+		return;	
+	}
+
+}	
+add_shortcode('wpsm_is_pending_vendor', 'wpsm_shortcode_is_pending_vendor');
+}
+
+//////////////////////////////////////////////////////////////////
+// Vendor content
+//////////////////////////////////////////////////////////////////
 if( !function_exists('wpsm_shortcode_not_vendor_logged') ) {
 function wpsm_shortcode_not_vendor_logged( $atts, $content = null ) {
-	@extract($atts);
+	//@extract($atts);
 	// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
 	$content = do_shortcode($content);
 	$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
@@ -973,6 +1003,30 @@ function wpsm_shortcode_not_vendor_logged( $atts, $content = null ) {
 
 }	
 add_shortcode('wpsm_not_vendor_logged', 'wpsm_shortcode_not_vendor_logged');
+}
+
+//////////////////////////////////////////////////////////////////
+// Vendor content
+//////////////////////////////////////////////////////////////////
+if( !function_exists('wpsm_shortcode_customer_user') ) {
+function wpsm_shortcode_customer_user( $atts, $content = null ) {
+	//@extract($atts);
+	// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
+	$content = do_shortcode($content);
+	$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
+	$Old     = array( '<br />', '<br>' );
+	$New     = array( '','' );
+	$content = str_replace( $Old, $New, $content );
+	$user = wp_get_current_user();
+	if ( is_user_logged_in() && !in_array( 'customer', (array) $user->roles )  && !is_null( $content ) && !is_feed()) {
+		return $content;
+	}		
+	else { 
+		return;	
+	}
+
+}	
+add_shortcode('wpsm_customer_user', 'wpsm_shortcode_customer_user');
 }
 
 
@@ -1307,11 +1361,34 @@ if( !function_exists('rehub_exerpt_function') ) {
 function rehub_exerpt_function( $atts, $content = null ) { 
     extract(shortcode_atts(array(
 		'length' => '120',
-		'reviewtext' => '',   
+		'reviewtext' => '',
+		'reviewheading'=> '',
+		'reviewpros'=>'',
+		'reviewcons'=>'',
     ), $atts));
     ob_start();
     if ($reviewtext =='1') :
     	echo vp_metabox('rehub_post.review_post.0.review_post_summary_text');
+    elseif ($reviewheading =='1') :
+    	echo vp_metabox('rehub_post.review_post.0.review_post_heading');    
+	elseif ($reviewpros =='1') :
+	    $prosvalues = vp_metabox('rehub_post.review_post.0.review_post_pros_text');
+		if(empty($prosvalues)) return;	
+	    $prosvalues = explode(PHP_EOL, $prosvalues);	    	
+	    echo '<div class="wpsm_pros"><ul>';
+	    foreach ($prosvalues as $prosvalue) {
+	    	echo '<li>'.$prosvalue.'</li>';
+	    }
+	    echo '</ul></div>';	
+	elseif ($reviewcons =='1') :
+	    $consvalues = vp_metabox('rehub_post.review_post.0.review_post_cons_text');
+		if(empty($consvalues)) return;		
+	    $consvalues = explode(PHP_EOL, $consvalues);	    
+	    echo '<div class="wpsm_pros"><ul>';
+	    foreach ($consvalues as $consvalue) {
+	    	echo '<li>'.$consvalue.'</li>';
+	    }
+	    echo '</ul></div>';		         
     else :
 		kama_excerpt('maxchar='.$length.'');
 	endif;
@@ -1404,8 +1481,7 @@ function rehub_shortcode_quick_offer( $atts, $content = null ) {
 			array(
 				'id' => '',
 			), $atts);	
-		$offer_shortcode = get_post_meta( get_the_ID(), 'rehub_offer_shortcode', true );
-		if (empty($offer_shortcode) && empty($atts['id'])) return false;
+		if (empty($atts['id'])) return false;
 		ob_start(); 
 		rehub_quick_offer($atts['id']);
 		$output = ob_get_contents();
@@ -1481,164 +1557,190 @@ function wpsm_toprating_shortcode( $atts, $content = null ) {
 	
 	extract(shortcode_atts(array(
 			'id' => '',
+			'postid' => '',
 			'full_width' => '0',
 		), $atts));
 		
-	if(isset($atts['id']) && $atts['id']):
+	if(isset($atts['id']) || isset($atts['postid'])):
 
-		$toppost = get_post($atts['id']);
-		$module_cats = get_post_meta( $toppost->ID, 'top_review_cat', true ); 
-    	$module_tag = get_post_meta( $toppost->ID, 'top_review_tag', true ); 
-    	$module_fetch = get_post_meta( $toppost->ID, 'top_review_fetch', true ); 
-    	$module_ids = get_post_meta( $toppost->ID, 'manual_ids', true ); 
-    	$order_choose = get_post_meta( $toppost->ID, 'top_review_choose', true ); 
-    	$module_desc = get_post_meta( $toppost->ID, 'top_review_desc', true );
-    	$module_desc_fields = get_post_meta( $toppost->ID, 'top_review_custom_fields', true );
-    	$rating_circle = get_post_meta( $toppost->ID, 'top_review_circle', true );
-    	$module_field_sorting = get_post_meta( $toppost->ID, 'top_review_field_sort', true );
-    	$module_order = get_post_meta( $toppost->ID, 'top_review_order', true );    	
-    	if ($module_fetch ==''){$module_fetch = '10';}; 
-    	if ($module_desc ==''){$module_desc = 'post';};
-    	if ($rating_circle ==''){$rating_circle = '1';};		
-		
+		if(!empty($atts['id'])){
+			$toppost = get_post($atts['id']);
+			$module_cats = get_post_meta( $toppost->ID, 'top_review_cat', true ); 
+	    	$module_tag = get_post_meta( $toppost->ID, 'top_review_tag', true ); 
+	    	$module_fetch = get_post_meta( $toppost->ID, 'top_review_fetch', true ); 
+	    	$module_ids = get_post_meta( $toppost->ID, 'manual_ids', true ); 
+	    	$order_choose = get_post_meta( $toppost->ID, 'top_review_choose', true ); 
+	    	$module_desc = get_post_meta( $toppost->ID, 'top_review_desc', true );
+	    	$module_desc_fields = get_post_meta( $toppost->ID, 'top_review_custom_fields', true );
+	    	$rating_circle = get_post_meta( $toppost->ID, 'top_review_circle', true );
+	    	$module_field_sorting = get_post_meta( $toppost->ID, 'top_review_field_sort', true );
+	    	$module_order = get_post_meta( $toppost->ID, 'top_review_order', true );    	
+	    	if ($module_fetch ==''){$module_fetch = '10';}; 
+	    	if ($module_desc ==''){$module_desc = 'post';};
+	    	if ($rating_circle ==''){$rating_circle = '1';};
+		}
+		elseif(!empty($atts['postid'])){
+			$module_cats = $module_tag = ''; 
+	    	$module_fetch = 1; 
+	    	$module_ids = explode(',', $atts['postid']); 
+	    	$order_choose = 'manual_choose'; 
+	    	$module_desc = 'post';
+	    	$module_desc_fields = '';
+	    	$rating_circle = 1;
+	    	$module_field_sorting = '';
+	    	$module_order = '';    				
+		}
 		ob_start(); 
 
     	?>
-                <div class="clearfix"></div>
+            <div class="clearfix"></div>
 
-                <?php if ($order_choose == 'cat_choose') :?>
-	                <?php $query = array( 
-	                    'cat' => $module_cats, 
-	                    'tag' => $module_tag, 
-	                    'posts_per_page' => $module_fetch, 
-	                    'nopaging' => 0, 
-	                    'post_status' => 'publish', 
-	                    'ignore_sticky_posts' => 1, 
-	                    'meta_key' => 'rehub_review_overall_score', 
-	                    'orderby' => 'meta_value_num',
-	                    'meta_query' => array(
-	                            array(
-	                            'key' => 'rehub_framework_post_type',
-	                            'value' => 'review',
-	                            'compare' => 'LIKE',
-	                            )
-	                    )
-	                );
-	                ?> 
-                    <?php if(!empty ($module_field_sorting)) {$query['meta_key'] = $module_field_sorting;} ?>
-                    <?php if($module_order =='asc') {$query['order'] = 'ASC';} ?>	                
-            	<?php elseif ($order_choose == 'manual_choose' && $module_ids !='') :?>
-	                <?php $query = array( 
-	                    'post_status' => 'publish', 
-	                    'ignore_sticky_posts' => 1,
-	                    'posts_per_page'=> -1, 
-	                    'orderby' => 'post__in',
-	                    'post__in' => $module_ids
+            <?php if ($order_choose == 'cat_choose') :?>
+                <?php $query = array( 
+                    'cat' => $module_cats, 
+                    'tag' => $module_tag, 
+                    'posts_per_page' => $module_fetch, 
+                    'nopaging' => 0, 
+                    'post_status' => 'publish', 
+                    'ignore_sticky_posts' => 1, 
+                    'meta_key' => 'rehub_review_overall_score', 
+                    'orderby' => 'meta_value_num',
+                    'meta_query' => array(
+                        array(
+                        'key' => 'rehub_framework_post_type',
+                        'value' => 'review',
+                        'compare' => 'LIKE',
+                        )
+                    )
+                );
+                ?> 
+                <?php if(!empty ($module_field_sorting)) {$query['meta_key'] = $module_field_sorting;} ?>
+                <?php if($module_order =='asc') {$query['order'] = 'ASC';} ?>	                
+        	<?php elseif ($order_choose == 'manual_choose' && $module_ids !='') :?>
+                <?php $query = array( 
+                    'post_status' => 'publish', 
+                    'ignore_sticky_posts' => 1,
+                    'posts_per_page'=> -1, 
+                    'meta_key' => 'rehub_review_overall_score', 
+                    'orderby' => 'meta_value_num',
+                    'post__in' => $module_ids
+                );
+                ?>
+        	<?php else :?>
+                <?php $query = array( 
+                    'posts_per_page' => $module_fetch, 
+                    'nopaging' => 0, 
+                    'post_status' => 'publish', 
+                    'ignore_sticky_posts' => 1, 
+                    'meta_key' => 'rehub_review_overall_score', 
+                    'orderby' => 'meta_value_num',
+                    'meta_query' => array(
+                        array(
+                        'key' => 'rehub_framework_post_type',
+                        'value' => 'review',
+                        'compare' => 'LIKE',
+                        )
+                    )
+                );
+                ?>
+                <?php if(!empty ($module_field_sorting)) {$query['meta_key'] = $module_field_sorting;} ?>
+                <?php if($module_order =='asc') {$query['order'] = 'ASC';} ?>	                             		
+        	<?php endif ;?>	
 
-	                );
-	                ?>
-            	<?php else :?>
-	                <?php $query = array( 
-	                    'posts_per_page' => $module_fetch, 
-	                    'nopaging' => 0, 
-	                    'post_status' => 'publish', 
-	                    'ignore_sticky_posts' => 1, 
-	                    'meta_key' => 'rehub_review_overall_score', 
-	                    'orderby' => 'meta_value_num',
-	                    'meta_query' => array(
-	                            array(
-	                            'key' => 'rehub_framework_post_type',
-	                            'value' => 'review',
-	                            'compare' => 'LIKE',
-	                            )
-	                    )
-	                );
-	                ?>
-                    <?php if(!empty ($module_field_sorting)) {$query['meta_key'] = $module_field_sorting;} ?>
-                    <?php if($module_order =='asc') {$query['order'] = 'ASC';} ?>	                             		
-            	<?php endif ;?>	
-
-
-                <?php $loop = new WP_Query($query); $i=0; if ($loop->have_posts()) :?>
-                <div class="top_rating_block<?php if(isset($atts['full_width']) && $atts['full_width']=='1') : ?> full_width_rating<?php else :?> with_sidebar_rating<?php endif;?> list_style_rating">
-                <?php while ($loop->have_posts()) : $loop->the_post(); $i ++?>     
-                    <div class="top_rating_item" id='rank_<?php echo $i?>'>                    
-                        <div class="product_image_col">                        	
-                            <figure><?php echo re_badge_create('ribbon'); ?>
-                            	<span class="rank_count"><?php if (($i) == '1') :?><i class="fa fa-trophy"></i><?php else:?><?php echo $i?><?php endif ?></span>
-                            	<a href="<?php the_permalink();?>">
-                                    <?php 
-                                    $showimg = new WPSM_image_resizer();
-                                    $showimg->use_thumb = true;
-                                    $width_figure_rating = apply_filters( 'wpsm_top_rating_figure_width', 120 );
-                                    $height_figure_rating = apply_filters( 'wpsm_top_rating_figure_height', 120 );
-                                    if( rehub_option( 'aq_resize_crop') == '1') {
-                                        $showimg->width = $width_figure_rating;
-                                    } 
-                                    else {
-                                        $showimg->width = $width_figure_rating;
-                                        $showimg->height = $height_figure_rating;
-                                        $showimg->crop = true;
-                                    }
-                                    $showimg->show_resized_image();                                    
-                                    ?>
-                            	</a>
-                            </figure>
-                        </div>                            
-                    <div class="desc_col">
-                        <h2><a href="<?php the_permalink();?>"><?php the_title();?></a></h2>
-                        <p>
-                        	<?php if ($module_desc =='post') :?>
-                        		<?php kama_excerpt('maxchar=120'); ?>
-                        	<?php elseif ($module_desc =='review') :?>
-                        		<?php echo wp_kses_post(vp_metabox('rehub_post.review_post.0.review_post_summary_text')); ?>
-                            <?php elseif ($module_desc =='field') :?>
-                                <?php if ( get_post_meta(get_the_ID(), $module_desc_fields, true) ) : ?>
-                                    <?php echo get_post_meta(get_the_ID(), $module_desc_fields, true) ?>
-                                <?php endif; ?>                        		
-                        	<?php elseif ($module_desc =='none') :?>
-                        	<?php else :?>	
-                        		<?php kama_excerpt('maxchar=120'); ?>
+	        <?php 
+	        if(class_exists('MetaDataFilter') AND MetaDataFilter::is_page_mdf_data()){
+	            $_REQUEST['mdf_do_not_render_shortcode_tpl'] = true;
+	            $_REQUEST['mdf_get_query_args_only'] = true;
+	            do_shortcode('[meta_data_filter_results]');
+	            $args = $_REQUEST['meta_data_filter_args'];
+	            global $wp_query;
+	            $wp_query=new WP_Query($args);
+	            $_REQUEST['meta_data_filter_found_posts']=$wp_query->found_posts;
+	        }
+	        else { $wp_query = new WP_Query($query); }
+	        ?>
+            <?php $wp_query = new WP_Query($query); $i=0; if ($wp_query->have_posts()) :?>
+            <div class="top_rating_block<?php if(isset($atts['full_width']) && $atts['full_width']=='1') : ?> full_width_rating<?php else :?> with_sidebar_rating<?php endif;?> list_style_rating">
+            <?php while ($wp_query->have_posts()) : $wp_query->the_post(); $i ++?>     
+                <div class="top_rating_item" id='rank_<?php echo $i?>'>                    
+                    <div class="product_image_col">                        	
+                        <figure><?php echo re_badge_create('ribbon'); ?>
+                        	<span class="rank_count"><?php if (($i) == '1') :?><i class="fa fa-trophy"></i><?php else:?><?php echo $i?><?php endif ?></span>
+                        	<a href="<?php the_permalink();?>">
+                                <?php 
+                                $showimg = new WPSM_image_resizer();
+                                $showimg->use_thumb = true;
+                                $width_figure_rating = apply_filters( 'wpsm_top_rating_figure_width', 120 );
+                                $height_figure_rating = apply_filters( 'wpsm_top_rating_figure_height', 120 );
+                                $showimg->height = $height_figure_rating;
+                                $showimg->crop = true;
+                                $showimg->show_resized_image();                                    
+                                ?>
+                        	</a>
+                        </figure>
+                    </div>                            
+                <div class="desc_col">
+                    <h2><a href="<?php the_permalink();?>"><?php the_title();?></a></h2>
+                    <p>
+                    	<?php if ($module_desc =='post') :?>
+                    		<?php if ($full_width == 1):?>
+                    			<?php kama_excerpt('maxchar=250'); ?>                        			
+                    		<?php else:?>
+                    			<?php kama_excerpt('maxchar=120'); ?> 
                     		<?php endif;?>
-                        </p>
-                        <div class="star"><?php rehub_get_user_results('small', 'yes') ?></div>
-                    </div>
-                    <div class="rating_col">
-                    <?php if ($rating_circle =='1'):?>
-                        <?php $rating_score_clean = rehub_get_overall_score(); ?>
-                        <div class="top-rating-item-circle-view">
-	                        <div class="radial-progress" data-rating="<?php echo $rating_score_clean?>">
-	                            <div class="circle">
-	                                <div class="mask full">
-	                                    <div class="fill"></div>
-	                                </div>
-	                                <div class="mask half">
-	                                    <div class="fill"></div>
-	                                    <div class="fill fix"></div>
-	                                </div>
-	                                
-	                            </div>
-	                            <div class="inset">
-	                                <div class="percentage"><?php echo $rating_score_clean?></div>
-	                            </div>
-	                        </div>
-                        </div>
-                    <?php elseif ($rating_circle =='2') :?> 
-                        <div class="score square_score"> <span class="it_score"><?php echo rehub_get_overall_score() ?></span></div>       
-                    <?php else :?>
-                        <div class="score"> <span class="it_score"><?php echo rehub_get_overall_score() ?></span></div>    
-                    <?php endif ;?>
-                    </div>
-                    <div class="buttons_col">
-                    	<?php rehub_create_btn('') ;?>
-                        <a href="<?php the_permalink();?>" class="read_full"><?php if(rehub_option('rehub_review_text') !='') :?><?php echo rehub_option('rehub_review_text') ; ?><?php else :?><?php _e('Read full review', 'rehub_framework'); ?><?php endif ;?></a>
-                    </div>
-                    </div>
-                <?php endwhile; ?>
+                    	<?php elseif ($module_desc =='review') :?>
+                    		<?php echo wp_kses_post(vp_metabox('rehub_post.review_post.0.review_post_summary_text')); ?>
+                        <?php elseif ($module_desc =='field') :?>
+                            <?php if ( get_post_meta(get_the_ID(), $module_desc_fields, true) ) : ?>
+                                <?php echo get_post_meta(get_the_ID(), $module_desc_fields, true) ?>
+                            <?php endif; ?>                        		
+                    	<?php elseif ($module_desc =='none') :?>
+                    	<?php else :?>
+                    		<?php if ($full_width == 1):?>
+                    			<?php kama_excerpt('maxchar=250'); ?>                        			
+                    		<?php else:?>
+                    			<?php kama_excerpt('maxchar=120'); ?> 
+                    		<?php endif;?>	
+                		<?php endif;?>
+                    </p>
+                    <div class="star"><?php rehub_get_user_results('small', 'yes') ?></div>
                 </div>
-                <?php wp_reset_query(); ?>
-                <?php else: ?><?php _e('No posts for this criteria.', 'rehub_framework'); ?>
-                <?php endif; ?>
+                <div class="rating_col">
+                <?php if ($rating_circle =='1'):?>
+                    <?php $rating_score_clean = rehub_get_overall_score(); ?>
+                    <div class="top-rating-item-circle-view">
+                        <div class="radial-progress" data-rating="<?php echo $rating_score_clean?>">
+                            <div class="circle">
+                                <div class="mask full">
+                                    <div class="fill"></div>
+                                </div>
+                                <div class="mask half">
+                                    <div class="fill"></div>
+                                    <div class="fill fix"></div>
+                                </div>
+                                
+                            </div>
+                            <div class="inset">
+                                <div class="percentage"><?php echo $rating_score_clean?></div>
+                            </div>
+                        </div>
+                    </div>
+                <?php elseif ($rating_circle =='2') :?> 
+                    <div class="score square_score"> <span class="it_score"><?php echo rehub_get_overall_score() ?></span></div>       
+                <?php else :?>
+                    <div class="score"> <span class="it_score"><?php echo rehub_get_overall_score() ?></span></div>    
+                <?php endif ;?>
+                </div>
+                <div class="buttons_col">
+                	<?php rehub_create_btn('') ;?>
+                    <a href="<?php the_permalink();?>" class="read_full"><?php if(rehub_option('rehub_review_text') !='') :?><?php echo rehub_option('rehub_review_text') ; ?><?php else :?><?php _e('Read full review', 'rehub_framework'); ?><?php endif ;?></a>
+                </div>
+                </div>
+            <?php endwhile; ?>
+            </div>
+            <?php wp_reset_query(); ?>
+            <?php else: ?><?php _e('No posts for this criteria.', 'rehub_framework'); ?>
+            <?php endif; ?>
 
     	<?php 
 		$output = ob_get_contents();
@@ -1664,7 +1766,8 @@ function wpsm_toptable_shortcode( $atts, $content = null ) {
 	if(isset($atts['id']) && $atts['id']):
 
 		$toppost = get_post($atts['id']);
-		$module_cats = get_post_meta( $toppost->ID, 'top_review_cat', true ); 
+		$module_cats = get_post_meta( $toppost->ID, 'top_review_cat', true );
+		$disable_filters = get_post_meta( $toppost->ID, 'top_review_filter_disable', true ); 
     	$module_tag = get_post_meta( $toppost->ID, 'top_review_tag', true ); 
     	$module_fetch = intval(get_post_meta( $toppost->ID, 'top_review_fetch', true ));  
     	$module_ids = get_post_meta( $toppost->ID, 'manual_ids', true ); 
@@ -1751,10 +1854,23 @@ function wpsm_toptable_shortcode( $atts, $content = null ) {
             <?php if($module_order =='asc') {$query['order'] = 'ASC';} ?>	                             		
     	<?php endif ;?>	
 
-
-        <?php $loop = new WP_Query($query); $i=0; if ($loop->have_posts()) :?>
+        <?php 
+        if(class_exists('MetaDataFilter') AND MetaDataFilter::is_page_mdf_data()){
+            $_REQUEST['mdf_do_not_render_shortcode_tpl'] = true;
+            $_REQUEST['mdf_get_query_args_only'] = true;
+            do_shortcode('[meta_data_filter_results]');
+            $args = $_REQUEST['meta_data_filter_args'];
+            global $wp_query;
+            $wp_query=new WP_Query($args);
+            $_REQUEST['meta_data_filter_found_posts']=$wp_query->found_posts;
+        }
+        else { $wp_query = new WP_Query($query); }
+        ?>
+        <?php $i=0; if ($wp_query->have_posts()) :?>
         <?php wp_enqueue_script('tablesorter'); wp_enqueue_style('tabletoggle'); ?>
-        <table data-tablesaw-sortable data-tablesaw-sortable-switch class="tablesaw top_table_block<?php if ($full_width =='1') : ?> full_width_rating<?php else :?> with_sidebar_rating<?php endif;?> tablesorter" cellspacing="0">
+        <?php $sortable_col = ($disable_filters !=1) ? ' data-tablesaw-sortable-col' : '';?>
+        <?php $sortable_switch = ($disable_filters !=1) ? ' data-tablesaw-sortable-switch' : '';?>
+        <table data-tablesaw-sortable<?php echo $sortable_switch; ?> class="tablesaw top_table_block<?php if ($full_width =='1') : ?> full_width_rating<?php else :?> with_sidebar_rating<?php endif;?> tablesorter" cellspacing="0">
             <thead> 
             <tr class="top_rating_heading">
                 <?php if ($first_column_enable):?><th class="product_col_name" data-tablesaw-priority="persist"><?php echo $first_column_name; ?></th><?php endif;?>
@@ -1762,16 +1878,16 @@ function wpsm_toptable_shortcode( $atts, $content = null ) {
                     $nameid=0;                       
                     foreach ($rows as $row) {                       
                     $col_name = $row['column_name'];
-                    echo '<th class="col_name" data-tablesaw-sortable-col data-tablesaw-priority="1">'.esc_html($col_name).'</th>';
+                    echo '<th class="col_name"'.$sortable_col.' data-tablesaw-priority="1">'.esc_html($col_name).'</th>';
                     $nameid++;
                     } 
                 }
                 ?>
-                <?php if ($last_column_enable):?><th class="buttons_col_name" data-tablesaw-sortable-col data-tablesaw-priority="1"><?php echo $last_column_name; ?></th><?php endif;?>                      
+                <?php if ($last_column_enable):?><th class="buttons_col_name" <?php echo $sortable_col; ?> data-tablesaw-priority="1"><?php echo $last_column_name; ?></th><?php endif;?>                      
             </tr>
             </thead>
             <tbody>
-        <?php while ($loop->have_posts()) : $loop->the_post(); $i ++?>     
+        <?php while ($wp_query->have_posts()) : $wp_query->the_post(); $i ++?>     
             <tr class="top_rating_item" id='rank_<?php echo $i?>'>
                 <?php if ($first_column_enable):?>
                     <td class="product_image_col"><?php echo re_badge_create('tablelabel'); ?>
@@ -1783,16 +1899,9 @@ function wpsm_toptable_shortcode( $atts, $content = null ) {
                             <?php 
                             $showimg = new WPSM_image_resizer();
                             $showimg->use_thumb = true;
-                            $width_figure_table = apply_filters( 'wpsm_top_table_figure_width', 120 );
-                            $height_figure_table = apply_filters( 'wpsm_top_table_figure_height', 120 );                            
-                            if( rehub_option( 'aq_resize_crop') == '1') {
-                                $showimg->width = $width_figure_table;
-                            } 
-                            else {
-                                $showimg->width = $width_figure_table;
-                                $showimg->height = $height_figure_table;
-                                $showimg->crop = true;
-                            }
+                            $height_figure_table = apply_filters( 'wpsm_top_table_figure_height', 120 );
+                            $showimg->height = $height_figure_table;
+                            $showimg->crop = true;
                             $showimg->show_resized_image();                                    
                             ?> 
                             </a>
@@ -1927,7 +2036,7 @@ function wpsm_topcharts_shortcode( $atts, $content = null ) {
                         $first_col_value = '<div';  
                         if (isset ($row['sticky_header']) && $row['sticky_header'] == 1) {$first_col_value .= ' class="sticky-cell"';} 
                         $first_col_value .= '>'.esc_html($row["column_name"]).'';
-                        if (isset ($row['enable_diff']) && $row['enable_diff'] == 1) {$first_col_value .= '<label class="diff-label"><input class="re-compare-show-diff" name="re-compare-show-diff" type="checkbox" />'.__('Show only differences', 'rehub_framework').'</label>';}                                                              
+                        if (isset ($row['enable_diff']) && $row['enable_diff'] == 1) {$first_col_value .= '<br /><label class="diff-label"><input class="re-compare-show-diff" name="re-compare-show-diff" type="checkbox" />'.__('Show only differences', 'rehub_framework').'</label>';}                                                              
                         $first_col_value .= '</div>';                
                         echo '<li class="row_chart_'.$nameid.' '.$element_type.'_row_chart">'.$first_col_value.'</li>';
                         $nameid++;
@@ -1950,6 +2059,8 @@ function wpsm_topcharts_shortcode( $atts, $content = null ) {
 		                            include(locate_template('inc/top/metarow.php'));
 		                        } else if ($element == 'image') {
 		                            include(locate_template('inc/top/imagerow.php'));
+                                } else if ($element == 'imagefull') {
+                                        include(locate_template('inc/top/imagefullrow.php'));
 		                        } else if ($element == 'title') {
 		                            include(locate_template('inc/top/titlerow.php'));   
 		                        } else if ($element == 'taxonomy_value') {
@@ -1992,6 +2103,256 @@ function wpsm_topcharts_shortcode( $atts, $content = null ) {
 
 }
 add_shortcode('wpsm_charts', 'wpsm_topcharts_shortcode');
+}
+
+
+//////////////////////////////////////////////////////////////////
+// Woo charts shortcode
+//////////////////////////////////////////////////////////////////
+if( !function_exists('wpsm_woocharts_shortcode') ) {
+function wpsm_woocharts_shortcode( $atts, $content = null ) {
+	
+	extract(shortcode_atts(array(
+			'ids' => '',
+		), $atts));
+		
+	if($ids):
+		$compareids = explode(',', $ids);
+	else :
+		$compareids = (get_query_var('compareids')) ? explode(',', get_query_var('compareids')) : '';
+	endif;	
+	if(!empty($compareids)):
+		ob_start(); 
+		?>		
+	        <?php $query = array( 
+	            'post_status' => 'publish', 
+	            'ignore_sticky_posts' => 1, 
+	            'orderby' => 'post__in',
+	            'post__in' => $compareids,
+	            'posts_per_page'=> -1,
+	            'post_type'=> 'product'
+
+	        );
+	        ?>	
+
+	        <?php $common_attributes = array();?>
+	        <?php $common = new WP_Query($query); if ($common->have_posts()) : ?>
+	        <?php while ($common->have_posts()) : $common->the_post(); global $product; ?>
+	        	<?php $attributes = $product->get_attributes();?>
+	        	<?php foreach ($attributes as $key => $attribute) {
+	        		if($attribute['is_visible'] == 1){
+	        			$key = $attribute['name'];
+	        			if(!empty($common_attributes) && array_key_exists($key, $common_attributes)){
+	        				continue;
+	        			}
+	        			$common_attributes[$key] = $attribute;
+	        		}
+	        	}
+	        	?>
+	        <?php endwhile; endif; wp_reset_query(); ?>
+
+	    	<?php $wp_query = new WP_Query($query); $ci=0; if ($wp_query->have_posts()) : ?>
+
+	    	<?php wp_enqueue_script('carouFredSel'); wp_enqueue_script('touchswipe'); ?>
+		    <div class="top_chart table_view_charts loading">
+		        <div class="top_chart_controls">
+		            <a href="/" class="controls prev"></a>
+		            <div class="top_chart_pagination"></div>
+		            <a href="/" class="controls next"></a>
+		        </div>
+                <div class="top_chart_first">
+                    <ul>
+                        <li class="row_chart_0 image_row_chart">
+                            <div class="sticky-cell"><br /><label class="diff-label"><input class="re-compare-show-diff" name="re-compare-show-diff" type="checkbox" /><?php _e('Show only differences', 'rehub_framework');?></label></div>
+                        </li>
+                        <li class="row_chart_1 heading_row_chart">
+                            <?php _e('Overview', 'rehub_framework');?>
+                        </li>                        
+                        <li class="row_chart_2 meta_value_row_chart">
+                            <?php _e('Description', 'rehub_framework');?>
+                        </li> 
+                        <li class="row_chart_3 meta_value_row_chart">
+                            <?php _e('Rating', 'rehub_framework');?>
+                        </li>                          
+                        <li class="row_chart_4 meta_value_row_chart">
+                            <?php _e('SKU', 'rehub_framework');?>
+                        </li> 
+                        <li class="row_chart_5 meta_value_row_chart">
+                            <?php _e('Brand/Store', 'rehub_framework');?>
+                        </li>  
+                        <li class="row_chart_6 meta_value_row_chart">
+                            <?php _e('Sold by', 'rehub_framework');?>
+                        </li>                                                
+                        <li class="row_chart_7 meta_value_row_chart">
+                            <?php _e('Availability', 'rehub_framework');?>
+                        </li>    
+                        <?php if(!empty($common_attributes)):?>
+	                        <li class="row_chart_8 heading_row_chart">
+	                            <?php _e('Attributes', 'rehub_framework');?>
+	                        </li>                        
+	                        <?php $i = 8; foreach($common_attributes as $attribute_value):?>
+	                            <?php $i++;?>
+	                            <li class="row_chart_<?php echo $i;?> meta_value_row_chart">
+	                                <?php echo wc_attribute_label( $attribute_value['name'] ); ?>
+	                            </li>
+	                        <?php endforeach;?>
+                    	<?php endif;?>
+                    </ul>
+                </div>
+		    	<div class="top_chart_wrap woocommerce"><div class="top_chart_carousel">
+			        <?php while ($wp_query->have_posts()) : $wp_query->the_post(); global $product, $post; $ci ++?>
+			            <div class="top_rating_item top_chart_item compare-item-<?php echo $post->ID;?>" id='rank_<?php echo $i?>' data-compareid="<?php echo $post->ID;?>">
+			                <ul>
+                                <li class="row_chart_0 image_row_chart">
+                                    <div class="product_image_col sticky-cell">                                  
+                                        <i class="fa fa-times-circle-o re-compare-close-in-chart"></i>
+                                        <figure>
+								            <?php if ( $product->is_featured() ) : ?>
+								                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . __( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
+								            <?php endif; ?>        
+								            <?php if ( $product->is_on_sale()) : ?>
+								                <?php 
+								                $percentage=0;
+								                $featured = ($product->is_featured()) ? ' onsalefeatured' : '';
+								                if ($product->regular_price) {
+								                    $percentage = round( ( ( $product->regular_price - $product->sale_price ) / $product->regular_price ) * 100 );
+								                }
+								                if ($percentage && $percentage>0 && !$product->is_type( 'variable' )) {
+								                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'"><span>- ' . $percentage . '%</span></span>', $post, $product );
+								                }
+								                else{
+								                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale'.$featured.'">' . esc_html__( 'Sale!', 'rehub_framework' ) . '</span>', $post, $product );  
+								                }                 
+								                ?>
+								                <?php echo $sales_html; ?>
+								            <?php endif; ?>                                        
+                                            <a href="<?php the_permalink();?>">
+                								<?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> false, 'thumb'=> true, 'crop'=> false, 'height'=> 150, 'no_thumb_url' => rehub_woocommerce_placeholder_img_src('')));?>
+                                            </a>
+                                        </figure>
+                                        <h2>
+                                            <a href="<?php the_permalink();?>">
+                                                <?php echo the_title();?>                     
+                                            </a>
+                                        </h2>
+                                        <div class="price-in-compare-flip mt20">
+                                         
+                                            <?php if ($product->get_price() !='') : ?>
+                                                <span class="price-woo-compare-chart rehub-main-font"><?php echo $product->get_price_html(); ?></span>
+                                                <div class="mb10"></div>
+                                            <?php endif;?>
+							                <?php if ( $product->is_in_stock() &&  $product->add_to_cart_url() !='') : ?>
+							                    <?php  echo apply_filters( 'woocommerce_loop_add_to_cart_link',
+							                        sprintf( '<a href="%s" data-product_id="%s" data-product_sku="%s" class="re_track_btn btn_offer_block btn-woo-compare-chart woo_loop_btn %s %s product_type_%s"%s%s>%s</a>',
+							                        esc_url( $product->add_to_cart_url() ),
+							                        esc_attr( $product->id ),
+							                        esc_attr( $product->get_sku() ),
+							                        $product->is_purchasable() && $product->is_in_stock() ? 'add_to_cart_button' : '',
+							                        $product->supports( 'ajax_add_to_cart' ) ? 'ajax_add_to_cart' : '',
+							                        esc_attr( $product->product_type ),
+							                        $product->product_type =='external' ? ' target="_blank"' : '',
+							                        $product->product_type =='external' ? ' rel="nofollow"' : '',
+							                        esc_html( $product->add_to_cart_text() )
+							                        ),
+							                    $product );?>
+							                <?php endif; ?>
+                                    		<?php if ( defined( 'YITH_WCWL' )){ ?>
+                                    		    <div class="yith_woo_chart"> 
+                									<?php echo do_shortcode('[yith_wcwl_add_to_wishlist]'); ?>
+                								</div> 
+            								<?php } ?>                     
+                                        </div>                                              
+                                    </div>
+                                </li> 
+                                <li class="row_chart_1 heading_row_chart">
+                                </li>                               
+                                <li class="row_chart_2 meta_value_row_chart">
+                                	<?php the_excerpt();?>
+                                </li>
+                                <li class="row_chart_3 meta_value_row_chart">
+                                    <?php if ( get_option( 'woocommerce_enable_review_rating' ) === 'yes'):?>
+                                    	<?php $avg_rate_score 	= number_format( $product->get_average_rating(), 1 ) * 20 ;?>
+                                    	<?php if ($avg_rate_score):?>
+	                                    	<div class="rev-in-woocompare">
+	                                    		<div class="star-big"><span class="stars-rate"><span style="width: <?php echo $avg_rate_score;?>%;"></span></span></div>
+	                                    	</div>
+                                    	<?php else:?>
+                                    		-
+                                    	<?php endif;?>
+                                    <?php else:?>
+                                    		-
+                                    <?php endif;?>
+                                </li>                                  
+                                <li class="row_chart_4 meta_value_row_chart">
+                                	<?php echo get_post_meta($post->ID, '_sku', true)?>
+                                </li> 
+                                <li class="row_chart_5 meta_value_row_chart">
+                                	<?php WPSM_Woohelper::re_show_brand_tax(); //show brand taxonomy?>
+                                </li> 
+                                <li class="row_chart_6 meta_value_row_chart">
+					                <?php if (class_exists('WCV_Vendor_Shop')) :?>
+					                    <?php if(method_exists('WCV_Vendor_Shop', 'template_loop_sold_by')) :?>
+					                        <span class="woolist_vendor"><?php WCV_Vendor_Shop::template_loop_sold_by(get_the_ID()); ?></span>
+					                    <?php endif;?>
+					                <?php else:?>
+					                	<?php echo get_bloginfo( 'name' );?>
+					                <?php endif;?>
+                                </li>                                                               
+                                <li class="row_chart_7 meta_value_row_chart">
+                                	<?php if ( $product->is_in_stock() ):?>
+										<span class="greencolor"><?php _e( 'In stock', 'rehub_framework' ) ;?></span>
+									<?php else :?>
+										<span class="redcolor"><?php _e( 'Out of stock', 'rehub_framework' ) ;?></span>
+									<?php endif;?>
+                                </li>
+                                <?php if(!empty($common_attributes)):?>                                
+	                                <li class="row_chart_8 heading_row_chart">
+	                                </li>                                                               
+			                        <?php $i = 8; foreach($common_attributes as $attribute):?>
+			                            <?php $i++;?>
+			                            <li class="row_chart_<?php echo $i;?> meta_value_row_chart">
+											<?php
+												if ( $attribute['is_taxonomy'] ) {
+
+													$values = wc_get_product_terms( $product->id, $attribute['name'], array( 'fields' => 'names' ) );
+													if(!empty($values)){
+														echo apply_filters( 'woocommerce_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );													
+													}
+
+
+												} else {
+
+													// Convert pipes to commas and display values
+													$values = array_map( 'trim', explode( WC_DELIMITER, $attribute['value'] ) );
+													if(!empty($values)){
+														echo apply_filters( 'woocommerce_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );
+													}
+
+												}
+											?>
+			                            </li>
+			                        <?php endforeach;?> 
+			                    <?php else:?>
+			                    	<?php $i = 7;?>
+		                        <?php endif;?>                                                              
+			            </ul>
+			            </div>
+			        <?php endwhile; ?>
+		    	</div></div>
+		    	<span class="top_chart_row_found" data-rowcount="<?php echo ($i + 1);?>"></span>
+		    </div>
+		    <?php else: ?><?php _e('No posts for this criteria.', 'rehub_framework'); ?>
+		    <?php endif; ?>
+		    <?php wp_reset_query(); ?>
+
+		<?php 
+		$output = ob_get_contents();
+		ob_end_clean();
+		return $output;   
+	endif;	
+
+}
+add_shortcode('wpsm_woocharts', 'wpsm_woocharts_shortcode');
 }
 
 
@@ -2205,6 +2566,10 @@ function wpsm_scorebox_shortcode( $atts, $content = null ) {
 			'offerbtn' => 'yes',
 			'id' => '',
 			'title'=> '',
+			'proscons' => '',
+			'prostitle' => 'PROS:',
+			'constitle' => 'CONS:',
+			'ce_enable'=> '',
 		), $atts));
 
 	ob_start(); 
@@ -2225,20 +2590,18 @@ function wpsm_scorebox_shortcode( $atts, $content = null ) {
 
     <?php $args = array('no_found_rows' => 1,'p' => $revid); $query = new WP_Query($args);?>
     <?php if ($query->have_posts()) : ?>
-    <?php while ($query->have_posts()) : $query->the_post(); ?>    
+    <?php while ($query->have_posts()) : $query->the_post(); global $post; ?>    
 		<?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'review') :?>
 	    	<?php $overal_score = rehub_get_overall_score(); 
 	    	if($overal_score !='0') :?>
-
 	    	<div class="wpsm_score_box">
-
 	    		<div class="wpsm_score_title">
 	    			<span class="overall-text"><?php echo $title; ?></span>
 	    			<span class="overall-score"><?php echo round($overal_score, 1) ?></span>
 	    		</div>
 	    		<div class="wpsm_inside_scorebox">
 	    			<?php if ($simplestar == 'yes') :?><div class="rating_bar"><?php echo rehub_get_user_rate() ; ?></div><?php endif ;?>
-		    		<?php if ($criterias == 'editor') :?>
+		    		<?php if ($criterias == 'editor' || $criterias == 'both') :?>
 		    			<?php $thecriteria = vp_metabox('rehub_post.review_post.0.review_post_criteria'); $firstcriteria = $thecriteria[0]['review_post_name']; ?>
 			    		<?php if($firstcriteria) : ?>
 			    		<div class="rate_bar_wrap">
@@ -2255,7 +2618,7 @@ function wpsm_scorebox_shortcode( $atts, $content = null ) {
 						</div>
 						<?php endif; ?>
 		    		<?php endif ;?>	
-		    		<?php if ($criterias == 'user') :?>
+		    		<?php if ($criterias == 'user' || $criterias == 'both') :?>
 		    			<?php $postAverage = get_post_meta(get_the_ID(), 'post_user_average', true); ?>
 			    		<?php if($postAverage !='0' && $postAverage !='') : ?>
 						<div class="rate_bar_wrap">	
@@ -2274,11 +2637,252 @@ function wpsm_scorebox_shortcode( $atts, $content = null ) {
 							</div>
 						</div>
 						<?php endif; ?>
-		    		<?php endif ;?>	    		
-		    		<?php if ($offerbtn == 'yes') :?><div class="btn_score_btm"><?php rehub_create_btn('no')?></div><?php endif ;?>
+		    		<?php endif ;?>	
+					<?php if($proscons):?>
+						<?php 	
+					    	$prosvalues = vp_metabox('rehub_post.review_post.0.review_post_pros_text');	
+							$consvalues = vp_metabox('rehub_post.review_post.0.review_post_cons_text');
+						?> 
+						<!-- PROS CONS BLOCK-->
+						<div class="prosconswidget">
+						<?php if(!empty($prosvalues)):?>
+							<div class="wpsm_pros mb30 mt10">
+								<div class="title_pros"><?php echo $prostitle;?></div>
+								<ul>		
+									<?php $prosvalues = explode(PHP_EOL, $prosvalues);?>
+									<?php foreach ($prosvalues as $prosvalue) {
+										echo '<li>'.$prosvalue.'</li>';
+									}?>
+								</ul>
+							</div>
+						<?php endif;?>	
+						<?php if(!empty($consvalues)):?>
+							<div class="wpsm_cons">
+								<div class="title_cons"><?php echo $constitle;?></div>
+								<ul>
+									<?php $consvalues = explode(PHP_EOL, $consvalues);?>
+									<?php foreach ($consvalues as $consvalue) {
+										echo '<li>'.$consvalue.'</li>';
+									}?>
+								</ul>
+							</div>
+						<?php endif;?>
+						</div>	
+						<!-- PROS CONS BLOCK END-->
+					<?php endif;?>		    		    		
+		    		<?php if ($offerbtn=="yes") :?>
+		    			<?php $multiofferrows = get_post_meta($post->ID, 'rehub_multioffer_group', true);?>
+		    			<?php if (!empty($multiofferrows[0]['multioffer_url'])) :?>
+		    				<div class="btn_score_btm rh_deal_block">
+		    				<?php foreach ($multiofferrows as $key => $value):?>
+		    					<?php 
+		    						$brand_image_url = $brand_link = $brandtermname = $brandterm = '';
+		    						$offer_post_url = (!empty($value['multioffer_url'])) ? $value['multioffer_url'] : '';
+									$offer_url = apply_filters('rh_post_multioffer_url_filter', $offer_post_url );
+									$offer_price = (!empty($value['multioffer_price'])) ? $value['multioffer_price'] : '';
+									$offer_price_old = (!empty($value['multioffer_price_old'])) ? $value['multioffer_price_old'] : '';
+									$offer_btn_text = (!empty($value['multioffer_btn_text'])) ? $value['multioffer_btn_text'] : '';	
+									$offer_title = (!empty($value['multioffer_name'])) ? $value['multioffer_name'] : '';
+									$offer_badge = (!empty($value['featured_multioffer'])) ? $value['featured_multioffer'] : '';
+									$offer_user = (!empty($value['multioffer_user'])) ? $value['multioffer_user'] : '';
+									$offer_brand = (!empty($value['multioffer_brand'])) ? $value['multioffer_brand'] : '';	
+									$offer_coupon = (!empty($value['multioffer_coupon'])) ? $value['multioffer_coupon'] : '';
+									if($offer_brand){
+										$brandterm = get_term((int)$offer_brand);
+										if(!empty($brandterm) && !is_wp_error($brandterm )){
+											$brand_image_url = get_term_meta((int)$offer_brand, 'brandimage', true );
+								        	$brand_link = get_term_link((int)$offer_brand );
+								        	$brandtermname = $brandterm->name;
+										}
+									}																									
+								?>
+								<?php $featured_class = ($offer_badge) ? ' featured_multioffer' : ''; ?>
+								<div class="deal_block_row">
+									<div class="rh-deal-details-noimage">
+											<?php if(!empty($offer_coupon)) : ?>
+												<div class="redemptionText"><?php _e('Use Coupon Code:', 'rehub_framework');?><span class="code"><?php echo $offer_coupon ?></span></div>	
+										  	<?php endif;?>									            
+										<div class="rh-deal-pricetable">
+											<div class="rh-deal-left">
+												<div class="rh-deal-name"><h5><a href="<?php echo esc_url($offer_url); ?>"><?php echo $offer_title;?></a></h5></div>
+								                <?php if ($brand_link):?>
+								                	<div class="rh-deal-brandlogo">
+							                        <a class="retailer_multioffer" href="<?php echo $brand_link ?>">
+								                        <?php if($brand_image_url) :?>
+            												<?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> false, 'src'=> $brand_image_url, 'crop'=> false, 'width'=> 70, 'height'=> 70));?>
+            											<?php else:?>
+            												<?php echo $brandtermname; ?>
+            											<?php endif;?>
+        											</a>
+        											</div>
+        										<?php else:?>
+        											<div class="mb10 font90">
+        											<?php echo rehub_get_site_favicon(esc_url($offer_url)); ?>
+        											</div>
+								                <?php endif;?>														
+												<div class="rh-deal-tag">												
+									                <?php if ($offer_user):?>
+									                    <span>
+									                        <?php _e('Posted by:', 'rehub_framework');?>
+									                        <?php if ( class_exists( 'BuddyPress' ) ):?>
+									                             <a class="admin" href="<?php echo bp_core_get_user_domain( $offer_user ) ?>"><?php the_author_meta( 'display_name', $offer_user ); ?>
+									                             </a>
+									                        <?php else:?>
+									                             <a class="admin" href="<?php echo get_author_posts_url( $offer_user ) ?>"><?php the_author_meta( 'display_name', $offer_user ); ?>
+									                             </a>
+									                        <?php endif;?>
+									                    </span>
+									                <?php endif;?> 							
+												</div>
+											</div>
+											<div class="rh-deal-right">
+												<?php if(!empty($offer_price)) : ?>
+						                            <div class="rh-deal-price">
+						                                <ins><?php echo $offer_price ?></ins>
+						                                <?php if(!empty($offer_price_old)) : ?>
+							                                <del>
+							                                    <?php echo $offer_price_old ?>
+							                                </del>
+						                                <?php endif ;?>                                
+						                            </div>
+						                        <?php endif ;?>
+												<div class="rh-deal-btn">
+									                <a href="<?php echo $offer_url ?>" class="re_track_btn rh-deal-compact-btn btn_offer_block" target="_blank" rel="nofollow">
+									                    <?php if($offer_btn_text !='') :?>
+									                        <?php echo $offer_btn_text ; ?>
+									                    <?php elseif(rehub_option('rehub_btn_text') !='') :?>
+									                        <?php echo rehub_option('rehub_btn_text') ; ?>
+									                    <?php else :?>
+									                        <?php _e('Buy Now', 'rehub_framework') ?>
+									                    <?php endif ;?>
+									                </a>	            					
+												</div>						
+											</div>					
+										</div>
+									</div>
+								</div>								
+		    				<?php endforeach;?>
+		    				</div>
+		    			<?php else:?>
+			    			<div class="btn_score_btm">
+			    				<?php rehub_create_btn('no')?>
+			    				<div class="centered_brand_logo">
+			    				<?php WPSM_Postfilters::re_show_brand_tax('logo'); //show brand logo?>
+			    				</div>
+			    			</div>
+		    			<?php endif ;?>
+		    		<?php endif ;?>
+		    		<?php if ($ce_enable) :?>
+		                <?php
+		                    $cegg_field_array = rehub_option('save_meta_for_ce');
+		                    $cegg_fields = array();
+		                    if (!empty($cegg_field_array) && is_array($cegg_field_array)) {
+		                        foreach ($cegg_field_array as $cegg_field) {
+		                            $cegg_field_value = get_post_meta ($post->ID, '_cegg_data_'.$cegg_field.'', true);
+		                            if (!empty ($cegg_field_value) && is_array($cegg_field_value)) {
+		                                $cegg_fields[$cegg_field]= $cegg_field_value;
+		                            }       
+		                        }		                        
+		                        if (!empty($cegg_fields) && is_array($cegg_fields)) {
+    								$all_items = array(); 
+								    foreach ($cegg_fields as $module_id => $items) {
+								        foreach ($items as $item_ar) {
+								            $item_ar['module_id'] = $module_id;
+								            $all_items[] = $item_ar;
+
+								        }       
+								    }		                        	
+		                        	?>
+					    			<div class="btn_score_btm rh_deal_block">		                        	
+			                        	<?php foreach ($all_items as $key => $item) :?>
+			                        		<?php                             
+			                        			$currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : '';                                
+	                            				$offer_price = (!empty($item['price'])) ? RhPriceTemplateHelper::formatPriceCurrency($item['price'], $currency_code) : '';
+	                            				$offer_price_old = (!empty($item['priceOld'])) ? RhPriceTemplateHelper::formatPriceCurrency($item['priceOld'], $currency_code) : '';    
+	                            				$offer_title = (!empty($item['title'])) ? $item['title'] : '';
+	                            				$offer_post_url = (!empty($item['url'])) ? $item['url'] : '';
+	                            				$offer_url = apply_filters('rh_post_multioffer_url_filter', $offer_post_url );
+	                            			?>
+									        <?php if (!empty($item['domain'])):?>
+									            <?php $domain = $item['domain'];?>
+									        <?php elseif (!empty($item['extra']['domain'])):?>
+									            <?php $domain = $item['extra']['domain'];?>
+									        <?php else:?>
+									            <?php $domain = '';?>        
+									        <?php endif;?>  	                            			
+	                            			<?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
+									        <?php if (!empty($item['logo'])) :?>
+									            <?php $logo = $item['logo']; ?>	
+									        <?php elseif (!empty($item['extra']['logo'])) :?>
+									            <?php $logo = $item['extra']['logo']; ?>
+									        <?php elseif (!empty($item['extra']['MerchantLogoURL'])) :?>
+									            <?php $logo = $item['extra']['MerchantLogoURL']; ?>
+									        <?php elseif (!empty($item['extra']['programLogo'])) :?>
+									            <?php $logo = $item['extra']['programLogo']; ?>                         
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Amazon') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/amazon.png' ;?>
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Aliexpress') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/aliexpress.png' ;?> 
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Ebay') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/ebay.png' ;?> 
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Flipkart') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/flipkart.png' ;?>  
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='PayTM') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/paytm.jpg' ;?>
+									        <?php elseif(isset($item['module_id']) && !empty($domain)) :?>
+									                <?php $logo = rh_ae_logo_get('http://'.$domain); ?>         
+									        <?php else :?>
+									            <?php $logo = ''; ?>
+									        <?php endif;?>
+											<div class="deal_block_row">									
+												<div class="rh-deal-pricetable">
+													<div class="rh-deal-left">
+														<div class="rh-deal-name">
+															<h5><a href="<?php echo esc_url($offer_url); ?>"><?php echo $offer_title;?></a></h5>
+														</div>
+										                <?php if ($logo):?>
+										                	<div class="rh-deal-brandlogo">
+		            											<?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> false, 'src'=> $logo, 'crop'=> false, 'width'=> 70, 'height'=> 70));?>
+		        											</div>
+		        										<?php elseif ($merchant):?>
+		        											<div class="rh-deal-tag">
+		        												<span><?php echo $merchant;?></span>
+		        											</div>
+										                <?php endif;?>
+													</div>
+													<div class="rh-deal-right">
+														<?php if(!empty($offer_price)) : ?>
+								                            <div class="rh-deal-price">
+								                                <ins><?php echo $offer_price ?></ins>
+								                                <?php if(!empty($offer_price_old)) : ?>
+									                                <del>
+									                                    <?php echo $offer_price_old ?>
+									                                </del>
+								                                <?php endif ;?>                                
+								                            </div>
+								                        <?php endif ;?>
+														<div class="rh-deal-btn">
+											                <a href="<?php echo $offer_url ?>" class="re_track_btn rh-deal-compact-btn btn_offer_block" target="_blank" rel="nofollow">
+											                    <?php if(rehub_option('rehub_btn_text') !='') :?>
+											                        <?php echo rehub_option('rehub_btn_text') ; ?>
+											                    <?php else :?>
+											                        <?php _e('Buy Now', 'rehub_framework') ?>
+											                    <?php endif ;?>
+											                </a>	            					
+														</div>						
+													</div>					
+												</div>
+											</div>                             			
+			                        	<?php endforeach;?>
+			                        </div>
+		                        	<?php
+		                        }
+		                    }
+		                ?>	    		
+	    			<?php endif ;?>
 	    		</div>
 	    	</div>
-	    	<?php endif;?>
+	    	<?php endif;?>	    	
 	    <?php endif;?>
     <?php endwhile; endif; wp_reset_postdata(); ?>
 
@@ -2339,7 +2943,7 @@ if (is_user_logged_in()) {
 	$sumbit_url = rehub_option('userlogin_submit_page');
 	$edit_url = rehub_option('userlogin_edit_page');
 	$mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_users_fcred($user_id) : '';    
-	if ( class_exists( 'BuddyPress' ) ) {
+	if ( function_exists('bp_notifications_get_notifications_for_user')) {
 		$notifications = bp_notifications_get_notifications_for_user($user_id, 'object');
 		$notification_bp_item .='<li class="bp-profile-edit-menu-item menu-item"><a href="'.bp_core_get_user_domain( $user_id ).'"><i class="fa fa-cogs"></i></i><span>'. __("Edit Profile", "rehub_framework") .'</span></a></li>';		
 		if (!empty($notifications)){
@@ -2360,6 +2964,9 @@ if (is_user_logged_in()) {
     $output .= '<ul class="user-dropdown-intop-menu">';
         $output .= '<li class="user-name-and-badges-intop"><span class="user-image-in-name">'.get_avatar( $user_id, 35 ).'</span>';
         $output .=$current_user->display_name;
+        if(defined('WS_PLUGIN__S2MEMBER_MIN_PRO_VERSION')){
+        	$output .='<br /><span class="rh_user_s2_label">'.get_user_field("s2member_access_label").'</span>';
+        }        
         if (!empty($mycredpoint)){
         	$output .='<br /><i class="fa fa-star-o"></i> '.$mycredpoint.'';
         }
@@ -2388,7 +2995,7 @@ if (is_user_logged_in()) {
         	$output .= wp_nav_menu( array( 'theme_location' => 'user_logged_in_menu','menu_class' => '','container' => false,'depth' => 1,'items_wrap'=> '%3$s', 'echo' => false ) );
         endif;
         $output .=$notification_bp_item;
-        $output .= '<li class="user-logout-link-intop menu-item"><a href="'. wp_logout_url( home_url() ) .'"><i class="fa fa-lock"></i><span>'. __("Log out", "rehub_framework") .'</span></a></li>';
+        $output .= '<li class="user-logout-link-intop menu-item"><a href="'. wp_logout_url( home_url()) .'"><i class="fa fa-lock"></i><span>'. __("Log out", "rehub_framework") .'</span></a></li>';
 $output .= '</ul></div>';
 } else {
 	if(get_option('users_can_register')) :
@@ -2399,7 +3006,7 @@ $output .= '</ul></div>';
 				$output .= '<span class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="login"><i class="fa fa-sign-in"></i><span>'.__("Login / Register", "rehub_framework").'</span></span>';
 			endif;
 		else:
-			$output .= '<a class="act-rehub-login-popup menu-item-one-line'.$as_button.$class_show.'" data-type="url" href="'.esc_url($loginurl).'"><i class="fa fa-sign-in"></i><span>'.__("Login / Register", "rehub_framework").'</span></a>';
+			$output .= '<span class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="url" data-customurl="'.esc_url($loginurl).'"><i class="fa fa-sign-in"></i><span>'.__("Login / Register", "rehub_framework").'</span></span>';
 		endif;
 	else:
 		$output .= '<a class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="restrict" href="#"><i class="fa fa-sign-in"></i><span>'.__("Login / Register is disabled", "rehub_framework").'</span></a>';
@@ -2416,7 +3023,7 @@ add_shortcode('wpsm_user_modal', 'wpsm_user_modal_shortcode');
 //////////////////////////////////////////////////////////////////
 // Search form
 //////////////////////////////////////////////////////////////////
-if( !function_exists('wpsm_searchform') ) {
+if( !function_exists('wpsm_searchform_shortcode') ) {
 function wpsm_searchform_shortcode( $atts, $content = null ) {
 extract(shortcode_atts(array(
 	'class' => '',		
@@ -2449,6 +3056,7 @@ add_shortcode('wpsm_hidelink', 'wpsm_hidelink_shortcode');
 //////////////////////////////////////////////////////////////////
 // Compare Buttons
 //////////////////////////////////////////////////////////////////
+
 if( !function_exists('wpsm_comparison_button') ) {
 function wpsm_comparison_button( $atts, $content = null ) {
         $atts = shortcode_atts(
@@ -2456,9 +3064,13 @@ function wpsm_comparison_button( $atts, $content = null ) {
 				'color' => 'white',
 				'size' => 'small',
 				'cats' => '',
-				'class' => ''
+				'class' => '',
+				'id' => '',
 			), $atts);
-	$postid = get_the_ID();  
+	$postid = (!empty($atts['id'])) ? $atts['id'] : get_the_ID(); 
+	$multicats_on = rehub_option('compare_multicats_toggle');
+	$singlecat_on = rehub_option('compare_page');
+	if($multicats_on == '' && $singlecat_on == '') return;	
 	if (isset ($atts['cats']) && !empty($atts['cats'])) : //Check if button is not in category
 		$cats_array = explode (',', $atts['cats']);
 		if (!in_category ($cats_array)) return;
@@ -2467,16 +3079,30 @@ function wpsm_comparison_button( $atts, $content = null ) {
 	$ip = rehub_get_ip();
 	$userid = get_current_user_id();
 	$userid = empty($userid) ? $ip : $userid;
-	$option = get_transient('re_compare_' . $userid);
-	$arr = '';
-	if(!empty($option)) {
-		$arr = explode(',',$option);
+
+	if ($multicats_on =='1'){
+		$multicats_array = rehub_get_compare_multicats();
 	}
-	if( !is_array( $arr ) ) // make array just in case
-		$arr = array();			
-	$compare_active = ( in_array( $postid, $arr ) ) ? ' comparing' : ' not-incompare';
+	$post_ids_arr = array();
+	
+	if($multicats_on =='1' && !empty($multicats_array)) {
+		foreach( $multicats_array as $multicat ){
+			$page_id = $multicat[2];
+			$post_ids_arr[] = get_transient('re_compare_'. $page_id .'_' . $userid);
+		}
+		$post_ids = implode(',', $post_ids_arr);
+	} else {
+		$post_ids = get_transient('re_compare_' . $userid);
+	}
+	
+	if(!empty($post_ids)) {
+		$post_ids_arr = explode(',', $post_ids);
+	}
+
+	$compare_active = ( in_array( $postid, $post_ids_arr ) ) ? ' comparing' : ' not-incompare';
+	
 	$out = '<span';   
-    $out .=' class="wpsm-button wpsm-button-compare addcompare-id-'.$postid.' '.$atts['color'].' '.$atts['size'].''.$compare_active.$class_show.'" data-addcompare-id="'.get_the_ID().'"><i class="fa re-icon-compare"></i>'.__("Add to compare", "rehub_framework").'</span>';
+    $out .=' class="wpsm-button wpsm-button-new-compare addcompare-id-'.$postid.' '.$atts['color'].' '.$atts['size'].''.$compare_active.$class_show.'" data-addcompare-id="'.$postid.'"><i class="fa re-icon-compare"></i>'.__("Add to compare", "rehub_framework").'</span>';
     return $out;
 }
 add_shortcode('wpsm_compare_button', 'wpsm_comparison_button');
@@ -2573,10 +3199,9 @@ add_shortcode('wpsm_custom_meta', 'wpsm_get_custom_value');
 //////////////////////////////////////////////////////////////////
 // Alphabet Catalog Shortcode
 //////////////////////////////////////////////////////////////////
+if( !function_exists('wpsm_tax_archive_shortcode') ) {
 function wpsm_tax_archive_shortcode( $atts, $content = null ) {
-
 	// Attributes
-
 	extract( shortcode_atts(
 		array(
 			'type' => 'alpha',
@@ -2585,8 +3210,6 @@ function wpsm_tax_archive_shortcode( $atts, $content = null ) {
 		), $atts, 'wpsm_tax_archive' )
 	);
 
-
-		
 	$args = array( 'hide_empty' => false, 'order' => 'ASC', 'taxonomy'=> $taxonomy);
 	 
 	$terms = get_terms($args );
@@ -2618,7 +3241,7 @@ function wpsm_tax_archive_shortcode( $atts, $content = null ) {
 				$term_letter_links .= '<li><a href="#'.$letter.'" class="rehub_scroll">'.$letter.'</a></li>';
 
 				$term_titles .= '<div class="single-letter"><a href="#" name="'.$letter.'"></a><div class="letter_tag">'.$letter.'<div class="return_to_letters"><span class="rehub_scroll" data-scrollto="#top_ankor"><i class="fa fa-angle-up"></i></span></div></div></div> <!-- single-letter -->';
-				$term_titles .= '<div class="tax-wrap">';
+				$term_titles .= '<div class="tax-wrap rh-flex-eq-height">';
 										
 				foreach( $terms as $term ) {
 
@@ -2735,7 +3358,7 @@ function wpsm_tax_archive_shortcode( $atts, $content = null ) {
 			return '<div class="alphabet-filter">'.$term_titles.'</div>';	
 		}
 	}	
-
+}
 }
 add_shortcode( 'wpsm_tax_archive', 'wpsm_tax_archive_shortcode' );
 
@@ -2867,19 +3490,22 @@ function wpsm_catbox_shortcode( $atts, $content = null ) {
 		return '<div id="message" class="error"><p><b>Error</b>: Category ID '. $category .' - '. $error_string .'</p></div>';
  	}
 
-	if ( is_numeric( $image ) ) 
+	if ( is_numeric( $image ) ) {
 		$image = wp_get_attachment_url( $image );
+	}
 	
 	$bg_size = ( $size_img ) ? ' background-size:'. $size_img .'; height:'. $size_img .'' : '';
 	
 	// HTML output
 	$output = '<div class="rh-cartbox catbox mb20">';
 		
-	if ( $image )
-		$output .= '<div class="categoriesbox-bg" style="background-image:url('. $image .');'. $bg_size .'">';	
-			if ( $link == 1 )
+		if ( $image ){
+			$output .= '<div class="categoriesbox-bg" style="background-image:url('. $image .');'. $bg_size .'">';	
+			if ( $link == 1 ) {
 				$output .= '<a href="'. get_term_link( $term->term_id ) .'" rel="nofollow"></a>';
-		$output .= '</div>';	
+			}
+			$output .= '</div>';
+		}	
 
 		$output .='<div class="catbox-content r_offer_details">';
 		
@@ -2940,27 +3566,60 @@ function rh_wcv_vendorslist_flat( $atts ) {
 		$html = ''; 
 		
 	  	extract( shortcode_atts( array(
-	  			'orderby' 		=> 'registered',
-	  			'order'			=> 'ASC',
-				'per_page'      => '12',
-				'show_products'	=> 'yes',
-				'user_id'=>'' 
+	  			'orderby' => 'registered',
+	  			'order'	=> 'ASC',
+				'per_page' => '12',
+				'show_products' => 'yes',
+				'search_form' => 0,
+				'user_id' => '' 
 			), $atts ) );
 
-	  	$paged      = ( get_query_var('paged') ) ? get_query_var('paged') : 1;   
-	  	$offset     = ( $paged - 1 ) * $per_page;
+	  	$paged = ( get_query_var('paged') ) ? get_query_var('paged') : 1;   
+	  	$offset = ( $paged - 1 ) * $per_page;
+		
+		// Search query fom the form
+		$search_sellers = isset($_GET['search_sellers']) ? esc_attr($_GET['search_sellers']) : '';
+		
+		// Sort filter and data from the form change parametres of the WP user query
+		$alphabet = $mostpopular = $mostposts = $mostresent = '';
+		$selected = ' selected="selected"';
+		$meta_key = 'pv_shop_name';
+		
+		if( isset($_GET['orderby_sellers']) ) {
+			$orderby_sellers = $_GET['orderby_sellers'];
+			switch ($orderby_sellers) {
+				case 'alphabet':
+					$orderby = 'display_name';
+					$order = 'ASC';
+					$alphabet = $selected;
+					break;
+				case 'mostpopular':
+					$orderby = 'meta_value';
+					$order = 'DESC';
+					$meta_key = '_rh_user_favorite_shop_count';
+					$mostpopular = $selected;
+					break;
+				case 'mostposts': // omitted
+					$mostposts = $selected;
+					break;
+				default;
+					$mostresent = $selected;
+			}
+		} else {
+			$mostresent = $selected;
+		}
 
 	  	// Hook into the user query to modify the query to return users that have at least one product 
 	  	if ($show_products == 'yes') add_action( 'pre_user_query', 'rh_vendors_with_products' );
 
 	  	// Get all vendors 
 	  	$vendor_total_args = array ( 
-	  		'role' 				=> 'vendor', 
-	  		'meta_key' 			=> 'pv_shop_slug', 
-  			'meta_value'   		=> '',
-			'meta_compare' 		=> '>',
-			'orderby' 			=> $orderby,
-  			'order'				=> $order,
+	  		'role' 			=> 'vendor', 
+			'meta_key' 	=> $meta_key, 
+			'meta_value'   	=> '',
+			'meta_compare'	=> '>',
+			'orderby' 		=> $orderby,
+  			'order'			=> $order,
 	  	);
 
 	  	if ($show_products == 'yes') $vendor_total_args['query_id'] = 'vendors_with_products'; 
@@ -2970,14 +3629,15 @@ function rh_wcv_vendorslist_flat( $atts ) {
 
 	  	// Get the paged vendors 
 	  	$vendor_paged_args = array ( 
-	  		'role' 				=> 'vendor', 
-	  		'meta_key' 			=> 'pv_shop_slug', 
-  			'meta_value'   		=> '',
-			'meta_compare' 		=> '>',
-			'orderby' 			=> $orderby,
-  			'order'				=> $order,
-	  		'offset' 			=> $offset, 
-	  		'number' 			=> $per_page, 
+	  		'role' 			=> 'vendor', 
+			'meta_key' 	=> $meta_key, 
+			'meta_value'   	=> '',
+			'meta_compare'	=> '>',
+			'search'		=> $search_sellers,
+			'orderby' 		=> $orderby,
+  			'order'			=> $order,
+	  		'offset' 		=> $offset, 
+	  		'number' 		=> $per_page, 
 	  	);
 
 	  	if ($show_products == 'yes' ) $vendor_paged_args['query_id'] = 'vendors_with_products'; 
@@ -2985,11 +3645,11 @@ function rh_wcv_vendorslist_flat( $atts ) {
 	  	if ($user_id){
 	  		$user_ids = array_map( 'trim', explode( ",", $user_id ) );
 		  	$vendor_paged_args = array ( 
-		  		'role' 				=> 'vendor', 
-		  		'meta_key' 			=> 'pv_shop_slug', 
-	  			'meta_value'   		=> '',
-				'meta_compare' 		=> '>',
-				'include' 			=> $user_ids,
+		  		'role' 			=> 'vendor', 
+				'meta_key' 	=> $meta_key, 
+				'meta_value'   	=> '',
+				'meta_compare'	=> '>',
+				'include' 		=> $user_ids,
 		  	);	  		
 	  	}	  	
 
@@ -3002,6 +3662,30 @@ function rh_wcv_vendorslist_flat( $atts ) {
 		$total_pages = ceil( $total_vendors / $per_page );
 	    
 	   	ob_start();
+		
+		if($search_form ==1){
+		$html .='
+		<div class="tabledisplay mb20">
+			<form id="search-sellers" role="search" method="get" class="celldisplay search-form floatleft mb10">
+				<input type="text" name="search_sellers" placeholder="'. __('Search sellers', 'rehub_framework') .'" value="">
+				<button type="submit" alt="'. __('Search', 'rehub_framework') .'" value="'. __('Search', 'rehub_framework') .'" class="btnsearch"><i class="fa fa-search"></i></button>
+			</form>
+			<form id="filter-sellers" method="get" class="celldisplay floatright mb10 ml10">
+				<label>'. __('Sort by:', 'rehub_framework') .'</label>
+				<select name="orderby_sellers" class="orderby">
+					<option value="alphabet"'. $alphabet .'>'. __('Alphabetical', 'rehub_framework') .'</option>
+					<option value="mostpopular"'. $mostpopular .'>'. __('Most popular', 'rehub_framework') .'</option>
+					<option value="mostresent"'. $mostresent .'>'. __('Most recent', 'rehub_framework') .'</option>
+				</select>
+			</form>
+			<script>jQuery( function( $ ) {
+				$( "#filter-sellers" ).on( "change", "select.orderby", function() {
+					$( this ).closest( "form" ).submit();
+				});
+			});
+			</script>
+		</div>';
+		}
 
 	    // Loop through all vendors and output a simple link to their vendor pages
 	    foreach ($paged_vendors as $vendor) {
@@ -3018,16 +3702,16 @@ function rh_wcv_vendorslist_flat( $atts ) {
 	   	
 	   	$html .= '<div class="rh_vendors_listflat">' . ob_get_clean() . '</div>';
 
-	    if ($total_vendors > $total_vendors_paged) {  
+	    if ( $total_vendors > $total_vendors_paged ) {  
 			$html .= '<nav class="woocommerce-pagination">';  
 			  $current_page = max( 1, get_query_var('paged') );  
 			  $html .= paginate_links( 	array(  
-			        'base' => get_pagenum_link( ) . '%_%',  
+			        'base' => get_pagenum_link() . '%_%',
 			        'format' => 'page/%#%/',  
 			        'current' => $current_page,  
 			        'total' => $total_pages,  
-			        'prev_next'    => false,  
-			        'type'         => 'list',  
+			        'prev_next' => false,  
+			        'type' => 'list',  
 			    ));  
 			$html .= '</nav>'; 
 		}
@@ -3080,6 +3764,382 @@ function rh_add_map_gmw($atts, $content = null ) {
 }
 add_shortcode('rh_add_map_gmw', 'rh_add_map_gmw');
 
+//GMW SHORTCODE MAP
+function rh_compare_icon($atts, $content = null ) {
+	if (rehub_option('compare_page') != '' || rehub_option('compare_multicats_toggle') == 1) {	
+		$output = '<span class="re-compare-icon-toggle">';
+			$output .= '<i class="fa fa-balance-scale" aria-hidden="true"></i>';
+			$totalcompared = re_compare_panel('count');
+			if ($totalcompared == '') {$totalcompared = 0;}
+			$output .= '<span class="re-compare-notice">'.$totalcompared.'</span>';		
+		$output .= '</span>';
+		return $output;
+	}
+}
+add_shortcode('rh_compare_icon', 'rh_compare_icon');
 
 //VC SHORTCODES
 include ( get_template_directory() . '/shortcodes/module_shortcodes.php'); 
+
+//////////////////////////////////////////////////////////////////
+// Compare price shortcode
+//////////////////////////////////////////////////////////////////
+if( !function_exists('wpsm_get_merchant_list') ) {
+function wpsm_get_merchant_list($atts){
+    extract(shortcode_atts(array(
+        'postid' => NULL,
+        'ce_enable' => NULL,
+        'pricehistory' => NULL,
+        'pricealert' => NULL,
+    ), $atts));
+   	global $post;
+   	$post_id = (NULL === $postid) ? $post->ID : $postid;
+   	ob_start();
+   	?>
+		<?php $multiofferrows = get_post_meta($post_id, 'rehub_multioffer_group', true);?>
+		<?php $offers_array = $cegg_fields = $cegg_clean_array = array();?>
+
+		<?php if (!empty($multiofferrows[0]['multioffer_url'])) :?>
+			<?php foreach ($multiofferrows as $key => $value):?>
+				<?php 
+					$offer_post_url = (!empty($value['multioffer_url'])) ? $value['multioffer_url'] : '';
+					$offer_url = apply_filters('rh_post_multioffer_url_filter', $offer_post_url );
+					$offer_price = (!empty($value['multioffer_price'])) ? $value['multioffer_price'] : '';
+					$offers_array[$key]['price'] = rehub_price_clean($offer_price);
+					$offers_array[$key]['price_noclean'] = $offer_price;
+					$offers_array[$key]['url'] = $offer_url;					
+				?>								
+			<?php endforeach;?>
+		<?php endif ;?>
+		<?php if ($ce_enable) :?>
+            <?php
+                $cegg_field_array = rehub_option('save_meta_for_ce');
+                if (!empty($cegg_field_array) && is_array($cegg_field_array)) {
+                    foreach ($cegg_field_array as $cegg_field) {
+                        $cegg_field_value = get_post_meta ($post_id, '_cegg_data_'.$cegg_field.'', true);
+                        if (!empty ($cegg_field_value) && is_array($cegg_field_value)) {
+                            $cegg_fields[$cegg_field]= $cegg_field_value;
+                        }       
+                    }		                        
+                    if (!empty($cegg_fields) && is_array($cegg_fields)) {
+						$all_items = array(); 
+					    foreach ($cegg_fields as $module_id => $items) {
+					        foreach ($items as $item_ar) {
+					            $item_ar['module_id'] = $module_id;
+					            $all_items[] = $item_ar;
+					        }       
+					    }
+					    foreach ($all_items as $key => $value) {
+							$cegg_clean_array[$key]['price'] = $value['price'];
+							$cegg_clean_array[$key]['currency'] = $value['currencyCode'];
+							$cegg_clean_array[$key]['url'] = $value['url'];		
+							$cegg_clean_array[$key]['domain'] = $value['extra']['domain'];	
+							$cegg_clean_array[$key]['merchant'] = (!empty($value['merchant'])) ? $value['merchant'] : '';
+							$cegg_clean_array[$key]['orig_url'] = (!empty($value['orig_url'])) ? $value['orig_url'] : '';	    	       
+					    }					    
+                    }
+                }
+            ?>	    		
+		<?php endif ;?>
+
+		<?php $items = array_merge($offers_array, $cegg_clean_array);?>
+		<?php  if(!empty($items)):?>
+			<?php 	
+				$postid = $post_id; //Here we get synced product data from CE
+    			$unique_id = get_post_meta($postid, '_rehub_product_unique_id', true);
+    			$module_id = get_post_meta($postid, '_rehub_module_ce_id', true);
+    			$cegg_sync_field = get_post_meta($postid, '_cegg_data_'.$module_id.'', true);
+    			$syncitem = (!empty($cegg_sync_field[$unique_id])) ? $cegg_sync_field[$unique_id] : '';
+    		?>
+
+			<?php usort($items, 'rehub_sort_price_ce');?>
+			<?php $countitems = count($items);?>
+	        <?php if($pricealert):?>
+				<?php if (version_compare(PHP_VERSION, '5.3.0', '>=') && $unique_id && $module_id && !empty($syncitem)) {	
+					include(locate_template( 'inc/parts/pricealertpopup.php' ) );
+				} ?>			        	
+	        <?php endif;?>			
+			<div class="widget_merchant_list<?php if ($countitems > 7):?> expandme<?php endif;?>">
+			    <div class="tabledisplay">
+			        <?php  foreach ($items as $key => $item): ?>
+			            <?php $afflink = $item['url'] ;?>
+			            <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
+			            <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+			            <?php $price_noclean = (!empty($item['price_noclean'])) ? $item['price_noclean'] : ''; ?>
+			            <?php $currency_code = (!empty($item['currency'])) ? $item['currency'] : ''; ?>
+			            <?php $domain = (!empty($item['domain'])) ? $item['domain'] : ''; ?>
+			            <?php $domain = rh_fix_domain($merchant, $domain);?>
+			            <?php $orig_url = (!empty($item['orig_url'])) ? $item['orig_url'] : ''; ?> 
+			            <?php if(rehub_option('rehub_btn_text') !='') :?>
+			            	<?php $btn_txt = rehub_option('rehub_btn_text') ; ?>
+			            <?php else :?>
+			            	<?php $btn_txt = __('See it', 'rehub_framework') ;?>
+			            <?php endif ;?>  
+			            <div class="table_merchant_list">               
+			                <div class="merchant_thumb">   
+			                    <a rel="nofollow" target="_blank" href="<?php echo esc_url($afflink) ?>" class="re_track_btn">
+			                        <?php if ($merchant) :?>
+			                            <?php echo rehub_get_site_favicon_icon('http://'.$domain); ?>
+			                            <?php echo $merchant; ?>
+			                        <?php elseif($domain) :?> 
+			                            <?php echo rehub_get_site_favicon('http://'.$domain); ?> 
+			                        <?php elseif($orig_url) :?>
+			                            <?php echo rehub_get_site_favicon($orig_url); ?>   
+			                        <?php endif ;?>                                                           
+			                    </a>
+			                </div>                  
+			                <div class="price_simple_col">
+			                    <?php if($offer_price || $price_noclean) : ?>
+			                            <a rel="nofollow" target="_blank" href="<?php echo esc_url($afflink) ?>" class="re_track_btn">
+			                                <span class="val_sim_price">
+			                                	<?php if ($price_noclean):?>
+			                                		<?php echo $price_noclean;?>
+			                                	<?php else:?>
+													<?php echo RhPriceTemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?>			                                	
+			                                	<?php endif;?>			                                    
+			                                </span>
+			                            </a>                       
+			                    <?php endif ;?>                       
+			                </div>
+			                <div class="buttons_col">
+			                    <a class="re_track_btn" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
+			                        <?php echo $btn_txt ; ?>
+			                    </a>                        			                        
+			                </div>
+			                                                                          
+			            </div>
+			        <?php endforeach; ?> 
+			    </div>
+			    <div class="additional_line_merchant">
+			    	<?php if ($countitems > 7):?>
+			        	<span class="expand_all_offers"><?php _e('Show all', 'rehub_framework');?> <span class="expandme">+</span></span>
+			    	<?php endif;?>
+			        <?php if($pricehistory):?>
+						<?php if (version_compare(PHP_VERSION, '5.3.0', '>=') && $unique_id && $module_id && !empty($syncitem)) {
+							include(locate_template( 'inc/parts/pricehistorypopup.php' ) );
+						} ?>			        	
+			        <?php endif;?>
+			    </div>  
+			</div>			
+			<div class="clearfix"></div>			  
+		<?php endif;?>
+    <?php
+	$output = ob_get_contents();
+	ob_end_clean();
+	return $output;    
+}
+add_shortcode('wpsm_compare_multioffer', 'wpsm_get_merchant_list');
+}
+
+if( !function_exists('wpsm_get_bigoffer') ) {
+function wpsm_get_bigoffer($atts){
+	extract(shortcode_atts(array(
+        'post_id' => NULL,
+        'ce_enable' => NULL,
+        'pricehistory' => NULL,
+        'pricealert' => NULL,
+    ), $atts));
+
+	if($post_id && is_numeric($post_id)){
+		ob_start();
+		?>
+        <div class="rh-tabletext-block">
+            <div class="rh-tabletext-block-heading"><h4><a href="<?php echo get_the_permalink($post_id) ?>"><?php echo get_the_title($post_id); ?></a></h4> </div>		
+	        <div class="rh-tabletext-block-wrapper flowhidden"> 
+	            <div class="featured_compare_left">
+	                <figure>                                                                    
+	                    <a href="<?php echo get_the_permalink($post_id) ?>">
+	                        <?php           
+                    			$image_id = get_post_thumbnail_id($post_id);  
+                    			$image_url = wp_get_attachment_image_src($image_id,'full');
+                    			$image_url = $image_url[0]; 
+                			?> 
+	                        <?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> true, 'src'=> $image_url, 'crop'=> false, 'height'=> 350, 'width'=> 350));?>
+	                    </a>
+	                </figure>                             
+	            </div>
+	            <div class="single_compare_right">
+                    <?php $overall_review = $rating_score_clean = get_post_meta($post_id, 'rehub_review_overall_score', true);?>
+                    <?php if($overall_review):?>
+                    	<?php $overall_review_100 = $overall_review * 10;?>                  	
+                    	<?php 
+                    	if($overall_review<=2){
+                    		$color = "#940000";
+                    	}    
+                    	elseif($overall_review<=4){
+                    		$color = "#cc0000";
+                    	}   
+                    	elseif($overall_review<=6){
+                    		$color = "#9c0";
+                    	}  
+                    	elseif ($overall_review <=8){
+                    		$color = "#ffac00";
+                    	}                    	                  	                  	                 	
+                    	elseif ($overall_review <=10) {
+                    		$color = "#ffac00";
+                    	}
+                    	?>                    	                   	
+                        <div class="bigoffer-overall-score mb20">
+                        	<div class="text-overal-score mb10 flowhidden">
+                            <span class="overall floatleft"><?php echo $overall_review;?>/10 </span>
+                            <span class="text-read-review floatright"><a href="<?php echo get_the_permalink($post_id) ?>"><?php _e('Read review', 'rehub_framework');?></a></span>
+                            </div>
+                            <?php echo do_shortcode('[wpsm_bar percentage="'.$overall_review_100.'" color="'.$color.'"]' );?>
+                        </div>                         
+
+                    <?php endif;?>
+	                <?php echo do_shortcode('[wpsm_compare_multioffer ce_enable="'.$ce_enable.'" postid="'.$post_id.'" pricehistory="'.$pricehistory.'" pricealert="'.$pricealert.'"]');?>
+	            </div> 
+			</div>
+		</div>
+
+		<?php
+		$output = ob_get_contents();
+		ob_end_clean();
+		return $output; 
+
+	}
+
+}
+add_shortcode('wpsm_bigoffer', 'wpsm_get_bigoffer');
+}
+
+
+if( !function_exists('wpsm_get_add_deal_popup') ) {
+function wpsm_get_add_deal_popup($atts, $content = NULL){
+	extract(shortcode_atts(array(
+        'postid' => NULL,
+        'role' => 'contributor',
+    ), $atts));
+
+   	global $post;
+   	$post_id = (NULL === $postid) ? $post->ID : $postid;	
+
+	if($post_id && is_numeric($post_id)){
+		ob_start();
+		$rand = uniqid();
+		?>		
+		<a class="btn_offer_block csspopuptrigger rh-deal-compact-btn act-rehub-addoffer-popup act-rehub-login-popup" data-popup="addfrontdeal_<?php echo $rand;?>"><?php _e('Add your deal', 'rehub_framework') ?></a>
+
+		<?php if (is_user_logged_in()): 
+			$current_user = wp_get_current_user();
+		?>
+			<div class="csspopup" id="addfrontdeal_<?php echo $rand;?>">
+				<div class="csspopupinner addfrontdeal-popup">
+					<span class="cpopupclose" href="#">×</span> 
+					<?php if ( in_array( $role, (array) $current_user->roles )):?>
+						<?php $offer_group_array = get_post_meta( $post_id, 'rehub_multioffer_group', true );?>
+						<?php 
+						$multioffer_names = array();
+						if (!empty($offer_group_array)){
+							$multioffer_names = wp_list_pluck( $offer_group_array, 'multioffer_user' );
+						}?>
+						<?php if (false === in_array($current_user->ID, $multioffer_names)):?>
+							<div class="rehub-offer-popup">
+								<div class="re_title_inmodal"><?php _e('Add an Offer', 'rehub_framework'); ?></div>
+								<form id="rehub_add_offer_form_modal" action="<?php echo home_url( '/' ); ?>" method="post">
+									<div class="re-form-group mb20">
+										<label for="rehub_product_name"><?php _e('Name of product', 'rehub_framework') ?><span>*</span></label>
+										<input class="re-form-input required" name="rehub_product_name" id="rehub_product_name" type="text" />
+									</div>
+									<div class="re-form-group mb20">
+										<label for="rehub_product_url"><?php _e('Offer url', 'rehub_framework') ?><span>*</span></label>
+										<input class="re-form-input required" name="rehub_product_url" id="rehub_product_url" type="url" required />
+									</div>
+									<div class="re-form-group mb20">
+										<label for="rehub_product_price"><?php _e('Offer sale price (example, $55)', 'rehub_framework') ?><span>*</span></label>
+										<input class="re-form-input required" name="rehub_product_price" id="rehub_product_price" type="text" />
+									</div>
+									<div class="re-form-group mb20">
+										<label for="rehub_product_desc"><?php _e('Short description', 'rehub_framework') ?><span></span></label>
+										<input class="re-form-input" name="rehub_product_desc" id="rehub_product_desc" type="text" />
+									</div>									
+									<div class="re-form-group mb20">
+										<input type="hidden" name="action" value="rh_ajax_action_send_offer" />
+										<input type="hidden" name="from_user" value="<?php echo $current_user->ID; ?>" />
+										<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
+										<?php wp_nonce_field( 'rh_ajax_action_send_offer', 'offer_nonce' ); ?>
+										<button class="wpsm-button rehub_main_btn" type="submit" name="send"><?php _e('Send', 'rehub_framework'); ?></button>
+									</div>
+								</form>
+								<div class="rehub-errors"></div>
+							</div>
+						<?php else:?>
+							<?php _e('You already added your deal to this post', 'rehub_framework');?>
+						<?php endif;?>
+					<?php else:?>
+						<?php $content = do_shortcode($content);?>
+						<?php if($content):?>
+							<?php echo $content;?>
+						<?php else:?>
+							<?php  echo sprintf( 'Only users with role <span class="greencolor">%s</span> are allowed to post deals', $role);?>
+						<?php endif;?>
+					<?php endif;?>
+					<div class="rehub-offer-popup-ok font110 rhhidden">
+						<div class="re_title_inmodal"><?php _e('Send Offer', 'rehub_framework'); ?></div>
+							<?php printf( __('<strong>Thank you, %s!</strong> Your offer has been sent', 'rehub_framework'), $current_user->display_name ); ?>
+					</div>
+				</div>				
+			</div>
+		<?php endif;?>
+		
+		<?php
+		$output = ob_get_contents();
+		ob_end_clean();
+		return $output; 
+	}
+}
+add_shortcode('wpsm_add_deal_popup', 'wpsm_get_add_deal_popup');
+}
+
+
+if( !function_exists('rh_get_post_thumbnails') ) {
+function rh_get_post_thumbnails($atts, $content = NULL){
+	extract(shortcode_atts(array(
+        'postid' => NULL,
+        'video' => '',
+        'height' => '100',
+        'columns' => 5,
+        'class' => ''
+    ), $atts));	
+	global $post;
+   	$post_id = (NULL === $postid) ? $post->ID : $postid;
+    $post_image_gallery = get_post_meta( $post_id, 'rh_post_image_gallery', true );
+    $post_image_videos = get_post_meta( $post_id, 'rh_post_image_videos', true );
+    $countimages = '';
+    $columnclass = ($columns==5) ? ' five-thumbnails' : '';
+	ob_start();
+	?>    
+    <?php if(!empty($post_image_gallery) || (!empty($post_image_videos) && $video == 1) ) :?>
+        <?php $post_image_gallery = explode(',', $post_image_gallery);?> 
+        <?php $post_image_videos = explode(PHP_EOL, $post_image_videos);?>  
+        <div class="rh-flex-eq-height compare-full-thumbnails mt15 <?php echo $class; echo $columnclass;?>">
+            <?php foreach($post_image_gallery as $key=>$image_gallery):?>
+                <a href="<?php echo wp_get_attachment_url($image_gallery);?>" target="_blank" class="mb10"> 
+                    <?php WPSM_image_resizer::show_static_resized_image(array('lazy'=>false, 'src'=> wp_get_attachment_url($image_gallery), 'crop'=> false, 'height'=> $height, 'title' => esc_attr(get_post_meta( $image_gallery, '_wp_attachment_image_alt', true))));?>                                                     
+                    </a>                               
+            <?php endforeach;?>  
+            <?php if($video == 1):?>   
+	            <?php foreach($post_image_videos as $key=>$video):?>
+	                <a href="<?php echo esc_url($video);?>" target="_blank" class="mb10 rh_videothumb_link"> 
+						<img src="<?php echo parse_video_url(esc_url($video), 'thumb'); ?>" width="<?php echo $height;?>" alt="" />
+	                </a>                               
+	            <?php endforeach;?> 
+            <?php endif;?>                       
+        </div>
+        <?php $random_key = rand(0, 50); wp_enqueue_script('prettyphoto');?>
+        <script data-cfasync="false">
+        jQuery(document).ready(function($) {
+            'use strict'; 
+            $('.compare-full-thumbnails a').attr('rel', 'prettyPhoto[rehub_postthumb_gallery_<?php echo $random_key;?>]');
+            $(".compare-full-thumbnails a[rel^='prettyPhoto']").prettyPhoto({social_tools:false, default_width: 854,default_height: 480});
+        });
+        </script>        
+    <?php endif;?>   
+	<?php
+	$output = ob_get_contents();
+	ob_end_clean();
+	return $output; 
+}
+add_shortcode('rh_get_post_thumbnails', 'rh_get_post_thumbnails');
+}

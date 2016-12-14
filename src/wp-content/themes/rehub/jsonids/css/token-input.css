@@ -13,6 +13,10 @@ ul.token-input-list-rehub {
     webkit-box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.07 );
     box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.07 );
 }
+#rehub_post_metabox ul.token-input-list-rehub{    border-color: #ccc;
+    padding: 3px 5px;
+    margin: 0;
+    border-radius: 3px; width: 100%; box-sizing: border-box;}
 ul.token-input-list-rehub:focus {
     border-color: #5b9dd9;
     -webkit-box-shadow: 0 0 2px rgba( 30, 140, 190, 0.8 );
@@ -55,6 +59,27 @@ ul.token-input-list-rehub li input {
 #mainbox li.token-input-token-rehub p {
     display: inline;
 }
+#rehub_post_metabox li.token-input-token-rehub {
+    overflow: hidden;
+    height: auto !important;
+    height: 15px;
+    margin: 3px;
+    padding: 1px 3px;
+    background-color: #eff2f7;
+    color: #000;
+    cursor: default;
+    border: 1px solid #ccd5e4;
+    font-size: 12px;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    float: left;
+    white-space: nowrap;
+}
+
+#rehub_post_metabox li.token-input-token-rehub p {
+    display: inline;
+}
 
 li.token-input-token-rehub span {
     color: #a6b3cf;
@@ -85,7 +110,7 @@ div.token-input-dropdown-rehub {
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     cursor: default;
-	font-size: smaller;
+	font-size: 14px;
     z-index: 1;
 }
 

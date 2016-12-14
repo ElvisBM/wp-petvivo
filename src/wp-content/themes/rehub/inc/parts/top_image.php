@@ -1,6 +1,11 @@
+<?php $no_featured_image_layout = (isset($no_featured_image_layout)) ? $no_featured_image_layout : '';?>
 <?php if(vp_metabox('rehub_post_side.show_featured_image') == '1')  : ?>
 <?php else : ?>
-	<?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'video') : ?>		
+    <?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.review_post_schema_type') == 'review_woo_product' && vp_metabox('rehub_post.review_post.0.review_woo_product.0.review_woo_slider') =='1') :?>
+        <?php get_template_part('inc/parts/woo_slider'); ?>
+	<?php elseif(vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.rehub_review_slider') =='1') :?>                     
+        <?php get_template_part('inc/parts/review_slider'); ?>	
+	<?php elseif(vp_metabox('rehub_post.rehub_framework_post_type') == 'video') : ?>		
 		<?php $video_schema = vp_metabox('rehub_post.video_post.0.video_post_schema');?>
 		<?php  if (($video_schema)=='1'): ?>
 			<?php                                                                               
@@ -108,8 +113,21 @@
 			</ul>
 		</div>
 	<?php else : ?>
-		<?php if ( (has_post_thumbnail()) && rehub_option('rehub_disable_feature_thumb') !='1'  ) { ?>
-			<figure class="top_featured_image"><?php the_post_thumbnail('full'); ?></figure>                                    
-		<?php } ?>
+		<?php if($no_featured_image_layout != 1) :?>
+			<?php if ( (has_post_thumbnail()) && rehub_option('rehub_disable_feature_thumb') !='1'  ) { ?>
+				<figure class="top_featured_image"><?php the_post_thumbnail('full'); ?></figure>   
+			<?php } ?>
+		<?php endif;?>
+	<?php endif; ?>
+    <?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'music') : ?>
+	    <?php if(vp_metabox('rehub_post.music_post.0.music_post_source') == 'music_post_soundcloud') : ?>
+	        <div class="music_soundcloud">
+	            <?php echo vp_metabox('rehub_post.music_post.0.music_post_soundcloud_embed'); ?>
+	        </div>                        
+	    <?php elseif(vp_metabox('rehub_post.music_post.0.music_post_source') == 'music_post_spotify') : ?>
+	        <div class="music_spotify">
+	            <iframe src="https://embed.spotify.com/?uri=<?php echo vp_metabox('rehub_post.music_post.0.music_post_spotify_embed'); ?>" width="100%" height="80" frameborder="0" allowtransparency="true"></iframe>
+	        </div>
+	    <?php endif; ?>
 	<?php endif; ?>                    
 <?php endif; ?>

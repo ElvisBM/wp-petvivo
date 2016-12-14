@@ -65,11 +65,14 @@ span.product_count_in_member { position: absolute; bottom: 0; right: 0; backgrou
 .table-vendor-sales-report.table-condensed td{font-size: 85%;}
 .table-vendor-sales-report{ border: 1px solid #ddd;}
 .rh_wcv_date_picker{margin-bottom: 10px; overflow: hidden}
-#pv_paypal, #pv_shop_name, .rh_wcv_date_picker .date-pick, .wcv-form .control-group .control>input, .wcv-form .control-group .control>select, .wcv-form .control-group .control>textarea{width: 100%; padding: 8px 10px; font: 14px/22px Arial; box-sizing: border-box; border-radius: 0}
+#pv_paypal, #pv_shop_name, .rh_wcv_date_picker .date-pick, .wcv-form .control-group .control>input, .wcv-form .control-group .control>select, .wcv-form .control-group .control>textarea, #xp-wcvendor-profile .field_type_textbox input{width: 100%; padding: 8px 10px; font: 14px/22px Arial; box-sizing: border-box; border-radius: 0}
 .rh_wcv_date_picker label{display: block}
+#xp-wcvendor-profile .field_type_selectbox select{border: 1px solid #ccc; width: 100%}
+#xp-wcvendor-profile .xp-woo-description{font-size: 90%}
 .rh_wcv_date_picker input[type="submit"]{width: 100%; padding: 13px; display: block; margin-top: 23px; border-radius: 0}
 #pv_paypal, #pv_shop_name{margin-top: 5px}
-.pv_paypal_container b, .pv_shop_name_container b, #pv_seller_info_container b, #pv_shop_description_container b{ font-weight: bold;}
+#xp-wcvendor-profile .editfield > label, #xp-wcvendor-profile .editfield span.label, #xp-wcvendor-profile legend{display: block; font-size: 15px; font-weight: bold; margin: 0 0 6px 0}
+#xp-wcvendor-profile .clear-value{font-size: 85%}
 #wp-pv_seller_info-editor-container, #wp-pv_shop_description-editor-container{ border: 1px solid #eee}
 #pv_seller_info_container, #pv_shop_description_container{ margin-bottom: 15px}
 .btn[name="vendor_application_submit"] { padding: 5px 10px;  font: bold 14px Arial; border: 1px solid #444; cursor: pointer;}
@@ -161,41 +164,33 @@ body.rtl .vendor_store_in_bp_last_products{text-align: left;}
 .wcv-rating-item {border-bottom: 1px solid #ddd;margin-bottom: 25px;}
 .wcv-rating-item:last-child{border: none;}
 .wcv-grid .wcv-product-media{margin: 30px 0 0 0}
-
-.wcv-product-media .wcv-featuredimg {
-    min-height: 150px;
-    border: 1px solid #e1e1e1;
-    height: auto;
-    margin: 0;
-    background-color: #fff;
-    position: relative;
-    width: 100%;padding: 10px; text-align: center;
-}
+.wcv-product-media .wcv-featuredimg {min-height: 150px;border: 1px solid #e1e1e1;height: auto;margin: 0;background-color: #fff;position: relative;width: 100%;padding: 10px; text-align: center;}
 .wcv-featuredimg br{display: none;}
-a.wcv-media-uploader-featured-add, a.wcv-media-uploader-featured-delete{display: block;
-    text-align: center;
-    padding: 10px 0; text-decoration: none;}
-    .wcv-product-media a.hidden{display: none;}
-    .wcv-product-media .all-66{padding:0 35px;}
-    .wcv-product-upsells .control, .wcv-coupon-usage-restrictions > .control{margin: 0 0 25px 0}
-    .button.add_attribute{padding: 10px 14px;
-    border: none;
-    background: #111;
-    color: #fff;
-    line-height: 14px;
-    font-size: 14px; box-shadow: none;}
-    .wcv_product_attributes .expand-close {font-size: 90%}
-    .wcv-gallery-image{box-shadow: 0 4px 5px #ccc}
-.wcv-grid #files_download table thead th, .wcv-grid #files_download table thead td {
-    padding: 0 10px;
-}
+a.wcv-media-uploader-featured-add, a.wcv-media-uploader-featured-delete{display: block;text-align: center;padding: 10px 0; text-decoration: none;}
+.wcv-product-media a.hidden{display: none;}
+.wcv-product-media .all-66{padding:0 35px;}
+.wcv-product-upsells .control, .wcv-coupon-usage-restrictions > .control{margin: 0 0 25px 0}
+.button.add_attribute{padding: 10px 14px;border: none;background: #111;color: #fff;line-height: 14px;font-size: 14px; box-shadow: none;}
+.wcv_product_attributes .expand-close {font-size: 90%}
+.wcv-gallery-image{box-shadow: 0 4px 5px #ccc}
+.wcv-grid #files_download table thead th, .wcv-grid #files_download table thead td {padding: 0 10px;}
 .downloadable_files table{width: 100%;border-collapse: collapse;}
-.downloadable_files th, .downloadable_files td{    border-bottom: 1px solid #E1E1E1;
-    padding: 13px;
-    text-align: left;}
-    table.wcv-table tr td, table.wcv-table tr th{    border-bottom: 1px solid #E1E1E1;}
-    #branding.tabs-content h6{margin: 15px 0}
-    .wcvendors-table-rating h6 i{color: #fb9900}
+.downloadable_files th, .downloadable_files td{border-bottom: 1px solid #E1E1E1;padding: 13px;text-align: left;}
+table.wcv-table tr td, table.wcv-table tr th{border-bottom: 1px solid #E1E1E1;}
+#branding.tabs-content h6{margin: 15px 0}
+.wcvendors-table-rating h6 i{color: #fb9900}
+#xprofile-in-wcstore{}
+#xprofile-in-wcstore li:first-child{border-top: 1px solid #eee; margin: 24px 0 0 0}
+#xprofile-in-wcstore li:last-child{margin: 0 0 24px 0}
+#xprofile-in-wcstore li{clear: both; overflow: hidden; padding: 5px 0 5px 10px;line-height: 24px;border-bottom: 1px solid #eee;}
+.rh_gmw_map_in_wcv_profile{color: #fff; text-decoration: underline; margin: 0 6px; cursor: pointer;}
+#vendor-location{opacity: 0; height: 0}
+#vendor-location.active{opacity: 100; height: 250px}
+.wcv-verified-vendor{background: green;padding: 3px 6px;display: inline-block;font-size: 11px;text-transform: uppercase;border-radius: 2px;margin: 0 8px 0 0}
+.wcv-verified-vendor i{margin: 0 3px 0 0;color: #c1f3c1;}
+.vendor_store_details_title i, .vendor_store_in_bp_title i{margin: 2px 4px 0 0;color: #54b60a;float: left;}
+.rtl .vendor_store_details_title i{float: right; margin: 2px 0 0 4px}
+.rtl .wcv-verified-vendor i{margin: 0 0 0 3px}
 
 @media (max-width: 1023px){
 	.wcv_vendorslist li{width: 45%; margin: 0 2.5% 18px 2.5% !important}

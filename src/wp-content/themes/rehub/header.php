@@ -100,17 +100,7 @@
                 <?php else : ?>
           			<div class="textlogo"><?php bloginfo( 'name' ); ?></div>
                     <div class="sloganlogo"><?php bloginfo( 'description' ); ?></div>
-          		<?php endif; ?> 
-                <?php if( rehub_option( 'logo_retina' ) && rehub_option( 'logo_retina_width' ) && rehub_option( 'logo_retina_height' )): ?>
-                    <script type="text/javascript">
-                        jQuery(document).ready(function($) {
-                        var retina = window.devicePixelRatio > 1 ? true : false;
-                        if(retina) {
-                            jQuery('.logo_image img').attr('src', '<?php echo rehub_option( 'rehub_logo_retina' ); ?>');
-                        }
-                        });
-                    </script>
-                <?php endif; ?>      
+          		<?php endif; ?>       
             </div>
             <?php if(rehub_option('rehub_header_style') == 'header_first' || rehub_option('rehub_header_style') == 'header_seven') : ?><div class="search head_search"><?php get_search_form(); ?></div><?php endif; ?>
             <?php if(rehub_option('rehub_header_style') != 'header_third' && rehub_option('rehub_header_style') != 'header_six') : ?><?php if(rehub_option('rehub_ads_top')) : ?><div class="mediad"><?php echo do_shortcode(rehub_option('rehub_ads_top')); ?></div><?php endif; ?><?php endif; ?>
@@ -155,10 +145,19 @@
                             <?php $rtlclass = (is_rtl()) ? 'floatleft' : 'floatright'; ?>
                             <?php echo do_shortcode('[wpsm_user_modal as_btn="1" class="mobileinmenu '.$rtlclass.'"'.$loginurl.']') ;?>
                         </div> 
-                        <?php global $woocommerce;
-                        if ($woocommerce){
-                        echo '<div class="celldisplay rh_woocartmenu_cell"><a class="rh_woocartmenu-link icon-in-main-menu menu-item-one-line cart-contents cart_count_'.$woocommerce->cart->cart_contents_count.'" href="'.$woocommerce->cart->get_cart_url().'"><span class="rh_woocartmenu-icon"><strong>'.$woocommerce->cart->cart_contents_count.'</strong><span class="rh_woocartmenu-icon-handle"></span></span><span class="rh_woocartmenu-amount">'.$woocommerce->cart->get_cart_total().'</span></a></div>';
-                        }?>
+                        <?php 
+                        if (rehub_option('header_seven_compare_btn') != 1){
+                            global $woocommerce;
+                            if ($woocommerce){
+                            echo '<div class="celldisplay rh_woocartmenu_cell"><a class="rh_woocartmenu-link icon-in-main-menu menu-item-one-line cart-contents cart_count_'.$woocommerce->cart->cart_contents_count.'" href="'.$woocommerce->cart->get_cart_url().'"><span class="rh_woocartmenu-icon"><strong>'.$woocommerce->cart->cart_contents_count.'</strong><span class="rh_woocartmenu-icon-handle"></span></span><span class="rh_woocartmenu-amount">'.$woocommerce->cart->get_cart_total().'</span></a></div>';
+                            }                            
+                        }
+                        else{
+                            echo '<div class="celldisplay rh_woocartmenu_cell">';
+                            echo do_shortcode('[rh_compare_icon]' );
+                            echo '</div>';
+                        }
+                        ?>
                     </div>                     
                 </div>                                              
             <?php endif; ?>                         

@@ -1,18 +1,13 @@
 <?php
 /*
-  Name: Sorted simple list
+  Name: Simple list
  */
 
 ?>
 
 <?php
 use ContentEgg\application\helpers\TemplateHelper;
-// sort items by price
-usort($items, function($a, $b) {
-    if (!$a['price']) return 1;
-    if (!$b['price']) return -1;
-    return $a['price'] - $b['price'];
-});
+
 $product_price_update = get_post_meta( get_the_ID(), '_cegg_last_update_CjProducts', true );
 $product_keyword_update = get_post_meta( get_the_ID(), '_cegg_last_bykeyword_update_CjProducts', true );
 if ($product_price_update) {
