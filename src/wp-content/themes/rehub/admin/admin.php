@@ -33,7 +33,6 @@ function rehub_option( $key )
 $mag_builder_metabox  = REHUB_ADMIN . '/metabox/mag_builder.php';	
 $post_type_metabox  = REHUB_ADMIN . '/metabox/post_type.php';
 $post_type_side_metabox  = REHUB_ADMIN . '/metabox/post_type_side.php';
-$page_meta_metabox  = REHUB_ADMIN . '/metabox/page_meta.php';
 $page_review_metabox  = REHUB_ADMIN . '/metabox/page_review.php';
 $page_toptable_metabox  = REHUB_ADMIN . '/metabox/page_toptable.php';
 $page_topchart_metabox  = REHUB_ADMIN . '/metabox/page_topchart.php';
@@ -47,7 +46,6 @@ $multioffer_metabox  = REHUB_ADMIN . '/metabox/multioffermeta.php';
 $mag_builder_metabox_obj = new VP_Metabox($mag_builder_metabox);
 $post_type_metabox_obj = new VP_Metabox($post_type_metabox);
 $post_type_metabox_side_obj = new VP_Metabox($post_type_side_metabox);
-$page_meta_metabox_obj = new VP_Metabox($page_meta_metabox);
 $page_review_metabox_obj = new VP_Metabox($page_review_metabox);
 $page_toptable_metabox_obj = new VP_Metabox($page_toptable_metabox);
 $page_topchart_metabox_obj = new VP_Metabox($page_topchart_metabox);

@@ -36,12 +36,13 @@ use ContentEgg\application\helpers\TemplateHelper;
     <?php $rand = uniqid();?>
     <?php $countitems = count($all_items);?>
     <?php if ($unique_id && $module_id && !empty($syncitem)) :?>
-        <?php include(locate_template( 'inc/parts/pricealertpopup.php' ) ); ?>                                
+        <?php include(rh_locate_template( 'inc/parts/pricealertpopup.php' ) ); ?>                                
     <?php endif;?>
     <div class="widget_merchant_list<?php if ($countitems > 7):?> expandme<?php endif;?>">
         <div class="tabledisplay">
             <?php  foreach ($all_items as $key => $item): ?>
-                <?php $afflink = $item['url'] ;?>
+                <?php $offer_post_url = $item['url'] ;?>
+                <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
                 <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
                 <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
                 <?php $currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : ''; ?>
@@ -92,7 +93,7 @@ use ContentEgg\application\helpers\TemplateHelper;
             <span class="expand_all_offers"><?php _e('Show all', 'rehub_framework');?> <span class="expandme">+</span></span>
             <?php endif;?>
             <?php if ($unique_id && $module_id && !empty($syncitem)) {
-                include(locate_template( 'inc/parts/pricehistorypopup.php' ) );
+                include(rh_locate_template( 'inc/parts/pricehistorypopup.php' ) );
             } ?>    
         </div>         
     </div>

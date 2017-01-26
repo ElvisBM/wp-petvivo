@@ -1,15 +1,9 @@
 <?php get_header(); ?>
 <!-- CONTENT -->
-<div class="content"> 
-    <?php if(rehub_option('rehub_featured_toggle') && is_front_page() && !is_paged()) : ?>
-        <?php get_template_part('inc/parts/featured'); ?>
-    <?php endif; ?>
-    <?php if(rehub_option('rehub_homecarousel_toggle') && is_front_page() && !is_paged()) : ?>
-        <?php get_template_part('inc/parts/home_carousel'); ?>
-    <?php endif; ?>
-    <div class="clearfix">
-          <!-- Main Side -->
-          <div class="main-side page clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
+        <!-- Main Side -->
+        <div class="main-side page clearfix">
             <div class="title"><h1><?php the_title(); ?></h1></div>
             <article class="post" id="page-<?php the_ID(); ?>">       
             <?php if (have_posts()) : while (have_posts()) : the_post(); ?>

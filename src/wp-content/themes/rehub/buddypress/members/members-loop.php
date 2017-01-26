@@ -18,6 +18,7 @@ do_action( 'bp_before_members_loop' ); ?>
 
 	<?php do_action( 'bp_before_directory_members_list' ); ?>
 
+	<div class="rhbp-grid-loop">
 	<ul id="members-list" class="item-list col_wrap_fourth rh-flex-eq-height">
 	<?php while ( bp_members() ) : bp_the_member(); ?>
 
@@ -28,18 +29,29 @@ do_action( 'bp_before_members_loop' ); ?>
 				$mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_users_fcred($author_ID ) : '';
 			?>
 			<div class="member-inner-list" style="<?php rh_cover_image_url( 'members', 120, true ); ?>">
-				<?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?>			
+				<?php 				
+					$membertype = bp_get_member_type($author_ID);
+					$membertype_object = bp_get_member_type_object($membertype);
+					$membertype_label = (!empty($membertype_object) && is_object($membertype_object)) ? $membertype_object->labels['singular_name'] : '';
+					?>		
+				<?php if($membertype_label) :?>
+        			<span class="rh-user-m-type rh-user-m-type-<?php echo $membertype;?>"><?php echo $membertype_label;?></span>				
+				<?php endif;?>
 				<div class="item-avatar">
 					<a href="<?php bp_member_permalink(); ?>"><?php bp_member_avatar(); ?></a>
 					<?php // <i class="online-status fa fa-circle"></i> ?>
 				</div>
 
 				<div class="item">
-					<div class="item-title">
+					<div class="item-title mb5">
 						<a href="<?php bp_member_permalink(); ?>">
 							<?php the_author_meta( 'display_name',$author_ID); ?>							
 						</a>
 					</div>
+					<?php $userrating = get_user_meta($author_ID, 'rh_bp_user_rating', true);?>
+					<?php if ($userrating):?>
+						<div class="star-small mb10"><span class="stars-rate"><span style="width: <?php echo $userrating * 20;?>%;"></span></span></div>
+					<?php endif;?>					
 					<div class="item-meta"><span class="activity"><?php bp_member_last_active(); ?></span></div>
 					<?php if ( bp_get_member_latest_update() ) : ?>
 					<span class="update"> <?php bp_member_latest_update( array( 'view_link' => false ) ); ?></span>
@@ -73,6 +85,7 @@ do_action( 'bp_before_members_loop' ); ?>
 		</li>
 	<?php endwhile; ?>
 	</ul>
+	</div>
 	
 	<?php 
 		do_action( 'bp_after_directory_members_list' ); 

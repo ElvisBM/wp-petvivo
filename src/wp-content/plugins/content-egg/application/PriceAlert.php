@@ -277,7 +277,7 @@ class PriceAlert {
         // clean up & optimize
         if ($total && rand(1, 5) == 5)
         {
-            PriceHistoryModel::model()->cleanOld(PriceAlertModel::CLEAN_DELETED_DAYS);
+            PriceAlertModel::model()->cleanOld(PriceAlertModel::CLEAN_DELETED_DAYS);
         }
     }
 

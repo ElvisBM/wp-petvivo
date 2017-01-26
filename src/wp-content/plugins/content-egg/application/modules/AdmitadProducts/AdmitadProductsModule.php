@@ -21,8 +21,8 @@ class AdmitadProductsModule extends AffiliateParserModule {
     {
         return array(
             'name' => 'Admitad Products',
-            'description' => __('Добавляет товары партнерской сети <a href="https://www.admitad.com/ru/promo/?ref=770f943d83">Admitad</a>.', 'content-egg') . ' ' . __('Вы должны получить аппрув в каждой программе отдельно.', 'content-egg')
-            . '<br>' . __('Используется API <a href="https://www.admitadgoods.ru" target="_blank">Admitad Goods</a> WP плагин.', 'content-egg')
+            'description' => __('Add products from <a href="https://www.admitad.com/ru/promo/?ref=770f943d83">Admitad</a>.', 'content-egg') . ' ' . __('You must get approve for each program separately.', 'content-egg')
+            . '<br>' . __('Used API the <a href="https://www.admitadgoods.ru/en.html" target="_blank">Admitad Goods</a> WP plugin.', 'content-egg')
         );
     }
 

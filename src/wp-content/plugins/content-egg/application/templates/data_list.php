@@ -2,8 +2,6 @@
 
 use ContentEgg\application\helpers\TemplateHelper;
 
-\wp_enqueue_style('egg-bootstrap');
-\wp_enqueue_style('content-egg-products');
 ?>
 
 <div class="egg-container egg-list">

@@ -98,7 +98,7 @@ class Installer {
     public static function uninstall()
     {
         global $wpdb;
-        if (!current_user_can('activate_plugins'))
+        if (!\current_user_can('activate_plugins'))
             return;
 
         \delete_option(Plugin::slug . '_db_version');

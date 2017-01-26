@@ -3,7 +3,7 @@
 	Author URI: https://wpsouls.com
 */
 /*Vendors*/
-.wcvendors-pro-dashboard-wrapper *{box-sizing: border-box;}
+.wcvendors-pro-dashboard-wrapper *{}
 .wcvendors-pro-dashboard-wrapper {font-size: 15px;line-height: 22px;}
 .wcv-grid .wcv_dashboard_overview {background-color: #fff;border: 1px solid #e1e1e1;padding: 20px 2em 20px 0;margin: 10px 0 30px 0 !important;}
 .wcv-grid h3{font-size: 19px !important}
@@ -33,19 +33,21 @@ label[for=_wcv-store_id], label[for=_wcv_store_address2]{display: none;}
 .wcvendors-pro-dashboard-wrapper .wcv-navigation ul.menu {box-shadow: 0 2px 2px #E4E4E4;background-color: #f7f7f7;}
 .wcv-navigation ul.menu li a{color: #111 !important}
 .wcv-navigation ul.menu li.active a, .wcv-navigation ul.menu li:hover a{color: #fff !important}
-.content.no_shadow .wcvendors-pro-dashboard-wrapper .wcv-navigation ul.menu{background-color: #fff}
+.no_bg_wrap .wcvendors-pro-dashboard-wrapper .wcv-navigation ul.menu{background-color: #fff}
 .wcv-navigation ul li{margin: 0 !important}
 small.wcvendors_sold_by_in_loop {font-size: 12px;margin-bottom: 10px;display: inline-block;}
 .wcvendors_sold_by_in_loop a{color: #666}
 .form-row #rememberme{ margin-top: 10px}
 .wcv_shop_description{ margin-bottom: 15px}
-.wcv_vendorslist{ overflow: hidden; margin: 0 -1% 30px -1% !important;}
+.wcv_vendorslist{ overflow: hidden; margin: 0 -1% 30px -1%;}
 .wcv_vendorslist a.wcv-grid-shop-name{ text-decoration: none; font-size: 16px; font-weight: bold; display: inline-block;}
-.wcv_vendorslist li{position: relative; float: left; width: 23%; margin: 0 1% 28px 1% !important; list-style: none !important; text-align: center;box-shadow: rgba(0,0,0,0.15) 0px 1px 2px;background: white;}
+.wcv_vendorslist:not(.rh-flex-eq-height){display: -webkit-flex; -webkit-flex-wrap:wrap;display: -ms-flexbox; -ms-flex-wrap:wrap;display: flex; flex-wrap: wrap;flex-direction: row;}
+.wcv_vendorslist:not(.rh-flex-eq-height) li{ float: left; width: 23%; margin: 0 1% 28px 1% !important; }
+.wcv_vendorslist li{position: relative;text-align: center;box-shadow: rgba(0,0,0,0.15) 0px 1px 2px;background: white;list-style: none !important; }
 .wcv_vendorslist .cover_logo { display: block; height: 135px; overflow: hidden; background: #eee; background-position: center top; background-repeat: no-repeat;background-size: cover; }
 .wcv_vendorslist .item-avatar { position: absolute; left: 50%; top: 86px; margin-left: -43px; border-radius: 2px;width: 80px; box-shadow: 0 0 1px 0 rgba(0,0,0,0.3), 0 1px 1px 0 rgba(0,0,0,0.1); background-color: #fff; padding: 2px;border: 3px solid #fff; }
 .wcv_vendorslist .member-inner-list{ text-align: center;}  .wcv_vendorslist .store-desc{ display: block; position: relative; overflow: hidden; height: 42px; margin: 10px auto 0 auto; padding: 0 20px; font-size: 12px; color: #999; line-height: 14px }
-.wcv_vendorslist .last-vendor-products{ display: block; padding: 15px 15px 25px; text-align: center; height: 70px; overflow: hidden; white-space: nowrap; }
+.wcv_vendorslist .last-vendor-products{ display: block; padding: 15px 15px 25px; text-align: center; overflow: hidden; white-space: nowrap; }
 .wcv_vendorslist .last-vendor-products a { display: inline-block; vertical-align: top; width: 70px; height: 70px; position: relative; }
 span.product_count_in_member { position: absolute; bottom: 0; right: 0; background: rgba(255, 255, 255, 0.78); padding: 0 6px; font-size: 13px; line-height: 18px; }
 .wcv_vendorslist .vendor-list-like{position: absolute;top: 8px; right: 8px; }
@@ -65,7 +67,7 @@ span.product_count_in_member { position: absolute; bottom: 0; right: 0; backgrou
 .table-vendor-sales-report.table-condensed td{font-size: 85%;}
 .table-vendor-sales-report{ border: 1px solid #ddd;}
 .rh_wcv_date_picker{margin-bottom: 10px; overflow: hidden}
-#pv_paypal, #pv_shop_name, .rh_wcv_date_picker .date-pick, .wcv-form .control-group .control>input, .wcv-form .control-group .control>select, .wcv-form .control-group .control>textarea, #xp-wcvendor-profile .field_type_textbox input{width: 100%; padding: 8px 10px; font: 14px/22px Arial; box-sizing: border-box; border-radius: 0}
+#pv_paypal, #pv_shop_name, .rh_wcv_date_picker .date-pick, .wcv-form .control-group .control>input, .wcv-form .control-group .control>select, .wcv-form .control-group .control>textarea, #xp-wcvendor-profile .field_type_textbox input{width: 100%; padding: 8px 10px; font: 14px/22px Arial;  border-radius: 0}
 .rh_wcv_date_picker label{display: block}
 #xp-wcvendor-profile .field_type_selectbox select{border: 1px solid #ccc; width: 100%}
 #xp-wcvendor-profile .xp-woo-description{font-size: 90%}
@@ -77,10 +79,9 @@ span.product_count_in_member { position: absolute; bottom: 0; right: 0; backgrou
 #pv_seller_info_container, #pv_shop_description_container{ margin-bottom: 15px}
 .btn[name="vendor_application_submit"] { padding: 5px 10px;  font: bold 14px Arial; border: 1px solid #444; cursor: pointer;}
 .wcvendor_store_wrap_bg{margin: 0 0 30px 0}
-#wcvendor_image_bg{background-color: #f4f4f4;background-position: center top;background-repeat: no-repeat;border: 0;display: block;margin: 0;padding: 30px 20px 20px 20px;position: relative;width: 100%;z-index: 1;box-sizing: border-box;-webkit-box-sizing: border-box; min-height: 270px}
+#wcvendor_image_bg{background-color: #f4f4f4;background-position: center center;background-repeat: no-repeat;border: 0;display: block;margin: 0;padding: 30px 20px 20px 20px;position: relative;width: 100%;z-index: 1; min-height: 270px}
 .wcvendor-cover-image-mask{width: 100%;height: 100%;position: absolute;top: 0;left: 0;right: 0;bottom: 0;background: -webkit-linear-gradient(top,rgba(0,0,0,0),rgba(156,156,156,.1) 30%,rgba(11,11,11,.35) 80%,rgba(0,0,0,.48));background: linear-gradient(180deg,rgba(0,0,0,0) 0,rgba(156,156,156,.1) 30%,rgba(11,11,11,.35) 80%,rgba(0,0,0,.48));filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000',endColorstr='#b0000000',GradientType=0);opacity: .65;}
-#wcvendor_profile_wrap .content{margin: 0 auto;display: table; padding: 0;background: none transparent; box-shadow: none;}
-.wcvcontent.content{padding: 0; background-color: transparent;}
+#wcvendor_profile_wrap .rh-container{margin: 0 auto;display: table;}
 #wcvendor_profile_wrap{position: absolute; bottom: 30px; left: 0; z-index: 2; width: 100%}
 .wcvendor_profile_cell{display: table-cell; vertical-align: bottom;color: #fff;text-shadow: 0 0 1px #999; padding: 0;position: relative;}
 #wcvendor_profile_act_desc{padding: 0 20px}
@@ -94,18 +95,12 @@ span.product_count_in_member { position: absolute; bottom: 0; right: 0; backgrou
 .wcvendor_store_stars{margin: 0 0 10px 0}
 .wcvendor_store_desc{font: italic 14px/18px Arial;}
 #wcvendor_profile_menu{background: #f9f9f9;overflow: hidden; border-bottom: 1px solid #ededed}
-#wcvendor_profile_menu .content{margin: 0 auto; padding: 0; box-shadow: none}
 .wcvendor_profile_menu_items{border-left: 1px solid #eee; margin-left:170px;float: left; }
 .wcvendor_profile_menu_items li{margin: 0; padding: 0; float: left;}
 .wcvendor_profile_menu_items a{padding: 15px 25px; color: #111; border-right: 1px solid #eee; display: inline-block; line-height: 18px; font-size: 15px }
 .wcvendor_profile_menu_items li.active a{background-color: #fff}
 #wcvendor_search_shops{float: right; margin: 7px 0}
-.vcwendor_profile_sidebar{width: 260px; float: left;}
-.vcwendor_profile_sidebar .rh-cartbox{margin: 0 0 25px 0}
-.vcwendor_profile_content{width: calc(100% - 290px); float: right;}
-.wcvendor_ownertitle{text-align: center;}
-.wcvendor_ownertitle h5{margin: -20px -20px 20px -20px;padding: 12px;color: #000;background: #f7f7f7;}
-.vendor_store_details{margin-bottom:20px;border: 1px solid #f1f1f1;background: #f9f9f9; display: table; width: 100%; box-sizing: border-box; }
+.vendor_store_details{margin-bottom:20px;border: 1px solid #f1f1f1;background: #f9f9f9; display: table; width: 100%;  }
 .vendor_store_details_image, .vendor_store_details_single {display: table-cell;vertical-align: top;line-height: 0.8; padding: 10px}
 .vendor_store_details_single{padding-left: 0}
 .vendor_store_details_single .favorshop_like i{color: #cc0000}
@@ -117,7 +112,7 @@ span.product_count_in_member { position: absolute; bottom: 0; right: 0; backgrou
 .vendor_store_details_contact a{text-decoration: none;}
 .vendor_store_details_contact i{margin: 0 0 0 9px}
 .rh_vendors_listflat .vendor_store_in_bp{margin: 0 0 20px 0}
-.vendor_store_in_bp{border: 1px solid #e5e5e5;background: #fff; display: table; width: 100%; box-sizing: border-box; }
+.vendor_store_in_bp{border: 1px solid #e5e5e5;background: #fff; display: table; width: 100%;  }
 body.bp-user .vendor_store_in_bp{border-bottom: none; border-top: none; position: relative }
 body.bp-user .vendor-list-like{display: table-cell; padding: 15px 0 15px 15px; vertical-align: middle; width: 34px;}
 .rh_vendors_listflat .distance-to-user-geo{font-size: 80%;line-height: 18px;}
@@ -150,7 +145,7 @@ body.rtl .vendor_store_in_bp_last_products{text-align: left;}
 .rh_vendors_listflat .vendor_user_meta h5{ font-size: 16px; margin: 0 0 10px 0; }
 .rh_vendors_listflat .vendor_user_meta{ padding: 0 30px 0 0; }
 .rh_wcv_dashboard_page h2, .wcvendors-pro-dashboard-wrapper h2{font-size: 20px}
-.vcwendor_profile_sidebar.user-profile-div .user-menu-tab{margin: 0}
+.rh-mini-sidebar.user-profile-div .user-menu-tab{margin: 0}
 .wcv-form.wcv-feedbackform .control-group input[type=radio]+label{display: block;padding-left: 1.45em; color: #fb9900}
 .wcv-form.wcv-feedbackform .all-70{width: 100%}
 .wcv-form.wcv-feedbackform .all-20{width: auto;}
@@ -193,9 +188,8 @@ table.wcv-table tr td, table.wcv-table tr th{border-bottom: 1px solid #E1E1E1;}
 .rtl .wcv-verified-vendor i{margin: 0 0 0 3px}
 
 @media (max-width: 1023px){
-	.wcv_vendorslist li{width: 45%; margin: 0 2.5% 18px 2.5% !important}
-	.wcv_vendorslist{ overflow: hidden; margin: 0 -2.5% 30px -2.5% !important;}
-    .vcwendor_profile_sidebar, .vcwendor_profile_content{width: 100%; float: none}
+	.wcv_vendorslist:not(.rh-flex-eq-height) li{width: 45%; margin: 0 2.5% 18px 2.5% !important}
+	.wcv_vendorslist{ overflow: hidden; margin: 0 -2.5% 30px -2.5%;}
 }
 @media screen and (max-width: 1023px) and (min-width: 768px) {
 	.vendor_store_in_bp_last_products a:nth-child(4), .vendor_store_in_bp_last_products a:nth-child(3), .vendor_store_in_bp_last_products a:nth-child(2){display: none}
@@ -215,7 +209,7 @@ table.wcv-table tr td, table.wcv-table tr th{border-bottom: 1px solid #E1E1E1;}
 .wcv_dashboard_datepicker .wcv-form, .wcv_dashboard_table_header.wcv-cols-group.horizontal-gutters .wcv-form {display: block;}
 .wcv_dashboard_datepicker .wcv-form .all-33 label, .wcv_dashboard_table_header.wcv-cols-group.horizontal-gutters .wcv-form>.all-33 label {display: none;}
 #wcvendor_profile_wrap{position: relative;bottom: auto;}
-.wcvendor_profile_cell{display: block;margin: 0 auto 10px auto; padding: 0 20px; text-align: center;}
+.wcvendor_profile_cell{display: block;margin: 0 auto 10px auto; text-align: center;}
 #wcvendor_profile_logo img{position: static;}
 .wcvendor_profile_menu_items{margin: 0; float: none; border-top:1px solid #eee;transform: translate3d(0,0,0);overflow-x: auto;white-space: nowrap;overflow-y: hidden;}
 #wcvendor_search_shops{display: block;float: none;margin: 15px}
@@ -223,13 +217,15 @@ table.wcv-table tr td, table.wcv-table tr th{border-bottom: 1px solid #E1E1E1;}
 .vendor_store_owner_contactlink, .vendor_store_details_contact{display: block; margin-top:8px }
 .vendor_store_details_contact i{margin: 0 5px 0 0}
 .vendor_store_in_bp{display: block;}
-.vendor_store_in_bp_last_products{text-align: center; display: block; box-sizing: border-box; width: 100%; padding: 25px 5px; clear: both}
-.vendor_store_in_bp_shopname{display: block; box-sizing: border-box; width: 100%; padding: 15px 15px 15px 60px; clear: both; border: 1px dashed #ccc; border-left:none; border-right: none}
+.vendor_store_in_bp_last_products{text-align: center; display: block;  width: 100%; padding: 25px 5px; clear: both}
+.vendor_store_in_bp_shopname{display: block;  width: 100%; padding: 15px 15px 15px 60px; clear: both; border: 1px dashed #ccc; border-left:none; border-right: none}
 .vendor_store_in_bp_image, .vendor_store_in_bp_single{float: left; display: inline-block}
 .rh_vendors_listflat .vendor_store_in_bp_single{width: auto}
 .vendor_store_in_bp_image{width: 50px}
-.wcv_vendorslist li{width: 100%; margin: 0 0 18px 0 !important}
-.wcv_vendorslist{ overflow: hidden; margin: 0 0 30px 0 !important;}
+.wcv_vendorslist{ overflow: hidden; margin: 0 0 30px 0;}
 .rh_vendors_listflat .vendor_user_meta{padding:0;}
 #buddypress .vendor-list-like{position: absolute; top:10px; right: 15px}
+}
+@media(max-width: 480px){
+	.wcv_vendorslist:not(.rh-flex-eq-height) li{width: 100%; margin: 0 0 18px 0 !important}
 }

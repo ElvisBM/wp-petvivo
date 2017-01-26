@@ -26,14 +26,14 @@ class AffilinetCouponsConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Publisher ID" не может быть пустым.', 'content-egg'),
+                        'message' => __('The field "Publisher ID" can not be empty.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'service_password' => array(
                 'title' => 'Publisher Webservice Password <span class="cegg_required">*</span>',
-                'description' => __('Ключ для доступа к Publisher Webservice. Найти можно <a href="https://publisher.affili.net/Account/techSettingsPublisherWS.aspx">здесь</a>.', 'content-egg'),
+                'description' => __('Publisher Webservice access key. You can get it <a href="https://publisher.affili.net/Account/techSettingsPublisherWS.aspx">here</a>.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -41,14 +41,14 @@ class AffilinetCouponsConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Publisher Webservice Password" не может быть пустым.', 'content-egg'),
+                        'message' => __('The field "Publisher Webservice Password" can not be empty.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page' => array(
-                'title' => __('Результатов', 'content-egg'),
-                'description' => __('Количество результатов для одного поискового запроса.', 'content-egg'),
+                'title' => __('Results', 'content-egg'),
+                'description' => __('Number of results for one search query.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 10,
                 'validator' => array(
@@ -58,8 +58,8 @@ class AffilinetCouponsConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'entries_per_page_update' => array(
-                'title' => __('Результатов для обновления', 'content-egg'),
-                'description' => __('Количество результатов для автоматического обновления и автоблоггинга.', 'content-egg'),
+                'title' => __('Results for updates ', 'content-egg'),
+                'description' => __('Number of results for automatic updates and autoblogging.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 3,
                 'validator' => array(

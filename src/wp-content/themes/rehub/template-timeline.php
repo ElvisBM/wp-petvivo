@@ -56,8 +56,8 @@ function get_blix_archive($show_comment_count=0, $before='<h4>', $after='</h4>',
 ?>
 
     <!-- CONTENT -->
-    <div class="content">        
-		<div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
 		      <!-- Main Side -->
               <div class="main-side page clearfix">
                 <div class="title"><h1><?php the_title(); ?></h1></div>

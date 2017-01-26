@@ -4,7 +4,7 @@
  */
 use ContentEgg\application\helpers\TemplateHelper;  
 ?>
-<?php include(locate_template('functions/icecat.php')); ?>
+<?php include(rh_locate_template('functions/icecat.php')); ?>
 <?php foreach ($items as $item): ?>
 
     <?php $EAN = (!empty($item['extra']['itemAttributes']['EAN'])) ? $item['extra']['itemAttributes']['EAN'] : '' ;?>

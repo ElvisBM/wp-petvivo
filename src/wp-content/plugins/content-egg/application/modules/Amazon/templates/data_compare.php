@@ -10,7 +10,7 @@ use ContentEgg\application\helpers\TemplateHelper;
 
 <?php
 \wp_enqueue_style('egg-bootstrap');
-\wp_enqueue_style('content-egg-products');
+\wp_enqueue_style('egg-products');
 ?>
 
 <?php
@@ -42,7 +42,7 @@ $barcodes = array(
             <?php foreach ($current_items as $item): ?>
                 <div class="col-sm-6 col-md-5">
                     <?php if ($item['img']): ?>
-                        <?php $img = str_replace('.jpg', '._AA300_.jpg', $item['img']) ?>
+                        <?php $img = $item['img']; if (strstr($item['img'], 'images-amazon.com')) { $img = str_replace('.jpg', '._AA300_.jpg', $img);} ?>
                         <a rel="nofollow" target="_blank" href="<?php echo $item['url']; ?>">                           
                             <img class="img-responsive" src="<?php echo esc_attr($img) ?>" alt="<?php echo esc_attr($item['title']); ?>" />
                         </a>                            

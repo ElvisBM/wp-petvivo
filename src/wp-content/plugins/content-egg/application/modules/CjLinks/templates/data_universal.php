@@ -10,7 +10,7 @@ use ContentEgg\application\helpers\TemplateHelper;
 
 <?php
 \wp_enqueue_style('egg-bootstrap');
-\wp_enqueue_style('content-egg-products');
+\wp_enqueue_style('egg-products');
 ?>
 
 <div class="egg-container egg-list egg-list-coupons">

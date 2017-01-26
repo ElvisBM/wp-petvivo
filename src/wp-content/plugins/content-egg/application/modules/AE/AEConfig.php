@@ -17,8 +17,8 @@ class AEConfig extends AffiliateParserModuleConfig {
     {
         $options = array(
             'deeplink' => array(
-                'title' => __('Партнеркая ссылка', 'content-egg'),
-                'description' => __('Укажите Deeplink одной из CPA-сетей. Для прямых партнерских программ вы можете использовать параметр вида <em>partner_id=12345</em>, или сформируйте партнерскую ссылку по шаблону, например: <em>{{url}}/partner_id-12345/</em>. Пример ссылки с deeplink: https://ad.admitad.com/g/g8f0qmlavfa/?ulp={{url_encoded}}. {{url}} и {{url_encoded}} - будут заменены на URL текущего товара).', 'content-egg'),
+                'title' => __('Affiliate link', 'content-egg'),
+                'description' => __('Set Deeplink for one of CPA-networks. For direct affiliate programs you can use parameter as <em>partner_id=12345</em>, or make link as template, for example, <em>{{url}}/partner_id-12345/</em>. Another example is   https://ad.admitad.com/g/g8f0qmlavfa/?ulp={{url_encoded}}. {{url}} and {{url_encoded}} - will be replaced by product url. If product url is after affiliate url - use {{url_encoded}}', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -27,8 +27,8 @@ class AEConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'entries_per_page' => array(
-                'title' => __('Результатов', 'content-egg'),
-                'description' => __('Количество результатов для одного поискового запроса.', 'content-egg'),
+                'title' => __('Results', 'content-egg'),
+                'description' => __('Number of results for one search query.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 9,
                 'validator' => array(
@@ -37,14 +37,14 @@ class AEConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
                         'arg' => 50,
-                        'message' => __('Поле "Результатов" не может быть больше 50.', 'content-egg'),
+                        'message' => __('The field "Results" can not be more than 50.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page_update' => array(
-                'title' => __('Результатов для обновления', 'content-egg'),
-                'description' => __('Количество результатов для автоматического обновления и автоблоггинга.', 'content-egg'),
+                'title' => __('Results for updates ', 'content-egg'),
+                'description' => __('Number of results for automatic updates and autoblogging.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 6,
                 'validator' => array(
@@ -53,14 +53,14 @@ class AEConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
                         'arg' => 50,
-                        'message' => __('Поле "Результатов" не может быть больше 50.', 'content-egg'),
+                        'message' => __('The field "Results" can not be more than 50.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'save_img' => array(
-                'title' => __('Сохранять картинки', 'content-egg'),
-                'description' => __('Сохранять картинки на сервер.', 'content-egg'),
+                'title' => __('Save images', 'content-egg'),
+                'description' => __('Save images on server', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',

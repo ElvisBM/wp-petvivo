@@ -15,8 +15,8 @@ abstract class AffiliateParserModuleConfig extends ParserModuleConfig {
     {
         $options = array(
             'ttl' => array(
-                'title' => __('Обновление по ключевому слову', 'content-egg'),
-                'description' => __('Время жини кэша в секундах, через которое необходимо обновить товары, если задано ключевое слово для обновления. 0 - никогда не обновлять.', 'content-egg'),
+                'title' => __('Update by keyword', 'content-egg'),
+                'description' => __('Lifetime of cache in seconds, after this period products will be updated if you set keyword for updating. 0 - never update', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 2592000,
                 'validator' => array(
@@ -30,8 +30,8 @@ abstract class AffiliateParserModuleConfig extends ParserModuleConfig {
         if ($this->getModuleInstance()->isItemsUpdateAvailable())
         {
             $options['ttl_items'] = array(
-                'title' => __('Обновление цены', 'content-egg'),
-                'description' => __('Время в секундах, через которое необходимо обновить цену, наличие и некоторую другую информацию по товарам. 0 - никогда не обновлять.', 'content-egg'),
+                'title' => __('Price update', 'content-egg'),
+                'description' => __('Time in seconds for updating prices, availability, etc. 0 - never update', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 604800,
                 'validator' => array(
@@ -42,18 +42,18 @@ abstract class AffiliateParserModuleConfig extends ParserModuleConfig {
             );
         }
         $options['update_mode'] = array(
-            'title' => __('Режим обновления', 'content-egg'),
-            'description' => __('Если вы используете обновление по расписанию, для более надежной работы замените WordPress cron на реальный cron.', 'content-egg'),
+            'title' => __('Update mode', 'content-egg'),
+            'description' => __('If you use update by schedule, for more better results change Wordpress cron on real cron', 'content-egg'),
             'callback' => array($this, 'render_dropdown'),
             'dropdown_options' => array(
-                'visit' => __('При открытии страницы', 'content-egg'),
-                'cron' => __('По расписанию (по крону)', 'content-egg'),
-                'visit_cron' => __('При открытии страницы и по расписанию', 'content-egg'),
+                'visit' => __('By page view', 'content-egg'),
+                'cron' => __('By schedule (cron)', 'content-egg'),
+                'visit_cron' => __('By page view and by schedule', 'content-egg'),
             ),
             'default' => 'visit',
             array(
                 'call' => array($this, 'setCron'),
-                'message' => __('Ошибка установки cron.', 'content-egg'),
+                'message' => __('Cron setup error.', 'content-egg'),
             ),
         );
 

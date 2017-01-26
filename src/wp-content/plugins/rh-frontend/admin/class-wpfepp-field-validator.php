@@ -54,6 +54,10 @@ class WPFEPP_Field_Validator
 						$items[$key] = stripslashes(wp_strip_all_tags($item['val']));
 						break;
 
+					case 'number':
+						$items[$key] = stripslashes(wp_strip_all_tags($item['val']));
+						break;						
+
 					case 'roles':
 					case 'multicheckbox':
 						unset($items[$key]);

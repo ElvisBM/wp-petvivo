@@ -90,6 +90,38 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 		$callback 	= array($this->renderer, 'render');
 		$args 		= array('group' => 'form_extended', 'curr' 	=> $form_extended);
 
+		add_settings_section( 'wpfepp_form_limitnumber_section', __("Limit post submit for form", "wpfepp-plugin"), null, $page);
+
+	    add_settings_field(
+	        'limit_number', __('Limit number', 'wpfepp-plugin'), $callback, $page, 'wpfepp_form_limitnumber_section',
+		    array_merge(
+				array(
+					'desc' 	=> __( 'If you set this field, user will have ability to post only this number of posts from this form. 0 is unlimited', 'wpfepp-plugin' ),
+					'id' 	=> 'limit_number',
+					'type' 	=> 'number',
+				), $args )
+	    );
+
+	    add_settings_field(
+	        'limit_number_message', __('Add message which user will see after reach the limits', 'wpfepp-plugin'), $callback, $page, 'wpfepp_form_limitnumber_section',
+		    array_merge(
+				array(
+					'desc' 	=> __( 'Shortcodes are also allowed', 'wpfepp-plugin' ),
+					'id' 	=> 'limit_number_message',
+					'type' 	=> 'textarea',
+				), $args )
+	    );
+
+	    add_settings_field(
+	        'pre_limit_message', __('Add message which user will see before reach the limit', 'wpfepp-plugin'), $callback, $page, 'wpfepp_form_limitnumber_section',
+		    array_merge(
+				array(
+					'desc' 	=> __( '%%count%% will be replaced by number of available limit. Example: You have %%count%% available submissions', 'wpfepp-plugin' ),
+					'id' 	=> 'pre_limit_message',
+					'type' 	=> 'textarea',
+				), $args )
+	    );	    	    		
+
 		add_settings_section( $section1, __("Google Map settings", "wpfepp-plugin"), null, $page);
 
 		add_settings_field(
@@ -187,7 +219,6 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 		$default_extended = $this->form_manager->get_defaults();
 		
 		wp_enqueue_script( 'google-maps', '//maps.googleapis.com/maps/api/js?v=3.exp&amp;'. $form_extended['map_google_key'] .'&amp;libraries=places' );
-		wp_register_script( 'admin-location', plugins_url( '/static/js/admin-location.js', dirname(__FILE__) ), array( 'jquery', 'mapify' ), $this->version, true );
 
 		wp_localize_script( 'admin-location', 'wpfeppl', array(
 			'start_point'		=> $form_extended['map_start_location'],
@@ -203,8 +234,10 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 		
 		wp_enqueue_script( 'admin-location' );
 		
-		if ( $form_extended['enable_map'] )
+		if ( $form_extended['enable_map'] ){
 			wp_enqueue_script( 'mapify', plugins_url( '/static/js/mapify.js', dirname(__FILE__) ), array( 'jquery' ), $this->version, false );
+			wp_register_script( 'admin-location', plugins_url( '/static/js/admin-location.js', dirname(__FILE__) ), array( 'jquery', 'mapify' ), $this->version, true );		
+		}
 	}
 
 	public function paidhelper_callback($args){

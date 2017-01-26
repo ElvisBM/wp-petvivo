@@ -25,7 +25,7 @@ class FreebaseModule extends ParserModule {
     {
         return array(
             'name' => 'Freebase',
-            'description' => '<span style="color:red;">' . __('Этот модуль больше не работает по причине закрытия Freebase API. Модуль оставлен в целях совместимости с предыдущими версиями плагина.', 'content-egg') . '</span>',
+            'description' => '<span style="color:red;">' . __('<span style="color:red;">This module is deprecated because of closing Freebase API. The module is left for compatibility with previous versions of the plugin</span>', 'content-egg') . '</span>',
                 //'api_agreement' => 'https://developers.google.com/freebase/terms',
         );
     }

@@ -1,10 +1,6 @@
 <?php
 
-
-
 /*compatibility for servers without math library*/
-
-
 
 if( !function_exists( "bcdiv" ) )
 {

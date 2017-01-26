@@ -4,10 +4,10 @@
 	outline: 0;
 }
 .vp-wrap .vp-option-panel *,.vp-wrap .vp-option-panel *:before,.vp-wrap .vp-option-panel *:after {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
-	box-sizing: border-box;
+	-webkit-box-sizing: border-box ;
+	-moz-box-sizing: border-box ;
+	-ms-box-sizing: border-box ;
+	box-sizing: border-box ;
 }
 .vp-wrap .vp-hide {
 	position: absolute !important;

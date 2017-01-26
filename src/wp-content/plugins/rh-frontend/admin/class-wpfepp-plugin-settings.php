@@ -105,7 +105,6 @@ class WPFEPP_Plugin_Settings
 	public function render_settings_page(){
 		?>
 		<div class="wrap">
-		<div id="icon-options-general" class="icon32"></div>
 		<h2><?php _e('Frontend Publishing Settings', 'wpfepp-plugin'); ?></h2>
 			<?php settings_errors(); ?>
 			<?php $this->tabs->display(); ?>

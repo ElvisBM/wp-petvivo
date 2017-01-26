@@ -6,7 +6,7 @@ namespace ContentEgg;
   Plugin Name: Content Egg
   Plugin URI: http://www.keywordrush.com/contentegg
   Description: Easily adding auto updating products from affiliate systems and additional content to posts.
-  Version: 2.9.1
+  Version: 3.0.5
   Author: keywordrush.com
   Author URI: http://www.keywordrush.com
   Text Domain: content-egg

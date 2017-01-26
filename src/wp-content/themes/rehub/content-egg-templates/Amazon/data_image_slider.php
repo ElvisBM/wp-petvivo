@@ -13,7 +13,7 @@
                 <?php foreach ($gallery_images as $gallery_img):?>
                     <?php $large_image = (!empty($gallery_img['LargeImage'])) ? $gallery_img['LargeImage'] : ''; ?>
                     <?php $small_image = (!empty($gallery_img['ThumbnailImage'])) ? $gallery_img['ThumbnailImage'] : ''; ?>
-                    <?php include(locate_template('inc/ce_common/data_image_slider.php')); ?>
+                    <?php include(rh_locate_template('inc/ce_common/data_image_slider.php')); ?>
                 <?php endforeach;?>
             <?php endif;?>
         <?php endforeach;?>  

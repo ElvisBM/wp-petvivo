@@ -8,7 +8,8 @@ use ContentEgg\application\helpers\TemplateHelper;
 ?>
 
 <?php foreach ($items as $item): ?>
-    <?php $afflink = $item['url'] ;?>
+    <?php $offer_post_url = $item['url'] ;?>
+    <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
     <?php $aff_thumb = $item['img'] ;?>
     <?php $offer_title = wp_trim_words( $item['title'], 20, '...' ); ?>  
     <?php if(rehub_option('rehub_btn_text') !='') :?><?php $btn_txt = rehub_option('rehub_btn_text') ; ?><?php else :?><?php $btn_txt = __('Buy this item', 'rehub_framework') ;?><?php endif ;?>   
@@ -47,10 +48,10 @@ use ContentEgg\application\helpers\TemplateHelper;
 
                 <?php if(!empty($item['price'])) : ?>
                     <div class="deal-box-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                        <sup class="cur_sign"><?php echo $item['currency']; ?></sup><?php echo TemplateHelper::price_format_i18n($item['price']); ?>
+                        <?php echo TemplateHelper::formatPriceCurrency($item['price'], $item['currencyCode'], '<sup class="cur_sign">', '</sup>'); ?>
                         <?php if(!empty($item['priceOld'])) : ?>
                         <span class="retail-old">
-                            <strike><span class="value"><?php echo TemplateHelper::price_format_i18n($item['priceOld']); ?></span></strike>
+                            <strike><?php echo TemplateHelper::formatPriceCurrency($item['priceOld'], $item['currencyCode'], '<span class="value">', '</span>'); ?></strike>
                         </span>
                         <?php endif ;?>                
                         <meta itemprop="price" content="<?php echo $item['price'] ?>">
@@ -66,7 +67,7 @@ use ContentEgg\application\helpers\TemplateHelper;
                     <?php _e('new', 'rehub_framework'); ?>
                     <?php if($item['extra']['lowestNewPrice']): ?>
                         <?php _e(' from', 'rehub_framework'); ?>
-                        <?php echo $item['currency']; ?><?php echo TemplateHelper::price_format_i18n($item['extra']['lowestNewPrice']); ?>
+                        <?php echo TemplateHelper::formatPriceCurrency($item['extra']['lowestNewPrice'], $item['currencyCode']); ?> 
                     <?php endif; ?>
                     <br>
                     </span>
@@ -75,7 +76,7 @@ use ContentEgg\application\helpers\TemplateHelper;
                     <span class="new-or-used-amazon">
                     <?php echo $item['extra']['totalUsed']; ?>
                     <?php _e('used', 'rehub_framework'); ?> <?php _e('from', 'rehub_framework'); ?>
-                    <?php echo $item['currency']; ?><?php echo TemplateHelper::price_format_i18n($item['extra']['lowestUsedPrice']); ?>
+                        <?php echo TemplateHelper::formatPriceCurrency($item['extra']['lowestUsedPrice'], $item['currencyCode']); ?>
                     <br>
                     </span>
                 <?php endif; ?>                
@@ -84,7 +85,10 @@ use ContentEgg\application\helpers\TemplateHelper;
                         <div>
                             <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
                                 <?php echo $btn_txt ; ?>
-                                <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon('http://amazon.com'); ?></span>
+                                <span class="aff_tag mtinside">
+                                    <img src="<?php echo esc_attr(TemplateHelper::getMerhantIconUrl($item, true)); ?>" />
+                                        <?php echo esc_html($item['domain']); ?>                                    
+                                </span>
                             </a>                                                
                         </div>
                     </div>

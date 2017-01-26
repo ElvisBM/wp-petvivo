@@ -8,16 +8,10 @@
 
 do_action( 'bp_before_directory_groups_page' ); ?>
 
-<div id="buddypress">
-
 	<?php 
 		do_action( 'bp_before_directory_groups' ); 
 		do_action( 'bp_before_directory_groups_content' ); 
 	?>
-	
-	<div id="group-dir-search" class="dir-search" role="search">
-		<?php bp_directory_groups_search_form(); ?>
-	</div><!-- #group-dir-search -->
 
 	<form action="" method="post" id="groups-directory-form" class="dir-form">
 
@@ -68,6 +62,6 @@ do_action( 'bp_before_directory_groups_page' ); ?>
 
 	<?php do_action( 'bp_after_directory_groups' ); ?>
 
-</div><!-- #buddypress -->
+
 
 <?php do_action( 'bp_after_directory_groups_page' );

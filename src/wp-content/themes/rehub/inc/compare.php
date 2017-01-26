@@ -68,9 +68,10 @@ function rehub_comparepanel_footer(){
 	
 	if($multicats_on =='1' && !empty($multicats_array)) {
 		foreach($multicats_array as $multicat) {
-			$compare_url = (get_post_type($multicat[2]) =='page' ) ? esc_url(get_the_permalink($multicat[2])) : esc_url(get_the_permalink($compare_page));
-			$tabs .= '<li class="re-compare-tab-'. $multicat[2] .'" data-page="'. $multicat[2] .'" data-url="'. $compare_url .'">'. $multicat[1] .' (<span>0</span>)</li>'; 
-			$wraps .= '<div class="re-compare-wrap re-compare-wrap-'. $multicat[2] .'"></div>';
+			$pageid = (int)$multicat[2];
+			$compare_url = (get_post_type($pageid) =='page' ) ? esc_url(get_the_permalink($pageid)) : esc_url(get_the_permalink($compare_page));
+			$tabs .= '<li class="re-compare-tab-'. $pageid .'" data-page="'. $pageid .'" data-url="'. $compare_url .'">'. $multicat[1] .' (<span>0</span>)</li>'; 
+			$wraps .= '<div class="re-compare-wrap re-compare-wrap-'. $pageid .'"></div>';
 		}
 	}
 	?>
@@ -93,7 +94,7 @@ function rehub_comparepanel_footer(){
 		</div>
 		<?php if(rehub_option('compare_disable_button') != 1):?>
 			<div id="re-compare-icon-fixed" class="rhhidden">
-				<?php echo do_shortcode('[rh_compare_icon]');?>
+				<?php echo rh_compare_icon(array());?>
 			</div>
 		<?php endif;?>
 	<?php 
@@ -148,7 +149,7 @@ function re_compare_panel($echo=''){
 	
 	if($multicats_on =='1' && !empty($multicats_array)) {
 		foreach( $multicats_array as $multicat ){
-			$page_id = $multicat[2];
+			$page_id = (int)$multicat[2];
 			$out = '';
 			#existing posts
 			$post_ids = esc_html(get_transient('re_compare_'. $page_id .'_' . $userid));
@@ -230,7 +231,7 @@ function re_add_compare() {
 			$post_in_cat = array_intersect($post_terms, $cat_ids_arr);
 			
 			if(array_filter($post_in_cat)) {
-				$page_id = $multicat[2];
+				$page_id = (int)$multicat[2];
 				#existing posts
 				$post_ids = get_transient('re_compare_'. $page_id .'_' . $userid);
 				switch($perform) {

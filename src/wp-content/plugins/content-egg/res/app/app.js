@@ -1,6 +1,6 @@
 var contentEgg = angular.module('contentEgg', ['ui.bootstrap', 'ui.sortable']);
 
-contentEgg.controller('ContentEggController', function($scope, ModuleService) {
+contentEgg.controller('ContentEggController', function ($scope, ModuleService) {
 
     //$scope.childs = {}
     $scope.models = {};
@@ -15,7 +15,7 @@ contentEgg.controller('ContentEggController', function($scope, ModuleService) {
     $scope.blockShortcode = '[content-egg-block]';
     $scope.selectedBlockTemplate;
     $scope.active_modules = contentegg_params.active_modules;
-    angular.forEach($scope.active_modules, function(module_id, key) {
+    angular.forEach($scope.active_modules, function (module_id, key) {
         $scope.models[module_id] = new ModuleService(module_id);
         $scope.keywords[module_id] = '';
         $scope.updateKeywords[module_id] = '';
@@ -23,7 +23,7 @@ contentEgg.controller('ContentEggController', function($scope, ModuleService) {
 
         // init modules options
         $scope.query_params[module_id] = {};
-        angular.forEach(contentegg_params.modulesOptions[module_id], function(value, option) {
+        angular.forEach(contentegg_params.modulesOptions[module_id], function (value, option) {
             $scope.query_params[module_id][option] = value;
         });
 
@@ -33,8 +33,7 @@ contentEgg.controller('ContentEggController', function($scope, ModuleService) {
             $scope.models[module_id].added = contentegg_params.initData[module_id];
             $scope.activeSearchTabs[module_id] = false;
             $scope.activeResultTabs[module_id] = true;
-        }
-        else {
+        } else {
             $scope.activeSearchTabs[module_id] = true;
             $scope.activeResultTabs[module_id] = false;
         }
@@ -46,17 +45,17 @@ contentEgg.controller('ContentEggController', function($scope, ModuleService) {
         }
     });
 
-    $scope.find = function(module_id) {
+    $scope.find = function (module_id) {
         if (!$scope.keywords[module_id])
             return;
         $scope.processCounter++;
         $scope.query_params[module_id].keyword = $scope.keywords[module_id];
-        $scope.models[module_id].find($scope.query_params[module_id]).then(function(response) {
+        $scope.models[module_id].find($scope.query_params[module_id]).then(function (response) {
             $scope.processCounter--;
         });
     };
 
-    $scope.add = function(result, module_id) {
+    $scope.add = function (result, module_id) {
         var index = $scope.models[module_id].results.indexOf(result);
         if ($scope.models[module_id].results[index].added)
             return;
@@ -72,50 +71,58 @@ contentEgg.controller('ContentEggController', function($scope, ModuleService) {
         $scope.models[module_id].added_changed = true;
     };
 
-    $scope.addAll = function(module_id) {
+    $scope.addBlank = function (module_id)
+    {
+        var contentProduct = angular.copy(contentegg_params.contentProduct);
+        contentProduct.unique_id = Math.random().toString(36).slice(2);
+        $scope.models[module_id].added.push(contentProduct);
+        $scope.models[module_id].added_changed = true;        
+    };
+
+    $scope.addAll = function (module_id) {
         if (!$scope.models[module_id].results.length)
             return;
-        angular.forEach($scope.models[module_id].results, function(result, key) {
+        angular.forEach($scope.models[module_id].results, function (result, key) {
             $scope.add(result, module_id);
         });
         $scope.activeResultTabs[module_id] = true;
     };
 
-    $scope.delete = function(data, module_id) {
+    $scope.delete = function (data, module_id) {
         var index = $scope.models[module_id].added.indexOf(data);
         $scope.models[module_id].added.splice(index, 1);
         $scope.models[module_id].added_changed = true;
     };
 
-    $scope.deleteAll = function(module_id) {
+    $scope.deleteAll = function (module_id) {
         $scope.models[module_id].added = [];
         $scope.models[module_id].added_changed = true;
         $scope.activeSearchTabs[module_id] = true;
     };
 
-    $scope.global_findAll = function() {
+    $scope.global_findAll = function () {
         if (!$scope.global_keywords)
             return;
-        angular.forEach($scope.models, function(service, module_id) {
+        angular.forEach($scope.models, function (service, module_id) {
             $scope.keywords[module_id] = $scope.global_keywords;
             $scope.activeSearchTabs[module_id] = true;
             $scope.find(module_id);
         });
     };
 
-    $scope.global_addAll = function() {
-        angular.forEach($scope.models, function(service, module_id) {
+    $scope.global_addAll = function () {
+        angular.forEach($scope.models, function (service, module_id) {
             $scope.addAll(module_id);
         });
     };
 
-    $scope.global_deleteAll = function() {
-        angular.forEach($scope.models, function(service, module_id) {
+    $scope.global_deleteAll = function () {
+        angular.forEach($scope.models, function (service, module_id) {
             $scope.deleteAll(module_id);
         });
     };
 
-    $scope.global_isSearchResults = function() {
+    $scope.global_isSearchResults = function () {
         for (var i = 0, len = $scope.active_modules.length; i < len; i++) {
             var module_id = $scope.active_modules[i];
             if ($scope.models[module_id].results && $scope.models[module_id].results.length)
@@ -124,7 +131,7 @@ contentEgg.controller('ContentEggController', function($scope, ModuleService) {
         return false;
     };
 
-    $scope.global_isAddedResults = function() {
+    $scope.global_isAddedResults = function () {
         for (var i = 0, len = $scope.active_modules.length; i < len; i++) {
             var module_id = $scope.active_modules[i];
             if ($scope.models[module_id].added.length)
@@ -133,58 +140,42 @@ contentEgg.controller('ContentEggController', function($scope, ModuleService) {
         return false;
     };
 
-    $scope.getYoutubeUri = function(id) {
+    $scope.getYoutubeUri = function (id) {
         return 'https://www.youtube.com/embed/' + id;
     };
 
-    $scope.setUpdateKeyword = function(module_id) {
+    $scope.setUpdateKeyword = function (module_id) {
         $scope.updateKeywords[module_id] = $scope.keywords[module_id];
         $scope.activeResultTabs[module_id] = true;
     };
 
-    $scope.buildShortcode = function(module_id, template) {
+    $scope.buildShortcode = function (module_id, template) {
         var shortcode = '[content-egg module=' + module_id;
         if (template)
             shortcode += ' template=' + template;
         shortcode += ']';
         $scope.shortcodes[module_id] = shortcode;
     };
-    
-    $scope.buildBlockShortcode = function() {
+
+    $scope.buildBlockShortcode = function () {
         $scope.blockShortcode = '[content-egg-block template=' + $scope.selectedBlockTemplate + ']';
-    };    
-    
-    
-
-  var tmpList = [];
-  
-  for (var i = 1; i <= 6; i++){
-    tmpList.push({
-      text: 'Item ' + i,
-      value: i
-    });
-  }
-  
-  $scope.list = tmpList;
-
-
-    
+    };
 
 });
 
-contentEgg.config(function($sceDelegateProvider) {
+contentEgg.config(function ($sceDelegateProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([
         'self',
         'https://www.youtube.com/**'
     ]);
 });
 
-contentEgg.directive('onEnter', function() {
+contentEgg.directive('onEnter', function () {
 
-    var linkFn = function(scope, element, attrs) {
-        element.bind("keypress", function(event) {
+    var linkFn = function (scope, element, attrs) {
+        element.bind("keypress", function (event) {
             if (event.which === 13) {
-                scope.$apply(function() {
+                scope.$apply(function () {
                     scope.$eval(attrs.onEnter);
                 });
                 event.preventDefault();
@@ -198,16 +189,16 @@ contentEgg.directive('onEnter', function() {
 });
 
 contentEgg.directive('imageloaded', [
-    function() {
+    function () {
 
         'use strict';
 
         return {
             restrict: 'A',
-            link: function(scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 var cssClass = attrs.loadedclass;
 
-                element.bind('load', function(e) {
+                element.bind('load', function (e) {
                     angular.element(element).addClass(cssClass);
                 });
             }
@@ -215,14 +206,14 @@ contentEgg.directive('imageloaded', [
     }
 ]);
 
-contentEgg.directive('justifiedGallery', ['$timeout', function($timeout) {
+contentEgg.directive('justifiedGallery', ['$timeout', function ($timeout) {
         return {
             restrict: 'A',
-            link: function(scope, el, attrs) {
-                scope.$watch('$last', function(n, o) {
+            link: function (scope, el, attrs) {
+                scope.$watch('$last', function (n, o) {
                     if (n) {
-                        $timeout(function() {
-                            angular.element(el).justifiedGallery(scope.$eval(attrs.justifiedGallery)).on('jg.complete', function(e) {
+                        $timeout(function () {
+                            angular.element(el).justifiedGallery(scope.$eval(attrs.justifiedGallery)).on('jg.complete', function (e) {
                                 //alert('on complete');
                             });
                             scope.$last = false;
@@ -233,10 +224,10 @@ contentEgg.directive('justifiedGallery', ['$timeout', function($timeout) {
         };
     }]);
 
-contentEgg.directive('repeatDone', [function() {
+contentEgg.directive('repeatDone', [function () {
         return {
             restrict: 'A',
-            link: function(scope, element, iAttrs) {
+            link: function (scope, element, iAttrs) {
                 var parentScope = element.parent().scope();
                 if (scope.$last) {
                     parentScope.$last = true;
@@ -245,12 +236,12 @@ contentEgg.directive('repeatDone', [function() {
         };
     }]);
 
-contentEgg.directive('ngConfirmClick', function() {
+contentEgg.directive('ngConfirmClick', function () {
     return {
         priority: -1,
         restrict: 'A',
-        link: function(scope, element, attrs) {
-            element.bind('click', function(e) {
+        link: function (scope, element, attrs) {
+            element.bind('click', function (e) {
                 var message = attrs.ngConfirmClick;
                 if (message && !confirm(message)) {
                     e.stopImmediatePropagation();
@@ -261,14 +252,13 @@ contentEgg.directive('ngConfirmClick', function() {
     };
 });
 
-contentEgg.directive('selectOnClick', function() {
+contentEgg.directive('selectOnClick', function () {
     return {
         restrict: 'A',
-        link: function(scope, element, attrs) {
-            element.on('click', function() {
+        link: function (scope, element, attrs) {
+            element.on('click', function () {
                 this.select();
             });
         }
     };
 });
-

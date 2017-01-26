@@ -1,6 +1,6 @@
 <!-- CONTENT -->
-<div class="content"> 
-    <div class="clearfix">   
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">   
         <!-- Main Side -->
         <div class="main-side single<?php if(vp_metabox('rehub_post_side.post_size') == 'full_post') : ?> full_width<?php endif; ?> clearfix">            
             <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -171,7 +171,7 @@
                                 <?php if(rehub_option('rehub_disable_share_top') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
                                 <?php else :?>
                                     <div class="top_share notextshare">
-                                        <?php include(locate_template('inc/parts/post_share.php')); ?>
+                                        <?php include(rh_locate_template('inc/parts/post_share.php')); ?>
                                     </div>
                                     <div class="clearfix"></div> 
                                 <?php endif; ?>                                                                                                
@@ -266,7 +266,7 @@
 
                 </article>
                 <div class="clearfix"></div>
-                <?php include(locate_template('inc/post_layout/single-common-footer.php')); ?>                    
+                <?php include(rh_locate_template('inc/post_layout/single-common-footer.php')); ?>                    
             <?php endwhile; endif; ?>
             <?php comments_template(); ?>
         </div>  

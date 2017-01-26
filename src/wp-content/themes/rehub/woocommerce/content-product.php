@@ -43,11 +43,11 @@ else {
 	$columns = '3_col';
 }
 if (rehub_option('woo_design') == 'list'){
-    include(locate_template('inc/parts/woolistmain.php'));
+    include(rh_locate_template('inc/parts/woolistmain.php'));
 }
 elseif (rehub_option('woo_design') == 'grid'){
-    include(locate_template('inc/parts/woogridpart.php'));
+    include(rh_locate_template('inc/parts/woogridpart.php'));
 }
 else{
-    include(locate_template('inc/parts/woocolumnpart.php'));
+    include(rh_locate_template('inc/parts/woocolumnpart.php'));
 }

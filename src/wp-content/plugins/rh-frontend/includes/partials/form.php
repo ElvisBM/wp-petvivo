@@ -5,11 +5,11 @@
 	$form_width = ( isset( $this->settings['width'] ) && !empty( $this->settings['width'] ) ) ? ( 'max-width:'. $this->settings['width'] .';') : '';
 ?>
 
-<form class="wpfepp-form" method="POST" style="<?php echo $form_width ?>">
-	
+<form class="wpfepp wpfepp-form" method="POST" style="<?php echo $form_width ?>">
+
 	<div class="wpfepp-message <?php echo ( $submission_status ) ? "success" : "error"; ?><?php echo isset( $form_errors['form'] ) ? 'display' : ''; ?>">
 		<?php echo ( isset( $form_errors['form'] ) ) ? $form_errors['form'] : ""; ?>
-	</div>
+	</div>	
 
 	<div class="wpfepp-form-fields">
 
@@ -74,7 +74,7 @@
 						<div class="wpfepp-<?php echo $field_key; ?>-field">
 							<div class="wpfepp-<?php echo $field_key; ?>-container"><?php $this->output_thumbnail($field_current); ?></div>
 							<a class="wpfepp-<?php echo $field_key; ?>-link" href="#"><?php _e('Select Featured Image', 'wpfepp-plugin'); ?></a>
-							<a class="wpfepp-<?php echo $field_key; ?>-close" href="#"><i class="wpfepp-icon-close"></i></a>
+							<a class="wpfepp-<?php echo $field_key; ?>-close" href="#"><span class="dashicons dashicons-no"></span></a>
 							<input type="hidden" value="<?php echo ( $field_current ) ? esc_attr( $field_current ) : "-1"; ?>" name="<?php echo $field_key; ?>" class="wpfepp-<?php echo $field_key; ?>-id wpfepp-form-field" <?php echo $this->print_restrictions( $field ); ?> />
 						</div>
 					<?php } ?>
@@ -236,12 +236,12 @@
 						<?php elseif($field['element'] == 'checkbox'): ?>
 							<input type="hidden" name="<?php echo $field_key; ?>" value="0" />
 							<input type="checkbox" id="wpfepp-<?php echo $unique_key; ?>-field" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" name="<?php echo $field_key; ?>" <?php echo $this->print_restrictions($field); ?> value="1" <?php checked($field_current); ?> />
-						<?php elseif($field['element'] == 'select'): ?>
-							<?php $field['choices'] = wpfepp_choices($field['choices']); ?>
-							<select id="wpfepp-<?php echo $unique_key; ?>-field" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" name="<?php echo $field_key; ?>" <?php echo $this->print_restrictions($field); ?> >
-								<option value=""><?php _e('Select', 'wpfepp-plugin'); ?> ...</option>
-								<?php foreach ($field['choices'] as $choice): ?>
-									<option value="<?php echo esc_attr($choice['key']); ?>"><?php echo $choice['val']; ?></option>
+						<?php elseif( $field['element'] == 'select' ) : ?>
+							<?php $field['choices'] = wpfepp_choices( $field['choices'] ); ?>
+							<select id="wpfepp-<?php echo $unique_key; ?>-field" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" name="<?php echo $field_key; ?>" <?php echo $this->print_restrictions( $field ); ?>>
+								<option value=""><?php _e( 'Select', 'wpfepp-plugin' ); ?> ...</option>
+								<?php foreach ( $field['choices'] as $choice ): ?>
+									<option value="<?php echo esc_attr( $choice['key'] ); ?>" <?php selected( esc_attr( $choice['key'] ), $field_current, true ); ?>><?php echo $choice['val']; ?></option>
 								<?php endforeach; ?>
 							</select>
 						<?php elseif($field['element'] == 'radio'): ?>
@@ -262,7 +262,7 @@
 								<div class="wpfepp-media-preview"><?php echo wpfepp_media_preview_html( $field_current, $attachdata ); ?></div>
 								<div class="element-media-controls">
 									<a href="#" class="wpfepp-media-select"><?php _e( "Select / Upload File", "wpfepp-plugin" ); ?></a>
-									<a href="#" class="wpfepp-media-clear"><i class="wpfepp-icon-close"></i></a>
+									<a href="#" class="wpfepp-media-clear"><span class="dashicons dashicons-no"></span></a>
 								</div>
 							</div>
 							<?php } elseif( $field['element'] == 'image_galery' ) { ?>
@@ -271,7 +271,7 @@
 								<div class="wpfepp-media-preview"><?php echo wpfepp_media_preview_html( $field_current, 'attids' ); ?></div>
 								<div class="element-media-controls">
 									<a href="#" class="wpfepp-media-select"><?php _e( "Select Gallery Images", "wpfepp-plugin" ); ?></a>
-									<a href="#" class="wpfepp-media-clear"><i class="wpfepp-icon-close"></i></a>
+									<a href="#" class="wpfepp-media-clear"><span class="dashicons dashicons-no"></span></a>
 								</div>
 							</div>
 							<?php } ?>
@@ -299,15 +299,19 @@
 		<?php if($this->paid_on) { ?>
 			<input class="wpfepp-paid-id-field" type="hidden" name="wpfepp_paid_post" value="<?php echo $this->id; ?>" />
 		<?php } ?>
+		<?php  if(!empty($this->extended['limit_number']) && $this->extended['limit_number']>0): ?>
+			<input class="wpfepp-limit-number-field" type="hidden" name="form_limit_number" value="<?php echo $this->extended['limit_number']; ?>" />
+		<?php endif;?>
 		<input class="wpfepp-form-id-field" type="hidden" name="form_id" value="<?php echo $this->id; ?>" />
 		<input class="wpfepp-post-id-field" type="hidden" name="post_id" value="<?php echo $final_post_id; ?>" />
 		<?php wp_nonce_field( 'wpfepp-form-'.$this->id.'-nonce', '_wpnonce', false, true ); ?>
 		<input type="hidden" name="action" value="wpfepp_handle_submission_ajax" />
 
-		<?php //Finally, the submit button ?>
-		<button type="submit" class="wpfepp-button wpfepp-submit-button <?php echo (isset($this->settings['button_color'])) ? $this->settings['button_color'] : 'blue'; ?>" name="wpfepp-form-<?php echo $this->id; ?>-submit"><i></i> <?php _e('Submit', 'wpfepp-plugin'); ?></button>
+		<?php /* Send form */ ?>
+		<button type="submit" class="wpfepp-button wpfepp-submit-button <?php echo (isset($this->settings['button_color'])) ? $this->settings['button_color'] : 'blue'; ?>" name="wpfepp-form-<?php echo $this->id; ?>-submit"><?php _e( "Submit", "wpfepp-plugin" ); ?></button>
 		<?php if( $this->settings['enable_drafts'] && ($this->post_status($final_post_id) == 'new' || $this->post_status($final_post_id) == 'draft') ): ?>
-			<button type="submit" class="wpfepp-button wpfepp-save-button cancel" name="wpfepp-form-<?php echo $this->id; ?>-save"><i></i> <?php _e('Save Draft', 'wpfepp-plugin'); ?></button>
+		<button type="submit" class="wpfepp-button wpfepp-save-button cancel" name="wpfepp-form-<?php echo $this->id; ?>-save"><?php _e( "Save Draft", "wpfepp-plugin" ); ?></button>
 		<?php endif; ?>
+		<span class="dashicons dashicons-update"></span>
 	</div>
 </form>

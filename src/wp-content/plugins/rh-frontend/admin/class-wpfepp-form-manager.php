@@ -116,6 +116,9 @@ class WPFEPP_Form_Manager {
 			'admin_email_content_up' => sprintf( __( "Hi %s,\n\nAn article has been edited and is awaiting moderation on your website. You can view and edit all your articles here:\n\n%s\n\nRegards,\nYour web server", "wpfepp-plugin" ), '%%ADMIN_NAME%%', '%%EDIT_LINK%%' )
 		);
 		$this->defaults['extended'] = array(
+			'limit_number'=>'',
+			'limit_number_message'=>'',	
+			'pre_limit_message'=>'',					
 			'map_google_key' => '',
 			'map_google_lang' => 'en',
 			'map_google_country' => 'US',

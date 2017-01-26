@@ -278,6 +278,12 @@ class ContentManager {
             return;
         }
 
+        $time = time();
+        foreach ($updated_data as $key => $data)
+        {
+            $updated_data[$key]['last_update'] = $time;
+        }
+
         // save & update time
         ContentManager::saveData($updated_data, $module_id, $post_id);
         ContentManager::touchUpdateItemsTime($post_id, $module_id);

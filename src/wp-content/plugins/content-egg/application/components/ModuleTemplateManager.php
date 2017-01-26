@@ -2,6 +2,8 @@
 
 namespace ContentEgg\application\components;
 
+use ContentEgg\application\admin\GeneralConfig;
+
 /**
  * ModuleTemplateManager class file
  *
@@ -61,6 +63,13 @@ class ModuleTemplateManager extends TemplateManager {
         $templates = parent::getTemplatesList($short_mode);
         $templates = \apply_filters('content_egg_module_templates', $templates, $this->getModuleId());
         return $templates;
+    }
+
+    public function render($view_name, array $_data = array())
+    {
+        if (!self::isCustomTemplate($view_name))
+            $this->enqueueProductsStyle();
+        return parent::render($view_name, $_data);
     }
 
 }

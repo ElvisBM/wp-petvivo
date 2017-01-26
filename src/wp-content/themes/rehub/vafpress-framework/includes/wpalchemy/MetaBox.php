@@ -863,7 +863,7 @@ class WPAlchemy_MetaBox
 	 */
 	function add_filter($tag, $function_to_add, $priority = 10, $accepted_args = 1)
 	{
-		$tag = $this->_get_filter_tag($tag);;
+		$tag = $this->_get_filter_tag($tag);
 		add_filter($tag, $function_to_add, $priority, $accepted_args);
 	}
 

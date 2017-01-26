@@ -6,9 +6,8 @@
 ?>
 
 <?php
-use ContentEgg\application\helpers\TemplateHelper;
-$product_price_update = get_post_meta( get_the_ID(), '_cegg_last_update_Zanox', true );
-$product_keyword_update = get_post_meta( get_the_ID(), '_cegg_last_bykeyword_update_Zanox', true );
+$product_price_update = get_post_meta( get_the_ID(), '_cegg_last_update_'.$module_id, true );
+$product_keyword_update = get_post_meta( get_the_ID(), '_cegg_last_bykeyword_update_Offer'.$module_id, true );
 if ($product_price_update) {
     $product_update = date("F j, Y, g:i a", $product_price_update);
 }
@@ -17,50 +16,31 @@ elseif ($product_keyword_update) {
 }
 ?>
 
-<div class="egg_sort_list simple_sort_list re_sort_list no_image_sort mb20"><a name="aff-link-list"></a>
+<div class="egg_sort_list re_sort_list simple_sort_list mb20"><a name="aff-link-list"></a>
     <div class="aff_offer_links">
         <?php $i=0; foreach ($items as $key => $item): ?>
-            <?php $afflink = $item['url'] ;?>
-            <?php $aff_thumb = $item['img'] ;?>
-            <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
-            <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
+            <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+            <?php $offer_price_old = (!empty($item['priceOld'])) ? $item['priceOld'] : ''; ?>
+            <?php $currency = (!empty($item['currency'])) ? $item['currency'] : ''; ?>
+            <?php $currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : ''; ?>          
+            <?php $availability = (!empty($item['availability'])) ? $item['availability'] : ''; ?>        
+            <?php $afflink = (!empty($item['url'])) ? $item['url'] : '' ;?>
+            <?php $aff_thumb = (!empty($item['img'])) ? $item['img'] : '' ;?>
+            <?php $offer_title = (!empty($item['title'])) ? wp_trim_words( $item['title'], 10, '...' ) : ''; ?> 
+            <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?> 
+            <?php if (!empty($item['domain'])):?>
+                <?php $domain = $item['domain'];?>
+            <?php elseif (!empty($item['extra']['domain'])):?>
+                <?php $domain = $item['extra']['domain'];?>
+            <?php endif;?>
+            <?php if (!empty($item['logo'])):?>
+                <?php $logo = $item['logo'];?>
+            <?php elseif (!empty($item['extra']['logo'])):?>
+                <?php $logo = $item['extra']['logo'];?>
+            <?php endif;?>            
             <?php $i++;?>  
             <?php if(rehub_option('rehub_btn_text') !='') :?><?php $btn_txt = rehub_option('rehub_btn_text') ; ?><?php else :?><?php $btn_txt = __('Buy this item', 'rehub_framework') ;?><?php endif ;?>  
-            <div class="rehub_feat_block table_view_block<?php if ($i == 1){echo' best_price_item';}?>">
-                
-                    <div class="desc_col shop_simple_col">
-                        <div class="aff_tag mt10"><?php echo $merchant; ?></div> 
-                    </div>                    
-                    <div class="desc_col price_simple_col">
-                        <?php if(!empty($item['price'])) : ?>
-                            <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                                <span class="price_count">
-                                    <span><?php echo $item['currency']; ?></span> <?php echo TemplateHelper::price_format_i18n($item['price']); ?>
-                                    <?php if(!empty($item['priceOld'])) : ?>
-                                    <strike>
-                                        <span class="amount"><?php echo TemplateHelper::price_format_i18n($item['priceOld']); ?></span>
-                                    </strike>
-                                    <?php endif ;?>                                      
-                                </span> 
-                                <meta itemprop="price" content="<?php echo $item['price'] ?>">
-                                <meta itemprop="priceCurrency" content="<?php echo $item['currencyCode']; ?>">
-                                <?php if ($item['availability']): ?>
-                                    <link itemprop="availability" href="http://schema.org/InStock">
-                                <?php endif ;?>                        
-                            </p>
-                        <?php endif ;?>                        
-                    </div>
-                    <div class="buttons_col">
-                        <div class="priced_block clearfix">
-                            <div>
-                                <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
-                                    <?php echo $btn_txt ; ?>
-                                </a>                                                        
-                            </div>
-                        </div>
-                    </div>
-                                                                          
-            </div>
+            <?php include(rh_locate_template('inc/ce_common/data_simple_list.php')); ?>
         <?php endforeach; ?>               
     </div>
     <?php if (!empty($product_update)) :?>

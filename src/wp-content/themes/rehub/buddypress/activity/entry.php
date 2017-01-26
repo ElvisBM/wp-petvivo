@@ -17,6 +17,41 @@
 do_action( 'bp_before_activity_entry' ); ?>
 
 <li class="<?php bp_activity_css_class(); ?>" id="activity-<?php bp_activity_id(); ?>">
+	
+	<div class="activity-meta-justicons">
+
+		<?php if ( bp_get_activity_type() == 'activity_comment' ) : ?>
+			<a href="<?php bp_activity_thread_permalink(); ?>" class="acomment-reply" title="<?php esc_attr_e( 'View Conversation', 'rehub_framework' ); ?>"><?php _e( 'View Conversation', 'rehub_framework' ); ?></a>
+		<?php endif; ?>
+
+		<?php if ( is_user_logged_in() ) : ?>
+			<?php if ( bp_activity_can_comment() ) : ?>
+				<a href="<?php bp_activity_comment_link(); ?>" class="acomment-reply" id="acomment-comment-<?php bp_activity_id(); ?>"><?php printf( __( 'Comment %s', 'rehub_framework' ), '<span>' . bp_activity_get_comment_count() . '</span>' ); ?></a>
+			<?php endif; ?>
+
+			<?php if ( bp_activity_can_favorite() ) : ?>
+				<?php if ( !bp_get_activity_is_favorite() ) : ?>
+					<a href="<?php bp_activity_favorite_link(); ?>" class="fav" title="<?php esc_attr_e( 'Mark as Favorite', 'rehub_framework' ); ?>"><?php _e( 'Favorite', 'rehub_framework' ); ?></a>
+				<?php else : ?>
+					<a href="<?php bp_activity_unfavorite_link(); ?>" class="unfav" title="<?php esc_attr_e( 'Remove Favorite', 'rehub_framework' ); ?>"><?php _e( 'Remove Favorite', 'rehub_framework' ); ?></a>
+				<?php endif; ?>
+			<?php endif; ?>
+
+			<?php if ( bp_activity_user_can_delete() ): ?>
+				<?php
+					$url   = bp_get_activity_delete_url();
+					$class = 'delete-activity';
+					// Determine if we're on a single activity page, and customize accordingly.
+					if ( bp_is_activity_component() && is_numeric( bp_current_action() ) ) {
+						$class = 'delete-activity-single';
+					}
+				?>
+				<a href="<?php echo esc_url( $url );?>" class="<?php echo $class;?> confirm" rel="nofollow"><?php _e( 'Delete', 'rehub_framework' );?></a>			
+			<?php endif;?>
+
+		<?php endif; ?>
+	</div>
+
 	<div class="activity-avatar">
 		<a href="<?php bp_activity_user_link(); ?>">
 
@@ -56,48 +91,15 @@ do_action( 'bp_before_activity_entry' ); ?>
 		do_action( 'bp_activity_entry_content' ); ?>
 
 		<div class="activity-meta">
-
-			<?php if ( bp_get_activity_type() == 'activity_comment' ) : ?>
-
-				<a href="<?php bp_activity_thread_permalink(); ?>" class="button view bp-secondary-action" title="<?php esc_attr_e( 'View Conversation', 'buddypress' ); ?>"><?php _e( 'View Conversation', 'buddypress' ); ?></a>
-
-			<?php endif; ?>
-
 			<?php if ( is_user_logged_in() ) : ?>
-
-				<?php if ( bp_activity_can_comment() ) : ?>
-
-					<a href="<?php bp_activity_comment_link(); ?>" class="button acomment-reply bp-primary-action" id="acomment-comment-<?php bp_activity_id(); ?>"><?php printf( __( 'Comment %s', 'buddypress' ), '<span>' . bp_activity_get_comment_count() . '</span>' ); ?></a>
-
-				<?php endif; ?>
-
-				<?php if ( bp_activity_can_favorite() ) : ?>
-
-					<?php if ( !bp_get_activity_is_favorite() ) : ?>
-
-						<a href="<?php bp_activity_favorite_link(); ?>" class="button fav bp-secondary-action" title="<?php esc_attr_e( 'Mark as Favorite', 'buddypress' ); ?>"><?php _e( 'Favorite', 'buddypress' ); ?></a>
-
-					<?php else : ?>
-
-						<a href="<?php bp_activity_unfavorite_link(); ?>" class="button unfav bp-secondary-action" title="<?php esc_attr_e( 'Remove Favorite', 'buddypress' ); ?>"><?php _e( 'Remove Favorite', 'buddypress' ); ?></a>
-
-					<?php endif; ?>
-
-				<?php endif; ?>
-
-				<?php if ( bp_activity_user_can_delete() ) bp_activity_delete_link(); ?>
-
 				<?php
-
 				/**
 				 * Fires at the end of the activity entry meta data area.
 				 *
 				 * @since 1.2.0
 				 */
 				do_action( 'bp_activity_entry_meta' ); ?>
-
 			<?php endif; ?>
-
 		</div>
 
 	</div>
@@ -123,10 +125,10 @@ do_action( 'bp_before_activity_entry' ); ?>
 					<div class="ac-reply-avatar"><?php bp_loggedin_user_avatar( 'width=' . BP_AVATAR_THUMB_WIDTH . '&height=' . BP_AVATAR_THUMB_HEIGHT ); ?></div>
 					<div class="ac-reply-content">
 						<div class="ac-textarea">
-							<label for="ac-input-<?php bp_activity_id(); ?>" class="bp-screen-reader-text"><?php _e( 'Comment', 'buddypress' ); ?></label>
+							<label for="ac-input-<?php bp_activity_id(); ?>" class="bp-screen-reader-text"><?php _e( 'Comment', 'rehub_framework' ); ?></label>
 							<textarea id="ac-input-<?php bp_activity_id(); ?>" class="ac-input bp-suggestions" name="ac_input_<?php bp_activity_id(); ?>"></textarea>
 						</div>
-						<input type="submit" name="ac_form_submit" value="<?php esc_attr_e( 'Post', 'buddypress' ); ?>" /> &nbsp; <a href="#" class="ac-reply-cancel"><?php _e( 'Cancel', 'buddypress' ); ?></a>
+						<input type="submit" name="ac_form_submit" value="<?php esc_attr_e( 'Post', 'rehub_framework' ); ?>" /> &nbsp; <a href="#" class="ac-reply-cancel"><?php _e( 'Cancel', 'rehub_framework' ); ?></a>
 						<input type="hidden" name="comment_form_id" value="<?php bp_activity_id(); ?>" />
 					</div>
 

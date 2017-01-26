@@ -20,12 +20,12 @@ class AdminNotice {
     public function getMassages()
     {
         return array(
-            'autoblog_saved' => __('Задание автоблоггинга сохранено.', 'content-egg') . ' <a href="?page=content-egg-autoblog&action=run&id=%%ID%%">' . __('Запустить сейчас', 'content-egg') . '</a>',
-            'autoblog_create_error' => __('При сохранении задания автоблоггинга возникла ошибка.', 'content-egg'),
-            'autoblog_csv_file_error' => __('Ошибка при обработке файла с ключевыми словами.', 'content-egg'),
-            'autoblog_batch_created' => __('Заданий автоблоггинга сохранено:', 'content-egg') . ' %%ID%%.',
-            'license_reset_error' => __('Лицензия не может быть откреплена. Обратитесь в поддержку плагина.', 'content-egg'),
-            'license_reset_success' => __('Лицензия была откреплена. Вы должны деактивировать и удалить плагин с текущего домена.', 'content-egg'),
+            'autoblog_saved' => __('Task for autoblogging is saved.', 'content-egg') . ' <a href="?page=content-egg-autoblog&action=run&id=%%ID%%">' . __('Run now', 'content-egg') . '</a>',
+            'autoblog_create_error' => __('While saving task error was occurred.', 'content-egg'),
+            'autoblog_csv_file_error' => __('Error while handling file with keywords.', 'content-egg'),
+            'autoblog_batch_created' => __('Tasks for autoblogging are saved.', 'content-egg') . ' %%ID%%.',
+            'license_reset_error' => __('License can\'t be deactivated. Write to support of plugin.', 'content-egg'),
+            'license_reset_success' => __('License was deactivated. You must deactivate and delete plugin from current domain to enable it on another one.', 'content-egg'),
                 // 'license_reset_error_info' => __('Лицензия не может быть откреплена.', 'content-egg') . ' %%ID%%.',
         );
     }

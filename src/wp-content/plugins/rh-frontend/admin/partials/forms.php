@@ -1,6 +1,7 @@
 <div class="wrap">
-	<div id="icon-options-general" class="icon32"></div>
-	<h2><?php _e('Frontend Publishing Forms', 'wpfepp-plugin'); ?> <img id="wpfepp-loading" src="<?php echo plugins_url('static/img/loading.gif', dirname(dirname(__FILE__))); ?>" /></h2>
+	<h2><?php _e( 'Frontend Publishing Forms', 'wpfepp-plugin' ); ?> 
+		<img id="wpfepp-loading" src="<?php echo plugins_url( 'static/img/loading.gif', dirname( dirname( __FILE__ ) ) ); ?>" />
+	</h2>
 	<?php $paged = ( isset( $_GET['paged'] ) ? $_GET['paged'] : '1' ); ?>
 	<div class="wpfepp-op">
 		<?php if( $paged == 1 ) : ?>

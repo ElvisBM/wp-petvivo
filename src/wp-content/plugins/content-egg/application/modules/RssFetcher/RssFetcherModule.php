@@ -22,8 +22,8 @@ class RssFetcherModule extends ParserModule {
     {
         return array(
             'name' => 'RSS Fetcher',
-            'description' => __('Парсит любую RSS-ленту.', 'content-egg') . ' ' .
-            __('Важно, чтобы в URL была возможность использовать ключевое слово, т.е. лента должна содержать результаты поиска по ключевому слову.', 'content-egg')
+            'description' => __('Parse any RSS', 'content-egg') . ' ' .
+            __('It\'s important, that you can have keyword in URL. So rss string must have results by keyword searching.', 'content-egg')
         );
     }
 

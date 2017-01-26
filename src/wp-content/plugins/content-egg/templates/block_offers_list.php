@@ -29,10 +29,7 @@ usort($all_items, function($a, $b) {
     return $a['price'] - $b['price'];
 });
 ?>
-<?php
-\wp_enqueue_style('egg-bootstrap');
-\wp_enqueue_style('content-egg-products');
-?>
+
 <div class="egg-container">
     <?php if ($title): ?>
         <h3><?php echo esc_html($title); ?></h3>

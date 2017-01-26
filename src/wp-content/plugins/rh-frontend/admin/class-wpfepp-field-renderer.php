@@ -50,6 +50,12 @@ class WPFEPP_Field_Renderer
 		<?php
 		endif;
 
+		if($args['type'] == 'number'):
+		?>
+			<input type="number" min="0" max="1000" class="<?php echo 'wpfepp_'. $args['id']; ?>" name="<?php echo $field_name; ?>" value="<?php echo stripslashes((int)$current); ?>" />
+		<?php
+		endif;		
+
 		if($args['type'] == 'checkbox' || $args['type'] == 'bool'):
 			?>
 				<input type="hidden" name="<?php echo $field_name; ?>" value="0" />

@@ -10,8 +10,8 @@ $brandseconddesc = get_term_meta( $tagid, 'brand_second_description', true );
 ?>
 
 <!-- CONTENT -->
-<div class="content"> 
-    <div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
         <!-- Main Side -->
         <div class="main-side woocommerce page clearfix">
             <article class="post" id="page-<?php the_ID(); ?>">
@@ -63,7 +63,7 @@ $brandseconddesc = get_term_meta( $tagid, 'brand_second_description', true );
                     ?>
                     <div class="woo_offer_list">
                         <?php while ( have_posts() ) : the_post(); ?>                                
-                            <?php include(locate_template('inc/parts/woolistpart.php')); ?>                                
+                            <?php include(rh_locate_template('inc/parts/woolistpart.php')); ?>                                
                         <?php endwhile; // end of the loop. ?>
                     </div>
                     <?php

@@ -17,9 +17,9 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
     {
         $optiosn = array(
             'offer_id' => array(
-                'title' => __('ID оффера', 'content-egg') . ' ' . '<span class="cegg_required">*</span>',
-                'description' => __('Вы можете работать только с офферами, представленными на <a target="_blank" href="https://www.admitadgoods.ru/offers.php">этой странице</a>.', 'content-egg')
-                . ' ' . __('ID оффера можно найти в URL, если кликнуть по логотипу оффера.', 'content-egg'),
+                'title' => __('Offer ID', 'content-egg') . ' ' . '<span class="cegg_required">*</span>',
+                'description' => __('You can work only with offers, which are available on <a target="_blank" href="https://www.admitadgoods.ru/offers.php">this page</a>.', 'content-egg')
+                . ' ' . __('You can find offer ID in URL, when you click on offer logo.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -27,15 +27,15 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "ID оффера" не может быть пустым.', 'content-egg'),
+                        'message' => __('The "Offer ID" can not be empty', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'deeplink' => array(
                 'title' => 'Deeplink' . ' ' . '<span class="cegg_required">*</span>',
-                'description' => __('Deeplink соотвествующего оффера.', 'content-egg')
-                . ' ' . __('<a target="_blank" href="http://keywordrush.com/manuals/affegg_manual.pdf">Мануал</a> по настройке Deeplink для различных CPA-сетей.', 'content-egg'),
+                'description' => __('Deeplink of offer.', 'content-egg')
+                . ' ' . __('<a target="_blank" href="http://www.keywordrush.com/manuals/affegg_manual.en.pdf">Manual</a> for deeplink settings for different CPA-networks.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -47,14 +47,14 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Deeplink" не может быть пустым.', 'content-egg'),
+                        'message' => __('The "Deeplink" can not be empty.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page' => array(
-                'title' => __('Результатов', 'content-egg'),
-                'description' => __('Количество результатов для одного поискового запроса.', 'content-egg'),
+                'title' => __('Results', 'content-egg'),
+                'description' => __('Number of results for one search query.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 20,
                 'validator' => array(
@@ -63,14 +63,14 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
                         'arg' => 20,
-                        'message' => __('Поле "Результатов" не может быть больше 20.', 'content-egg'),
+                        'message' => __('Field "Results" can not be more than 20.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page_update' => array(
-                'title' => __('Результатов для обновления', 'content-egg'),
-                'description' => __('Количество результатов для автоматического обновления и автоблоггинга.', 'content-egg'),
+                'title' => __('Results for updates ', 'content-egg'),
+                'description' => __('Number of results for automatic updates and autoblogging.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 6,
                 'validator' => array(
@@ -79,20 +79,20 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
                         'arg' => 20,
-                        'message' => __('Поле "Результатов для обновления" не может быть больше 20.', 'content-egg'),
+                        'message' => __('Field "Results for autoupdating" can not be more than 20.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'only_sale' => array(
-                'title' => __('Скидка', 'content-egg'),
-                'description' => __('Только товары со скидкой.', 'content-egg'),
+                'title' => __('Discount', 'content-egg'),
+                'description' => __('Only products with discount.', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
             ),
             'price_from' => array(
-                'title' => __('Минимальная цена', 'content-egg'),
+                'title' => __('Minimal price', 'content-egg'),
                 'description' => '',
                 'callback' => array($this, 'render_input'),
                 'default' => '',
@@ -102,7 +102,7 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'price_to' => array(
-                'title' => __('Максимальная цена', 'content-egg'),
+                'title' => __('Maximal price', 'content-egg'),
                 'description' => '',
                 'callback' => array($this, 'render_input'),
                 'default' => '',
@@ -112,15 +112,15 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'save_img' => array(
-                'title' => __('Сохранять картинки', 'content-egg'),
-                'description' => __('Сохранять картинки на сервер', 'content-egg'),
+                'title' => __('Save images', 'content-egg'),
+                'description' => __('Save images on server', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
             ),
             'description_size' => array(
-                'title' => __('Обрезать описание', 'content-egg'),
-                'description' => __('Размер описания в символах (0 - не обрезать)', 'content-egg'),
+                'title' => __('Trim description', 'content-egg'),
+                'description' => __('Description size in characters (0 - do not cut)', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '300',
                 'validator' => array(
@@ -138,7 +138,7 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
             array(
                 'call' => array('\ContentEgg\application\helpers\FormValidator', 'greater_than'),
                 'arg' => 86400,
-                'message' => sprintf(__('Поле "%s" не может быть меньше %d.', 'content-egg'), __('Обновить товары', 'content-egg'), 86400),
+                'message' => sprintf(__('The field "%s" can not be less than  %d.', 'content-egg'), __('Update products', 'content-egg'), 86400),
             ),
         );
         $parent['ttl']['validator'] = array(
@@ -147,7 +147,7 @@ class AdmitadProductsConfig extends AffiliateParserModuleConfig {
             array(
                 'call' => array('\ContentEgg\application\helpers\FormValidator', 'greater_than'),
                 'arg' => 259200,
-                'message' => sprintf(__('Поле "%s" не может быть меньше %d.', 'content-egg'), __('Автоматическое обновление', 'content-egg'), 259200),
+                'message' => sprintf(__('The field "%s" can not be less than  %d.', 'content-egg'), __('Automatic update', 'content-egg'), 259200),
             ),
         );
 

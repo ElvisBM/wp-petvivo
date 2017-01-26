@@ -14,7 +14,7 @@ $default_locale = \ContentEgg\application\modules\Amazon\AmazonConfig::getInstan
 <input ng-model="query_params.Amazon.associate_tag" ng-init="query_params.Amazon.associate_tag = ''" placeholder="custom associate tag" />
 
 <select ng-model="query_params.<?php echo $module_id; ?>.min_percentage_off">
-    <option value=""><?php _e('Мин. скидка', 'content-egg'); ?></option>
+    <option value=""><?php _e('Min. discount', 'content-egg'); ?></option>
     <option value="5%"><?php _e('5%', 'content-egg'); ?></option>
     <option value="10%"><?php _e('10%', 'content-egg'); ?></option>
     <option value="15%"><?php _e('15%', 'content-egg'); ?></option>

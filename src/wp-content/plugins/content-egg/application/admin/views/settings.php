@@ -10,7 +10,7 @@
     <?php endif; ?>
     <div class="wrap">
         <h2>
-            <?php _e('Content Egg Настройки', 'content-egg'); ?>
+            <?php _e('Content Egg Settings', 'content-egg'); ?>
             <?php if (\ContentEgg\application\Plugin::isPro()): ?>
                 <span class="cegg-pro-label">pro</span>
             <?php endif; ?>
@@ -20,14 +20,15 @@
         <h2 class="nav-tab-wrapper">
             <a href="?page=content-egg" 
                class="nav-tab<?php if (!empty($_GET['page']) && $_GET['page'] == 'content-egg') echo ' nav-tab-active'; ?>">
-                   <?php _e('Общие настройки', 'content-egg'); ?>
+                   <?php _e('General settings', 'content-egg'); ?>
             </a>
             <?php foreach ($modules as $module): ?>
                 <?php $config = $module->getConfigInstance(); ?>
                 <a href="?page=<?php echo esc_attr($config->page_slug()); ?>" 
                    class="nav-tab<?php if (!empty($_GET['page']) && $_GET['page'] == $config->page_slug()) echo ' nav-tab-active'; ?>">
                     <img src="<?php echo ContentEgg\PLUGIN_RES; ?>/img/status-<?php echo $module->isActive() ? 'active' : 'inactive' ?>.png" />
-                    <?php echo esc_html($module->getName()); ?>
+                    <?php echo esc_html($module->getName()); ?>                    
+                    <?php if($module->isNew()): ?><img src="<?php echo ContentEgg\PLUGIN_RES; ?>/img/new.png" alt="New" title="New" /><?php endif; ?>                    
                 </a>
             <?php endforeach; ?>
         </h2> 
@@ -43,7 +44,7 @@
                             <h3>
                                 <?php
                                 if (!empty($_GET['page']) && $_GET['page'] == 'content-egg')
-                                    _e('Общие настройки', 'content-egg');
+                                    _e('General settings', 'content-egg');
                                 else
                                     echo esc_html($header);
                                 ?>                
@@ -67,7 +68,7 @@
                                     echo '<p>' . $description . '</p>';
 
                                 if (!empty($api_agreement))
-                                    echo '<div style="text-align: right;"><small><a href="' . $api_agreement . '" target="_blank">' . __('Условия', 'content-egg') . '</a></small></div>';
+                                    echo '<div style="text-align: right;"><small><a href="' . $api_agreement . '" target="_blank">' . __('Conditions', 'content-egg') . '</a></small></div>';
                                 ?>
 
                             </div>

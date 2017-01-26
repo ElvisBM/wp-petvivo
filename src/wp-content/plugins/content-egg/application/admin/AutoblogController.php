@@ -12,7 +12,7 @@ use ContentEgg\application\AutoblogScheduler;
  *
  * @author keywordrush.com <support@keywordrush.com>
  * @link http://www.keywordrush.com/
- * @copyright Copyright &copy; 2015 keywordrush.com
+ * @copyright Copyright &copy; 2016 keywordrush.com
  */
 class AutoblogController {
 
@@ -72,9 +72,9 @@ class AutoblogController {
 
     public function add_admin_menu()
     {
-        \add_submenu_page(Plugin::slug, __('Автоблоггинг', 'content-egg') . ' &lsaquo; Content Egg', __('Автоблоггинг', 'content-egg'), 'manage_options', self::slug, array($this, 'actionIndex'));
-        \add_submenu_page(Plugin::slug, __('Добавить автоблоггинг', 'content-egg') . ' &lsaquo; Content Egg', __('Добавить автоблоггинг', 'content-egg'), 'manage_options', 'content-egg-autoblog-edit', array($this, 'actionUpdate'));
-        \add_submenu_page(null, __('Добавить автоблоггинг - пакетный режим', 'content-egg') . ' &lsaquo; Content Egg', __('Добавить автоблоггинг - пакетный режим', 'content-egg'), 'manage_options', 'content-egg-autoblog-batch-create', array($this, 'actionUpdate'));
+        \add_submenu_page(Plugin::slug, __('Autoblogging', 'content-egg') . ' &lsaquo; Content Egg', __('Autoblogging', 'content-egg'), 'manage_options', self::slug, array($this, 'actionIndex'));
+        \add_submenu_page(Plugin::slug, __('Add autoblogging', 'content-egg') . ' &lsaquo; Content Egg', __('Add autoblogging', 'content-egg'), 'manage_options', 'content-egg-autoblog-edit', array($this, 'actionUpdate'));
+        \add_submenu_page('options.php', __('Add autoblogging - bulk mode', 'content-egg') . ' &lsaquo; Content Egg', __('Add autoblogging - bulk mode', 'content-egg'), 'manage_options', 'content-egg-autoblog-edit--batch', array($this, 'actionUpdate'));
     }
 
     public function actionIndex()
@@ -90,7 +90,7 @@ class AutoblogController {
 
     public function actionUpdate()
     {
-        if ($GLOBALS['pagenow'] == 'admin.php' && !empty($_GET['page']) && $_GET['page'] == 'content-egg-autoblog-batch-create')
+        if ($GLOBALS['pagenow'] == 'admin.php' && !empty($_GET['page']) && $_GET['page'] == 'content-egg-autoblog-edit--batch')
             $batch = true;
         else
             $batch = false;
@@ -114,6 +114,10 @@ class AutoblogController {
             'required_modules' => array(),
             'autoupdate_modules' => array(),
             'min_modules_count' => 1,
+            'post_type' => 'post',
+            'custom_field_names' => array_fill(0, 5, ''),
+            'custom_field_values' => array_fill(0, 5, ''),
+            'main_product' => 'min_price'
         );
 
         $message = '';
@@ -131,6 +135,7 @@ class AutoblogController {
             $item['user_id'] = absint($_POST['item']['user_id']);
             $item['template_body'] = trim(\wp_kses_post($_POST['item']['template_body']));
             $item['template_title'] = trim(\wp_strip_all_tags($_POST['item']['template_title']));
+            $item['post_type'] = (isset($_POST['item']['post_type'])) ? $_POST['item']['post_type'] : null;
             $item['category'] = (isset($_POST['item']['category'])) ? (int) $_POST['item']['category'] : null;
             $item['include_modules'] = (isset($_POST['item']['include_modules'])) ? $_POST['item']['include_modules'] : array();
             $item['exclude_modules'] = (isset($_POST['item']['exclude_modules'])) ? $_POST['item']['exclude_modules'] : array();
@@ -138,7 +143,10 @@ class AutoblogController {
             $item['autoupdate_modules'] = (isset($_POST['item']['autoupdate_modules'])) ? $_POST['item']['autoupdate_modules'] : array();
             $item['min_modules_count'] = absint($_POST['item']['min_modules_count']);
             $item['keywords'] = (isset($_POST['item']['keywords'])) ? explode("\r\n", $_POST['item']['keywords']) : null;
-
+            $item['custom_field_names'] = (isset($_POST['item']['custom_field_names'])) ? $_POST['item']['custom_field_names'] : array();
+            $item['custom_field_values'] = (isset($_POST['item']['custom_field_values'])) ? $_POST['item']['custom_field_values'] : array();
+            $item['main_product'] = (isset($_POST['item']['main_product'])) ? $_POST['item']['main_product'] : 'min_price';
+            
             $redirect_url = \get_admin_url(\get_current_blog_id(), 'admin.php?page=content-egg-autoblog');
             if ($batch)
             {
@@ -190,7 +198,7 @@ class AutoblogController {
                 if (!$item)
                 {
                     $item = $default;
-                    $notice = __('Автоблоггинг не найден', 'content-egg');
+                    $notice = __('Autoblogging is not found', 'content-egg');
                 } else
                 {
                     $item['keywords'] = unserialize($item['keywords']);
@@ -198,6 +206,8 @@ class AutoblogController {
                     $item['exclude_modules'] = unserialize($item['exclude_modules']);
                     $item['required_modules'] = unserialize($item['required_modules']);
                     $item['autoupdate_modules'] = unserialize($item['autoupdate_modules']);
+                    $item['custom_field_names'] = unserialize($item['custom_field_names']);
+                    $item['custom_field_values'] = unserialize($item['custom_field_values']);
                 }
             }
         }

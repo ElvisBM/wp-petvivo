@@ -18,7 +18,7 @@ class YoutubeConfig extends ParserModuleConfig {
         $optiosn = array(
             'api_key' => array(
                 'title' => 'API Key <span class="cegg_required">*</span>',
-                'description' => __('Ключ для доступа к API. Получить можно в Google <a href="http://code.google.com/apis/console">API консоли</a>', 'content-egg'),
+                'description' => __('API access key. You can get it in Google <a href="http://code.google.com/apis/console">API console</a>.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -26,14 +26,14 @@ class YoutubeConfig extends ParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "API Key" не может быть пустым.', 'content-egg'),
+                        'message' => __('The "API Key" can not be empty', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page' => array(
-                'title' => __('Результатов', 'content-egg'),
-                'description' => __('Количество результатов для одного запроса', 'content-egg'),
+                'title' => __('Results', 'content-egg'),
+                'description' => __('Number of results for a single query', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '5',
                 'validator' => array(
@@ -43,8 +43,8 @@ class YoutubeConfig extends ParserModuleConfig {
                 'section' => 'default',
             ),
             'entries_per_page_update' => array(
-                'title' => __('Результатов для автоблоггинга', 'content-egg'),
-                'description' => __('Количество результатов для автоблоггинга.', 'content-egg'),
+                'title' => __('Results for autoblogging ', 'content-egg'),
+                'description' => __('Number of results for autoblogging.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 3,
                 'validator' => array(
@@ -54,36 +54,36 @@ class YoutubeConfig extends ParserModuleConfig {
                 'section' => 'default',
             ),
             'order' => array(
-                'title' => __('Сортировка', 'content-egg'),
+                'title' => __('Sorting', 'content-egg'),
                 'description' => '',
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
-                    'date' => __('Дата', 'content-egg'),
-                    'rating' => __('Рейтинг', 'content-egg'),
-                    'relevance' => __('Релевантность', 'content-egg'),
-                    'title' => __('Заголовок', 'content-egg'),
-                    'viewCount' => __('Просмотры', 'content-egg'),
+                    'date' => __('Date', 'content-egg'),
+                    'rating' => __('Rating', 'content-egg'),
+                    'relevance' => __('Relevance', 'content-egg'),
+                    'title' => __('Title', 'content-egg'),
+                    'viewCount' => __('Views', 'content-egg'),
                 ),
                 'default' => 'relevance',
                 'section' => 'default',
                 'metaboxInit' => true,
             ),
             'license' => array(
-                'title' => __('Тип лицензии', 'content-egg'),
-                'description' => __('Многие видео на Youtube загружены с лицензией Creative Commons. <a href="http://www.google.com/support/youtube/bin/answer.py?answer=1284989">Узнать больше</a>.', 'content-egg'),
+                'title' => __('Type of license', 'content-egg'),
+                'description' => __('Many videos on Youtube have Creative Commons license. <a href="http://www.google.com/support/youtube/bin/answer.py?answer=1284989">Know more</a>.', 'content-egg'),
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
-                    'any' => __('Любая лицензия', 'content-egg'),
-                    'creativeCommon' => __('Сreative Сommons лицензия', 'content-egg'),
-                    'youtube' => __('Стандартная лицензия', 'content-egg'),
+                    'any' => __('Any license', 'content-egg'),
+                    'creativeCommon' => __('Creative Commons license', 'content-egg'),
+                    'youtube' => __('Standard license', 'content-egg'),
                 ),
                 'default' => 'any',
                 'section' => 'default',
                 'metaboxInit' => true,
             ),
             'description_size' => array(
-                'title' => __('Обрезать описание', 'content-egg'),
-                'description' => __('Размер описания в символах (0 - не обрезать)', 'content-egg'),
+                'title' => __('Trim description', 'content-egg'),
+                'description' => __('Description size in characters (0 - do not cut)', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '280',
                 'validator' => array(

@@ -62,5 +62,12 @@ class BlockTemplateManager extends TemplateManager {
         $templates = \apply_filters('content_egg_block_templates', $templates);
         return $templates;
     }
+    
+    public function render($view_name, array $_data = array())
+    {
+        if (!self::isCustomTemplate($view_name))
+            $this->enqueueProductsStyle();
+        return parent::render($view_name, $_data);
+    }
 
 }

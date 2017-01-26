@@ -63,4 +63,37 @@ class ArrayHelper {
         return $array;
     }
 
+    /**
+     * Hightest value of an associative array
+     */
+    public static function getMaxKeyAssoc($array, $key_name)
+    {
+        $max_value = reset($array);
+        $max_key = key($array);
+        foreach ($array as $k => $v)
+        {
+            if ($v[$key_name] > $max_value)
+            {
+                $max_value = $v[$key_name];
+                $max_key = $k;
+            }
+        }
+        return $max_key;
+    }
+
+    public static function getMinKeyAssoc($array, $key_name)
+    {
+        $min_value = reset($array);
+        $min_key = key($array);
+        foreach ($array as $k => $v)
+        {
+            if ($v[$key_name] < $min_value)
+            {
+                $min_value = $v[$key_name];
+                $min_key = $k;
+            }
+        }
+        return $min_key;
+    }
+
 }

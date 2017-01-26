@@ -54,10 +54,10 @@ if (rehub_option('rehub_wcv_related') == '1'){
 		echo '<div class="products '.implode(' ',$classes).'">';
 		while ( $products->have_posts() ) : $products->the_post();
 			if (rehub_option('woo_design') == 'grid') {
-				include(locate_template('inc/parts/woogridpart.php'));
+				include(rh_locate_template('inc/parts/woogridpart.php'));
 			}
 			else{
-				include(locate_template('inc/parts/woocolumnpart.php'));		
+				include(rh_locate_template('inc/parts/woocolumnpart.php'));		
 			}		
 		endwhile; 
 		echo '<div>';
@@ -68,7 +68,7 @@ else {
 	if ( sizeof( $related ) == 0 ) return;
 	$posts_per_page  = $columns = 6;
 	$related = implode(',',$related);
-	echo '<h3>'.__( 'Related Products', 'woocommerce' ).'</h3>';
+	echo '<div class="clearfix"></div><h3>'.__( 'Related Products', 'woocommerce' ).'</h3>';
 	if(rehub_option('woo_single_sidebar') =='1') {
 		if (rehub_option('woo_design') == 'grid') {
 			echo do_shortcode('[wpsm_woogrid ids="'.$related.'" columns="3_col" data_source="ids" show="3" show_coupons_only="2"]');	

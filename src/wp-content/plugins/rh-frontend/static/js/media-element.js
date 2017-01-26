@@ -16,6 +16,9 @@
 		};
 
 		var $components = new Components(this);
+		
+		if( $components.preview_container.html() != '' )
+			$components.clear_link.show();
 
 		$components.clear_link.click(function (e) {
 			e.preventDefault();
@@ -24,6 +27,7 @@
 			$components.preview_container.html('');
 			$components.input.val('');
 			$components.input.change();
+			$components.clear_link.hide();
 		});
 
 		$components.select_link.click(function (e) {
@@ -86,6 +90,7 @@
 				$components.input.change();
 			});
 			media_frame.open();
+			$components.clear_link.show();
 		});
 
 		return this;

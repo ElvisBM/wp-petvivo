@@ -2,14 +2,12 @@
 
 namespace ContentEgg\application\libs;
 
-use ContentEgg\application\helpers\TextHelper;
-
 /**
  * ParserClient class file
  *
  * @author keywordrush.com <support@keywordrush.com>
  * @link http://www.keywordrush.com/
- * @copyright Copyright &copy; 2015 keywordrush.com
+ * @copyright Copyright &copy; 2016 keywordrush.com
  *
  */
 class ParserClient {
@@ -19,8 +17,7 @@ class ParserClient {
     protected $url;
     protected static $_httpClient = null;
 
-    // @todo
-    private function __construct($url = null)
+    public function __construct($url = null)
     {
         if ($url)
             $this->setUrl($url);
@@ -29,8 +26,8 @@ class ParserClient {
     public function setUrl($url)
     {
         $this->url = $url;
-        //$this->xpath = null;
-        //$this->loadXPath($url);
+        $this->xpath = null;
+        $this->loadXPath($url);
     }
 
     public function getUrl()
@@ -51,7 +48,7 @@ class ParserClient {
         $_opts = array(
             'sslverify' => false,
             'redirection' => 3,
-            'timeout' => 5,
+            'timeout' => 10,
             'user-agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9',
         );
         if ($opts)
@@ -109,35 +106,7 @@ class ParserClient {
         if ($query)
             $client->setParameterGet($query);
         $body = $this->getResult($client->request('GET'));
-        echo $body;
-        exit;
         return $this->decodeCharset($body);
-
-
-        /*
-          $this->xpath = null;
-          $args = array(
-          'timeout' => 5,
-          'sslverify' => false,
-          'user-agent' => 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.9) Gecko/20071025 Firefox/2.0.0.9'
-          );
-
-          $response = \wp_remote_get($url, $args);
-
-          if (\is_wp_error($response))
-          {
-          $error_message = $response->get_error_message();
-          throw new \Exception($error_message);
-          }
-          $response_code = (int) \wp_remote_retrieve_response_code($response);
-          if ($response_code != 200)
-          throw new \Exception('Error in url request. HTTP response code: ' . $response_code);
-
-          $body = \wp_remote_retrieve_body($response);
-
-          return $this->decodeCharset($body);
-         * 
-         */
     }
 
     protected function getResult($response)
@@ -173,7 +142,7 @@ class ParserClient {
             return $encoding_hint . $str;
     }
 
-    protected function xpathScalar($path)
+    public function xpathScalar($path)
     {
         $res = $this->xpath->query($path);
         if ($res && $res->length > 0)
@@ -182,7 +151,7 @@ class ParserClient {
             return null;
     }
 
-    protected function xpathArray($path)
+    public function xpathArray($path)
     {
         $res = $this->xpath->query($path);
         $return = array();

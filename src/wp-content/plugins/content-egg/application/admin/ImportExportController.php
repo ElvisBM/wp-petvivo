@@ -23,7 +23,7 @@ class ImportExportController {
 
     public function add_admin_menu()
     {
-        \add_submenu_page(Plugin::slug, __('Импорт/Экспорт', 'content-egg') . ' &lsaquo; Content Egg', __('Импорт/Экспорт', 'content-egg'), 'manage_options', self::slug, array($this, 'actionIndex'));
+        \add_submenu_page(Plugin::slug, __('Import/Export', 'content-egg') . ' &lsaquo; Content Egg', __('Import/Export', 'content-egg'), 'manage_options', self::slug, array($this, 'actionIndex'));
     }
 
     public function actionIndex()
@@ -56,9 +56,9 @@ class ImportExportController {
                     \update_option($option, $save);
                     $all_options[$option] = $save;
                 }
-                $message = __('Опции были сохранены.', 'content-egg') . ' <a href="?page=content-egg">' . __('Страница настроек', 'content-egg') . '</a>';
+                $message = __('Options were saved.', 'content-egg') . ' <a href="?page=content-egg">' . __('Page of settings', 'content-egg') . '</a>';
             } else
-                $notice = __('Неверный формат.', 'content-egg');
+                $notice = __('Invalid format.', 'content-egg');
         }
         PluginAdmin::getInstance()->render('import_export', array(
             'export_str' => json_encode($all_options),

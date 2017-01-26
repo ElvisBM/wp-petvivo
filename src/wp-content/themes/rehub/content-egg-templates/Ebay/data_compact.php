@@ -6,10 +6,8 @@ use ContentEgg\application\helpers\TemplateHelper;
 ?>
 
 <?php foreach ($items as $item): ?>
-    <?php $offer_price = (!empty($item['price'])) ? TemplateHelper::price_format_i18n($item['price']) : ''; ?>
-    <?php $offer_price_old = (!empty($item['priceOld'])) ? TemplateHelper::price_format_i18n($item['priceOld']) : ''; ?>
-    <?php $clean_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
-    <?php $currency = (!empty($item['currency'])) ? $item['currency'] : ''; ?>
+    <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+    <?php $offer_price_old = (!empty($item['priceOld'])) ? $item['priceOld'] : ''; ?>
     <?php $currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : ''; ?>
     <?php $description = (!empty($item['description'])) ? $item['description'] : ''?>
     <?php $availability = (!empty($item['availability'])) ? $item['availability'] : ''; ?>
@@ -51,14 +49,16 @@ use ContentEgg\application\helpers\TemplateHelper;
                         <?php if(!empty($offer_price)) : ?>
                             <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                 <span class="price_count">
-                                    <ins><span><?php echo $currency; ?></span> <?php echo $offer_price ?></ins>
+                                    <ins>
+                                        <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code, '<sup class="cur_sign">', '</sup>'); ?>
+                                    </ins>
                                     <?php if(!empty($offer_price_old)) : ?>
                                     <del>
-                                        <span class="amount"><?php echo $offer_price_old ?></span>
+                                        <?php echo TemplateHelper::formatPriceCurrency($offer_price_old, $currency_code, '<span class="amount">', '</span>'); ?>
                                     </del>
                                     <?php endif ;?>                                      
                                 </span> 
-                                <meta itemprop="price" content="<?php echo $clean_price ?>">
+                                <meta itemprop="price" content="<?php echo $offer_price ?>">
                                 <meta itemprop="priceCurrency" content="<?php echo $currency_code; ?>">
                                 <?php if ($instock): ?>
                                     <link itemprop="availability" href="http://schema.org/InStock">
@@ -100,7 +100,14 @@ use ContentEgg\application\helpers\TemplateHelper;
 	                            <?php endif;?>
 	                            <?php if(!empty($item['extra']['coupon']['code_date'])) {echo '<div class="time_offer">'.$coupon_text.'</div>';} ?>    
 	                        <?php endif ;?> 
-                    		<div class="aff_tag mt10"><?php echo rehub_get_site_favicon('http://ebay.com'); ?></div>	                        
+                    		<div class="aff_tag mt10">
+                                <img src="<?php echo esc_attr(TemplateHelper::getMerhantIconUrl($item, true)); ?>" />
+                                <?php if (!empty($item['domain'])):?>
+                                    <?php echo esc_html($item['domain']); ?>
+                                <?php elseif($item['extra']['domain']):?>
+                                    <?php echo esc_html($item['extra']['domain']); ?>            
+                                <?php endif;?>                                
+                            </div>	                        
                         </div>
                     </div>
                 </div>

@@ -14,8 +14,8 @@ use ContentEgg\application\helpers\CurrencyHelper;
  */
 class Plugin {
 
-    const version = '2.9.1';
-    const db_version = 24;
+    const version = '3.0.5';
+    const db_version = 26;
     const wp_requires = '4.2.2';
     const slug = 'content-egg';
     const api_base = 'http://www.keywordrush.com/api/v1';
@@ -58,7 +58,7 @@ class Plugin {
     {
         \wp_register_style('egg-bootstrap', \ContentEgg\PLUGIN_RES . '/bootstrap/css/egg-bootstrap.css');
         \wp_register_script('bootstrap', \ContentEgg\PLUGIN_RES . '/bootstrap/js/bootstrap.min.js', array('jquery'), null, false);
-        \wp_register_style('content-egg-products', \ContentEgg\PLUGIN_RES . '/css/products.css');
+        \wp_register_style('egg-products', \ContentEgg\PLUGIN_RES . '/css/products.css');
         \wp_register_script('raphaeljs', \ContentEgg\PLUGIN_RES . '/js/morris.js/raphael.min.js', array('jquery'));
         \wp_register_script('morrisjs', \ContentEgg\PLUGIN_RES . '/js/morris.js/morris.min.js', array('raphaeljs'));
         \wp_register_style('morrisjs', \ContentEgg\PLUGIN_RES . '/js/morris.js/morris.min.css');
@@ -144,13 +144,8 @@ class Plugin {
 
     private function loadTextdomain()
     {
-        // plugin backend
-        $locale = \get_locale();
-        $mo_file = \ContentEgg\PLUGIN_PATH . 'languages/content-egg-' . $locale . '.mo';
-        if (file_exists($mo_file) && is_readable($mo_file))
-            \load_textdomain('content-egg', $mo_file);
-        elseif (!in_array($locale, array('ru_RU', 'uk')))
-            \load_textdomain('content-egg', \ContentEgg\PLUGIN_PATH . 'languages/content-egg-en_US.mo');
+        // plugin admin
+        $v = \load_plugin_textdomain('content-egg', false, dirname(\plugin_basename(\ContentEgg\PLUGIN_FILE)) . '/languages/');
 
         // frontend templates
         $lang = GeneralConfig::getInstance()->option('lang');
@@ -158,6 +153,15 @@ class Plugin {
         $mo_file = \ContentEgg\PLUGIN_PATH . 'languages/tpl/content-egg-tpl-' . $lang . '.mo';
         if (file_exists($mo_file) && is_readable($mo_file))
             $v = \load_textdomain('content-egg-tpl', $mo_file);
+    }
+
+    public static function pluginSiteUrl()
+    {
+        $url = 'http://www.keywordrush.com/';
+        if (!in_array(\get_locale(), array('ru_RU', 'uk')))
+            $url .= 'en/';
+        $url .= 'contentegg';
+        return $url;
     }
 
 }

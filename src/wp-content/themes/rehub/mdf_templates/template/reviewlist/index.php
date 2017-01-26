@@ -8,8 +8,8 @@
         <figure><?php echo re_badge_create('ribbon'); ?>
             <a href="<?php the_permalink();?>">
                 <?php $img = get_post_thumb(); $nothumb = get_template_directory_uri() . '/images/default/noimage_100_70.png' ;
-                if( rehub_option( 'aq_resize_crop') == '1') {$params = array( 'width' => 120);}
-                else {$params = array( 'width' => 120, 'height' => 120, 'crop' => true);} ?>
+                $params = array( 'width' => 120);
+                ?>
                 <?php if(!empty($img)) : ?>
                     <img src="<?php echo bfi_thumb( $img, $params ); ?>" alt="<?php the_title_attribute(); ?>" />
                 <?php else : ?>    

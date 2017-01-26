@@ -21,7 +21,7 @@ class PixabayModule extends ParserModule {
     {
         return array(
             'name' => 'Pixabay',
-            'description' => __('Поиск фотографий и иллюстраций со свободной лицензией CC0 Public Domain на pixabay.com.', 'content-egg'),
+            'description' => __('Search photo with free license CC0 Public Domain on pixabay.com', 'content-egg'),
             'api_agreement' => 'https://pixabay.com/api/docs/',
         );
     }

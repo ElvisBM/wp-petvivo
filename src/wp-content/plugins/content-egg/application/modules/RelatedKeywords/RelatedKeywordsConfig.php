@@ -9,16 +9,17 @@ use ContentEgg\application\components\ParserModuleConfig;
  *
  * @author keywordrush.com <support@keywordrush.com>
  * @link http://www.keywordrush.com/
- * @copyright Copyright &copy; 2015 keywordrush.com
+ * @copyright Copyright &copy; 2016 keywordrush.com
  */
 class RelatedKeywordsConfig extends ParserModuleConfig {
 
     public function options()
     {
         $optiosn = array(
-            'account_key' => array(
-                'title' => 'Account Key <span class="cegg_required">*</span>',
-                'description' => __('Ключ доступа к Bing API. Получить можно <a href="https://datamarket.azure.com/account/keys">здесь</a> (потребуется аккаунт в bing).', 'content-egg'),
+            'subscription_key' => array(
+                'title' => 'Subscription Key <span class="cegg_required">*</span>',
+                'description' => __('Key access to Bing Autosuggest API. You can get <a href="https://www.microsoft.com/cognitive-services/en-us/subscriptions">here</a>.', 'content-egg') .
+                __('You can set several Subscription Keys with commas.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -26,14 +27,14 @@ class RelatedKeywordsConfig extends ParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Account Key" не может быть пустым.', 'content-egg'),
+                        'message' => sprintf(__('The "%" can not be empty.', 'content-egg'), 'Subscription Key'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page' => array(
-                'title' => __('Результатов', 'content-egg'),
-                'description' => __('Количество результатов для одного запроса', 'content-egg'),
+                'title' => __('Results', 'content-egg'),
+                'description' => __('Number of results for a single query.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 10,
                 'validator' => array(
@@ -41,32 +42,46 @@ class RelatedKeywordsConfig extends ParserModuleConfig {
                     'absint',
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
-                        'arg' => 50,
-                        'message' => __('Поле "Результатов" не может быть больше 5ы0.', 'content-egg'),
+                        'arg' => 150,
+                        'message' => sprintf(__('The field "%s" can not be more than %d.', 'content-egg'), __('Results', 'content-egg'), 150),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page_update' => array(
-                'title' => __('Результатов для автоблоггинга', 'content-egg'),
-                'description' => __('Количество результатов для автоблоггинга.', 'content-egg'),
+                'title' => __('Results for autoblogging ', 'content-egg'),
+                'description' => __('Number of results for autoblogging.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
-                'default' => 6,
+                'default' => 5,
                 'validator' => array(
                     'trim',
                     'absint',
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
-                        'arg' => 50,
-                        'message' => __('Поле "Результатов для автоблоггинга" не может быть больше 50.', 'content-egg'),
+                        'arg' => 150,
+                        'message' => sprintf(__('The field "%s" can not be more than %d.', 'content-egg'), __('Results', 'content-egg'), 150),
                     ),
                 ),
                 'section' => 'default',
+            ),
+            'mkt' => array(
+                'title' => __('Market code', 'content-egg'),
+                'description' => __('The market where the results come from. The market must be in the form [language code]-[country code].', 'content-egg'),
+                'callback' => array($this, 'render_dropdown'),
+                'dropdown_options' => array_merge(array('' => __('(unspecified)', 'content-egg')), self::marketCodes()),
+                'default' => '',
             ),
         );
         $parent = parent::options();
         unset($parent['featured_image']);
         return array_merge($parent, $optiosn);
     }
+    
+    static public function marketCodes()
+    {
+        $codes = array('es-AR', 'en-AU', 'de-AT', 'nl-BE', 'fr-BE', 'pt-BR', 'en-CA', 'fr-CA', 'es-CL', 'da-DK', 'fi-FI', 'fr-FR', 'de-DE', 'zh-HK', 'en-IN', 'en-ID', 'en-IE', 'it-IT', 'ja-JP', 'ko-KR', 'en-MY', 'es-MX', 'nl-NL', 'en-NZ', 'no-NO', 'zh-CN', 'pl-PL', 'pt-PT', 'en-PH', 'ru-RU', 'ar-SA', 'en-ZA', 'es-ES', 'sv-SE', 'fr-CH', 'de-CH', 'zh-TW', 'tr-TR', 'en-GB', 'en-US', 'es-US');
+        return array_combine($codes, $codes);
+    }
+    
 
 }

@@ -21,37 +21,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 get_header(); ?>
 
-    <!-- CONTENT -->
-    <div class="content"> 
-		<div class="clearfix">
-		      <!-- Main Side -->
-              <div class="main-side page clearfix <?php if(rehub_option('woo_single_sidebar') !='1') {echo ' full_width';}?>">
-                <article class="post" id="page-<?php the_ID(); ?>">
-	               <?php
-                        /**
-                         * woocommerce_before_main_content hook
-                         *
-                         * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
-                         * @hooked woocommerce_breadcrumb - 20
-                         */
-                        do_action( 'woocommerce_before_main_content' );
-                    ?> 
-					<?php while ( have_posts() ) : the_post(); ?>
-						<?php wc_get_template_part( 'content', 'single-product' ); ?>
-					<?php endwhile; // end of the loop. ?>               
-                </article>
-			</div>	
-            <!-- /Main Side --> 
-            <!-- Sidebar -->
-            <?php if(rehub_option('woo_single_sidebar') !='1'):?>
-            <?php else :?>
-                <?php get_sidebar('shop'); ?>
-            <?php endif;?>
-            <!-- /Sidebar --> 
+<!-- CONTENT -->
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
+	    <!-- Main Side -->
+        <div class="main-side page clearfix <?php if(rehub_option('woo_single_sidebar') !='1') {echo ' full_width';}?>">
+            <article class="post" id="page-<?php the_ID(); ?>">
+               <?php
+                    /**
+                     * woocommerce_before_main_content hook
+                     *
+                     * @hooked woocommerce_output_content_wrapper - 10 (outputs opening divs for the content)
+                     * @hooked woocommerce_breadcrumb - 20
+                     */
+                    do_action( 'woocommerce_before_main_content' );
+                ?> 
+				<?php while ( have_posts() ) : the_post(); ?>
+					<?php wc_get_template_part( 'content', 'single-product' ); ?>
+				<?php endwhile; // end of the loop. ?>               
+            </article>
+		</div>	
+        <!-- /Main Side --> 
+        <!-- Sidebar -->
+        <?php if(rehub_option('woo_single_sidebar') !='1'):?>
+        <?php else :?>
+            <?php get_sidebar('shop'); ?>
+        <?php endif;?>
+        <!-- /Sidebar --> 
 
-        </div>
     </div>
-    <!-- /CONTENT -->     
+</div>
+<!-- /CONTENT -->     
 
 <!-- FOOTER -->
 <?php get_footer(); ?>

@@ -26,7 +26,7 @@ class TemplateHelper {
         if ($thousand_sep == 'number_format_thousands_sep')
             $thousand_sep = null;
 
-        return CurrencyHelper::getInstance()->currencyFormat($price, $currencyCode, $thousand_sep, $decimal_sep, $before_symbol = '', $after_symbol = '');
+        return CurrencyHelper::getInstance()->currencyFormat($price, $currencyCode, $thousand_sep, $decimal_sep, $before_symbol, $after_symbol);
     }
 
     public static function currencyTyping($c)

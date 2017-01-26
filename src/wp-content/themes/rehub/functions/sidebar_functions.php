@@ -74,6 +74,26 @@ function rehub_register_sidebars() {
 			'after_title' => '</div>',
 		));	
 	}
+	if(rehub_option('bp_profile_widget_area') == 1 ){
+		register_sidebar(array(
+			'id' => 'bprh-profile-sidebar',
+			'name' => __('Buddypress Profile sidebar', 'rehub_framework'),
+			'before_widget' => '<div id="%1$s" class="rh-cartbox widget %2$s">',
+			'after_widget' => '</div>',
+			'before_title' => '<div class="widget-inner-title rehub-main-font">',
+			'after_title' => '</div>',
+		));	
+	}	
+	if(rehub_option('bp_group_widget_area') == 1 ){
+		register_sidebar(array(
+			'id' => 'bprh-group-sidebar',
+			'name' => __('Buddypress Group sidebar', 'rehub_framework'),
+			'before_widget' => '<div id="%1$s" class="rh-cartbox widget %2$s">',
+			'after_widget' => '</div>',
+			'before_title' => '<div class="widget-inner-title rehub-main-font">',
+			'after_title' => '</div>',
+		));	
+	}	
 	if (class_exists('Woocommerce')) {
 		register_sidebar(array(
 			'id' => 'woostore-sidebar',
@@ -83,6 +103,17 @@ function rehub_register_sidebars() {
 			'before_title' => '<div class="title">',
 			'after_title' => '</div>',
 		));	
+		if (defined('wcv_plugin_dir')){
+			register_sidebar(array(
+				'id' => 'wcw-storepage-sidebar',
+				'name' => __('Vendor store page sidebar', 'rehub_framework'),
+				'before_widget' => '<div id="%1$s" class="rh-cartbox widget %2$s">',
+				'after_widget' => '</div>',
+				'before_title' => '<div class="widget-inner-title rehub-main-font">',
+				'after_title' => '</div>',
+			));			
+		}
+			
 	}				
 }
 }
@@ -224,41 +255,6 @@ function rehub_category_widget_block() { ?>
 </div>
 
 <?php
-}
-}
-
-if( !function_exists('rehub_login_form') ) {
-function rehub_login_form( $login_only  = 0 ) {
-	global $user_ID, $user_identity, $user_level;
-	
-	if ( $user_ID ) : ?>
-		<?php if( empty( $login_only ) ): ?>
-		<div id="user-login">
-			<p class="welcome-frase"><?php _e( 'Welcome' , 'rehub_framework' ) ?> <strong><?php echo $user_identity ?></strong></p>
-			<span class="author-avatar"><?php echo get_avatar( $user_ID, $size = '60'); ?></span>
-			<ul>
-				<li><a href="<?php echo home_url() ?>/wp-admin/"><?php _e( 'Dashboard' , 'rehub_framework' ) ?> </a></li>
-				<li><a href="<?php echo home_url() ?>/wp-admin/profile.php"><?php _e( 'Your Profile' , 'rehub_framework' ) ?> </a></li>
-				<li><a href="<?php echo wp_logout_url(); ?>"><?php _e( 'Logout' , 'rehub_framework' ) ?> </a></li>
-			</ul>
-			<div class="clear"></div>
-		</div>
-		<?php endif; ?>
-	<?php else: ?>
-		<div id="login-form">
-			<form action="<?php echo home_url() ?>/wp-login.php" method="post">
-				<p id="log-username"><input type="text" class="def_inp" name="log" id="log" value="<?php _e( 'Username' , 'rehub_framework' ) ?>" onfocus="if (this.value == '<?php _e( 'Username' , 'rehub_framework' ) ?>') {this.value = '';}" onblur="if (this.value == '') {this.value = '<?php _e( 'Username' , 'rehub_framework' ) ?>';}"  size="33" /></p>
-				<p id="log-pass"><input type="password" class="def_inp" name="pwd" id="pwd" value="<?php _e( 'Password' , 'rehub_framework' ) ?>" onfocus="if (this.value == '<?php _e( 'Password' , 'rehub_framework' ) ?>') {this.value = '';}" onblur="if (this.value == '') {this.value = '<?php _e( 'Password' , 'rehub_framework' ) ?>';}" size="33" /></p>
-				<input type="submit" name="submit" value="<?php _e( 'Log in' , 'rehub_framework' ) ?>" class="def_btn sys_btn" />
-				<label for="rememberme"><input name="rememberme" id="rememberme" type="checkbox" checked="checked" value="forever" /> <?php _e( 'Remember Me' , 'rehub_framework' ) ?></label>
-				<input type="hidden" name="redirect_to" value="<?php echo $_SERVER['REQUEST_URI']; ?>"/>
-			</form>
-			<ul class="login-links">
-				<?php if ( get_option('users_can_register') ) : ?><?php echo wp_register() ?><?php endif; ?>
-				<li><a href="<?php echo home_url() ?>/wp-login.php?action=lostpassword"><?php _e( 'Lost your password?' , 'rehub_framework' ) ?></a></li>
-			</ul>
-		</div>
-	<?php endif;
 }
 }
 
@@ -500,7 +496,8 @@ function rehub_top_offers_widget_block_thirsty($tags = '', $number = '5', $order
 if( !function_exists('rehub_top_offers_widget_block_woo') ) {
 function rehub_top_offers_widget_block_woo($tags = '', $number = '5', $order = '', $random = '') { ?>
 
-	<?php $args = array (
+	<?php 
+	$args = array (
 			'showposts' => $number,
 			'product_tag' => $tags,
 			'ignore_sticky_posts' => '1',

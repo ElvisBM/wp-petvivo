@@ -11,7 +11,6 @@ class WPFEPP_Post_List
 	/**
 	 * Plugin version.
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $version;
@@ -19,7 +18,6 @@ class WPFEPP_Post_List
 	/**
 	 * Form id.
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $formid;
@@ -27,7 +25,6 @@ class WPFEPP_Post_List
 	/**
 	 * Show all shortcode parameter.
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $show_all;		
@@ -35,7 +32,6 @@ class WPFEPP_Post_List
 	/**
 	 * An instance of the WPFEPP_Form class for editing posts.
 	 *
-	 * @access private
 	 * @var WPFEPP_Form
 	 **/
 	private $form;
@@ -43,7 +39,6 @@ class WPFEPP_Post_List
 	/**
 	 * A boolean flag that keeps track of whether the form exists in the database table or not.
 	 *
-	 * @access private
 	 * @var boolean
 	 **/
 	private $valid;
@@ -51,7 +46,6 @@ class WPFEPP_Post_List
 	/**
 	 * The post type for which we want to display posts
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $post_type;
@@ -102,7 +96,7 @@ class WPFEPP_Post_List
 			return;
 		}
 		if( $this->form->post_type() == 'product' && ! class_exists( 'Woocommerce' ) && current_user_can( 'install_plugins' ) ) {
-			printf( '<div class="wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Woocommerce plugin is deactivated or not installed.", "wpfepp-plugin" ) );
+			printf( '<div class="wpfepp wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Woocommerce plugin is deactivated or not installed.", "wpfepp-plugin" ) );
 			return;
 		}
 		if( isset( $_GET['wpfepp_post'] ) && isset( $_GET['wpfepp_action'] ) && is_numeric( $_GET['wpfepp_post'] ) && $_GET['wpfepp_action'] == 'edit' ) {
@@ -128,8 +122,6 @@ class WPFEPP_Post_List
 	/**
 	 * Deletes posts after checking nonce and making sure that the current user has permission to perform the deletion. Uses WordPress' own wp_delete_post().
 	 *
-	 * @access private
-	 *
 	 * @param int $post_id The id of the post that we want to delete.
 	 * @param string $delete_nonce A nonce string that ensures that the request is coming from the right person.
 	 * @return array An associative array containing a status flag and a message to display to the user.
@@ -144,6 +136,20 @@ class WPFEPP_Post_List
 			if( ! $this->current_user_can_delete( $post_id ) ) {
 				$data['message'] = __( "You don't have permission to delete this post", "wpfepp-plugin" );
 				break;
+			}
+
+			//Here we update user meta limit for this form if form has limits for submit
+			$post_author_id = get_post_field( 'post_author', $post_id );
+			$getlimitednumber = get_post_meta($post_id, '_form_limit_number', true);
+			$formid = get_post_meta($post_id, 'wpfepp_submit_with_form_id', true);
+			if($getlimitednumber && $post_author_id){
+				$user_numb_post_meta = '_rhf_user_submit_counter_form_'. $formid;
+				$author_number_post_package = get_user_meta( $post_author_id, $user_numb_post_meta, true );
+				if($author_number_post_package >=0){
+					$author_number_post_package = (int)$author_number_post_package + 1;
+					update_user_meta( $post_author_id, $user_numb_post_meta, $author_number_post_package );			
+				}
+
 			}
 
 			$result = wp_delete_post( $post_id, false );
@@ -172,8 +178,6 @@ class WPFEPP_Post_List
 
 	/**
 	 * Outputs HTML of the post list table.
-	 *
-	 * @access private
 	 **/
 	private function print_list() {
 		$check_form_id = $this->formid;
@@ -183,8 +187,6 @@ class WPFEPP_Post_List
 
 	/**
 	 * By default WordPress does not allow subscribers and contributors to delete their own posts. This function aims rectifies this problem.
-	 *
-	 * @access private
 	 *
 	 * @param string $action The action to check.
 	 * @param int Post id.

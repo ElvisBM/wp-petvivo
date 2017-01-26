@@ -3,18 +3,17 @@
 namespace ContentEgg\application\modules\RelatedKeywords;
 
 use ContentEgg\application\components\ParserModule;
-use ContentEgg\application\libs\bing\BingSearch;
+use ContentEgg\application\libs\bing\CognitiveSearch;
 use ContentEgg\application\components\Content;
-use ContentEgg\application\helpers\TextHelper;
 use ContentEgg\application\admin\PluginAdmin;
-use ContentEgg\application\admin\GeneralConfig;
+use ContentEgg\application\helpers\TextHelper;
 
 /**
  * RelatedKeywords class file
  *
  * @author keywordrush.com <support@keywordrush.com>
  * @link http://www.keywordrush.com/
- * @copyright Copyright &copy; 2015 keywordrush.com
+ * @copyright Copyright &copy; 2016 keywordrush.com
  */
 class RelatedKeywordsModule extends ParserModule {
 
@@ -22,8 +21,7 @@ class RelatedKeywordsModule extends ParserModule {
     {
         return array(
             'name' => 'Related Keywords',
-            'api_agreement' => 'https://datamarket.azure.com/dataset/5BA839F1-12CE-4CCE-BF57-A49D98D29A44',
-            'description' => __('Находит родственные ключевые слова и выводит их в посте.', 'content-egg'),
+            'description' => __('Finds relative keywords and shows them in post.', 'content-egg'),
         );
     }
 
@@ -39,36 +37,41 @@ class RelatedKeywordsModule extends ParserModule {
 
     public function doRequest($keyword, $query_params = array(), $is_autoupdate = false)
     {
+        if (!$this->config('subscription_key'))
+            throw new \Exception('The "Subscription Key" can not be empty. You must configure the module for new Cognitive Services API.');
+
         $options = array();
+        if ($this->config('mkt'))
+            $options['mkt'] = $this->config('mkt');
 
         if ($is_autoupdate)
             $entries_per_page = $this->config('entries_per_page_update');
         else
             $entries_per_page = $this->config('entries_per_page');
-        $options['$top'] = $entries_per_page;
 
+        $rand_key = TextHelper::getRandomFromCommaList($this->config('subscription_key'));
         try
         {
-            $api_client = new BingSearch($this->config('account_key'), 'json');
-            $results = $api_client->search($keyword, 'RelatedSearch', $options);
+            $api_client = new CognitiveSearch($rand_key);
+            $results = $api_client->autosuggest($keyword, $options);
         } catch (Exception $e)
         {
             throw new \Exception(strip_tags($e->getMessage()));
         }
 
-        if (!isset($results['d']) || !isset($results['d']['results']) || !isset($results['d']['results'][0]))
+        if (!isset($results['suggestionGroups']) || !isset($results['suggestionGroups'][0]['searchSuggestions']))
             return array();
 
-        $results = $results['d']['results'];
+        $results = $results['suggestionGroups'][0]['searchSuggestions'];
         $results = array_slice($results, 0, $entries_per_page);
 
         $data = array();
         foreach ($results as $r)
         {
             $content = new Content;
-            $content->title = strip_tags($r['Title']);
+            $content->title = strip_tags($r['displayText']);
             $content->unique_id = $content->title;
-            $content->url = $r['BingUrl'];
+            $content->url = $r['url'];
             $data[] = $content;
         }
         return $data;

@@ -10,7 +10,8 @@
     <?php $i=0; foreach ($items as $key => $item): ?>
         <?php $offer_price = str_replace(' ', '', $item['price']); if($offer_price =='0') {$offer_price = '';} ?>
         <?php $offer_price_old = str_replace(' ', '', $item['old_price']); if($offer_price_old =='0') {$offer_price_old = '';} ?>
-        <?php $afflink = $item['url'] ;?>
+        <?php $offer_post_url = $item['url'] ;?>
+        <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
         <?php $aff_thumb = $item['img'] ;?>
         <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
         <?php $i++;?>  

@@ -20,7 +20,7 @@
 .edd_downloads_list .edd_download_title { font-size: 20px; line-height: 22px; margin: 10px 0; text-transform: uppercase; }
 .edd_downloads_list .edd_download_excerpt { font-size: 13px; line-height: 18px; margin-bottom: 15px }
 .edd_downloads_list .edd_downloadimg { max-width: 100% }
-.edd_downloads_list .edd_download { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; background-color: #fff;}
+.edd_downloads_list .edd_download {    background-color: #fff;}
 .edd_downloads_list.edd_download_columns_1 { display: table; width: 100% }
 .edd_downloads_list.edd_download_columns_1 .edd_download { border: 1px solid #cecece; box-shadow: 0 1px 1px #ededed; position: relative; margin-bottom: 15px; background-color: #fff }
 .edd_downloads_list.edd_download_columns_1 .edd_download_inner > div { display: table-cell; padding: 15px 10px; text-align: center; vertical-align: top; }
@@ -49,10 +49,10 @@
 .edd_single h1 { font-size: 28px; line-height: 28px; margin-top: 0 }
 .widget_edd_product_details h3 { font: bold 16px Arial; margin-bottom: 12px }
 .sidebar .widget.widget_edd_product_details { border: 1px solid #e5e5e5; padding: 15px; }
-.single .edd_single .star { float: none; margin-bottom: 15px }
-.single .edd_single .star .title_stars { display: inline; }
-.single .widget.widget_edd_product_details .star, .widget.widget_edd_product_details .user-rate { float: none; }
-.single .widget.widget_edd_product_details .star .title_stars { font-size: 13px }
+.single .edd_single .user-rate { float: none; margin-bottom: 15px }
+.single .edd_single .user-rate .title_star_ajax { display: inline; }
+.single .widget.widget_edd_product_details .user-rate, .widget.widget_edd_product_details .user-rate { float: none; }
+.single .widget.widget_edd_product_details .user-rate .title_star_ajax { font-size: 13px }
 .widget.widget_edd_product_details .title { display: none; }
 #edd-purchase-button, .edd-submit, input.edd-submit[type="submit"] { border: none; }
 .widget_edd_cart_widget .edd-remove-from-cart { color: #cc0000; }

@@ -4,6 +4,8 @@ namespace ContentEgg\application\components;
 
 use ContentEgg\application\components\ModuleManager;
 use ContentEgg\application\helpers\TextHelper;
+use ContentEgg\application\admin\PluginAdmin;
+use ContentEgg\application\Plugin;
 
 /**
  * Module abstract class file
@@ -205,6 +207,29 @@ abstract class Module {
             return $parts[1];
         else
             return $module_id;
+    }
+    
+    public function renderMetaboxModule()
+    {
+        PluginAdmin::render('metabox_module', array('module_id' => $this->getId(), 'module' => $this));
+    }
+    
+    public function releaseVersion()
+    {
+        return '';
+    }
+    
+    public function isNew()
+    {
+        if (!$module_version = $this->releaseVersion())
+                return false;
+        
+        $module_version = join('.', array_slice(explode('.', $module_version), 0, 2));
+        $plugin_version = join ('.', array_slice(explode('.', Plugin::version()), 0, 2));
+        if ($module_version == $plugin_version)
+            return true;
+        else
+            return false;        
     }
 
 }

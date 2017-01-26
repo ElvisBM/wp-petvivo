@@ -86,13 +86,7 @@ return array(
 			array(
 				'type' => 'section',
 				'title' => __('Main Header Options', 'rehub_framework'),
-				'fields' => array(
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_body_block',
-						'label' => __('Enable block width of header', 'rehub_framework'),
-						'default' => '0',
-					),							
+				'fields' => array(						
 					array(
 						'type' => 'select',
 						'name' => 'rehub_header_style',
@@ -102,6 +96,10 @@ return array(
 								'value' => 'header_first',
 								'label' => __('Logo + code zone 468X60 + search box', 'rehub_framework'),
 							),
+							array(
+								'value' => 'header_eight',
+								'label' => __('Logo + slogan + search box', 'rehub_framework'),
+							),							
 							array(
 								'value' => 'header_second',
 								'label' => __('Logo + code zone 728X90', 'rehub_framework'),
@@ -150,17 +148,7 @@ return array(
 							'field'    => 'rehub_header_style',
 							'function' => 'rehub_framework_is_header_seven',
 						),							
-					),					
-					array(
-						'type' => 'textbox',
-						'name' => 'header_seven_btn_login_url',
-						'label' => __('Type url for login button', 'rehub_framework'),
-						'description' => __('By default, login button triggers login popup, but you can redirect users to any link with registration form if you set this field', 'rehub_framework'),						
-						'dependency' => array(
-							'field'    => 'rehub_header_style',
-							'function' => 'rehub_framework_is_header_seven',
-						),														
-					),	
+					),						
 					array(
 						'type' => 'textarea',
 						'name' => 'header_seven_more_element',
@@ -191,16 +179,6 @@ return array(
 							'field'    => 'rehub_header_style',
 							'function' => 'rehub_framework_is_header_six',
 						),							
-					),
-					array(
-						'type' => 'textbox',
-						'name' => 'header_six_btn_login_url',
-						'label' => __('Type url for login button', 'rehub_framework'),
-						'description' => __('By default, login button triggers login popup, but you can redirect users to any link with registration form if you set this field', 'rehub_framework'),						
-						'dependency' => array(
-							'field'    => 'rehub_header_style',
-							'function' => 'rehub_framework_is_header_six',
-						),														
 					),					
 					array(
 						'type' => 'toggle',
@@ -394,7 +372,6 @@ return array(
 						'label' => __('Custom Background Image', 'rehub_framework'),
 						'description' => __('Upload a background image or leave blank', 'rehub_framework'),
 						'default' => '',
-						
 					),
 					array(
 						'type' => 'select',
@@ -461,9 +438,16 @@ return array(
 							),
 						),
 						'default' => array(
-							'1',
+							'0',
 						),
 					),
+					array(
+						'type' => 'toggle',
+						'name' => 'rehub_enable_menu_shadow',
+						'label' => __('Menu shadow', 'rehub_framework'),
+						'description' => __('Enable/Disable shadow under menu', 'rehub_framework'),
+						'default' => '0',
+					),					
 					array(
 						'type' => 'color',
 						'name' => 'rehub_custom_color_nav',
@@ -653,12 +637,6 @@ return array(
 						'label' => __('Footer Widgets', 'rehub_framework'),
 						'description' => __('Enable or Disable the footer widget area', 'rehub_framework'),
 						'default' => '1',
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_footer_block',
-						'label' => __('Enable footer block width?', 'rehub_framework'),
-						'default' => '0',
 					),
 					array(
 						'type' => 'select',
@@ -1103,10 +1081,10 @@ return array(
 				'fields' => array(
 					array(
 						'type' => 'toggle',
-						'name' => 'aq_resize',
-						'label' => __('Enable resizer script', 'rehub_framework'),
-						'description' => __('Use resizer script for thumbnails', 'rehub_framework'),
-						'default' => '1',
+						'name' => 'rh_image_resize',
+						'label' => __('Disable theme resizer script', 'rehub_framework'),
+						'description' => __('Use wordpress resizer instead. Will slow down a site', 'rehub_framework'),
+						'default' => '0',
 					),
 					array(
 						'type' => 'toggle',
@@ -1118,15 +1096,8 @@ return array(
 						'type' => 'toggle',
 						'name' => 'enable_lazy_images',
 						'label' => __('Enable lazyload script on thumbnails for better image perfomance. Sometimes can be buggy with other scripts', 'rehub_framework'),
-						'default' => '0',
-					),											
-					array(
-						'type' => 'toggle',
-						'name' => 'shortcode_enable',
-						'label' => __('Enable theme shortcode', 'rehub_framework'),
-						'description' => __('Enable built-in shortcode plugin', 'rehub_framework'),
 						'default' => '1',
-					),	
+					),											
 					array(
 						'type' => 'toggle',
 						'name' => 'repick_social_disable',
@@ -1640,11 +1611,23 @@ return array(
 							array(
 								'value' => 'PayTM',
 								'label' => 'Paytm.com',
-							),								
+							),
+							array(
+								'value' => 'Impactradius',
+								'label' => 'Impact Radius',
+							),	
+							array(
+								'value' => 'Offer',
+								'label' => 'Offer module',
+							),																					
 							array(
 								'value' => 'AdmitadProducts',
 								'label' => 'Admitad Products',
-							),																
+							),
+							array(
+								'label' => 'AE: Aliexpress',
+								'value' => 'AE__aliexpresscom',
+							),																					
 							array(
 								'label' => 'AE: Amazon.com',
 								'value' => 'AE__amazoncom',
@@ -1761,7 +1744,7 @@ return array(
 						'type' => 'toggle',
 						'name' => 'enable_multioffer',
 						'label' => __('Enable multi offer option', 'rehub_framework'),
-						'description' => __('Use this if you want to add multi offers instead of single in Post Offer section', 'rehub_framework'),							
+						'description' => __('Use this only if you need User submit for multioffer list. Read docs for details', 'rehub_framework'),							
 						'default' => '0',							
 					),
 					array(
@@ -1987,47 +1970,7 @@ return array(
 		'title' => __('User options', 'rehub_framework'),
 		'name' => 'usersmenus',
 		'icon' => 'font-awesome:fa-user',
-		'controls' => array(
-			array(
-				'type' => 'section',
-				'title' => __('BuddyPress and MyCred options', 'rehub_framework'),
-				'fields' => array(					
-					array(
-						'type' => 'toggle',
-						'name' => 'bp_redirect',
-						'label' => __('Enable redirect to BP profiles?', 'rehub_framework'),
-						'description' => __('By default, user link goes to author page. You can redirect all author links from posts to BuddyPress profiles', 'rehub_framework'),
-						'default' => '0',
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'bp_full_width',
-						'label' => __('Make BP pages full width?', 'rehub_framework'),
-						'default' => '0',
-					),					
-					array(
-						'type' => 'toggle',
-						'name' => 'bp_enable_mycred_comment_badge',
-						'label' => __('Enable badges from MyCred plugin in comments for Buddypress?', 'rehub_framework'),
-						'description' => __('Can slow your activity pages', 'rehub_framework'),
-						'default' => '0',
-					),	
-					array(
-						'type' => 'toggle',
-						'name' => 'rh_enable_mycred_comment',
-						'label' => __('Enable badges, points, ranks from MyCred plugin in regular comments?', 'rehub_framework'),
-						'description' => __('Can slow your single pages', 'rehub_framework'),
-						'default' => '0',
-					),					
-					array(
-						'type' => 'toggle',
-						'name' => 'bp_deactivateemail_confirm',
-						'label' => __('Disable email activation in BP?', 'rehub_framework'),
-						'description' => __('Use this only if you plan to to use BP Register page and deactivate email activation', 'rehub_framework'),
-						'default' => '0',
-					),																																																											
-				),
-			),			
+		'controls' => array(		
 			array(
 				'type' => 'section',
 				'title' => __('Options for User login popup', 'rehub_framework'),
@@ -2045,23 +1988,6 @@ return array(
 						'label' => __('Enable user login modal?', 'rehub_framework'),
 						'description' => __('If you disable this, user modal will not work', 'rehub_framework'),
 						'default' => '0',
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'userpopup_xprofile',
-						'label' => __('Add xprofile fields to register form?', 'rehub_framework'),
-						'description' => __('Set additional fields in User - Profile fields. Works only with enabled Buddypress', 'rehub_framework'),
-						'default' => '0',
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'userpopup_xprofile_hidename',
-						'label' => __('Hide xprofile name field?', 'rehub_framework'),
-						'default' => '0',
-						'dependency' => array(
-                        	'field' => 'userpopup_xprofile',
-                        	'function' => 'vp_dep_boolean',
-                        ),						
 					),										
 					array(
 						'type' => 'textbox',
@@ -2071,10 +1997,22 @@ return array(
 					),	
 					array(
 						'type' => 'textbox',
+						'name' => 'custom_login_url',
+						'label' => __('Type url for login button', 'rehub_framework'),
+						'description' => __('By default, login button triggers login popup, but you can redirect users to any link with registration form if you set this field. Login popup will not work in this case', 'rehub_framework'),
+					),					
+					array(
+						'type' => 'textbox',
 						'name' => 'custom_register_link',
 						'label' => __('Add custom register link', 'rehub_framework'),
 						'description' => __('Add custom link if you want to use custom register page instead of sign up in popup', 'rehub_framework'),							
-					),									
+					),
+					array(
+						'type' => 'textbox',
+						'name' => 'custom_redirect_after_login',
+						'label' => __('Add custom redirect after login url', 'rehub_framework'),
+						'description' => __('You can also use placeholder %%userlogin%% in url, which will be replaced by user login', 'rehub_framework'),							
+					),															
 					array(
 						'type' => 'select',
 						'name' => 'rehub_login_icon',
@@ -2146,19 +2084,6 @@ return array(
                         	'field' => 'userlogin_terms_enable',
                         	'function' => 'vp_dep_boolean',
                         ),												
-					),
-					array(
-						'type' => 'select',
-						'name' => 'userlogin_profile_page',
-						'label' => __('Select page for user profile', 'rehub_framework'),
-						'items' => array(
-							'data' => array(
-								array(
-									'source' => 'function',
-									'value' => 'vp_get_pages',
-								),
-							),
-						),													
 					),	
 					array(
 						'type' => 'select',
@@ -2199,24 +2124,148 @@ return array(
 						'label' => __('Enable link on user profile in comment?', 'rehub_framework'),
 						'description' => __('Can slow a bit your site if you have many comments', 'rehub_framework'),
 						'default' => '0',
-					),					
+					),	
 					array(
-						'type' => 'select',
-						'name' => 'post_type_for_uu',
-						'label' => __('Choose custom post type for UM', 'rehub_framework'),
-						'description' => __('Choose custom post type which will show in profile (works with plugin Ultimate Member)', 'rehub_framework'),
-						'items' => array(
-							'data' => array(
-								array(
-									'source' => 'function',
-									'value'  => 'rehub_get_cpost_type',
-								),
-							),
-						),
-						'default' => '',			
-					),																																											
+						'type' => 'textbox',
+						'name' => 'rh_sync_role',
+						'label' => __('Synchronize one role to other', 'rehub_framework'),
+						'description' => __('Useful, when you sychronize one role to roles of Membership plugins and you want to deactivate/activate this role when user gets new role from another plugin. Example of settings:<br /><br />vendor:s2member_level0:s2member_level1,s2member_level2<br /><br />First name is role which you want to synchronize plugin (you can set any other), next set which is divided by ":" is role which will trigger removing of this role. Next set is roles which will trigger adding this role.', 'rehub_framework'),					
+					),																						
 				),
 			),
+		),
+	),
+	array(
+		'title' => __('Buddypress options', 'rehub_framework'),
+		'name' => 'bpoptions',
+		'icon' => 'font-awesome:fa-group',
+		'controls' => array(
+			array(
+				'type' => 'section',
+				'title' => __('BuddyPress and MyCred options', 'rehub_framework'),
+				'fields' => array(					
+					array(
+						'type' => 'toggle',
+						'name' => 'bp_redirect',
+						'label' => __('Enable redirect to BP profiles?', 'rehub_framework'),
+						'description' => __('By default, user link goes to author page. You can redirect all author links from posts to BuddyPress profiles', 'rehub_framework'),
+						'default' => '0',
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'bp_profile_widget_area',
+						'label' => __('Add additional sidebar area for Profile pages?', 'rehub_framework'),
+						'default' => '0',
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'bp_group_widget_area',
+						'label' => __('Add additional sidebar area for Group pages?', 'rehub_framework'),
+						'default' => '0',
+					),	
+					array(
+						'type' => 'upload',
+						'name' => 'rehub_bpheader_image',
+						'label' => __('Default background image in header. Recommended size 1900x260', 'rehub_framework'),
+						'description' => __('Upload a background image or leave blank', 'rehub_framework'),
+						'default' => '',
+					),																			
+					array(
+						'type' => 'toggle',
+						'name' => 'bp_enable_mycred_comment_badge',
+						'label' => __('Enable badges from MyCred plugin in comments for Buddypress?', 'rehub_framework'),
+						'description' => __('Can slow your activity pages', 'rehub_framework'),
+						'default' => '0',
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'rh_enable_mycred_comment',
+						'label' => __('Enable badges, points, ranks from MyCred plugin in regular comments?', 'rehub_framework'),
+						'description' => __('Can slow your single pages', 'rehub_framework'),
+						'default' => '0',
+					),	
+					array(
+						'type' => 'select',
+						'name' => 'bp_deactivateemail_confirm',
+						'label' => __('Synchronization between login popup and BP', 'rehub_framework'),
+						'description' => __('You can enable BP registration logic in theme login popup', 'rehub_framework'),
+						'items' => array(
+							array(
+								'value' => '1',
+								'label' => __('Disable email and BP activation', 'rehub_framework'),
+							),
+							array(
+								'value' => 'bp',
+								'label' => __('Enable BP and email activation', 'rehub_framework'),
+							),														
+						),
+						'default' => array(
+							'bp',
+						),						
+					),									
+					array(
+						'type' => 'toggle',
+						'name' => 'userpopup_xprofile',
+						'label' => __('Add xprofile fields to register form?', 'rehub_framework'),
+						'description' => __('Set additional fields in User - Profile fields. Works only with enabled Buddypress', 'rehub_framework'),
+						'default' => '0',
+					),
+					array(
+						'type' => 'toggle',
+						'name' => 'userpopup_xprofile_hidename',
+						'label' => __('Hide xprofile name field?', 'rehub_framework'),
+						'description' => __('This will also disable all validation of required fields of Xprofile', 'rehub_framework'),						
+						'default' => '0',
+						'dependency' => array(
+                        	'field' => 'userpopup_xprofile',
+                        	'function' => 'vp_dep_boolean',
+                        ),						
+					),																						
+					array(
+						'type' => 'textbox',
+						'name' => 'rh_bp_seo_description',
+						'label' => __('Add name of Xprofile field for seo Description', 'rehub_framework'),
+						'description' => __('You can create such field in Users - Profile fields if you have enabled Extended Profiles in Settings - Buddypress', 'rehub_framework'),
+					),
+					array(
+						'type' => 'textbox',
+						'name' => 'rh_bp_phone',
+						'label' => __('Add name of Xprofile field for Phone', 'rehub_framework'),
+						'description' => __('You can create such field in Users - Profile fields if you have enabled Extended Profiles in Settings - Buddypress', 'rehub_framework'),
+					),							
+					array(
+						'type' => 'textbox',
+						'name' => 'rh_bp_user_posts',
+						'label' => __('Add Posts tab in User Profile', 'rehub_framework'),
+						'description' => __('Add label, slug, position, ID of page with form where user can add new post, ID of page with form where user can edit his posts, optional member type where tab will be available, separated by ";". Default position is 40. All fields are required. Example: <br />My posts;posts;21;555;556;vendor', 'rehub_framework'),
+					),
+					array(
+						'type' => 'textbox',
+						'name' => 'rh_bp_user_products',
+						'label' => __('Add Product tab in User Profile', 'rehub_framework'),
+						'description' => __('Add label, slug, position, ID of page with form where user can add new product, ID of page with form where user can edit his products, optional member type where tab will be available, separated by ";". Default position is 40. All fields are required. Example: <br />My offers;offers;22;557;558;vendor', 'rehub_framework'),
+					),
+					array(
+						'type' => 'textarea',
+						'name' => 'rh_bp_custom_message_profile',
+						'label' => __('Add custom message or html in profile of User', 'rehub_framework'),
+						'description' => __('You can use shortcodes to show additional info inside Profile tab of user Profile. For example, shortcodes from S2Member plugin or any conditional information. If you want to show information for owner of profile, wrap it with shortcode [rh_is_bpmember_profile]Content[/rh_is_bpmember_profile]', 'rehub_framework'),							
+					),	
+					array(
+						'type' => 'textarea',
+						'name' => 'rh_award_role_mycred',
+						'label' => __('Give user roles for their Mycred Points', 'rehub_framework'),
+						'description' => __('If you use MyCred plugin and want to give user new role once he gets definite points, you can use this area. Syntaxis is next: role:1000. Where role is role which you want to give and 1000 is amount of points to get this role. Place each role with next line. Place them in ASC mode. First line, for example, 10 points, next is 100. Function also works as opposite. ', 'rehub_framework'),					
+					),	
+					array(
+						'type' => 'toggle',
+						'name' => 'rh_award_type_mycred',
+						'label' => __('Give BP member types instead of roles?', 'rehub_framework'),
+						'description' => __('If you want to give users member types instead of roles which are set above, enable this', 'rehub_framework'),						
+						'default' => '0',					
+					),																					
+				),
+			),			
 		),
 	),
 	array(
@@ -2501,7 +2550,7 @@ return array(
 						'name' => 'rehub_wcv_dash_redirect',
 						'label' => __('Redirect users after registration form to vendor dashboard?', 'rehub_framework'),
 						'default' => '0',
-					),																															
+					),													
 				),
 			),			
 			array(
@@ -2530,13 +2579,6 @@ return array(
 						'default' => array(
 							'rehub_framework_edd_gridfull',
 						),
-					),
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_framework_edd_rating',
-						'label' => __('Enable rating?', 'rehub_framework'),
-						'description' => __('Enable built-in user rating system?', 'rehub_framework'),
-						'default' => '1',
 					),	
 					array(
 						'type' => 'toggle',
@@ -2544,18 +2586,6 @@ return array(
 						'label' => __('Enable counter for sales and downloads?', 'rehub_framework'),
 						'description' => __('Enable counter in widget download details?', 'rehub_framework'),
 						'default' => '1',
-					),										
-				),
-			),
-			array(
-				'type' => 'section',
-				'title' => __('Ecwid settings', 'rehub_framework'),
-				'fields' => array(
-					array(
-						'type' => 'toggle',
-						'name' => 'rehub_ecwid_enable',
-						'label' => __('Enable ecwid store customization?', 'rehub_framework'),
-						'default' => '0',
 					),										
 				),
 			),

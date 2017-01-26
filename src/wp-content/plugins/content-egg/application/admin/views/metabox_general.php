@@ -4,9 +4,9 @@
     <div class="col-sm-5">
         <div class="input-group">
 
-            <input ng-disabled="processCounter" type="text" ng-model="global_keywords" select-on-click on-enter="global_findAll()" class="form-control col-md-6" placeholder="<?php _e('Введите ключевое слово', 'content-egg'); ?>" aria-label="<?php _e('Введите ключевое слово', 'content-egg'); ?>">
+            <input ng-disabled="processCounter" type="text" ng-model="global_keywords" select-on-click on-enter="global_findAll()" class="form-control col-md-6" placeholder="<?php _e('Enter a keyword', 'content-egg'); ?>" aria-label="<?php _e('Enter a keyword', 'content-egg'); ?>">
             <div class="input-group-btn">
-                <button ng-disabled='processCounter || !global_keywords' ng-click="global_findAll()" type="button" class="btn btn-info"><?php _e('Найти все', 'content-egg'); ?></button>
+                <button ng-disabled='processCounter || !global_keywords' ng-click="global_findAll()" type="button" class="btn btn-info"><?php _e('Find all', 'content-egg'); ?></button>
             </div>
         </div>
     </div>
@@ -37,8 +37,8 @@
     </div>
 
     <div class="col-sm-1 text-right">
-        <button ng-show='!processCounter && global_isSearchResults()' ng-click="global_addAll()" type="button" class="btn btn-default btn-sm"><?php _e('Добавить все', 'content-egg'); ?></button>
-        <button ng-show='global_isAddedResults()' ng-click="global_deleteAll()" ng-confirm-click="<?php _e('Вы действительно хотите удалить результаты всех модулей?', 'content-egg'); ?>" type="button" class="btn btn-default btn-sm"><?php _e('Удалить все', 'content-egg'); ?></button>
+        <button ng-show='!processCounter && global_isSearchResults()' ng-click="global_addAll()" type="button" class="btn btn-default btn-sm"><?php _e('Add all', 'content-egg'); ?></button>
+        <button ng-show='global_isAddedResults()' ng-click="global_deleteAll()" ng-confirm-click="<?php _e('Are you sure you want to delete the results of all modules?', 'content-egg'); ?>" type="button" class="btn btn-default btn-sm"><?php _e('Delete all', 'content-egg'); ?></button>
     </div>
 </div>
 <div class="row">

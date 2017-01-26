@@ -13,9 +13,7 @@ add_filter( 'shortcode_atts_downloads', 'twentytwelve_edd_shortcode_atts_downloa
 
 if( !function_exists('rate_edd') ) {
 function rate_edd() {
-  if(rehub_option('rehub_framework_edd_rating') =='1'){
-  	echo rehub_get_user_rate('user');
-  } 	
+  	echo rehub_get_user_rate('user');	
 }
 }
 add_action( 'edd_product_details_widget_before_purchase_button', 'rate_edd' );

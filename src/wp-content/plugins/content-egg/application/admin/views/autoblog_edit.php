@@ -4,17 +4,17 @@
     <div class="wrap">
         <h2>
             <?php if ($item['id']): ?>
-                <?php _e('Редактировать автоблоггинг', 'content-egg'); ?>
+                <?php _e('Edit autoblogging', 'content-egg'); ?>
             <?php else: ?>
-                <?php _e('Добавить автоблоггинг', 'content-egg'); ?>
+                <?php _e('Add autoblogging', 'content-egg'); ?>
                 <?php if ($batch): ?>
-                    - <?php _e('пакетное добавление', 'content-egg'); ?>
+                    - <?php _e('bulk adding', 'content-egg'); ?>
                 <?php endif; ?>
             <?php endif; ?>
             <?php if (!$batch && !$item['id']): ?>
-                <a class="add-new-h2 button-primary" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=content-egg-autoblog-batch-create'); ?>"><?php _e('Пакетное добавление', 'content-egg'); ?></a>
+                <a class="add-new-h2 button-primary" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=content-egg-autoblog-edit--batch'); ?>"><?php _e('Bulk adding', 'content-egg'); ?></a>
             <?php endif; ?>
-            <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=content-egg-autoblog'); ?>"><?php _e('Назад к списку', 'content-egg'); ?></a>
+            <a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=content-egg-autoblog'); ?>"><?php _e('Back to list', 'content-egg'); ?></a>
         </h2>
 
         <?php if (!empty($notice)): ?>
@@ -36,9 +36,9 @@
                     <div id="post-body-content">
                         <?php $item['batch'] = $batch; ?>
                         <?php do_meta_boxes('autoblog_create', 'normal', $item); ?>
-                        <input type="submit" value="<?php _e('Сохранить', 'content-egg'); ?>" id="autoblog_submit" class="button-primary" name="submit">
+                        <input type="submit" value="<?php _e('Save', 'content-egg'); ?>" id="autoblog_submit" class="button-primary" name="submit">
 
-                        &nbsp;&nbsp;&nbsp;<?php if ($batch): ?><em><?php _e('Будьте терпеливы, если файл с ключевыми словами имеет большой размер. Не закрывайте страницу до завершения процесса.', 'content-egg'); ?></em><?php endif; ?>
+                        &nbsp;&nbsp;&nbsp;<?php if ($batch): ?><em><?php _e('Don\'t close page until process finishes. Be patient, can have some time.', 'content-egg'); ?></em><?php endif; ?>
 
                     </div>
                 </div>
@@ -47,8 +47,8 @@
     </div>
 
     <script>
-        jQuery(document).ready(function() {
-            jQuery("#form").submit(function() {
+        jQuery(document).ready(function () {
+            jQuery("#form").submit(function () {
                 jQuery("#autoblog_submit").attr("disabled", true);
                 return true;
             });

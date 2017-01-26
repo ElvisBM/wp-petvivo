@@ -20,7 +20,7 @@
                 $offer_badge = (!empty($value['featured_multioffer'])) ? $value['featured_multioffer'] : '';
                 $offer_thumb = (!empty($value['multioffer_image'])) ? $value['multioffer_image'] : '';
                 $offer_user = (!empty($value['multioffer_user'])) ? $value['multioffer_user'] : '';  
-                include(locate_template('inc/parts/multiofferpart.php'));
+                include(rh_locate_template('inc/parts/multiofferpart.php'));
             ?>
         <?php endif;?>
     <?php endforeach;?>

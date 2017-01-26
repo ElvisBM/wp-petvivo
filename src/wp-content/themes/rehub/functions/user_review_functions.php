@@ -200,26 +200,26 @@ function add_comment_rates($comment_id) {
 		$postUserRaitingsArray = get_post_meta($comment_post_id, 'post_user_raitings', false); // Получаем массив значений рейтинга из произвольного поля записи
 		$postUserRaitings = (!empty($postUserRaitingsArray)) ? $postUserRaitingsArray[0] : '';
 		$commentRaitingsArray = get_comment_meta($comment_id, 'user_criteria', false); // Получаем массив пользовательских оценок из произвольного поля комментария
-		$commentRaitings = $commentRaitingsArray[0];
+		$commentRaitings = (!empty($commentRaitingsArray[0])) ? $commentRaitingsArray[0] : '';
 		$postData = array(); // Создаем массив хранения данных
 		$postCriteriaAverage = '';
-		for($i = 0; $i < count($commentRaitings); $i++) {
-			$postData['criteria'][$i]['name'] = $commentRaitings[$i]['name'];
-			if(isset($postUserRaitings['criteria'][$i])) {
-				$count = (int) $postUserRaitings['criteria'][$i]['count'] + 1;
-				$total = (float) $commentRaitings[$i]['value'] + (float) $postUserRaitings['criteria'][$i]['value'];
-				$postData['criteria'][$i]['count'] = $count;
-				$postData['criteria'][$i]['value'] = $total;
-				$postData['criteria'][$i]['average'] = bcdiv($total, $count, 1);
-			}
-			else {
-				$postData['criteria'][$i]['count'] = 1;
-				$postData['criteria'][$i]['value'] = (float) $commentRaitings[$i]['value'];
-				$postData['criteria'][$i]['average'] = (float) $commentRaitings[$i]['value'];
-			};
-			$postCriteriaAverage += $postData['criteria'][$i]['average'];
-		};
-		if(isset($commentRaitings) && count($commentRaitings) > 0) {
+		if(isset($commentRaitings) && count($commentRaitings) > 0 && is_array($commentRaitings)) {
+			for($i = 0; $i < count($commentRaitings); $i++) {
+				$postData['criteria'][$i]['name'] = $commentRaitings[$i]['name'];
+				if(isset($postUserRaitings['criteria'][$i])) {
+					$count = (int) $postUserRaitings['criteria'][$i]['count'] + 1;
+					$total = (float) $commentRaitings[$i]['value'] + (float) $postUserRaitings['criteria'][$i]['value'];
+					$postData['criteria'][$i]['count'] = $count;
+					$postData['criteria'][$i]['value'] = $total;
+					$postData['criteria'][$i]['average'] = bcdiv($total, $count, 1);
+				}
+				else {
+					$postData['criteria'][$i]['count'] = 1;
+					$postData['criteria'][$i]['value'] = (float) $commentRaitings[$i]['value'];
+					$postData['criteria'][$i]['average'] = (float) $commentRaitings[$i]['value'];
+				};
+				$postCriteriaAverage += $postData['criteria'][$i]['average'];
+			};			
 			$postAverage = bcdiv($postCriteriaAverage, count($commentRaitings), 1);
 			update_post_meta($comment_post_id, 'post_user_raitings', $postData);
 			update_post_meta($comment_post_id, 'post_user_average', $postAverage);

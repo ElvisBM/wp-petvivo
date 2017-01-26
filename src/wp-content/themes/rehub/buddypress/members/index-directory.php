@@ -1,30 +1,33 @@
 <?php get_header(); ?>
-<!-- CONTENT -->
-<div class="content"> 
-
-    <div class="clearfix">
-          <!-- Main Side -->
-          <div class="main-side clearfix full_width">
+<div id="buddypress">
+<div id="bprh-full-header-image" class="mb30">
+    <div id="bprh-full-header">
+        <div class="rh-container text-center">
             <div class="title"><h1><?php the_title(); ?></h1></div>
-			<article class="post" id="page-<?php the_ID(); ?>"> 
-            
-            <?php  wp_enqueue_script('masonry'); wp_enqueue_script('imagesloaded'); ?>
-            <?php wp_enqueue_script('masonry_init'); ?> 
-
-            <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			<?php bp_get_template_part( 'buddypress/members/members' ); ?>
-			<?php endwhile; endif; ?>  
-
-            </article>
-        </div>	
-
-        <!-- /Main Side -->  
-        <!-- Sidebar -->
-        <?php //get_sidebar(); ?>
-        <!-- /Sidebar --> 
-    </div>
-	
+            <?php bp_get_template_part( 'common/search/dir-search-form' ); ?>
+            <!-- #group-dir-search -->
+        </div>     
+    </div>    
+    <span class="header-cover-image-mask"></span>
 </div>
-<!-- /CONTENT -->     
+
+<!-- CONTENT -->
+<div class="rh-container clearfix mb30"> 
+
+    <div id="page-<?php the_ID(); ?>"> 
+
+    <div id="item-body">
+
+    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+        <?php bp_get_template_part( 'buddypress/members/members' ); ?>
+    <?php endwhile; endif; ?>  
+
+    </div>
+
+    </div>
+    
+</div>
+<!-- /CONTENT --> 
+</div><!-- #buddypress -->    
 <!-- FOOTER -->
 <?php get_footer(); ?>

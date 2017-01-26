@@ -21,7 +21,8 @@
 		$verified_vendor 	= ( array_key_exists( '_wcv_verified_vendor', $vendor_meta ) ) ? $vendor_meta[ '_wcv_verified_vendor' ] : false; 
 		$verified_vendor_label 	= WCVendors_Pro::get_option( 'verified_vendor_label' );	
 		$vacation_mode 		= get_user_meta( $vendor_id , '_wcv_vacation_mode', true ); 
-		$vacation_msg 		= ( $vacation_mode ) ? get_user_meta( $vendor_id , '_wcv_vacation_mode_msg', true ) : '';			
+		$vacation_msg 		= ( $vacation_mode ) ? get_user_meta( $vendor_id , '_wcv_vacation_mode_msg', true ) : '';	
+		$company_url = get_user_meta( $vendor_id , '_wcv_company_url', true ); 
 	}	
 	else{
 		$wcfreephone	= get_user_meta( $vendor_id, 'rh_vendor_free_phone', true );
@@ -39,7 +40,7 @@
 	<style scoped>#wcvendor_image_bg{<?php echo rh_show_vendor_bg($vendor_id);?>}</style>
 	<div id="wcvendor_image_bg">	
 		<div id="wcvendor_profile_wrap">
-			<div class="content">
+			<div class="rh-container">
 	    		<div id="wcvendor_profile_logo" class="wcvendor_profile_cell">
 	    			<a href="<?php echo $shop_url;?>"><img src="<?php echo rh_show_vendor_avatar($vendor_id, 150, 150);?>" class="vendor_store_image_single" width=150 height=150 /></a>	        
 	    		</div>
@@ -117,7 +118,7 @@
 		<span class="wcvendor-cover-image-mask"></span>
 	</div>
 	<div id="wcvendor_profile_menu">
-		<div class="content">			
+		<div class="rh-container">			
 			<form id="wcvendor_search_shops" role="search" action="<?php echo $shop_url;?>" method="get" class="wcvendor-search-inside search-form">
 				<input type="text" name="rh_wcv_search" placeholder="<?php _e('Search in this shop', 'rehub_framework');?>" value="">
 				<button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>					
@@ -141,13 +142,13 @@
 
 
 <!-- CONTENT -->
-<div class="content no_shadow wcvcontent"> 
-	<div class="clearfix">
+<div class="rh-container wcvcontent"> 
+    <div class="rh-content-wrap clearfix">
 	    <!-- Main Side -->
-	    <aside class="vcwendor_profile_sidebar user-profile-div">
-	    	<div class="rh-cartbox">
+	    <aside class="rh-mini-sidebar user-profile-div floatleft tabletblockdisplay">
+	    	<div class="rh-cartbox widget">
 	            <div>
-	            	<div class="wcvendor_ownertitle"><h5><?php _e('Shop owner:', 'rehub_framework');?></h5></div>
+	            	<div class="widget-inner-title rehub-main-font"><?php _e('Shop owner:', 'rehub_framework');?></div>
 	                <div class="profile-avatar">
 	                    <?php echo get_avatar( $vendor_email, '128' ); ?>
 	                </div>
@@ -156,7 +157,17 @@
 	                    <?php if ( function_exists('bp_core_get_user_domain') ) : ?>
 	                    	<a href="<?php echo bp_core_get_user_domain( $vendor_id ); ?>">
 	                    <?php endif;?>
-	                        <?php echo $vendor_name; ?> <?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?>
+	                        <?php echo $vendor_name; ?> 						
+	                        <?php 	
+								if (function_exists('bp_get_member_type')){			
+									$membertype = bp_get_member_type($vendor_id);
+									$membertype_object = bp_get_member_type_object($membertype);
+									$membertype_label = (!empty($membertype_object) && is_object($membertype_object)) ? $membertype_object->labels['singular_name'] : '';
+									if($membertype_label){
+										echo '<span class="rh-user-rank-mc rh-user-rank-'.$membertype.'">'.$membertype_label.'</span>';
+									}
+								}
+							?>
 	                        <?php if ( function_exists('bp_core_get_user_domain') ) : ?></a><?php endif;?>
 	                    </div>
 	                </div>
@@ -176,6 +187,10 @@
 										<br />
 										<a href="tel:<?php echo $phone; ?>"><i class="fa fa-phone"></i> <?php echo $phone; ?></a>
 									<?php endif;?>
+									<?php if ($company_url):?>
+										<br />
+										<a href="<?php echo esc_url($company_url); ?>"><i class="fa fa-globe"></i> <?php echo $company_url; ?></a>
+									<?php endif;?>									
 								</p>
 							</div>
 						</div>
@@ -226,14 +241,20 @@
 						<?php if ( bp_has_profile( array( 'profile_group_id' => 1, 'fetch_field_data' => true, 'user_id'=>$vendor_id ) ) ) : while ( bp_profile_groups() ) : bp_the_profile_group(); ?>
 							<?php $numberfields = explode(',', bp_get_the_profile_field_ids());?>
 							<?php $count = (!empty($numberfields)) ? count($numberfields) : '';?>
+							<?php $bp_profile_description = rehub_option('rh_bp_seo_description');?>
+							<?php $bp_profile_phone = rehub_option('rh_bp_phone');	?>
+
 							<?php if ($count > 1) :?>
 								<ul id="xprofile-in-wcstore">
 									<?php $fieldid = 0; while ( bp_profile_fields() ) : bp_the_profile_field(); $fieldid++; ?>
 										<?php if ($fieldid == 1) continue;?>
+										<?php $fieldname = bp_get_the_profile_field_name();?>
+										<?php if($fieldname == $bp_profile_phone) continue;?>
+										<?php if($fieldname == $bp_profile_description) continue;?>
 										<?php if ( bp_field_has_data() ) : ?>
 											<li>
-											<div class="floatleft mr5"><?php bp_the_profile_field_name() ?>: </div>
-											<div class="floatleft"><?php bp_the_profile_field_value() ?></div>									
+												<div class="floatleft mr5"><?php echo $fieldname ?>: </div>
+												<div class="floatleft"><?php bp_the_profile_field_value() ?></div>	
 											</li>
 										<?php endif; ?>
 									<?php endwhile; ?>
@@ -252,9 +273,12 @@
 
 	            </div>	    		
 	    	</div>
-	    	<div class="rh-cartbox">
+	        <?php if ( is_active_sidebar( 'wcw-storepage-sidebar' ) ) : ?>
+	            <?php dynamic_sidebar( 'wcw-storepage-sidebar' ); ?>
+	        <?php endif;?>	    	
+	    	<div class="rh-cartbox widget">
 	            <div>
-	            	<div class="wcvendor_ownertitle"><h5><?php _e('Shop categories', 'rehub_framework');?></h5></div>
+	            	<div class="widget-inner-title rehub-main-font"><?php _e('Shop categories', 'rehub_framework');?></div>
 					<?php global $wpdb; $categories = $wpdb->get_results("
 					    SELECT DISTINCT(terms.term_id) as ID, terms.name, terms.slug
 					    FROM $wpdb->posts as posts
@@ -296,10 +320,9 @@
 					</ul>
 
 	            </div>	    		
-	    	</div>	    	
-	    	
+	    	</div>	    		    	
 	    </aside>
-	    <div class="vcwendor_profile_content woocommerce page clearfix">
+	    <div class="rh-mini-sidebar-content-area woocommerce page clearfix floatright tabletblockdisplay">
 	        <article class="post" id="page-<?php the_ID(); ?>">
 	        	<?php if ($vacation_msg) :?>
 	        		<div class="wpsm_box green_type nonefloat_box">
@@ -326,7 +349,7 @@
 								$custom_img_height = 284; 
 								$custom_img_width = 284; 
 							?>
-							<?php include(locate_template('inc/parts/woocolumnpart.php')); ?>
+							<?php include(rh_locate_template('inc/parts/woocolumnpart.php')); ?>
 						<?php endwhile; // end of the loop. ?>
 					<?php woocommerce_product_loop_end(); ?>
 					<?php

@@ -1,5 +1,40 @@
 <?php
 
+if( !function_exists('rehub_login_form') ) {
+function rehub_login_form( $login_only  = 0 ) {
+    global $user_ID, $user_identity, $user_level;
+    
+    if ( $user_ID ) : ?>
+        <?php if( empty( $login_only ) ): ?>
+        <div id="user-login">
+            <p class="welcome-frase"><?php _e( 'Welcome' , 'rehub_framework' ) ?> <strong><?php echo $user_identity ?></strong></p>
+            <span class="author-avatar"><?php echo get_avatar( $user_ID, $size = '60'); ?></span>
+            <ul>
+                <li><a href="<?php echo home_url() ?>/wp-admin/"><?php _e( 'Dashboard' , 'rehub_framework' ) ?> </a></li>
+                <li><a href="<?php echo home_url() ?>/wp-admin/profile.php"><?php _e( 'Your Profile' , 'rehub_framework' ) ?> </a></li>
+                <li><a href="<?php echo wp_logout_url(); ?>"><?php _e( 'Logout' , 'rehub_framework' ) ?> </a></li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <?php endif; ?>
+    <?php else: ?>
+        <div id="login-form">
+            <form action="<?php echo home_url() ?>/wp-login.php" method="post">
+                <p id="log-username"><input type="text" class="def_inp" name="log" id="log" value="<?php _e( 'Username' , 'rehub_framework' ) ?>" onfocus="if (this.value == '<?php _e( 'Username' , 'rehub_framework' ) ?>') {this.value = '';}" onblur="if (this.value == '') {this.value = '<?php _e( 'Username' , 'rehub_framework' ) ?>';}"  size="33" /></p>
+                <p id="log-pass"><input type="password" class="def_inp" name="pwd" id="pwd" value="<?php _e( 'Password' , 'rehub_framework' ) ?>" onfocus="if (this.value == '<?php _e( 'Password' , 'rehub_framework' ) ?>') {this.value = '';}" onblur="if (this.value == '') {this.value = '<?php _e( 'Password' , 'rehub_framework' ) ?>';}" size="33" /></p>
+                <input type="submit" name="submit" value="<?php _e( 'Log in' , 'rehub_framework' ) ?>" class="def_btn sys_btn" />
+                <label for="rememberme"><input name="rememberme" id="rememberme" type="checkbox" checked="checked" value="forever" /> <?php _e( 'Remember Me' , 'rehub_framework' ) ?></label>
+                <input type="hidden" name="redirect_to" value="<?php echo $_SERVER['REQUEST_URI']; ?>"/>
+            </form>
+            <ul class="login-links">
+                <?php if ( get_option('users_can_register') ) : ?><?php echo wp_register() ?><?php endif; ?>
+                <li><a href="<?php echo home_url() ?>/wp-login.php?action=lostpassword"><?php _e( 'Lost your password?' , 'rehub_framework' ) ?></a></li>
+            </ul>
+        </div>
+    <?php endif;
+}
+}
+
 //////////////////////////////////////////////////////////////////
 // AUTHOR SOCIAL LINKS
 //////////////////////////////////////////////////////////////////
@@ -60,11 +95,16 @@ if(!function_exists('rh_author_detail_box')){
                     <?php endif; ?>                
                     <h4>
                         <?php the_author_posts_link(); ?>
-                        <?php if (!empty($mycredrank) && is_object( $mycredrank)) :?>
-                            <span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>">
-                                <?php echo $mycredrank->title ;?>
-                            </span>
-                        <?php endif;?>                        
+                        <?php   
+                            if (function_exists('bp_get_member_type')){     
+                                $membertype = bp_get_member_type($author_ID);
+                                $membertype_object = bp_get_member_type_object($membertype);
+                                $membertype_label = (!empty($membertype_object) && is_object($membertype_object)) ? $membertype_object->labels['singular_name'] : '';
+                                if($membertype_label){
+                                    echo '<span class="rh-user-rank-mc rh-user-rank-'.$membertype.'">'.$membertype_label.'</span>';
+                                }
+                            }
+                        ?>                        
                     </h4>
                     <div class="social_icon small_i">
                         <div class="comm_meta_cred">
@@ -447,6 +487,13 @@ if (!function_exists('rh_gmw_vendor_mapin')){
     }
 }
 
+add_filter( 'gmw_gl_map_icon', 'rh_gmwgl_vendor_mapin', 10, 2);
+if (!function_exists('rh_gmwgl_vendor_mapin')){
+    function rh_gmwgl_vendor_mapin ($member, $gmw_form){
+        return get_template_directory_uri() . '/images/default/mappostpin.png';               
+    }
+}
+
 /**
  * GMW Function - Save member's location
  */
@@ -525,4 +572,98 @@ function rh_gmw_friends_pass_map_data( $post_id, $post ) {
 if(rehub_option('post_sync_with_user_location') == 1){
     add_action( 'publish_post', 'rh_gmw_friends_pass_map_data', 10, 2 );
     add_action( 'publish_product', 'rh_gmw_friends_pass_map_data', 10, 2 );    
+}
+
+function disable_s2_member_in_rehub($redirect=true){
+    if(defined('DOING_AJAX') && DOING_AJAX){
+        return false;
+    }
+    else{
+        return $redirect;
+    }
+}
+add_filter('ws_plugin__s2member_login_redirect', 'disable_s2_member_in_rehub');
+
+//Automatically assign vendor role to new roles of user
+if (rehub_option('rh_sync_role') != ''){
+    $data = rehub_option('rh_sync_role');
+    $data = explode(':', $data);
+    if(!empty($data[0]) && !empty($data[1]) && !empty($data[2])){
+        add_action( 'set_user_role', 'assign_to_rhcustom_role', 30, 3 );
+        function assign_to_rhcustom_role( $user_id, $new_role, $old_roles ) {
+            $data = rehub_option('rh_sync_role');
+            $data = explode(':', $data);            
+            $wp_user_object = new WP_User($user_id);
+            $vendor_role   = $data[0];
+            $roles_remove = array_map('trim', explode(",", $data[1]));          
+            $roles_add = array_map('trim', explode(",", $data[2]));
+            if ( in_array($new_role, $roles_remove) ) {
+                $wp_user_object->remove_role( $vendor_role ); 
+            }
+            elseif ( in_array($new_role, $roles_add) ) {
+                $wp_user_object->add_role( $vendor_role ); 
+            }
+            else {
+                return;
+            }
+        }       
+    }
+}
+
+if (rehub_option('rh_award_role_mycred') != ''){
+    add_filter( 'mycred_add_finished', 'rh_award_new_role_mycred', 99, 3 );
+    function rh_award_new_role_mycred( $reply, $request, $mycred ) {
+        // Make sure that if any other filter has declined this we also decline
+        if ( $reply === false ) return $reply;
+
+        // Exclude admins
+        if ( user_can( $request['user_id'], 'manage_options' ) ) return $reply;
+
+        extract( $request );
+
+        $rolechangedarray = rehub_option('rh_award_role_mycred');
+
+        $rolechangedarray = explode('PHP_EOL', $rolechangedarray);
+        $thresholds = array();
+
+        foreach ($rolechangedarray as $key => $value) {
+            $values = explode(':', $value);
+            if (empty($values[0]) || empty($values[1])) return;
+            $roleforchange = trim($values[0]);
+            $numberforchange = trim($values[1]);            
+            $thresholds[$roleforchange] = (int)$numberforchange;
+        }
+
+        // Get users current balance
+        $current_balance = $mycred->get_users_balance( $user_id, $type );
+        $current_balance = (int)$current_balance + (int)$amount;
+
+        // Check if the users current balance awards a new role
+        $new_role = false;
+        foreach ( $thresholds as $role => $min ) {
+            if ( $current_balance >= $min )
+                $new_role = $role;
+        }
+
+        // Change users role if we have one
+        if ( $new_role !== false ){
+            if(rehub_option('rh_award_type_mycred') ==1 && function_exists('bp_get_member_type')){
+                $roles = bp_get_member_type($user_id, false);
+                if(!empty($roles) && is_array($roles)){
+                    if (!in_array( $new_role, (array) $roles)){
+                        bp_set_member_type( $user_id, $new_role );
+                    }                     
+                }else{
+                    bp_set_member_type( $user_id, $new_role );
+                } 
+            }else{
+                $wp_user_object = new WP_User($user_id);
+                if(empty($wp_user_object)) return;
+                if (!in_array( $new_role, (array) $wp_user_object->roles )){
+                    $wp_user_object->add_role($new_role);
+                }                
+            }
+        }
+        return $reply;
+    }
 }

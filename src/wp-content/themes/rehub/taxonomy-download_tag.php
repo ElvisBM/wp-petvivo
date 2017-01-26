@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 <!-- CONTENT -->
-<div class="content"> 
-    <div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
         <!-- Main Side -->
         <div class="main-side clearfix<?php if (rehub_option('rehub_framework_edd_layout') == 'rehub_framework_edd_gridfull') : ?> full_width<?php endif ;?>">
             <div class="wpsm-title middle-size-title wpsm-cat-title"><h5><span><?php _e('Tag:', 'rehub_framework'); ?></span> <?php single_tag_title(); ?></h5></div>
@@ -32,17 +32,12 @@
                         endif;
                         echo $terms_slug_str; ?>       
                     </div>
-                    <?php if(rehub_option('rehub_framework_edd_rating') =='1') :?><?php rehub_get_user_resultsedd('small') ?><?php endif ;?>                      
+                    <?php rehub_get_user_resultsedd('small') ?>                     
                     <?php if (  (function_exists('has_post_thumbnail')) && (has_post_thumbnail())  ) { ?>
                         <figure>
                             <div class="pattern"></div>
                             <a href="<?php the_permalink();?>">
-                            <?php if( rehub_option( 'aq_resize') == 1 ) : ?>
-                                <?php $img = get_post_thumb(); ?> 
-                                <img src="<?php $params = array( 'width' => 336, 'height' => 220 ); echo bfi_thumb($img, $params); ?>" alt="<?php the_title_attribute(); ?>" />
-                            <?php else :?>    
-                                <?php the_post_thumbnail('grid_news'); ?>
-                            <?php endif ;?>
+                                <?php wpsm_thumb ('grid_news') ?>
                             </a>
                         </figure>                                     
                     <?php } ?>   
@@ -57,15 +52,10 @@
                         <div class="edd_download_image">
                             <?php if (  (function_exists('has_post_thumbnail')) && (has_post_thumbnail())  ) { ?>
                                 <a href="<?php the_permalink();?>">
-                                <?php if( rehub_option( 'aq_resize') == 1 ) : ?>
-                                    <?php $img = get_post_thumb(); ?> 
-                                    <img src="<?php $params = array( 'width' => 336, 'height' => 220 ); echo bfi_thumb($img, $params); ?>" alt="<?php the_title_attribute(); ?>" />
-                                <?php else :?>    
-                                    <?php the_post_thumbnail('grid_news'); ?>
-                                <?php endif ;?>
+                                    <?php wpsm_thumb ('grid_news') ?>
                                 </a>                                     
                         <?php } ?>
-                        <?php if(rehub_option('rehub_framework_edd_rating') =='1') :?><?php rehub_get_user_resultsedd('small') ?><?php endif ;?>                        
+                        <?php rehub_get_user_resultsedd('small') ?>                       
                         </div>
                         <div class="edd_download_text">
                             <h3 class="edd_download_title" itemprop="name"><a href="<?php the_permalink();?>"><?php the_title_attribute();?></a></h3>

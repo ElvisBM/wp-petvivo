@@ -17,6 +17,32 @@ function rh_is_plugin_active_for_network( $plugin ) {
 }
 
 //////////////////////////////////////////////////////////////////
+// Locate template with support RH grandchild
+//////////////////////////////////////////////////////////////////
+function rh_locate_template($template_names, $load = false, $require_once = true ) {
+    $located = '';
+    foreach ( (array) $template_names as $template_name ) {
+        if ( !$template_name )
+            continue;
+        if(defined( 'RH_GRANDCHILD_DIR' ) && file_exists(RH_GRANDCHILD_DIR . $template_name)){
+            $located = RH_GRANDCHILD_DIR . '/' . $template_name;
+            break;            
+        }
+        if ( file_exists(STYLESHEETPATH . '/' . $template_name)) {
+            $located = STYLESHEETPATH . '/' . $template_name;
+            break;
+        } elseif ( file_exists(TEMPLATEPATH . '/' . $template_name) ) {
+            $located = TEMPLATEPATH . '/' . $template_name;
+            break;
+        }
+    } 
+    if ( $load && '' != $located )
+        load_template( $located, $require_once );
+      
+    return $located;
+}
+
+//////////////////////////////////////////////////////////////////
 // Helper Functions
 //////////////////////////////////////////////////////////////////
 function rehub_kses($html)
@@ -63,21 +89,22 @@ function kama_excerpt($args=''){
         $text        = isset($i['text']) ?          trim($i['text'])        : '';
         $save_format = isset($i['save_format']) ?   trim($i['save_format'])         : false;
         $echo        = isset($i['echo']) ?          false                   : true;
+        $more        = isset($i['more']) ?          true                   : false;        
 
     $out ='';   
     if (!$text){
         $out = $post->post_excerpt ? $post->post_excerpt : $post->post_content;
         $out = preg_replace ("~\[/?.*?\]~", '', $out ); //delete shortcodes:[singlepic id=3]
         // for <!--more-->
-        //if( !$post->post_excerpt && strpos($post->post_content, '<!--more-->') ){
-        //  preg_match ('/(.*)<!--more-->/s', $out, $match);
-        //  $out = str_replace("\r", '', trim($match[1], "\n"));
-        //  $out = preg_replace( "!\n\n+!s", "</p><p>", $out );
-        //  $out = "<p>". str_replace( "\n", "<br />", $out ) ."</p>";
-        //  if ($echo)
-        //      return print $out;
-        //  return $out;
-        //}
+        if($more && !$post->post_excerpt && strpos($post->post_content, '<!--more-->') ){
+          preg_match ('/(.*)<!--more-->/s', $out, $match);
+          $out = str_replace("\r", '', trim($match[1], "\n"));
+          $out = preg_replace( "!\n\n+!s", "</p><p>", $out );
+          $out = "<p>". str_replace( "\n", "<br />", $out ) ."</p>";
+          if ($echo)
+              return print $out;
+          return $out;
+        }
     }
 
     $out = $text.$out;
@@ -292,7 +319,7 @@ function dimox_breadcrumbs() {
       echo $before . $post_type->labels->singular_name . $after;
     } elseif ( is_attachment() ) {
       $parent = get_post($parent_id);
-      $cat = get_the_category($parent->ID); $cat = $cat[0];
+      $cat = get_the_category($parent->ID); $cat = (!empty($cat[0])) ? $cat[0] : '';
       if ($cat) {
         $cats = get_category_parents($cat, TRUE, $delimiter);
         $cats = str_replace('<a', $link_before . '<a' . $link_attr, $cats);
@@ -741,7 +768,7 @@ if(!function_exists('rh_fix_domain')){
 
 //Get social buttons
 if( !function_exists('rehub_social_inimage') ) {
-function rehub_social_inimage($small = '', $favorite = '', $rh_favorite = '')
+function rehub_social_inimage($small = '', $favorite = '', $rh_favorite = '', $type = '')
 {   
     global $post;
     if ($small == 'minimal') {
@@ -769,12 +796,22 @@ function rehub_social_inimage($small = '', $favorite = '', $rh_favorite = '')
     if ($rh_favorite == '1' && !function_exists('get_favorites_button')) {
         $output .= getHotThumb($post->ID, false, false, true);
     }    
+    if($type=='user' && function_exists('bp_core_get_user_domain')){
+      $link = bp_core_get_user_domain(bp_displayed_user_id());
+      $image = bp_get_displayed_user_avatar('type=full&html=false');
+      $title = get_the_title().' - '.get_bloginfo('name' );
+    }
+    else{
+      $link = get_permalink();
+      $image = get_post_thumb();
+      $title = get_the_title();
+    }
     $output .= do_action('rh_social_inimage_before');
-    $output .='<span data-href="https://www.facebook.com/sharer/sharer.php?u='.urlencode(get_permalink()).'" class="fb share-link-image" data-service="facebook"><i class="fa fa-facebook"></i></span>';
-    $output .='<span data-href="https://twitter.com/share?url='.urlencode(get_permalink()).'&text='.urlencode(html_entity_decode(get_the_title(), ENT_COMPAT, 'UTF-8')).'" class="tw share-link-image" data-service="twitter"><i class="fa fa-twitter"></i></span>';
-    $output .='<span data-href="https://pinterest.com/pin/create/button/?url='.urlencode(get_permalink()).'&amp;media='.get_post_thumb().'&amp;description='.urlencode(get_the_title()).'" class="pn share-link-image" data-service="pinterest"><i class="fa fa-pinterest-p"></i></span>';
+    $output .= '<span data-href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($link).'" class="fb share-link-image" data-service="facebook"><i class="fa fa-facebook"></i></span>';
+    $output .='<span data-href="https://twitter.com/share?url='.urlencode($link).'&text='.urlencode(html_entity_decode($title, ENT_COMPAT, 'UTF-8')).'" class="tw share-link-image" data-service="twitter"><i class="fa fa-twitter"></i></span>';
+    $output .='<span data-href="https://pinterest.com/pin/create/button/?url='.urlencode($link).'&amp;media='.$image.'&amp;description='.urlencode($title).'" class="pn share-link-image" data-service="pinterest"><i class="fa fa-pinterest-p"></i></span>';
     if ($small =='row' || $small =='flat' ) {
-        $output .='<span data-href="https://plus.google.com/share?url='.urlencode(get_permalink()).'" class="gp share-link-image" data-service="googleplus"><i class="fa fa-google-plus"></i></span>';
+        $output .='<span data-href="https://plus.google.com/share?url='.urlencode($link).'" class="gp share-link-image" data-service="googleplus"><i class="fa fa-google-plus"></i></span>';
     }
     $output .= do_action('rh_social_inimage_after');
     $output .='</div>';         

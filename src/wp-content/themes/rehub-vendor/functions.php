@@ -15,15 +15,8 @@ function enqueue_parent_theme_style() {
 // Add specific CSS class by filter
 add_filter('body_class','style_body_repick');
 function style_body_repick($classes) {
-$classes[] = 'separate_sidebar_bg';
-//if (rehub_option('rehub_bg_flat_color') !='' || rehub_option('rehub_color_background') !='' ){ 
-	$classes[] = 'colored_bg';
-//}	
-//if (rehub_option('rehub_content_shadow') !='' ){ 
-	$classes[] = 'no_bg_wrap';
-//}
-	// return the $classes array
-	return $classes;
+$classes[] = 'no_bg_wrap';
+return $classes;
 }
 
 //////////////////////////////////////////////////////////////////

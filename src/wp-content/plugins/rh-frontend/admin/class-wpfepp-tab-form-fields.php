@@ -358,14 +358,13 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 					$args
 				)
 			);
-
 			?>
-				<li class="wpfepp-widget-container<?php echo wpfepp_is_field_supported($field['type'], $post_type) ? '' : ' hidden'; ?>">
+				<li class="wpfepp-widget-container<?php echo wpfepp_is_field_supported( $field['type'], $post_type ) ? '' : ' hidden'; ?>">
 					<div class="wpfepp-widget-head">
 						<strong><?php echo $field['widget_label']; ?></strong>
-						<span class="wpfepp-expand"><i class="wpfepp-icon-arrow-down"></i></span>
+						<span class="wpfepp-expand"><span class="dashicons dashicons-arrow-down"></span></span>
 						<?php if( $field['type'] == 'custom_field' ) : ?>
-							<span class="wpfepp-custom-field-delete"><i class="wpfepp-icon-remove"></i></span>
+							<span class="wpfepp-custom-field-delete"><span class="dashicons dashicons-trash"></span></span>
 							<span>: <code><?php echo $field_key; ?></code></span>
 						<?php endif; ?>
 					</div>

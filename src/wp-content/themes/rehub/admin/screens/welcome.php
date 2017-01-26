@@ -93,6 +93,7 @@ if( $tf_username !== "" && $tf_purchase_code !== "" ) {
         <ul>
             <li><a href="https://wpsoul.com/how-optimize-speed-of-wordpress/" target="_blank">How to optimize speed of site</a></li>
             <li><a href="https://wpsoul.com/optimize-seo-wordpress/" target="_blank">How to make the best SEO optimization on site</a></li>
+            <li><a href="https://wpsoul.com/creating-social-business-advanced-membership-site-buddypress-and-s2member/" target="_blank">Set extended Membership on your site</a></li>
             <li><a href="https://wpsoul.com/creating-business-directory-site-with-search-filters/" target="_blank">Creating Directory site with Rehub</a></li>    
             <li><a href="https://wpsoul.com/how-to-create-multi-vendor-shop-on-wordpress/" target="_blank">Creating Multivendor site with Rehub</a></li> 
             <li><a href="https://wpsoul.com/sites-autopilot-make-money-making-site-easy-wordpress/" target="_blank">More easy ways to create price comparison, affiliate sites with Rehub and Content Egg</a></li>

@@ -428,4 +428,48 @@ class TextHelper {
         return $domain;
     }
 
+    public static function getRandomFromCommaList($str)
+    {
+        $str = TextHelper::commaList($str);
+        $arr = explode(",", $str);
+        return $arr[array_rand($arr)];
+    }
+
+    /**
+     * Verify a correct EAN13 structure
+     */
+    public static function isEan($barcode)
+    {
+        // try to fix...
+        if (!preg_match("/^[0-9]{13}$/", $barcode))
+            $barcode = ltrim($barcode, '0');
+        
+        if (!preg_match("/^[0-9]{13}$/", $barcode))
+            return false;
+
+        $digits = (string) $barcode;
+        $even_sum = $digits[1] + $digits[3] + $digits[5] +
+                $digits[7] + $digits[9] + $digits[11];
+        $even_sum_three = $even_sum * 3;
+        $odd_sum = $digits[0] + $digits[2] + $digits[4] +
+                $digits[6] + $digits[8] + $digits[10];
+        $total_sum = $even_sum_three + $odd_sum;
+        $next_ten = (ceil($total_sum / 10)) * 10;
+        $check_digit = $next_ten - $total_sum;
+        if ($check_digit == $digits[12])
+            return true;
+        return false;
+    }
+
+    /**
+     * Is valid amazon ASIN
+     */
+    public static function isAsin($str)
+    {
+        if (preg_match('/B[0-9]{2}[0-9A-Z]{7}|[0-9]{9}(X|0-9])/', $str))
+            return true;
+        else
+            return false;
+    }
+
 }

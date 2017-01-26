@@ -637,7 +637,7 @@ function rehub_create_btn ($btn_more='', $showme = '') {
 		<?php elseif (!empty($aff_url_exist)) : ?>
 
 			<?php if (version_compare(PHP_VERSION, '5.3.0', '>=')) {
-				include(locate_template( 'inc/parts/affeggbutton.php' ) );
+				include(rh_locate_template( 'inc/parts/affeggbutton.php' ) );
 			} ?>
 		<?php elseif (vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.review_post_schema_type') == 'review_post_review_product') : ?>
 			<?php $review_aff_link = vp_metabox('rehub_post.review_post.0.review_post_product.0.review_aff_link');
@@ -754,7 +754,7 @@ if(!empty($offer_url_exist) ) :
 	$out = esc_url($offer_url);
 elseif(!empty($aff_url_exist)) :
 	if (version_compare(PHP_VERSION, '5.3.0', '>=')) :
-		include(locate_template( 'inc/parts/affeggurl.php' ) );
+		include(rh_locate_template( 'inc/parts/affeggurl.php' ) );
 	endif; 
 elseif (vp_metabox('rehub_post.rehub_framework_post_type') == 'review' && vp_metabox('rehub_post.review_post.0.review_post_schema_type') == 'review_post_review_product') :
 	$review_aff_link = vp_metabox('rehub_post.review_post.0.review_post_product.0.review_aff_link');
@@ -839,7 +839,7 @@ function rehub_create_price_for_list($id) {
 if( !function_exists('rehub_quick_offer') ) {
 function rehub_quick_offer($id=''){
 	global $post;
-	$postid = (!empty($id)) ? $id : $post->ID;
+	$postid = (!empty($id)) ? (int)$id : $post->ID;
 	$multiofferrows = get_post_meta($postid, 'rehub_multioffer_group', true);
 	if(!empty($multiofferrows[0]['multioffer_url'])){
 		$result_min = array();
@@ -872,7 +872,7 @@ function rehub_quick_offer($id=''){
 			}
             $price_clean = rehub_price_clean($offer_price); 
             $result_min[] = $price_clean;							
-			include(locate_template('inc/parts/multiofferpart.php'));
+			include(rh_locate_template('inc/parts/multiofferpart.php'));
 		}
 		echo '</div>';
 		if (!empty($result_min)) {
@@ -899,7 +899,7 @@ function rehub_quick_offer($id=''){
 		$offer_coupon_mask = get_post_meta( $postid, 'rehub_offer_coupon_mask', true );
 		$offer_desc = get_post_meta( $postid, 'rehub_offer_product_desc', true );
 		$offer_brand_url = esc_url (get_post_meta( $postid, 'rehub_offer_logo_url', true ));
-		include(locate_template('inc/parts/singleofferpart.php'));	
+		include(rh_locate_template('inc/parts/singleofferpart.php'));	
 	}	
 }
 }
@@ -1089,9 +1089,7 @@ if (!function_exists('rehub_save_meta_ce')) {
             		else{
             			$logo = '';
             		}
-            		if($logo){
-            			update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 
-            		}
+            		update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 
 	    			    			    			    		
 		    		if(!empty ($cegg_fields[$keyupdate]['description'])) {
 		    			update_post_meta($post_id, 'rehub_offer_product_desc', esc_html($cegg_fields[$keyupdate]['description'])); 
@@ -1186,15 +1184,22 @@ function rh_save_autoblog_ce ($post_id){
 	    		if(!empty ($cegg_fields[0]['img'])) {
 	    			update_post_meta($post_id, 'rehub_offer_product_thumb', $cegg_fields[0]['img']); 
 	    		}
-	    		if(!empty ($cegg_fields[0]['extra']['domain'])) {
+	    		if(!empty ($cegg_fields[0]['domain'])) {
+	    			$domain = $cegg_fields[0]['domain'];
+	    			update_post_meta($post_id, 'rehub_offer_domain', $domain); 
+	    		}		    		
+	    		elseif(!empty ($cegg_fields[0]['extra']['domain'])) {
 	    			$domain = $cegg_fields[0]['extra']['domain'];
 	    			update_post_meta($post_id, 'rehub_offer_domain', $domain); 
 	    		}	
 	    		if(!empty ($cegg_fields[0]['merchant'])) {
 	    			$merchant = $cegg_fields[0]['merchant'];
 	    			update_post_meta($post_id, 'rehub_offer_merchant', $merchant); 
-	    		}	
-        		if (!empty($cegg_fields[0]['extra']['logo'])){
+	    		}
+        		if (!empty($cegg_fields[0]['logo'])){
+        			$logo = $cegg_fields[0]['logo'];
+        		}	    			
+        		elseif (!empty($cegg_fields[0]['extra']['logo'])){
         			$logo = $cegg_fields[0]['extra']['logo'];
         		}
         		elseif(!empty($cegg_fields[0]['extra']['MerchantLogoURL'])){
@@ -1206,9 +1211,7 @@ function rh_save_autoblog_ce ($post_id){
         		else{
         			$logo = '';
         		}
-        		if($logo){
-        			update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 
-        		}	    		
+        		update_post_meta($post_id, 'rehub_offer_logo_url', $logo);	 	    		
 	    		if(!empty ($cegg_fields[0]['module_id'])) {
 	    			update_post_meta($post_id, '_rehub_module_ce_id', $cegg_fields[0]['module_id']); 
 	    		}

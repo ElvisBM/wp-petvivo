@@ -119,17 +119,16 @@ $theme_options =  array(
 						array(
 							'type' => 'codeeditor',
 							'name' => 'rehub_analytics',
-							'label' => __('Analytics Code/js code', 'rehub_framework'),
+							'label' => __('Js code for footer', 'rehub_framework'),
 							'description' => __('Enter your Analytics code or any html, js code', 'rehub_framework'),
 							'theme' => 'chrome',
 							'mode' => 'html',
-						),
-						array(
-							'type' => 'toggle',
-							'name' => 'rehub_sidebar_left',
-							'label' => __('Set sidebar to left side?', 'rehub_framework'),
-							'default' => '0',
 						),	
+						array(
+							'type' => 'textarea',
+							'name' => 'rehub_analytics_header',
+							'label' => __('Js code for header (analytics)', 'rehub_framework'),						
+						),												
 						array(
 							'type' => 'toggle',
 							'name' => 'rehub_enable_front_vc',
@@ -138,202 +137,6 @@ $theme_options =  array(
 						),
 					),
 				),
-			),
-		),
-		array(
-			'title' => __('Homepage Options', 'rehub_framework'),
-			'name' => 'menu_4',
-			'icon' => 'font-awesome:fa-home',
-			'controls' => array(
-				array(
-					'type' => 'section',
-					'title' => __('Featured Area Options', 'rehub_framework'),
-					'fields' => array(
-						array(
-							'type' => 'toggle',
-							'name' => 'rehub_featured_toggle',
-							'label' => __('Display Featured Area', 'rehub_framework'),
-							'description' => __('Display the featured area on the homepage', 'rehub_framework'),
-							'default' => '0',
-						),	
-						array(
-							'type' => 'select',
-							'name' => 'rehub_featured_type',
-							'label' => __('Choose type of featured area', 'rehub_framework'),							
-							'items' => array(
-								array(
-									'value' => '1',
-									'label' => __('Featured area (slider + 2 posts)', 'rehub_framework'),
-								),
-								array(
-									'value' => '2',
-									'label' => __('Featured full width slider', 'rehub_framework'),
-								),
-								array(
-									'value' => '3',
-									'label' => __('Featured grid', 'rehub_framework'),
-								),								
-							),
-							'default' => array(
-								'1',
-							),
-							'dependency' => array(
-                            	'field' => 'rehub_featured_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),						
-						array(
-							'type' => 'color',
-							'name' => 'rehub_feature_color',
-							'label' => __('Set color for overlay in slider', 'rehub_framework'),
-							'description' => __('Or leave blank for slider without overlay', 'rehub_framework'),
-							'format' => 'rgba',
-							'dependency' => array(
-                            	'field' => 'rehub_featured_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							  
-						),													
-
-						array(
-							'type' => 'textbox',
-							'name' => 'rehub_featured_tag',
-							'label' => __('Set tag', 'rehub_framework'),
-							'description' => __('Set slug of tag', 'rehub_framework'),
-							'default' => '',
-							'dependency' => array(
-                            	'field' => 'rehub_featured_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),	
-
-						array(
-							'type' => 'textbox',
-							'name' => 'rehub_featured_number',
-							'label' => __('How many posts to show in slider', 'rehub_framework'),
-							'default' => '5',
-							'dependency' => array(
-                            	'field' => 'rehub_featured_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),																
-
-						array(
-							'type' => 'toggle',
-							'name' => 'rehub_exclude_posts',
-							'label' => __('Exclude featured posts from posts string', 'rehub_framework'),
-							'description' => __('Set this to on if you want to exclude your featured posts from posts string of other post blocks on home page', 'rehub_framework'),
-							'default' => '0',
-							'dependency' => array(
-                            	'field' => 'rehub_featured_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),
-					),
-				),
-
-				array(
-					'type' => 'section',
-					'title' => __('Home page carousel Options', 'rehub_framework'),
-					'fields' => array(
-						array(
-							'type' => 'toggle',
-							'name' => 'rehub_homecarousel_toggle',
-							'label' => __('Display Homepage carousel', 'rehub_framework'),
-							'description' => __('Display fullwidth carousel area on the homepage', 'rehub_framework'),
-							'default' => '0',
-						),
-						array(
-							'type' => 'select',
-							'name' => 'rehub_homecarousel_style',
-							'label' => __('Choose type of carousel', 'rehub_framework'),							
-							'items' => array(
-								array(
-									'value' => '1',
-									'label' => __('Text inside images', 'rehub_framework'),
-								),
-								array(
-									'value' => '2',
-									'label' => __('Text outside image', 'rehub_framework'),
-								),								
-							),
-							'default' => array(
-								'1',
-							),
-							'dependency' => array(
-                            	'field' => 'rehub_homecarousel_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),						
-						array(
-							'type' => 'toggle',
-							'name' => 'rehub_homecarousel_ed',
-							'label' => __('Editor\'s choice posts', 'rehub_framework'),
-							'description' => __('Display posts with editor\'s choice label?', 'rehub_framework'),
-							'default' => '0',
-							'dependency' => array(
-                            	'field' => 'rehub_homecarousel_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),																	
-						array(
-							'type' => 'textbox',
-							'name' => 'rehub_homecarousel_tag',
-							'label' => __('Or from tag', 'rehub_framework'),
-							'description' => __('Or enter name of tag for posts to show (also disable checkbox above for this)', 'rehub_framework'),
-							'default' => '',
-							'dependency' => array(
-                            	'field' => 'rehub_homecarousel_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),
-						array(
-							'type' => 'notebox',
-							'name' => 'rehub_homecarousel_note',
-							'label' => __('Note', 'rehub_framework'),
-							'description' => __('You need to have minimum 5 posts for correct work of feature section. Editor\'s choice label you can set in options of each post on right section.', 'rehub_framework'),
-							'status' => 'normal',
-							'dependency' => array(
-                            	'field' => 'rehub_homecarousel_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),
-						array(
-							'type' => 'toggle',
-							'name' => 'rehub_homecarousel_label',
-							'label' => __('Show badge on carousel', 'rehub_framework'),
-							'description' => __('Display badge on carousel?', 'rehub_framework'),
-							'default' => '1',
-							'dependency' => array(
-                            	'field' => 'rehub_homecarousel_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),
-						array(
-							'type' => 'color',
-							'name' => 'rehub_label_color',
-							'label' => __('Default color for editor\'s review box and total score', 'rehub_framework'),
-							'description' => __('Choose the background color or leave blank for default red color', 'rehub_framework'),	
-							'format' => 'hex',
-							'dependency' => array(
-								'field'    => 'rehub_homecarousel_toggle',
-								'function' => 'vp_dep_boolean',
-							),							
-						),												
-						array(
-							'type' => 'textbox',
-							'name' => 'rehub_homecarousel_label_text',
-							'label' => __('Set text on label', 'rehub_framework'),
-							'description' => __('Text in span tag will be on second row, please, use short text (8 symbols for 1 row, 7 symbols for 2 row)', 'rehub_framework'),
-							'default' => 'Editor\'s choice',
-							'dependency' => array(
-                            	'field' => 'rehub_homecarousel_toggle',
-                            	'function' => 'vp_dep_boolean',
-                            ),							
-						),																		
-					),
-				),
-
-
 			),
 		),
 		array(
@@ -352,15 +155,15 @@ $theme_options =  array(
 							'items' => array(
 								array(
 									'value' => 'default',
-									'label' => __('Default - orange', 'rehub_framework'),
+									'label' => __('Default - green', 'rehub_framework'),
 								),
 								array(
 									'value' => 'blue',
 									'label' => __('Blue', 'rehub_framework'),
 								),
 								array(
-									'value' => 'green',
-									'label' => __('Green', 'rehub_framework'),
+									'value' => 'orange',
+									'label' => __('Orange', 'rehub_framework'),
 								),
 								array(
 									'value' => 'violet',
@@ -388,7 +191,7 @@ $theme_options =  array(
 							'label' => __('Custom secondary color', 'rehub_framework'),
 							'description' => __('Set secondary color (for search buttons, tabs, etc).', 'rehub_framework'),
 							'format' => 'hex',
-							'default'=> '#66B22C',							
+							'default'=> '#000000',							
 
 						),							
 						array(
@@ -396,8 +199,14 @@ $theme_options =  array(
 							'name' => 'rehub_btnoffer_color',
 							'label' => __('Set offer buttons color.', 'rehub_framework'),
 							'format' => 'hex',
-							'default'=> '#fb7203',						
+							'default'=> '#43c801',						
 						),	
+						array(
+							'type' => 'toggle',
+							'name' => 'enable_smooth_btn',
+							'label' => __('Enable smooth design for inputs?', 'rehub_framework'),
+							'default' => '0',
+						),						
 						array(
 							'type' => 'color',
 							'name' => 'rehub_color_link',
@@ -408,15 +217,25 @@ $theme_options =  array(
 				),
 				array(
 					'type' => 'section',
-					'title' => __('Background settings', 'rehub_framework'),
+					'title' => __('Layout settings', 'rehub_framework'),
 					'fields' => array(
 						array(
-							'type' => 'color',
-							'name' => 'rehub_bg_flat_color',
-							'label' => __('Create flat color for background', 'rehub_framework'),
-							'description' => __('This will disable default background image and add flat color. If you want to add background image, use fields below', 'rehub_framework'),
-							'format' => 'hex',
+							'type' => 'toggle',
+							'name' => 'rehub_sidebar_left',
+							'label' => __('Set sidebar to left side?', 'rehub_framework'),
+							'default' => '0',
+						),	
+						array(
+							'type' => 'toggle',
+							'name' => 'rehub_body_block',
+							'label' => __('Enable boxed version?', 'rehub_framework'),
+							'default' => '0',
 						),						
+						array(
+							'type' => 'toggle',
+							'name' => 'rehub_content_shadow',
+							'label' => __('Disable box borders under content box?', 'rehub_framework'),				
+						),													
 						array(
 							'type' => 'color',
 							'name' => 'rehub_color_background',
@@ -428,7 +247,7 @@ $theme_options =  array(
 							'type' => 'upload',
 							'name' => 'rehub_background_image',
 							'label' => __('Background Image', 'rehub_framework'),
-							'description' => __('Upload a background image', 'rehub_framework'),
+							'description' => __('Upload a background image. Works only if you set also background color above', 'rehub_framework'),
 							'default' => '',
 						),
 						array(

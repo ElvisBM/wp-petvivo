@@ -22,7 +22,7 @@ class AffilinetCouponsModule extends AffiliateParserModule {
     {
         return array(
             'name' => 'Affilinet Coupons',
-            'description' => __('Добавляет купоны партнерской сети Affili.net. Вы должны получить аппрув в каждой программе отдельно.', 'content-egg'),
+            'description' => __('Adds coupons from Affili.net. You must have approval from each program separately.', 'content-egg'),
         );
     }
 

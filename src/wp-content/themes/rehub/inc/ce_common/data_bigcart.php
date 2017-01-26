@@ -1,3 +1,4 @@
+<?php use ContentEgg\application\helpers\TemplateHelper;?>
 <div class="col_wrap_two">
     <div class="product_egg single_product_egg">
 
@@ -26,10 +27,10 @@
 
             <?php if($offer_price) : ?>
                 <div class="deal-box-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                    <sup class="cur_sign"><?php echo $currency; ?></sup><?php echo $offer_price ?>
+                    <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code, '<sup class="cur_sign">', '</sup>'); ?>
                     <?php if($offer_price_old) : ?>
                     <span class="retail-old">
-                      <strike><span class="value"><?php echo $offer_price_old ?></span></strike>
+                      <strike><?php echo TemplateHelper::formatPriceCurrency($offer_price_old, $currency_code, '<span class="value">', '</span>'); ?></strike>
                     </span>
                     <?php endif ;?>                
                     <meta itemprop="price" content="<?php echo $clean_price ?>">
@@ -44,19 +45,28 @@
                     <div>
                         <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
                             <?php echo $btn_txt ; ?>
-                            <span class="aff_tag mtinside"><?php echo $merchant; ?></span>
+                            <span class="aff_tag mtinside">
+                                <img src="<?php echo esc_attr(TemplateHelper::getMerhantIconUrl($item, true)); ?>" />
+                                <?php if (!empty($merchant)):?>
+                                    <?php echo esc_html($merchant); ?>
+                                <?php elseif(!empty($domain)):?>
+                                    <?php echo esc_html($domain); ?>    
+                                <?php else:?>
+                                    <?php echo esc_html($item['domain']); ?>                                  
+                                <?php endif;?>
+                            </span>
                         </a>                                                
                     </div>
                 </div>
-            </div> 
-            <?php if(!empty($keyspecs)):?>
+            </div>  
+            <?php if(!empty($item['extra']['keyspecs'])):?>
                 <ul class="featured_list">
-                    <?php foreach ($keyspecs as $keyspec) :?>
+                    <?php foreach ($item['extra']['keyspecs'] as $keyspec) :?>
                         <li><?php echo $keyspec; ?></li>
                     <?php endforeach; ?>   
-                </ul>                       
+                </ul>
             <?php elseif ($description): ?>
-                <p><?php echo $description; ?></p> 
+                <p><?php echo $description; ?></p>                                                   
             <?php endif; ?>              
         </div>           
     </div> 

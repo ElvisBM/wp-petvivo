@@ -10,7 +10,8 @@ use ContentEgg\application\helpers\TemplateHelper;
     <div class="aff_offer_links">
 
             <?php $i=0; foreach ($items as $key => $item): ?>
-                <?php $afflink = $item['url'] ;?>
+                <?php $offer_post_url = $item['url'] ;?>
+                <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
                 <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
                 <?php $i++;?>  
                 <?php if(rehub_option('rehub_btn_text') !='') :?><?php $btn_txt = rehub_option('rehub_btn_text') ; ?><?php else :?><?php $btn_txt = __('Check it', 'rehub_framework') ;?><?php endif ;?>  

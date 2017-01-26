@@ -51,7 +51,7 @@ if ( $products->have_posts() ) : ?>
 
 			<?php while ( $products->have_posts() ) : $products->the_post(); ?>
 
-				<?php include(locate_template('inc/parts/woocolumnpart.php')); ?>
+				<?php include(rh_locate_template('inc/parts/woocolumnpart.php')); ?>
 
 			<?php endwhile; // end of the loop. ?>
 

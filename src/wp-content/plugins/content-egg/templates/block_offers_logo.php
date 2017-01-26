@@ -12,10 +12,6 @@ use ContentEgg\application\helpers\TemplateHelper;
 use ContentEgg\application\helpers\TextHelper;
 ?>
 
-<?php
-\wp_enqueue_style('egg-bootstrap');
-\wp_enqueue_style('content-egg-products');
-?>
 <div class="egg-container">
     <?php if ($title): ?>
         <h3><?php echo esc_html($title); ?></h3>

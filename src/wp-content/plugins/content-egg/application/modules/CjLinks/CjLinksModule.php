@@ -24,7 +24,7 @@ class CjLinksModule extends AffiliateParserModule {
         return array(
             'name' => 'CJ Links',
             'api_agreement' => 'http://www.cj.com/legal/ws-terms',
-            'description' => __('Добавляет текстовые ссылки, купоны и баннеры партнерской сети Commission Junction. Вы должны получить аппрув в каждой программы отдельно.', 'content-egg') .
+            'description' => __('Adds text links, coupons, banners from CJ.com. You must have approval from each program separately.', 'content-egg') .
             '<br>You may use simple Boolean logic operators (\' + \', \' - \') to obtain more relevant search results.'
         );
     }

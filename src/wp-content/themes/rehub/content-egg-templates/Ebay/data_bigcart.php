@@ -10,7 +10,8 @@ use ContentEgg\application\helpers\TemplateHelper;
 
 
 <?php foreach ($items as $item): ?>
-    <?php $afflink = $item['url'] ;?>
+    <?php $offer_post_url = $item['url'] ;?>
+    <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
     <?php $aff_thumb = $item['img'] ;?>
     <?php $offer_title = wp_trim_words( $item['title'], 20, '...' ); ?> 
     <?php $time_left = TemplateHelper::getTimeLeft($item['extra']['listingInfo']['endTimeGmt']); ?> 
@@ -36,7 +37,7 @@ use ContentEgg\application\helpers\TemplateHelper;
                 <h2 class="product_title entry-title">
                     <?php echo esc_attr($offer_title); ?> 
                     <?php if ($item['extra']['listingInfo']['bestOfferEnabled'] == true): ?>
-                        <span class="best_offer_badge"><?php _e('Best offer', 'rehub_framework') ?></span> 
+                        <span class="best_offer_badge"><?php _e('Best offer', 'rehub_framework') ?></span>
                     <?php endif; ?>
                 </h2>  
                 <?php if ($item['extra']['sellingStatus']['bidCount'] !== ''): ?>
@@ -69,10 +70,10 @@ use ContentEgg\application\helpers\TemplateHelper;
 
                 <?php if(!empty($item['price'])) : ?>
                     <div class="deal-box-price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-                        <sup class="cur_sign"><?php echo $item['currency']; ?></sup><?php echo TemplateHelper::price_format_i18n($item['price']); ?>
+                        <?php echo TemplateHelper::formatPriceCurrency($item['price'], $item['currencyCode'], '<sup class="cur_sign">', '</sup>'); ?>
                         <?php if(!empty($item['priceOld'])) : ?>
                         <span class="retail-old">
-                          <strike><span class="value"><?php echo TemplateHelper::price_format_i18n($item['priceOld']); ?></span></strike>
+                          <strike><?php echo TemplateHelper::formatPriceCurrency($item['priceOld'], $item['currencyCode'], '<span class="value">', '</span>'); ?></strike>
                         </span>
                         <?php endif ;?>                
                         <meta itemprop="price" content="<?php echo $item['price'] ?>">
@@ -87,7 +88,14 @@ use ContentEgg\application\helpers\TemplateHelper;
                         <div>
                             <a class="re_track_btn btn_offer_block" href="<?php echo esc_url($afflink) ?>" target="_blank" rel="nofollow">
                                 <?php echo $btn_txt ; ?>
-                                <span class="aff_tag mtinside"><?php echo rehub_get_site_favicon('http://ebay.com'); ?></span>
+                                <span class="aff_tag mtinside">
+                                    <img src="<?php echo esc_attr(TemplateHelper::getMerhantIconUrl($item, true)); ?>" />
+                                    <?php if (!empty($item['domain'])):?>
+                                        <?php echo esc_html($item['domain']); ?>
+                                    <?php elseif($item['extra']['domain']):?>
+                                        <?php echo esc_html($item['extra']['domain']); ?>            
+                                    <?php endif;?>                                  
+                                </span>
                             </a>                                                
                         </div>
                     </div>

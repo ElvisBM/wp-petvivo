@@ -4,7 +4,7 @@
   Description: A Hybrid magazine/shop/review/news Wordpress Theme
   Author: Wpsoul
   Author URI: https://wpsoul.com/
-  Version: 6.6.2
+  Version: 6.7
   Template: rehub
   Text Domain: rehubchild
 */
@@ -13,42 +13,12 @@
 -------------------------------------------------------------- */
 
 body { background: none #fff; }
-.main-nav.white_style {background: none #fff;box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1),0 0 0 1px rgba(0, 0, 0, 0.03);}
-.main-nav.dark_style{background: none #00c2b4;box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1),0 0 0 1px rgba(0, 0, 0, 0.03);}
+.main-nav.dark_style{background: none #00c2b4;}
 .main-nav.white_style nav.top_menu > ul > li > a  {padding: 5px 12px 8px 12px; font-weight: normal; font-size: 15px; text-transform: none; }
 .main-nav.dark_style nav.top_menu > ul > li > a  {font-size: 17px; text-transform: none; }
 nav.top_menu ul li ul li a{font-size: 95%}
 nav.top_menu > ul > li > a:hover, nav.top_menu > ul > li.current-menu-item a{border-top-color:#fff;}
-.separate_sidebar_bg .content{ box-shadow: none; margin: 20px auto; background-color: transparent; padding: 0 }
-.separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side:not(.visual_page_builder){box-sizing: border-box; background-color: #fff} 
-.colored_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .colored_bg .main-side:not(.visual_page_builder){border: 1px solid #ddd; padding: 25px;box-shadow: 0 2px 2px #ECECEC;}
 .category .wpsm-title.middle-size-title h5, .tag .wpsm-title.middle-size-title h5{padding: 0}
-
-body.no_bg_wrap .main-side, body.no_bg_wrap .vc_row.vc_rehub_container > .vc_col-sm-8, .content.no_shadow .vc_row.vc_rehub_container > .vc_col-sm-8{background-color: transparent !important; padding: 0 !important; box-shadow: none !important; border: none !important}
-body.no_bg_wrap .re_filter_panel, .content.no_shadow .re_filter_panel{background-color: #fff}
-
-@media screen and (min-width: 1225px) {
-.separate_sidebar_bg .content{ box-shadow: none; width: 1200px}
-.separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side:not(.full_width){ width: 834px }
-.separate_sidebar_bg.mediad_layout_enabled .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg.mediad_layout_enabled .main-side:not(.full_width){ width: 728px }
-}
-@media screen and (min-width: 1100px) {
-.separate_sidebar_bg.mediad_layout_enabled .content{ box-shadow: none; width: 1044px}
-}
-@media screen and (max-width: 1224px) and (min-width: 1024px){
-	.separate_sidebar_bg .content{width: 1002px;}
-	.separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side:not(.full_width){width: 680px}
-}
-@media screen and (max-width: 1023px) and (min-width: 768px){
-	.separate_sidebar_bg .content, .separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side, .separate_sidebar_bg .sidebar{width: 748px;}
-	.separate_sidebar_bg .content .sidebar .widget{width: 374px; column-width: 374px;-webkit-column-width: 374px;}
-}
-@media screen and (max-width: 767px){
-  body.no_bg_wrap .main-side, body.no_bg_wrap .vc_row.vc_rehub_container > .vc_col-sm-8, .content.no_shadow .vc_row.vc_rehub_container > .vc_col-sm-8{padding: 0 15px !important}
-	.separate_sidebar_bg .content, .separate_sidebar_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .separate_sidebar_bg .main-side{width: 100%}
-	.colored_bg .content .vc_row.vc_rehub_container > .vc_col-sm-8, .colored_bg .main-side:not(.visual_page_builder){box-shadow: 0 0 1px #bbb; padding: 15px}
-  .separate_sidebar_bg .content{margin: 10px 0}
-}
 
 .sidebar .widget.widget-meta-data-filter h3, .sidebar .widget.widget-meta-data-filter h5, .sidebar .widget.widget-meta-data-filter h4 a, .sidebar .mdf_widget_found_count, .sidebar .widget.widget-meta-data-filter, .sidebar .widget.widget-meta-data-filter h4.data-filter-section-title{color: #111}
 .sidebar .widget.widget-meta-data-filter { background-color: #fff; padding: 20px; border: 1px solid #ccc;}

@@ -2,9 +2,6 @@
 
 use ContentEgg\application\helpers\TemplateHelper;
 
-\wp_enqueue_style('egg-bootstrap');
-\wp_enqueue_style('content-egg-products');
-
 ?>
 
 <div class="egg-container egg-grid">
@@ -44,16 +41,16 @@ use ContentEgg\application\helpers\TemplateHelper;
                         <?php if ((int) $item['rating'] > 0 && (int) $item['rating'] <= 5): ?>
                             <div class="cegg-title-rating">
                                 <span class="rating_small"><?php
-                                    echo str_repeat("<span>&#x2605</span>", (int) $item['rating']);
-                                    echo str_repeat("<span>☆</span>", 5 - (int) $item['rating']);
-                                    ?></span>
+                            echo str_repeat("<span>&#x2605</span>", (int) $item['rating']);
+                            echo str_repeat("<span>☆</span>", 5 - (int) $item['rating']);
+                            ?></span>
                             </div>
                         <?php elseif (!empty($item['extra']['data']['rating'])): ?>
                             <div class="cegg-title-rating">
                                 <span class="rating_small"><?php
-                                    echo str_repeat("<span>&#x2605</span>", (int) $item['extra']['data']['rating']);
-                                    echo str_repeat("<span>☆</span>", 5 - (int) $item['extra']['data']['rating']);
-                                    ?></span>
+                            echo str_repeat("<span>&#x2605</span>", (int) $item['extra']['data']['rating']);
+                            echo str_repeat("<span>☆</span>", 5 - (int) $item['extra']['data']['rating']);
+                            ?></span>
                             </div>           
                         <?php endif; ?>
 

@@ -189,6 +189,7 @@ span.rehub-loader {
 
 .theme-browser .theme:nth-child(4n) {
     margin-right: 3%;
+    clear: both;
 }
 
 .theme-browser .theme:nth-child(12n) {

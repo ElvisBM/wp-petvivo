@@ -28,7 +28,7 @@ class AeIntegrationConfig extends Config {
 
     public function add_admin_menu()
     {
-        \add_submenu_page(Plugin::slug, __('AE интеграция', 'content-egg') . ' &lsaquo; Content Egg', __('AE интеграция', 'content-egg'), 'manage_options', $this->page_slug(), array($this, 'settings_page'));
+        \add_submenu_page(Plugin::slug, __('Affiliate Egg integration', 'content-egg') . ' &lsaquo; Content Egg', __('Affiliate Egg integration', 'content-egg'), 'manage_options', $this->page_slug(), array($this, 'settings_page'));
     }
 
     protected function options()
@@ -39,7 +39,7 @@ class AeIntegrationConfig extends Config {
         $aff_egg_modules = \Keywordrush\AffiliateEgg\ShopManager::getInstance()->getSearchableItemsList(true, false, true);
         return array(
             'modules' => array(
-                'title' => __('Активировать модули', 'content-egg'),
+                'title' => __('Activate modules', 'content-egg'),
                 'description' => '',
                 'checkbox_options' => $aff_egg_modules,
                 'callback' => array($this, 'render_checkbox_list'),

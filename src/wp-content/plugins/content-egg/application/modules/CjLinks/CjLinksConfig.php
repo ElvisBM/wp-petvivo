@@ -18,7 +18,7 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
         $optiosn = array(
             'dev_key' => array(
                 'title' => 'Developer Key <span class="cegg_required">*</span>',
-                'description' => __('Ключ для доступа к CJ API. Получить нужно <a href="https://api.cj.com/sign_up.cj">здесь</a>.', 'content-egg'),
+                'description' => __('CJ API access key. You can get it <a href="https://api.cj.com/sign_up.cj">here</a>.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -26,7 +26,7 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Developer Key" не может быть пустым.', 'content-egg'),
+                        'message' => __('The "Developer Key" can not be empty', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
@@ -41,14 +41,14 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Website ID" не может быть пустым.', 'content-egg'),
+                        'message' => __('The field "Website ID" can not be empty.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page' => array(
-                'title' => __('Результатов', 'content-egg'),
-                'description' => __('Количество результатов для одного поискового запроса.', 'content-egg'),
+                'title' => __('Results', 'content-egg'),
+                'description' => __('Number of results for one search query.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 10,
                 'validator' => array(
@@ -58,8 +58,8 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'entries_per_page_update' => array(
-                'title' => __('Результатов для обновления', 'content-egg'),
-                'description' => __('Количество результатов для автоматического обновления и автоблоггинга.', 'content-egg'),
+                'title' => __('Results for updates ', 'content-egg'),
+                'description' => __('Number of results for automatic updates and autoblogging.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 3,
                 'validator' => array(
@@ -69,7 +69,7 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'advertiser_ids' => array(
-                'title' => __('Рекламодатели', 'content-egg'),
+                'title' => __('Advertisers', 'content-egg'),
                 'description' => 'Вы можете задать Adverticer ID (CID) через запятую для ограничения поиска только по этим рекламодателям. Введите "joined", чтобы искать по всем вашим рекламодателям.',
                 'callback' => array($this, 'render_input'),
                 'default' => 'joined',
@@ -83,7 +83,7 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
                 'description' => '',
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
-                    '' => __('Любой', 'content-egg'),
+                    '' => __('Any', 'content-egg'),
                     'Text Link' => 'Text Link',
                     'Banner' => 'Banner',
                     'Content Link' => 'Content Link',
@@ -107,7 +107,7 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
                 'description' => '',
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
-                    '' => __('Любой', 'content-egg'),
+                    '' => __('Any', 'content-egg'),
                     'coupon' => 'Coupon',
                     'sweepstakes' => 'Sweepstakes',
                     'product' => 'Hot Product',
@@ -120,11 +120,11 @@ class CjLinksConfig extends AffiliateParserModuleConfig {
                 'metaboxInit' => true,
             ),
             'category' => array(
-                'title' => __('Категория', 'content-egg'),
+                'title' => __('Category ', 'content-egg'),
                 'description' => '',
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
-                    '' => __('Любая', 'content-egg'),
+                    '' => __('Any', 'content-egg'),
                     'Accessories' => 'Accessories',
                     'Air' => 'Air',
                     'Apparel' => 'Apparel',

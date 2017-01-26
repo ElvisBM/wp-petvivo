@@ -119,17 +119,16 @@ $theme_options =  array(
 						array(
 							'type' => 'codeeditor',
 							'name' => 'rehub_analytics',
-							'label' => __('Analytics Code/js code', 'rehub_framework'),
+							'label' => __('Js code for footer', 'rehub_framework'),
 							'description' => __('Enter your Analytics code or any html, js code', 'rehub_framework'),
 							'theme' => 'chrome',
 							'mode' => 'html',
 						),
 						array(
-							'type' => 'toggle',
-							'name' => 'rehub_sidebar_left',
-							'label' => __('Set sidebar to left side?', 'rehub_framework'),
-							'default' => '0',
-						),	
+							'type' => 'textarea',
+							'name' => 'rehub_analytics_header',
+							'label' => __('Js code for header (analytics)', 'rehub_framework'),						
+						),						
 						array(
 							'type' => 'toggle',
 							'name' => 'rehub_enable_front_vc',
@@ -156,15 +155,15 @@ $theme_options =  array(
 							'items' => array(
 								array(
 									'value' => 'default',
-									'label' => __('Default - orange', 'rehub_framework'),
+									'label' => __('Default - green', 'rehub_framework'),
 								),
 								array(
 									'value' => 'blue',
 									'label' => __('Blue', 'rehub_framework'),
 								),
 								array(
-									'value' => 'green',
-									'label' => __('Green', 'rehub_framework'),
+									'value' => 'orange',
+									'label' => __('Orange', 'rehub_framework'),
 								),
 								array(
 									'value' => 'violet',
@@ -213,15 +212,20 @@ $theme_options =  array(
 				),
 				array(
 					'type' => 'section',
-					'title' => __('Background settings', 'rehub_framework'),
+					'title' => __('Layout settings', 'rehub_framework'),
 					'fields' => array(
 						array(
-							'type' => 'color',
-							'name' => 'rehub_bg_flat_color',
-							'label' => __('Create flat color for background', 'rehub_framework'),
-							'description' => __('This will disable default background image and add flat color. If you want to add background image, use fields below', 'rehub_framework'),
-							'format' => 'hex',
-						),						
+							'type' => 'toggle',
+							'name' => 'rehub_sidebar_left',
+							'label' => __('Set sidebar to left side?', 'rehub_framework'),
+							'default' => '0',
+						),	
+						array(
+							'type' => 'toggle',
+							'name' => 'rehub_body_block',
+							'label' => __('Enable boxed version?', 'rehub_framework'),
+							'default' => '0',
+						),																		
 						array(
 							'type' => 'color',
 							'name' => 'rehub_color_background',

@@ -6,13 +6,16 @@ use ContentEgg\application\components\ModuleManager;
 use ContentEgg\application\helpers\InputHelper;
 use ContentEgg\application\helpers\TextHelper;
 use ContentEgg\application\components\ContentManager;
+use ContentEgg\application\components\ContentProduct;
+use ContentEgg\application\components\ExtraData;
+use ContentEgg\application\Plugin;
 
 /**
  * EggMetabox class file
  *
  * @author keywordrush.com <support@keywordrush.com>
  * @link http://www.keywordrush.com/
- * @copyright Copyright &copy; 2015 keywordrush.com
+ * @copyright Copyright &copy; 2016 keywordrush.com
  */
 class EggMetabox {
 
@@ -46,7 +49,11 @@ class EggMetabox {
         }
         $this->modulesOptionsInit();
         $this->metadataInit();
-        \add_meta_box('content_meta_box', 'Content Egg', array($this, 'renderMetabox'), $post_type, 'normal', 'high');
+        $title = 'Content Egg';
+        if (Plugin::isFree())
+            $title .= '&nbsp;&nbsp;&nbsp;<a href="'.Plugin::pluginSiteUrl ().'">'.__('Upgrade to PRO Version', 'content-egg').'</a>';
+        
+        \add_meta_box('content_meta_box', $title, array($this, 'renderMetabox'), $post_type, 'normal', 'high');
         $this->angularInit();
     }
 
@@ -65,7 +72,7 @@ class EggMetabox {
         foreach (ModuleManager::getInstance()->getModules(true) as $module)
         {
             $module->enqueueScripts();
-            PluginAdmin::render('metabox_module', array('module_id' => $module->getId(), 'module' => $module));
+            $module->renderMetaboxModule();
         }
         echo '</div>';
         echo '</div>';
@@ -73,7 +80,7 @@ class EggMetabox {
 
     public function renderBlankMetabox($post)
     {
-        _e('Настройте и активируйте модули Content Egg плагин.', 'content-egg');
+        _e('Configure and activate modules of Content Egg plugin', 'content-egg');
     }
 
     private function metadataInit()
@@ -91,7 +98,7 @@ class EggMetabox {
                 continue;
             foreach ($post_meta as $key => $meta)
             {
-                if ($meta['description'])
+                if (!empty($meta['description']))
                     $post_meta[$key]['description'] = TextHelper::br2nl($meta['description']);
             }
             $init_data[$module->getId()] = array_values($post_meta);
@@ -110,6 +117,11 @@ class EggMetabox {
             $init_keywords[$module->getId()] = $keywords_meta;
         }
         $this->addAppParam('initKeywords', $init_keywords);
+        
+        // blank content model
+        $content = new ContentProduct;
+        $content->extra = new ExtraData;
+        $this->addAppParam('contentProduct', $content);
     }
 
     private function modulesOptionsInit()

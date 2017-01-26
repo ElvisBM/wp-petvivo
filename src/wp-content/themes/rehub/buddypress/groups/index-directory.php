@@ -1,27 +1,29 @@
 <?php get_header(); ?>
-<!-- CONTENT -->
-<div class="content"> 
-
-    <div class="clearfix">
-          <!-- Main Side -->
-          <div class="main-side clearfix full_width">
+<div id="buddypress">
+<div id="bprh-full-header-image" class="mb30">
+    <div id="bprh-full-header">
+        <div class="rh-container text-center">
             <div class="title"><h1><?php the_title(); ?></h1></div>
-			<article class="post" id="page-<?php the_ID(); ?>"> 
-            
-            <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
-			<?php bp_get_template_part( 'buddypress/groups/groups' ); ?>
-			<?php endwhile; endif; ?>  
+                <?php bp_get_template_part( 'common/search/dir-search-form' ); ?>
+                <!-- #group-dir-search -->
+        </div>     
+    </div>    
+    <span class="header-cover-image-mask"></span>
+</div>
 
-            </article>
-        </div>	
+<!-- CONTENT -->
+<div class="rh-container clearfix mb30"> 
 
-        <!-- /Main Side -->  
-        <!-- Sidebar -->
-        <?php //get_sidebar(); ?>
-        <!-- /Sidebar --> 
+    <div id="page-<?php the_ID(); ?>"> 
+
+    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+        <?php bp_get_template_part( 'buddypress/groups/groups' ); ?>
+    <?php endwhile; endif; ?>  
+
     </div>
 	
 </div>
-<!-- /CONTENT -->     
+<!-- /CONTENT --> 
+</div><!-- #buddypress -->    
 <!-- FOOTER -->
 <?php get_footer(); ?>

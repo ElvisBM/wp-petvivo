@@ -29,49 +29,63 @@
 <?php $coupon_mask_enabled = (!empty($offer_coupon) && ($offer_coupon_mask =='1' || $offer_coupon_mask =='on') && $expired!='1') ? '1' : ''; ?>
 <?php if($coupon_mask_enabled =='1') {$classes[] = 'reveal_enabled';}?>
 <?php do_action('woo_change_expired', $expired); //Here we update our expired?>
-<div class="woomainlist clearfix <?php echo implode(' ', $classes); ?>">
-	<div class="woomainlist_wrap_table">		
-    <div class="featured_woomainlist_left">
-    	<div>
-        <figure>
-        <a href="<?php the_permalink();?>">
-            <?php if ( $product->is_on_sale()) : ?>
-                <?php 
-                $percentage=0;
-                if ($product->regular_price) {
-                    $percentage = round( ( ( $product->regular_price - $product->sale_price ) / $product->regular_price ) * 100 );
-                }
-                if ($percentage && $percentage>0 && !$product->is_type( 'variable' )) {
-                    $sales_html = '<span class="onsale"><span>- ' . $percentage . '%</span></span>';
-                } else {
-                    $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $post, $product );
-                }
-                ?>
-                <?php echo $sales_html; ?>
-            <?php endif; ?>
-            <?php if ( $product->is_featured() ) : ?>
-                <?php if ($product->is_on_sale()) :?>
-                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured onsalefeatured">' . esc_html__( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
-                <?php else :?>
-                    <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . __( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
-                <?php endif ;?>
-            <?php endif; ?>        
-        <?php 
-            $showimg = new WPSM_image_resizer();
-            $showimg->use_thumb = true;
-            $showimg->no_thumb = rehub_woocommerce_placeholder_img_src('');
-            $height_figure_single = apply_filters( 're_woolistmain_height', 138 );
-            $showimg->height = $height_figure_single;
-            $showimg->width = $height_figure_single;
-            $showimg->crop = false;           
-            $showimg->show_resized_image();                                    
-        ?>
-        </a>
-        </figure> 
-        </div>  
-		<?php do_action( 'rehub_after_wooleft_list_thumb_figure' ); ?>
-		<div class="woomainlist_btn_block">
-            <div class="single_wooprice_count"><?php wc_get_template( 'loop/price.php' ); ?></div>
+<div class="news-community clearfix <?php echo rh_expired_or_not($post->ID, 'class');?> <?php echo implode(' ', $classes); ?>">
+    <?php if(rehub_option('woo_thumb_enable') == '1') :?><?php echo getHotThumb($post->ID, false, false, true);?><?php endif ;?>
+	<div class="newscom_wrap_table">		
+        <div class="featured_newscom_left">
+        	<div>
+            <figure>
+            <a href="<?php the_permalink();?>">
+                <?php if ( $product->is_on_sale()) : ?>
+                    <?php 
+                    $percentage=0;
+                    if ($product->regular_price) {
+                        $percentage = round( ( ( $product->regular_price - $product->sale_price ) / $product->regular_price ) * 100 );
+                    }
+                    if ($percentage && $percentage>0 && !$product->is_type( 'variable' )) {
+                        $sales_html = '<span class="onsale"><span>- ' . $percentage . '%</span></span>';
+                    } else {
+                        $sales_html = apply_filters( 'woocommerce_sale_flash', '<span class="onsale">' . esc_html__( 'Sale!', 'woocommerce' ) . '</span>', $post, $product );
+                    }
+                    ?>
+                    <?php echo $sales_html; ?>
+                <?php endif; ?>
+                <?php if ( $product->is_featured() ) : ?>
+                    <?php if ($product->is_on_sale()) :?>
+                        <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured onsalefeatured">' . esc_html__( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
+                    <?php else :?>
+                        <?php echo apply_filters( 'woocommerce_featured_flash', '<span class="onfeatured">' . __( 'Featured!', 'rehub_framework' ) . '</span>', $post, $product ); ?>
+                    <?php endif ;?>
+                <?php endif; ?>        
+            <?php 
+                $showimg = new WPSM_image_resizer();
+                $showimg->use_thumb = true;
+                $showimg->no_thumb = rehub_woocommerce_placeholder_img_src('');
+                $height_figure_single = apply_filters( 're_woolistmain_height', 138 );
+                $showimg->height = $height_figure_single;
+                $showimg->width = $height_figure_single;
+                $showimg->crop = false;           
+                $showimg->show_resized_image();                                    
+            ?>
+            </a>
+            </figure> 
+            </div>  
+            <?php if(rehub_option('woo_rhcompare') == 1) {echo wpsm_comparison_button(array('class'=>'rhwoolistcompare'));}?>                                  
+        </div>
+        <div class="newscom_detail">
+        	<div class="newscom_head">
+    		    <?php echo rh_expired_or_not($post->ID, 'span');?><h2><a href="<?php the_permalink();?>"><?php the_title();?></a></h2>
+                <div class="meta post-meta">
+                    <?php rh_post_header_meta( true, true, false, false, true ); ?>                               
+                </div>    
+            </div>
+    	    <p><?php kama_excerpt('maxchar=180'); ?></p>
+            <?php wc_get_template( 'loop/rating.php' );?>       
+            <?php do_action( 'rehub_vendor_show_action' ); ?>
+    	    <?php do_action( 'rehub_after_wooleft_list_thumb' ); ?>  
+        </div>
+        <div class="newscom_btn_block">
+            <div class="rewise-box-price rehub-main-font mb10"><?php wc_get_template( 'loop/price.php' ); ?></div>
             <div class="woobtn_block_part">
                 <?php if ( $product->is_in_stock() &&  $product->add_to_cart_url() !='') : ?>
                  <?php  echo apply_filters( 'woocommerce_loop_add_to_cart_link',
@@ -99,20 +113,6 @@
                     <?php endif;?>
                 <?php endif;?> 
             </div>            
-        </div>                                 
-    </div>
-    <div class="woomainlist_detail">
-    	<div class="woomainlist_head">
-	    	<?php if(rehub_option('woo_thumb_enable') == '1') :?><?php echo getHotLike(get_the_ID(), false, true); ?><?php endif ;?>
-		    <?php echo rh_expired_or_not($post->ID, 'span');?><h3><a href="<?php the_permalink();?>"><?php the_title();?></a></h3>
-		    <?php do_action( 'rehub_after_wooleft_list_thumb_title' ); ?>
-		  
-            <?php wc_get_template( 'loop/rating.php' );?>    
-        </div>
-	    <div class="woolistmain_desc"><?php kama_excerpt('maxchar=180'); ?></div>
-        <?php if(rehub_option('woo_rhcompare') == 1) {echo wpsm_comparison_button(array('class'=>'rhwoolistcompare'));}?>        
-        <?php do_action( 'rehub_vendor_show_action' ); ?>
-	    <?php do_action( 'rehub_after_wooleft_list_thumb' ); ?>  
-    </div>
+        </div>    
     </div>   
 </div>

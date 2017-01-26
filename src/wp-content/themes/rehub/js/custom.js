@@ -1,6 +1,6 @@
 /*
    Author: Igor Sunzharovskyi.
-   Author URI: http://sizam-design.com/
+   Author URI: https://wpsoul.com
 */
 /****** Helpers JS *****/
 
@@ -309,6 +309,10 @@ var re_ajax_search = {
         var iconsearch = callelem.parent().find('.fa-refresh'); 
         iconsearch.removeClass('fa-refresh fa-spin').addClass('fa-search');
         callelem.removeClass('searching-now');
+        var winheight = jQuery(window).height();
+        if (winheight < 700){
+          callelem.parent().parent().find('.re-aj-search-wrap').addClass( 're-aj-search-overflow' );
+        }
 
     },
 
@@ -373,13 +377,8 @@ var revMenuStyle = function() {
     if (menuList.find('.close-menu').length === 0) {
         menuList.append('<li class="close-menu"><span><i class="fa fa-times" aria-hidden="true"></i></span></li>');
     }
-    jQuery('#slide-menu-mobile .menu-item-has-children')
-        .children('a').addClass('submenu-toggle')
-        .after(
-            '<span class="submenu-toggle">\
-                    <i class="fa fa-angle-right"></i>\
-                </span>\
-            ');
+    jQuery('#slide-menu-mobile .menu-item-has-children').children('a').after('<span class="submenu-toggle"><i class="fa fa-angle-right"></i></span>');
+    jQuery('#slide-menu-mobile .menu-item-has-children:not(.rh-mobile-linkable)').children('a').addClass('submenu-toggle');
     menuList.on('click', '.submenu-toggle', function(evt) {
         evt.preventDefault();
         jQuery(this)
@@ -389,14 +388,7 @@ var revMenuStyle = function() {
     subMenu.each(function() {
         var $this = jQuery(this);
         if ($this.find('.back-mb').length === 0) {
-            $this
-                .prepend(
-                    '<li class="back-mb">\
-                            <span class="rehub-main-color">\
-                                '+translation.back+'\
-                            </span>\
-                        </li>\
-                    ');
+            $this.prepend('<li class="back-mb"><span class="rehub-main-color">'+translation.back+'</span></li>');
         }
         menu.on('click', '.back-mb span', function(evt) {
             evt.preventDefault();
@@ -607,8 +599,23 @@ jQuery(document).ready(function($) {
 		a.initialize(),jQuery("#rh-category-search .typeahead").typeahead({hint:!1,highlight:!0,minLength:1,autoselect:!0},{name:"categories",displayKey:"long_name",source:a.ttAdapter(),templates:{empty:['<div class="empty-message">','<strong>No results found.</strong>',"</div>"].join("\n")}}),jQuery("#category-search .typeahead").focus(),jQuery(".js-clear-search").on("click",function(){jQuery(this).parent().find(".typeahead").val(""),jQuery(this).addClass("hide")}),jQuery("#rh-category-search .typeahead").keyup(function(){jQuery(this).val().length>=3?jQuery(".js-clear-search").removeClass("hide"):jQuery(".js-clear-search").addClass("hide")}),jQuery(document).on("typeahead:selected",function(a,b){window.location=""+b.html_name})
 	}
 
+   if($('.rh-tilled-gallery').length > 0){
+      $('.rh-tilled-gallery').each(function(){
+         var galleryid = $(this).data('galleryid');
+         $(this).justifiedGallery({
+            lastRow : 'nojustify', 
+            rowHeight : 200, 
+            rel : 'prettyPhoto[rehub_postthumb_gallery_'+ galleryid + ']',
+            margins : 10,
+            captions : false,
+         }).on('jg.complete', function () {
+            $(this).find('a[rel^="prettyPhoto"]').prettyPhoto({social_tools:false, default_width: 854,default_height: 480});
+         });          
+      });    
+   }
+
    	/* responsive video*/
-	$('.content').find( 'iframe[src*="player.vimeo.com"], iframe[src*="youtube.com"]' ).each( function() {
+	$('.rh-container').find( 'iframe[src*="player.vimeo.com"], iframe[src*="youtube.com"]' ).each( function() {
 		var $video = $(this);
 		if ( $video.parents( 'object' ).length ) return;
 		if ($video.parent().hasClass('wpb_video_wrapper')) return;
@@ -690,43 +697,35 @@ jQuery(document).ready(function($) {
       $(this).closest('.rh-tabletext-block').toggleClass('closedtable');
    });          
 
-   //Coupons copy code function
-   $('.masked_coupon:not(.expired_coupon), .not_masked_coupon:not(.expired_coupon)').each(function(){
-      ZeroClipboard.config( { swfPath: translation.templateurl+"/js/zeroclipboard/ZeroClipboard.swf" } );
-      var $this = $(this);
-      var couponcode = $this.data('clipboard-text');    
-      var client = new ZeroClipboard( $this );
-      client.on( 'ready', function(event) {
-         //console.log( 'movie is loaded' );
-         client.on( 'copy', function(event) {
-            event.clipboardData.setData('text/plain', couponcode);
-         });  
-         client.on( 'aftercopy', function(event) {
-            $this.find('i.fa').replaceWith( '<i class="fa fa-check-square"></i>' );
-            $this.find('i.fa').fadeOut( 2500, function() {
-               $this.find('i.fa').replaceWith( '<i class="fa fa-scissors fa-rotate-180"></i>' ).fadeIn('slow');
-            });
-         });
-      });  
-      client.on( 'error', function(event) {
-         ZeroClipboard.destroy();         
-      });
-   });
-
    $(".rehub_offer_coupon.masked_coupon.expired_coupon").each(function() {
       var couponcode = $(this).data('clipboard-text');
       $(this).removeClass('masked_coupon woo_loop_btn coupon_btn btn_offer_block wpsm-button').addClass('not_masked_coupon').text(couponcode);
       $(this).closest('.reveal_enabled').removeClass('reveal_enabled');
-   });   
+   });  
+
+   //Coupons copy code function
+   if($('.rehub_offer_coupon:not(.expired_coupon)').length > 0){
+      var client = new Clipboard( '.rehub_offer_coupon:not(.expired_coupon)' );
+      var OfferCoupon = $('.rehub_offer_coupon:not(.expired_coupon)');
+      client.on( 'success', function(e) {
+         OfferCoupon.find('i').replaceWith( '<i class="fa fa-check-square"></i>' );
+         OfferCoupon.find('i').fadeOut( 2500, function() {
+            OfferCoupon.find('i').replaceWith( '<i class="fa fa-scissors fa-rotate-180"></i>' ).fadeIn('slow');
+         });
+      });
+      client.on( 'error', function(e) {
+         console.log(e);       
+      });      
+   }    
 
    	//external links
-   	$('.ext-source').replaceWith(function(){
-        return '<a href="' + $(this).data('dest') + '" target="_blank" rel="nofollow">' + $(this).html() + '</a>';
-    });
+   $('.ext-source').replaceWith(function(){
+      return '<a href="' + $(this).data('dest') + '" target="_blank" rel="nofollow">' + $(this).html() + '</a>';
+   });
 
-   	$('.int-source').replaceWith(function(){
-        return '<a href="' + $(this).data('dest') + '">' + $(this).html() + '</a>';
-    });    
+   $('.int-source').replaceWith(function(){
+      return '<a href="' + $(this).data('dest') + '">' + $(this).html() + '</a>';
+   });    
 
    //Infinite scroll js
    $('.inf_scr_wrap_auto').each(function() {
@@ -838,9 +837,6 @@ jQuery(document).ready(function($) {
    $(window).resize(function(){
 	re_sizebg();
       var w = $(window).width();
-      if(w > 320 && $('.header-top .top-nav ul').is(':hidden')) {
-         $('.header-top .top-nav ul').removeAttr('style');
-      }
       if (w > 1023){
         $('#slide-menu-mobile').hide();
         $('.offsetnav-overlay').hide();
@@ -854,12 +850,6 @@ jQuery(document).ready(function($) {
          $( ".ap-login-message-wrapper .ap-login-message + a" ).addClass('act-rehub-login-popup'); 
       }   
    }  
-
-   if ($('#rh_login_trigger_url').length > 0) {
-      if ($('#rehub-login-popup').length > 0) {
-         $( "#rh_login_trigger_url" ).addClass('act-rehub-login-popup'); 
-      }   
-   }    
 
    if ($('#respond .must-log-in a').length > 0) {
       if ($('#rehub-login-popup').length > 0) {
@@ -918,12 +908,17 @@ jQuery(document).ready(function($) {
       	window.location.href = gocustomurl;
       }       
       else {
-         $.pgwModal({
-            titleBar: false,
-            target: '#rehub-login-popup',
-            mainClassName : 'pgwModal re-user-popup-wrap',
-         });
-         $('.re-user-popup-wrap .rehub-errors').html('');
+         if($('#rehub-custom-login-url').length > 0){
+            var gocustomurl = $('#rehub-custom-login-url').data('customloginurl');
+            window.location.href = gocustomurl;
+         }else{
+            $.pgwModal({
+               titleBar: false,
+               target: '#rehub-login-popup',
+               mainClassName : 'pgwModal re-user-popup-wrap',
+            });
+            $('.re-user-popup-wrap .rehub-errors').html('');            
+         }
       }                
    });
 
@@ -936,7 +931,12 @@ jQuery(document).ready(function($) {
          var obj = $.parseJSON(data);
          $('.rehub-login-popup .rehub-errors').html(obj.message);       
          if(obj.error == false){
-            window.setTimeout(function(){location.reload()},200);
+            if(obj.redirecturl){
+              window.setTimeout(function(){window.location.href = obj.redirecturl;},200);
+            }
+            else{
+              window.setTimeout(function(){location.reload()},200);
+            }
             button.hide();
          }
          button.removeClass('loading');
@@ -1570,68 +1570,63 @@ jQuery('nav.top_menu > ul > li.menu-item-has-children').hoverIntent({
 })*/
 
 // User Rate functions
-jQuery(document).on('mousemove', '.user-rate-active' , function (e) {
+jQuery(document).on('mouseenter', '.user-rate-active .starrate' , function (e) {
     var rated = jQuery(this);
-    if( rated.hasClass('rated-done') ){
+    var rateditem = jQuery(this).closest('.user-rate');
+    var current_rated_count = rated.attr('data-ratecount');
+    if( rateditem.hasClass('rated-done') ){
       return false;
     }
-    if (!e.offsetX){
-      e.offsetX = e.clientX - jQuery(e.target).offset().left;
-    }
-    var offset = e.offsetX + 4;
-    if (offset > 100) {
-      offset = 100;
-    }
-    rated.find('.user-rate-image span').css('width', offset + '%');
-    var score = Math.floor(((offset / 10) * 5)) / 10;
-    if (score > 5) {
-      score = 5;
+    rateditem.find('.starrate').removeClass('active');
+    for (i = 1; i <= current_rated_count; i++) {
+        rateditem.find('.starrate'+i).addClass('active');
     }
 });
-jQuery(document).on('click', '.user-rate-active' , function (e) {
+jQuery(document).on('mouseleave', '.user-rate-active .starrate' , function (e) {
     var rated = jQuery(this);
-    if( rated.hasClass('rated-done') ){
+    var rateditem = jQuery(this).closest('.user-rate');
+    var current_rateddiv = rateditem.attr('data-rate');
+    if( rateditem.hasClass('rated-done') ){
       return false;
     }
-    var gg = rated.find('.user-rate-image span').width();
-    rated.find('.user-rate-image').hide();
-    rated.append('<span class="rehub-rate-load"></span>');
-    if (gg > 100) {
-      gg = 100;
+    rateditem.find('.starrate').removeClass('active');
+    for (i = 1; i <= current_rateddiv; i++) {
+        rateditem.find('.starrate'+i).addClass('active');
     }
-    ngg = (gg*5)/100;
-    var post_id = rated.attr('data-id');
-    var rate_type = rated.attr('data-ratetype');
-    var numVotes = rated.parent().find('.userrating-count').text();
-    jQuery.post(translation.ajax_url, { action:'rehub_rate_post' , post:post_id , type:rate_type , value:ngg}, function(data) {
-    var post_rateed = '.rate-post-'+post_id;
-      jQuery( post_rateed ).addClass('rated-done').attr('data-rate',gg);
-      rated.find('.user-rate-image span').width(gg+'%');
-      
-      jQuery(".rehub-rate-load").fadeOut(function () {
-
-        rated.parent().find('.userrating-score').html( ngg );
-        
-        if( (jQuery(rated.parent().find('.userrating-count'))).length > 0 ){
-          numVotes =  parseInt(numVotes)+1;
-          rated.parent().find('.userrating-count').html(numVotes);
-        }else{
-          rated.parent().find('small').hide();
+});
+jQuery(document).on('click', '.user-rate-active .starrate' , function (e) {
+    var rated = jQuery(this);
+    var rateditem = jQuery(this).closest('.user-rate');
+    var current_rated_count = rated.attr('data-ratecount');    
+    if( rateditem.hasClass('rated-done') ){
+      return false;
+    }
+    rateditem.find('.post-norsp-rate').hide();
+    rateditem.append('<span class="rehub-rate-load"><i class="fa fa-circle-o-notch fa-spin"></i></span>');
+    var post_id = rateditem.attr('data-id');
+    var rate_type = rateditem.attr('data-ratetype');
+    var numVotes = rateditem.parent().find('.userrating-count').text();
+    jQuery.post(translation.ajax_url, { action:'rehub_rate_post' , post:post_id , type:rate_type , value:current_rated_count}, function(data) {
+        if(data){
+            var post_rateed = '.rate-post-'+post_id;
+            jQuery( post_rateed ).addClass('rated-done').attr('data-rate',data);
+            for (i = 1; i <= current_rated_count; i++) {
+                rateditem.find('.starrate'+i).addClass('active');
+            }     
+            jQuery(".rehub-rate-load").fadeOut(function () {
+                rateditem.parent().find('.userrating-score').html( current_rated_count );
+                if( (jQuery(rateditem.parent().find('.userrating-count'))).length > 0 ){
+                    numVotes =  parseInt(numVotes)+1;
+                    rateditem.parent().find('.userrating-count').html(numVotes);
+                }else{
+                    rateditem.parent().find('small').hide();
+                }
+                rateditem.parent().find('strong').html(translation.your_rating);
+                rateditem.find('.post-norsp-rate').fadeIn();
+            });
         }
-        rated.parent().find('strong').html(translation.your_rating);
-        
-        rated.find('.user-rate-image').fadeIn();
-      });
     }, 'html');
     return false;
-});
-jQuery(document).on('mouseleave', '.user-rate-active' , function (e) {
-    var rated = jQuery(this);
-    if( rated.hasClass('rated-done') ){
-      return false;
-    }
-    var post_rate = rated.attr('data-rate');
-    rated.find(".user-rate-image span").css('width', post_rate + '%');
 });
 
 // Rate bar annimation
@@ -1794,7 +1789,7 @@ jQuery(window).load(function() {
       var stickyheight = (jQuery('.re-stickyheader').length > 0) ? jQuery('.re-stickyheader').height() : 0; 
       var length = jQuery(this).closest('.table_view_charts').height() - jQuery(this).height() - stickyheight + jQuery(this).closest('.table_view_charts').offset().top;
       var cell = jQuery(this);
-      var width = cell.width();
+      var width = cell.outerWidth();
       var height = cell.height() + 'px';
       var outerheight = cell.outerHeight() + 'px';
       cell.wrap(function() {
@@ -2058,4 +2053,74 @@ jQuery(window).load(function() {
    }}
 
    flexslidersiteInit();   
+});
+
+//Check responsive nav pills
+jQuery(function() {
+   if(jQuery('.responsive-nav-greedy').length > 0){
+
+      var $btnnavgreedy = jQuery('.responsive-nav-greedy .togglegreedybtn');
+      var $vlinksgreedy = jQuery('.responsive-nav-greedy .rhgreedylinks');
+      var $hlinksgreedy = jQuery('.responsive-nav-greedy .hidden-links');
+
+      var numOfItemsGreedy = 0;
+      var totalSpaceGreedy = 0;
+      var breakWidthsGreedy = [];
+
+      var greedytimer = function() {
+            $hlinksgreedy.addClass('rhhidden');
+         };      
+
+      // Get initial state
+      $vlinksgreedy.children().outerWidth(function(i, w) {
+         totalSpaceGreedy += w;
+         numOfItemsGreedy += 1;
+         breakWidthsGreedy.push(totalSpaceGreedy);
+      });
+
+      var availableSpace, numOfVisibleItems, requiredSpace;
+
+      var rh_responsive_pills_check = function() {
+
+      // Get instant state
+      availableSpace = $vlinksgreedy.width() - 10;
+
+      numOfVisibleItems = $vlinksgreedy.children().length;
+      requiredSpace = breakWidthsGreedy[numOfVisibleItems - 1];
+
+      // There is not enought space
+      if (requiredSpace > availableSpace) {
+         $vlinksgreedy.children().last().prependTo($hlinksgreedy);
+         numOfVisibleItems -= 1;
+         rh_responsive_pills_check();
+      // There is more than enough space
+      } else if (availableSpace > breakWidthsGreedy[numOfVisibleItems]) {
+         $hlinksgreedy.children().first().appendTo($vlinksgreedy);
+         numOfVisibleItems += 1;
+      }
+      // Update the button accordingly
+      $btnnavgreedy.attr("count", numOfItemsGreedy - numOfVisibleItems);
+      if (numOfVisibleItems === numOfItemsGreedy) {
+         $btnnavgreedy.addClass('rhhidden');
+      } else $btnnavgreedy.removeClass('rhhidden');
+      }
+
+      // Window listeners
+      jQuery(window).resize(function() {
+         rh_responsive_pills_check();
+      });
+
+      $btnnavgreedy.on('click', function() {
+         $hlinksgreedy.toggleClass('rhhidden');
+         clearTimeout(greedytimer);
+      });
+
+      $hlinksgreedy.on('mouseleave', function() {
+         setTimeout(greedytimer, 2000);
+      }).on('mouseenter', function() {
+         clearTimeout(greedytimer);
+      });      
+
+      rh_responsive_pills_check();
+   }
 });

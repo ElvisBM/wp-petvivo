@@ -4,7 +4,7 @@
 <?php while ($mdf_loop->have_posts()) : $mdf_loop->the_post(); ?>
 <div class="woo_offer_list">
 <?php $i=1;  $product = new WC_Product(get_the_ID()); global $product; ?>
-    <?php include(locate_template('inc/parts/woolistpart.php')); ?>
+    <?php include(rh_locate_template('inc/parts/woolistpart.php')); ?>
 <?php $i++; ?>   
 </div>
 <?php endwhile; // end of the loop.    ?>

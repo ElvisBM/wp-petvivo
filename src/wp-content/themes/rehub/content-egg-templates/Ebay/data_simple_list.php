@@ -20,7 +20,11 @@ elseif ($product_keyword_update) {
 <div class="egg_sort_list re_sort_list simple_sort_list mb20"><a name="aff-link-list"></a>
     <div class="aff_offer_links">
         <?php $i=0; foreach ($items as $key => $item): ?>
-            <?php $afflink = $item['url'] ;?>
+            <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
+            <?php $offer_price_old = (!empty($item['priceOld'])) ? $item['priceOld'] : ''; ?>
+            <?php $currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : ''; ?>        
+            <?php $offer_post_url = $item['url'] ;?>
+            <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
             <?php $aff_thumb = $item['img'] ;?>
             <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
             <?php $i++;?>  
@@ -40,26 +44,35 @@ elseif ($product_keyword_update) {
                         </div>                                
                     </div>                    
                     <div class="desc_col price_simple_col">
-                        <?php if(!empty($item['price'])) : ?>
+                        <?php if(!empty($offer_price)) : ?>
                             <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                                 <span class="price_count">
-                                    <span><?php echo $item['currency']; ?></span> <?php echo TemplateHelper::price_format_i18n($item['price']); ?>
-                                    <?php if(!empty($item['priceOld'])) : ?>
+                                    <span>
+                                        <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code, '<sup class="cur_sign">', '</sup>'); ?>
+                                    </span>
+                                    <?php if(!empty($offer_price_old)) : ?>
                                     <strike>
-                                        <span class="amount"><?php echo TemplateHelper::price_format_i18n($item['priceOld']); ?></span>
+                                        <?php echo TemplateHelper::formatPriceCurrency($offer_price_old, $currency_code, '<span class="amount">', '</span>'); ?>
                                     </strike>
-                                    <?php endif ;?>                                      
+                                    <?php endif ;?>                                     
                                 </span>
                                 <?php if ($item['extra']['listingInfo']['bestOfferEnabled'] == true): ?>
                                     <span class="best_offer_badge"><?php _e('Best offer', 'rehub_framework') ?></span> 
                                 <?php endif; ?>                                 
-                                <meta itemprop="price" content="<?php echo $item['price'] ?>">
-                                <meta itemprop="priceCurrency" content="<?php echo $item['currencyCode']; ?>">                        
+                                <meta itemprop="price" content="<?php echo $offer_price ?>">
+                                <meta itemprop="priceCurrency" content="<?php echo $currency_code; ?>">                        
                             </p>
                         <?php endif ;?>                        
                     </div>
                     <div class="desc_col shop_simple_col">
-                        <div class="aff_tag mt10"><?php echo rehub_get_site_favicon('http://ebay.com'); ?></div>                         
+                        <div class="aff_tag mt10">
+                            <img src="<?php echo esc_attr(TemplateHelper::getMerhantIconUrl($item, true)); ?>" />
+                            <?php if (!empty($item['domain'])):?>
+                                <?php echo esc_html($item['domain']); ?>
+                            <?php elseif($item['extra']['domain']):?>
+                                <?php echo esc_html($item['extra']['domain']); ?>            
+                            <?php endif;?>                             
+                        </div>                         
                     </div>
                     <div class="buttons_col">
                         <div class="priced_block clearfix">

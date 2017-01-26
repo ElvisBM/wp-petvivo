@@ -11,7 +11,7 @@ use ContentEgg\application\components\LinkHandler;
 use \Keywordrush\AffiliateEgg\ParserManager;
 
 /**
- * AmazonModule class file
+ * AEModule class file
  *
  * @author keywordrush.com <support@keywordrush.com>
  * @link http://www.keywordrush.com/
@@ -32,9 +32,10 @@ class AEModule extends AffiliateParserModule {
         $name = \Keywordrush\AffiliateEgg\ShopManager::getInstance()->getShopName($this->getMyShortId());
         $uri = \Keywordrush\AffiliateEgg\ShopManager::getInstance()->getShopUri($this->getMyShortId());
         $uri = str_replace('http://', '', $uri);
+        $uri = str_replace('www.', '', $uri);
         return array(
             'name' => 'AE:' . $name,
-            'description' => __('Поиск на основании парсера Affiliate Egg плагина для' . ' ' . $uri . '.', 'content-egg'),
+            'description' => sprintf(__('Affiliate Egg parser for %s', 'content-egg'), $uri),
         );
     }
 
@@ -103,6 +104,7 @@ class AEModule extends AffiliateParserModule {
             $content->unique_id = md5($r['orig_url']);
             $content->url = LinkHandler::createAffUrl($r['orig_url'], $deeplink);
             $content->orig_url = $r['orig_url'];
+            $content->domain = TextHelper::getHostName($r['orig_url']);            
             $content->img = $r['img'];
             $content->title = $r['title'];
             $content->description = $r['description'];
@@ -112,7 +114,8 @@ class AEModule extends AffiliateParserModule {
             $content->currency = TextHelper::currencyTyping($content->currencyCode);
             $content->manufacturer = $r['manufacturer'];
             $content->availability = $r['in_stock'];
-            $content->rating = $r['rating'];
+            if (isset($r['rating']))
+                $content->rating = $r['rating'];
 
             $content->extra = new ExtraDataAE;
             if (isset($r['extra']['features']))

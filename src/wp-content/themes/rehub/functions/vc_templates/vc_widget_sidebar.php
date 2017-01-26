@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
 $output = $el_position = $width = $el_class = $sidebar_id = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
@@ -15,9 +18,11 @@ ob_end_clean();
 $sidebar_value = trim($sidebar_value);
 $sidebar_value = (substr($sidebar_value, 0, 3) == '<li' ) ? '<ul>'.$sidebar_value.'</ul>' : $sidebar_value;
 //
-$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, 'sidebar' . $el_class, $this->settings['base'], $atts );
-$output .= "\n\t".'<div class="'.$css_class.'">';
-$output .= "\n\t\t\t".$sidebar_value;
-$output .= "\n\t".'</div> '.$this->endBlockComment('.sidebar');
+$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, '' . $el_class, $this->settings['base'], $atts );
+$output = '
+	<div class="sidebar ' . esc_attr( $css_class ) . '">
+		<div class="">' . $sidebar_value . '</div>
+	</div>
+';
 
 echo $output;

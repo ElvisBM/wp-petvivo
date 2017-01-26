@@ -44,27 +44,27 @@ class AutoblogTable extends MyListTable {
     function column_name($item)
     {
         if (!trim($item['name']))
-            $item['name'] = __('(без названия)', 'content-egg');
+            $item['name'] = __('(no title)', 'content-egg');
 
         $edit_url = '?page=content-egg-autoblog-edit&id=%d';
         $dublicate_url = '?page=content-egg-autoblog-edit&dublicate_id=%d';
 
         $actions = array(
-            'edit' => sprintf('<a href="' . $edit_url . '">%s</a>', $item['id'], __('Редактировать', 'content-egg')),
-            'run' => sprintf('<a class="run_avtoblogging" href="?page=content-egg-autoblog&action=run&id=%d">%s</a>', $item['id'], __('Запустить сейчас', 'content-egg')),
-            'dublicate' => sprintf('<a href="' . $dublicate_url . '">%s</a>', $item['id'], __('Дублировать', 'content-egg')),
-            'delete' => sprintf('<a class="content-egg-delete" href="?page=content-egg-autoblog&action=delete&id=%d">%s</a>', $item['id'], __('Удалить', 'content-egg')),
+            'edit' => sprintf('<a href="' . $edit_url . '">%s</a>', $item['id'], __('Edit', 'content-egg')),
+            'run' => sprintf('<a class="run_avtoblogging" href="?page=content-egg-autoblog&action=run&id=%d">%s</a>', $item['id'], __('Run now', 'content-egg')),
+            'dublicate' => sprintf('<a href="' . $dublicate_url . '">%s</a>', $item['id'], __('Duplicate ', 'content-egg')),
+            'delete' => sprintf('<a class="content-egg-delete" href="?page=content-egg-autoblog&action=delete&id=%d">%s</a>', $item['id'], __('Delete', 'content-egg')),
         );
-        $row_text = sprintf('<strong><a title="' . __('Редактировать', 'content-egg') . '" class="row-title" href="' . $edit_url . '">' . esc_html($item['name']) . '</a></strong>', $item['id']);
+        $row_text = sprintf('<strong><a title="' . __('Edit', 'content-egg') . '" class="row-title" href="' . $edit_url . '">' . esc_html($item['name']) . '</a></strong>', $item['id']);
         return sprintf('%s %s', $row_text, $this->row_actions($actions));
     }
 
     function column_status($item)
     {
         if ($item['status'])
-            return '<span style="color:green">' . __('Работает', 'content-egg') . '</span>';
+            return '<span style="color:green">' . __('Works', 'content-egg') . '</span>';
         else
-            return '<span style="color:red">' . __('Остановлен', 'content-egg') . '</span>';
+            return '<span style="color:red">' . __('Stoped', 'content-egg') . '</span>';
     }
 
     function column_keywords($item)
@@ -78,7 +78,7 @@ class AutoblogTable extends MyListTable {
                 $active++;
         }
 
-        $abbr_title = __('активных:', 'content-egg') . ' ' . $active . ', ' . __('всего:', 'content-egg') . ' ' . count($item['keywords']);
+        $abbr_title = __('active:', 'content-egg') . ' ' . $active . ', ' . __('total:', 'content-egg') . ' ' . count($item['keywords']);
         return '<abbr title="' . esc_attr($abbr_title) . '">' . $active . ' / ' . count($item['keywords']) . '</abbr>';
     }
 

@@ -13,26 +13,35 @@
             </div>                                
         </div>                    
         <div class="desc_col price_simple_col">
-            <?php if($clean_price) : ?>
+            <?php if($offer_price) : ?>
                 <p itemprop="offers" itemscope itemtype="http://schema.org/Offer">
                     <span class="price_count">
-                        <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code); ?>
+                        <?php echo TemplateHelper::formatPriceCurrency($offer_price, $currency_code, '<sup class="cur_sign">', '</sup>'); ?>
                         <?php if(!empty($offer_price_old)) : ?>
                         <strike>
-                            <span class="amount"><?php echo $offer_price_old ?></span>
+                            <span class="amount"><?php echo TemplateHelper::formatPriceCurrency($offer_price_old, $currency_code, '<span class="value">', '</span>'); ?></span>
                         </strike>
                         <?php endif ;?>                                      
                     </span> 
-                    <meta itemprop="price" content="<?php echo $clean_price ?>">
+                    <meta itemprop="price" content="<?php echo $offer_price ?>">
                     <meta itemprop="priceCurrency" content="<?php echo $currency_code; ?>">                        
                 </p>
             <?php endif ;?>                        
         </div>
         <div class="desc_col shop_simple_col">
-            <?php if($logo) :?>
+            <?php if(!empty($logo)) :?>
                 <div class="egg-logo"><img src="<?php echo $logo; ?>" alt="<?php echo esc_attr($offer_title); ?>" /></div>
-            <?php elseif ($merchant) :?>
-                <div class="aff_tag"><?php echo $merchant; ?></div>
+            <?php else :?>
+                <div class="aff_tag">
+                    <img src="<?php echo esc_attr(TemplateHelper::getMerhantIconUrl($item, true)); ?>" />
+                    <?php if (!empty($merchant)):?>
+                        <?php echo esc_html($merchant); ?>
+                    <?php elseif(!empty($domain)):?>
+                        <?php echo esc_html($domain); ?>    
+                    <?php else:?>
+                        <?php echo esc_html($item['domain']); ?>                                  
+                    <?php endif;?>
+                </div>
             <?php endif ;?>                         
         </div>
         <div class="buttons_col">

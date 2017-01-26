@@ -2,6 +2,8 @@
 
 namespace ContentEgg\application\components;
 
+use ContentEgg\application\Plugin;
+
 /**
  * Config class file
  *
@@ -233,6 +235,24 @@ abstract class Config {
         echo '<input type="hidden" name="' . esc_attr($args['option_name']) . '['
         . esc_attr($args['name']) . '] value="'
         . esc_attr($args['value']) . '" />';
+    }
+
+    public function render_color_picker($args)
+    {
+        echo '<input name="' . esc_attr($args['option_name']) . '['
+        . esc_attr($args['name']) . ']" id="'
+        . esc_attr($args['label_for']) . '" value="'
+        . esc_attr($args['value']) . '" />';
+        if (!empty($args['render_after']))
+            echo $args['render_after'];
+        if ($args['description'])
+        {
+            echo '<p class="description">' . $args['description'] . '</p>';
+        }
+        \wp_enqueue_style('wp-color-picker');
+        \wp_enqueue_script('wp-color-picker', admin_url('js/color-picker.min.js'));
+        $script = "jQuery(document).ready(function($){jQuery('#" . esc_attr($args['label_for']) . "').wpColorPicker();});";
+        echo '<script type="text/javascript">' . $script . '</script>';
     }
 
     public function option_exists($option)

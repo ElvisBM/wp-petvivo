@@ -3,6 +3,7 @@
 namespace ContentEgg\application\components;
 
 use ContentEgg\application\helpers\TextHelper;
+use ContentEgg\application\admin\GeneralConfig;
 
 /**
  * TemplateManager class file
@@ -80,7 +81,7 @@ abstract class TemplateManager {
             else
                 $templates[$template_id] = $template_id;
             if ($custom)
-                $templates[$template_id] .= ' ' . __('[пользовательский]', 'content-egg');
+                $templates[$template_id] .= ' ' . __('[user]', 'content-egg');
         }
         return $templates;
     }
@@ -125,7 +126,7 @@ abstract class TemplateManager {
     public function getViewPath($view_name)
     {
         $view_name = str_replace('.', '', $view_name);
-        if (substr($view_name, 0, 7) == 'custom/')
+        if (self::isCustomTemplate($view_name))
         {
             $view_name = substr($view_name, 7);
             foreach ($this->getCustomTempateDirs() as $custom_dir)
@@ -197,6 +198,16 @@ abstract class TemplateManager {
             $template = $this->getFullTemplateId($template);
 
         return $template;
+    }
+
+    public function enqueueProductsStyle()
+    {
+        \wp_enqueue_style('egg-bootstrap');
+        \wp_enqueue_style('egg-products');
+
+        $button_color = GeneralConfig::getInstance()->option('button_color');
+        $custom_css = ".egg-container .btn-success{background-color:" . \wp_strip_all_tags($button_color) . " !important}";
+        \wp_add_inline_style('egg-products', $custom_css);
     }
 
 }

@@ -33,8 +33,12 @@ class WPFEPP_Admin_Messages
 		add_action( 'admin_enqueue_scripts', array($this, 'enqueue') );
 	}
 
-	public function enqueue($hook){
-		wp_enqueue_script("wpfepp-admin-script", plugins_url( "static/js/admin.js" , dirname(__FILE__) ), array('jquery'), $this->version);
+	public function enqueue( $hook ) {
+		wp_register_script("wpfepp_admin_script", plugins_url( "static/js/admin.js" , dirname(__FILE__) ), array(), $this->version);
+		
+ 		if( $hook == 'rh-frontend_page_wpfepp_settings' || $hook == 'toplevel_page_wpfepp_form_manager' )
+			wp_enqueue_script( 'wpfepp_admin_script' );
+		return;
 	}
 
 	public function admin_notices() {

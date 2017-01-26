@@ -24,7 +24,7 @@ class ImageHelper {
             $newfilename = time();
 
         $uploads = \wp_upload_dir();
-        if ($newfilename = self::downloadImg($img_uri, $uploads['path'], $newfilename, $ext, $check_image_type))
+        if ($newfilename = self::downloadImg($img_uri, $uploads['path'], $newfilename, null, $check_image_type))
             return $newfilename;
         else
             return false;

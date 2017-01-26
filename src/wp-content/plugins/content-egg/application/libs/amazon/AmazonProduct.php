@@ -187,6 +187,8 @@ class AmazonProduct extends RestClient {
         {
             $item_id = implode(',', $item_id);
         }
+        // One or more (up to ten) positive integers that uniquely identify an item. 
+        // The meaning of the number is specified by IdType.
         $params['ItemId'] = $item_id;
 
         $response = $this->signedGet('', $params);
@@ -194,7 +196,7 @@ class AmazonProduct extends RestClient {
 
         return $this->_parseResult($decoded);
     }
-
+    
     /**
      * Encode URL according to RFC 3986
      * @param string $str UTF-8 string

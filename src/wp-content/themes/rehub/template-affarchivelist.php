@@ -10,14 +10,14 @@
 ?>
 <?php get_header(); ?>
 <!-- CONTENT -->
-<div class="content"> 
+<div class="rh-container"> 
     <?php if(rehub_option('rehub_featured_toggle') && is_front_page()) : ?>
         <?php get_template_part('inc/parts/featured'); ?>
     <?php endif; ?>
     <?php if(rehub_option('rehub_homecarousel_toggle') && is_front_page()) : ?>
         <?php get_template_part('inc/parts/home_carousel'); ?>
     <?php endif; ?> 
-    <div class="clearfix">
+    <div class="rh-content-wrap clearfix">
           <!-- Main Side -->
           <div class="main-side clearfix">
             <div class="title"><h1><?php the_title(); ?></h1></div>

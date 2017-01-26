@@ -16,7 +16,7 @@ class WPSM_Postfilters{
 		'orderby'=>'',
 		'order '=> 'DESC',
 		'meta_key'=>'',
-		'show'=>'12',
+		'show'=>12,
 		'offset'=>'',
 		'show_date' => '',		
 		'post_type'=>'',
@@ -214,7 +214,8 @@ class WPSM_Postfilters{
 		return $args;		
 	}
 
-	public static function re_show_brand_tax($type='list'){   
+	public static function re_show_brand_tax($type='list'){  
+		$term_brand_image = $brand_link = $brand_url = $brandtermname = '';
         if ($type == 'list'){
 	    	$term_list = get_the_term_list( get_the_ID(), 'dealstore', '<span class="store_post_meta_item">', ', ', '</span>' );
 	    	if(!is_wp_error($term_list)){
@@ -223,7 +224,6 @@ class WPSM_Postfilters{
         }  
         if ($type=='logo'){
 	        $brand_url = get_post_meta( get_the_ID(), 'rehub_offer_logo_url', true );
-	        $brandtermname = '';
 	        if (!empty ($brand_url)) {
 	            $term_brand_image = esc_url($brand_url);
 	        }  
@@ -236,15 +236,21 @@ class WPSM_Postfilters{
 	        		$brandterm = get_term( $term_id);
 	        		$brandtermname = $brandterm->name;
 	        	}
-		        if (!empty ($brand_url)) {
+		        if ($brand_url) {
 		            $term_brand_image = esc_url($brand_url);
 		        }  
 	        } 
-	        if (!empty($brand_link)){echo '<a href="' . esc_url( $brand_link ) . '">';}
-	        if (!empty($term_brand_image)) : 
+	        if(!$term_brand_image){
+	        	$domain = get_post_meta(get_the_ID(), 'rehub_offer_domain', true);
+	        	if($domain){
+	        		$term_brand_image = rh_ae_logo_get('http://'.$domain);
+	        	}
+	        }
+	        if ($brand_link){echo '<a href="' . esc_url( $brand_link ) . '">';}
+	        if ($term_brand_image) : 
 		        WPSM_image_resizer::show_static_resized_image(array('lazy'=> true, 'src'=> $term_brand_image, 'crop'=> false, 'height'=> 40, 'title'=> $brandtermname));
 			endif;
-			if (!empty($brand_link)){echo '</a>';}
+			if ($brand_link){echo '</a>';}
         }                
 	}		
 
@@ -584,7 +590,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key'=>'',
-	'show' => '5',	
+	'show' => 5,	
 	'offset' => '',
 	'show_date' => '',	
 	'show_coupons_only' => '',	
@@ -741,7 +747,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key'=>'',
-	'show' => '12',	
+	'show' => 12,	
 	'offset' => '',
 	'show_date' => '',	
 	'show_coupons_only' => '',	
@@ -782,7 +788,7 @@ else {
 	$infinitescrollwrap = '';
 }  
 $containerid = 'rh_woogrid_' . uniqid(); 
-$ajaxoffset = $show + $offset;  
+$ajaxoffset = (int)$show + (int)$offset;  
 $additional_vars = array();
 $additional_vars['columns'] = $columns;
 $additional_vars['woolinktype'] = $woolinktype; 
@@ -815,13 +821,13 @@ ob_start();
 		<div class="rh-flex-eq-height grid_woo products <?php echo $infinitescrollwrap; echo $col_wrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="woogridpart" id="<?php echo $containerid;?>" data-innerargs='<?php echo $json_innerargs;?>'>                   
 		
 			<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>
-			  	<?php include(locate_template('inc/parts/woogridpart.php')); ?>  
+			  	<?php include(rh_locate_template('inc/parts/woogridpart.php')); ?>  
 			<?php $i++; endwhile; ?>
 
 			<?php if ($enable_pagination == '1') :?>
 			    <div class="pagination"><?php rehub_pagination();?></div>
 			<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-			    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+			    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 			<?php endif;?>
 		</div> 
 		</div>
@@ -849,7 +855,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',
 	'meta_key'=>'',		
-	'show' => '12',	
+	'show' => 12,	
 	'offset' => '',	
 	'show_date' => '',
 	'show_coupons_only' => '',
@@ -891,7 +897,7 @@ elseif ($columns == '6_col'){
     $col_wrap = ' col_wrap_six';
 } 
 $containerid = 'rh_woocolumn_' . uniqid(); 
-$ajaxoffset = $show + $offset;    
+$ajaxoffset = (int)$show + (int)$offset;    
 $additional_vars = array();
 $additional_vars['columns'] = $columns;
 $additional_vars['woolinktype'] = $woolinktype;
@@ -929,13 +935,13 @@ ob_start();
 	<div class="rh-flex-eq-height column_woo products <?php echo $infinitescrollwrap; echo $col_wrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="woocolumnpart" data-innerargs='<?php echo $json_innerargs;?>' id="<?php echo $containerid;?>">                     
 
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>
-		   <?php include(locate_template('inc/parts/woocolumnpart.php')); ?>  
+		   <?php include(rh_locate_template('inc/parts/woocolumnpart.php')); ?>  
 		<?php $i++; endwhile; ?>
 
 		<?php if ($enable_pagination == '1') :?>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif;?>	
 	</div>
 	</div>
@@ -965,7 +971,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key'=>'',
-	'show' => '12',
+	'show' => 12,
 	'offset' => '',	
 	'show_date' => '',		
 	'show_coupons_only' => '',	
@@ -987,7 +993,7 @@ else {
 	$infinitescrollwrap = '';
 }  
 $containerid = 'rh_woolist_' . uniqid(); 
-$ajaxoffset = $show + $offset; 
+$ajaxoffset = (int)$show + (int)$offset; 
 ob_start(); 
 ?>
 
@@ -1004,7 +1010,7 @@ ob_start();
 	<div class="woo_offer_list <?php echo $infinitescrollwrap; ?>" data-filterargs='<?php echo $jsonargs;?>' data-template="woolistpart" id="<?php echo $containerid;?>">	                    
 		<a name="woo-link-list"></a>		
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  global $product;  ?>
-			<?php include(locate_template('inc/parts/woolistpart.php')); ?>
+			<?php include(rh_locate_template('inc/parts/woolistpart.php')); ?>
             <?php
                 $price_clean = $product->get_price();
                 $result_min[] = $price_clean;
@@ -1014,7 +1020,7 @@ ob_start();
 		<?php if ($enable_pagination == '1') :?>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif;?>	
 
 	</div>
@@ -1059,7 +1065,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key'=>'',
-	'show' => '12',
+	'show' => 12,
 	'offset' => '',	
 	'show_date' => '',		
 	'show_coupons_only' => '',
@@ -1081,7 +1087,7 @@ else {
 	$infinitescrollwrap = '';
 }  
 $containerid = 'rh_woorows_' . uniqid(); 
-$ajaxoffset = $show + $offset; 
+$ajaxoffset = (int)$show + (int)$offset; 
 ob_start(); 
 ?>
 
@@ -1109,13 +1115,13 @@ ob_start();
 	<div class="list_woo products <?php echo $infinitescrollwrap; ?>" data-filterargs='<?php echo $jsonargs;?>' data-template="woolistmain" id="<?php echo $containerid;?>">	                    
 		
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  global $product;  ?>
-			<?php include(locate_template('inc/parts/woolistmain.php')); ?>
+			<?php include(rh_locate_template('inc/parts/woolistmain.php')); ?>
 		<?php $i++; endwhile; ?>
 		
 		<?php if ($enable_pagination == '1') :?>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif;?>	
 	</div>
 	</div>
@@ -1146,7 +1152,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '12',
+	'show' => 12,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -1191,7 +1197,7 @@ else {
 	$infinitescrollwrap = '';
 }  
 $containerid = 'rh_dealgrid_' . uniqid();    
-$ajaxoffset = $show + $offset;   
+$ajaxoffset = (int)$show + (int)$offset;   
 $additional_vars = array();
 $additional_vars['columns'] = $columns;
 $additional_vars['aff_link'] = $aff_link;
@@ -1225,13 +1231,13 @@ ob_start();
 	<div class="eq_grid post_eq_grid rh-flex-eq-height <?php echo $col_wrap; echo $infinitescrollwrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="compact_grid" id="<?php echo $containerid;?>" data-innerargs='<?php echo $json_innerargs;?>'>
 
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>
-			<?php include(locate_template('inc/parts/compact_grid.php')); ?>
+			<?php include(rh_locate_template('inc/parts/compact_grid.php')); ?>
 		<?php endwhile; ?>
 
 		<?php if ($enable_pagination == '1') :?>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif ;?>
 
 	</div>
@@ -1262,7 +1268,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '12',
+	'show' => 12,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -1274,11 +1280,12 @@ $build_args = shortcode_atts(array(
 	'enable_pagination' => '',	
 	'show_coupons_only' =>'', //Filters end
 	'columns' => '3_col',
-	'exerpt_count' => '120',
+	'exerpt_count' => '110',
 	'enable_btn'=> '',
 	'disable_meta' => '',
 	'aff_link' => '',	
 	'filterpanel' => '',
+	'boxed' => '',
 	'taxdrop' => '',
 	'taxdroplabel' => '',	
 ), $atts, 'columngrid_loop'); 
@@ -1293,13 +1300,14 @@ else {
 	$infinitescrollwrap = '';
 }  
 $containerid = 'rh_clmgrid_' . uniqid();    
-$ajaxoffset = $show + $offset;   
+$ajaxoffset = (int)$show + (int)$offset;   
 $additional_vars = array();
 $additional_vars['columns'] = $columns;
 $additional_vars['aff_link'] = $aff_link;
 $additional_vars['exerpt_count'] = $exerpt_count;
 $additional_vars['disable_meta'] = $disable_meta;
 $additional_vars['enable_btn'] = $enable_btn;
+$additional_vars['boxed'] = $boxed;
 ob_start(); 
 ?>
 <?php rehub_vc_filterpanel_render($filterpanel, $containerid, $taxdrop, $taxdroplabel);?>
@@ -1338,13 +1346,13 @@ ob_start();
 	<div class="columned_grid_module rh-flex-eq-height <?php echo $infinitescrollwrap; echo $col_number_class?>" data-filterargs='<?php echo $jsonargs;?>' data-template="column_grid" id="<?php echo $containerid;?>" data-innerargs='<?php echo $json_innerargs;?>'>                    
 		
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();?>
-			<?php include(locate_template('inc/parts/column_grid.php')); ?>
+			<?php include(rh_locate_template('inc/parts/column_grid.php')); ?>
 		<?php $i++; endwhile; ?>
 
 		<?php if ($enable_pagination == '1') :?>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif ;?>
 
 	</div>
@@ -1374,7 +1382,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '10',
+	'show' => 10,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -1402,7 +1410,7 @@ else {
 }   
 $news_type = ($type =='2') ? ' no_bordered_news' : '';
 $containerid = 'rh_filterid_' . uniqid(); 
-$ajaxoffset = $show + $offset;
+$ajaxoffset = (int)$show + (int)$offset;
 $additional_vars = array();
 $additional_vars['type'] = $type;
 ob_start(); 
@@ -1431,14 +1439,14 @@ ob_start();
 	<div class="<?php echo $infinitescrollwrap; echo $news_type?>" data-filterargs='<?php echo $jsonargs;?>' data-template="query_type1" id="<?php echo $containerid;?>" data-innerargs='<?php echo $json_innerargs;?>'>
 
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>	
-			<?php include(locate_template('inc/parts/query_type1.php')); ?>
+			<?php include(rh_locate_template('inc/parts/query_type1.php')); ?>
 		<?php endwhile; ?>
 
 		<?php if ($enable_pagination == '1') :?>
 			<div class="clearfix"></div>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif ;?>
 
 	</div>
@@ -1468,7 +1476,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '12',
+	'show' => 12,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -1491,7 +1499,7 @@ else {
 	$infinitescrollwrap = '';
 }  
 $containerid = 'rh_blogloop_' . uniqid();    
-$ajaxoffset = $show + $offset;   
+$ajaxoffset = (int)$show + (int)$offset;   
 ob_start(); 
 ?>
 
@@ -1517,13 +1525,13 @@ ob_start();
 	?> 
 	<div class="<?php echo $infinitescrollwrap;?>" data-filterargs='<?php echo $jsonargs;?>' data-template="query_type2" id="<?php echo $containerid;?>">
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>	
-			<?php include(locate_template('inc/parts/query_type2.php')); ?>
+			<?php include(rh_locate_template('inc/parts/query_type2.php')); ?>
 		<?php endwhile; ?>
 
 		<?php if ($enable_pagination == '1') :?>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif ;?>
 
 	</div>
@@ -1553,7 +1561,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '12',
+	'show' => 12,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -1581,7 +1589,7 @@ else {
 	$infinitescrollwrap = '';
 }  
 $containerid = 'rh_fltmasongrid_' . uniqid();    
-$ajaxoffset = $show + $offset;  
+$ajaxoffset = (int)$show + (int)$offset;  
 $additional_vars = array();
 $additional_vars['columns'] = $columns; 
 $additional_vars['aff_link'] = $aff_link;   
@@ -1626,11 +1634,11 @@ ob_start();
 		<div class="masonry_grid_fullwidth<?php echo $columns;?>">	
 
 			<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>	
-				<?php include(locate_template('inc/parts/query_type3.php')); ?>
+				<?php include(rh_locate_template('inc/parts/query_type3.php')); ?>
 			<?php endwhile; ?>
 
 			<?php if ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-			    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+			    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 			<?php endif ;?>
 		</div>
 		<?php if ($enable_pagination == '1') :?>
@@ -2234,7 +2242,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '8',
+	'show' => 8,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -2378,7 +2386,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '8',
+	'show' => 8,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -2389,6 +2397,7 @@ $build_args =shortcode_atts(array(
 	'badge_label'=> '1',	
 	'enable_pagination' => '',	
 	'show_coupons_only' =>'', //Filters end
+	'style' => '3',
 	'aff_link' => '',
 	'autorotate'=> '',
 	'showrow'=> '4',	
@@ -2404,9 +2413,61 @@ ob_start();
 	$args = $argsfilter->extract_filters();
 	$args['ignore_sticky_posts'] = 1;
 ?>
-
+<?php if ($style == 3):?>  
+    <div class="post_carousel_block loading carousel-style-3">
+        <div class="re_carousel" data-showrow="3" data-laizy="1" data-fullrow="2">
+	        <?php $result_cat = array(); 
+	            $deal_carousel = new WP_Query($args); 
+	            if( $deal_carousel->have_posts() ) :
+	            while($deal_carousel->have_posts()) : $deal_carousel->the_post();
+	        	global $post;
+	        ?>
+			<?php 
+			if ($aff_link == '1') {
+			    $link = rehub_create_affiliate_link ();
+			    $target = ' rel="nofollow" target="_blank"';
+			}
+			else {
+			    $link = get_the_permalink();
+			    $target = '';  
+			}
+			?> 
+            <?php 
+            $showimg = new WPSM_image_resizer();
+            $showimg->use_thumb = true;
+            $showimg->height = '120';
+            $showimg->crop = true;
+            $showimg->lazy = false;                                    
+            ?>
+            <?php   
+            if ('post' == get_post_type($post->ID)) {
+                $category = get_the_category();
+                $category_id = $category[0]->term_id; 
+                $category_echo = $category_id;                      
+            }
+            else {$category_echo = '';  }
+            ?>
+            <div class="carouselhor-item">
+                <div class="l-part-car">
+                    <figure>
+                        <a href="<?php echo $link;?>"<?php echo $target;?>>
+                            <img class="owl-lazy" height="120" data-src="<?php echo $showimg->get_resized_url();?>" alt="<?php the_title_attribute(); ?>">
+                        </a>                                           
+                    </figure> 
+                </div>
+                <div class="r-part-car">
+                    <?php echo getHotIconfire($post->ID);?><?php echo getHotLikeTitle($post->ID);?>
+                    <h2><a href="<?php echo $link;?>"<?php echo $target;?>><?php kama_excerpt('maxchar=55&text='.get_the_title()) ;?></a></h2>
+                    <div class="post-meta"><?php if ('post' == get_post_type($post->ID)) {meta_small( false, $category_id, false, false );} ?></div>                                
+                    <?php rehub_create_price_for_list($post->ID);?>
+                    <?php do_action( 'rehub_after_recash_carousel_text' ); ?>
+                </div>                                           
+            </div>
+            <?php endwhile; endif; wp_reset_query(); ?>
+        </div>
+    </div>	
+<?php else:?>
 <div class="post_carousel_block loading carousel-style-2 carousel-style-deal showrow-<?php echo $showrow;?>">
-
     <div class="re_carousel" data-showrow="<?php echo $showrow;?>" <?php echo $autodata;?> data-laizy="1">
         <?php $result_cat = array();
             $deal_carousel = new WP_Query($args); 
@@ -2447,7 +2508,8 @@ ob_start();
         </div>
         <?php endwhile; endif; wp_reset_query(); ?>
     </div>
-</div>     
+</div> 
+<?php endif;?>    
 
 <?php 
 $output = ob_get_contents();
@@ -2471,7 +2533,7 @@ $build_args = shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key'=>'',
-	'show' => '8',	
+	'show' => 8,	
 	'show_coupons_only' => '',
 	'user_id' => '',	
 	'type' => 'latest',	
@@ -2625,7 +2687,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '4',
+	'show' => 8,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -2646,7 +2708,7 @@ $build_args =shortcode_atts(array(
 extract($build_args); 
 $containerid = 'rh_simplepostid_' . uniqid();
 $center_class=($center) ? ' text-center': ''; 
-$ajaxoffset = $show + $offset;
+$ajaxoffset = (int)$show + (int)$offset;
 $additional_vars = array();
 $additional_vars['nometa'] = $nometa;
 $additional_vars['image'] = $image;
@@ -2677,14 +2739,14 @@ ob_start();
 <?php if ( $wp_query->have_posts() ) : ?>
 
 		<?php while ( $wp_query->have_posts() ) : $wp_query->the_post();  ?>	
-			<?php include(locate_template('inc/parts/simplepostlist.php')); ?>
+			<?php include(rh_locate_template('inc/parts/simplepostlist.php')); ?>
 		<?php endwhile; ?>
 
 		<?php if ($enable_pagination == '1') :?>
 			<div class="clearfix"></div>
 		    <div class="pagination"><?php rehub_pagination();?></div>
 		<?php elseif ($enable_pagination == '2' || $enable_pagination == '3' ) :?> 
-		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Next posts', 'rehub_framework') ?></span></div>      
+		    <div class="re_ajax_pagination"><span data-offset="<?php echo $ajaxoffset;?>" data-containerid="<?php echo $containerid;?>" class="re_ajax_pagination_btn def_btn"><?php _e('Show next', 'rehub_framework') ?></span></div>      
 		<?php endif ;?>
 <?php endif; wp_reset_query(); ?>
 	</div>
@@ -2715,7 +2777,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '3',
+	'show' => 3,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -2742,7 +2804,7 @@ ob_start();
 	$args['ignore_sticky_posts'] = true;
 	$wp_query = new WP_Query($args);
 ?>
-<div class="wpsm_three_col_posts scroll-on-mobile" id="w_t_c_<?php echo $rand_id;?>">
+<div class="wpsm_three_col_posts rh-flex-columns scroll-on-mobile" id="w_t_c_<?php echo $rand_id;?>">
 <?php if($custom_label_color) :?>
 	<style scoped>
 		#w_t_c_<?php echo $rand_id;?> .custom_col_label{background-color: <?php echo $custom_label_color; ?> ;}
@@ -2756,7 +2818,7 @@ ob_start();
                 <?php 
                 $showimg = new WPSM_image_resizer();
                 $showimg->use_thumb = true;
-                $showimg->width = '398';
+                $showimg->width = '400';
                 $showimg->height = '224';
                 $showimg->crop = true;
                 $showimg->show_resized_image();                                    
@@ -3141,7 +3203,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' => 'DESC',	
 	'meta_key' => '',
-	'show' => '5',
+	'show' => 5,
 	'offset' => '',
 	'show_date' => '',	
 	'post_type' => '',
@@ -3462,7 +3524,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' =>'DESC',
 	'meta_key' =>'',
-	'show' => '10',	
+	'show' => 10,	
 ), $atts, 'wpsm_offerlist'); 
 extract($build_args); 
 ob_start(); 
@@ -3639,7 +3701,7 @@ $build_args =shortcode_atts(array(
 	'orderby' => '',
 	'order' =>'DESC',
 	'meta_key' =>'',
-	'show' => '10',	
+	'show' => 10,	
 	'data_source' => '',
 	'columns' => '3_col'
 ), $atts, 'wpsm_affgrid'); 
@@ -3676,6 +3738,11 @@ ob_start();
     }    
 	$wp_query = new WP_Query($args);
 ?>
+<?php if ($columns == '3_col') :?>
+<div class="rh-flex-eq-height col_wrap_three">
+<?php elseif ($columns == '4_col') :?>
+<div class="rh-flex-eq-height col_wrap_fourth">   	
+<?php endif ;?>
 <?php $i=1; if($wp_query->have_posts()): while($wp_query->have_posts()): $wp_query->the_post(); ?>
 <?php $linkData = unserialize(get_post_meta(get_the_ID(), 'thirstyData', true)); 
 $link = ($no_cloaking !='') ? $linkData['linkurl'] : get_the_permalink() ;
@@ -3695,9 +3762,9 @@ if (!empty($term_ids)) {$term_brand = $term_ids[0]; $term_brand_image = get_opti
 ?>                           
 
 <?php if ($columns == '3_col') :?>
-<div class="offer_grid column_grid<?php if (($i % 3) == '0') :?> last-col<?php endif ?><?php if (($i % 3) == '1') :?> first-col<?php endif ?>">
+<div class="offer_grid column_grid col_item">
 <?php elseif ($columns == '4_col') :?>
-<div class="offer_grid col_4_grid column_grid<?php if (($i % 4) == '0') :?> last-col<?php endif ?><?php if (($i % 4) == '1') :?> first-col<?php endif ?>">   	
+<div class="offer_grid col_4_grid column_grid col_item">   	
 <?php endif ;?>
 	<?php if (get_post_meta( get_the_ID(), 'rehub_aff_sticky', true) == '1') :?><span class="vip_badge"><i class="fa fa-thumbs-o-up"></i></span><?php endif ?>        
         <div class="aff_grid_top">
@@ -3802,6 +3869,7 @@ if (!empty($term_ids)) {$term_brand = $term_ids[0]; $term_brand_image = get_opti
 <?php else : ?>		
 <div class="wpsm-title middle-size-title wpsm-cat-title"><h5><?php _e('Sorry. No posts in this category yet', 'rehub_framework'); ?></h5></div>				   
 <?php endif; ?>
+</div>
 
 <?php if ($enable_pagination != '') :?>
     <?php rehub_pagination();?>

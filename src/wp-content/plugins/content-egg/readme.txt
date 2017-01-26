@@ -1,9 +1,9 @@
 ﻿=== Content Egg ===
 Contributors: keywordrush,wpsoul
-Tags: content, affiliate, autoblogging, amazon, affilinet, coupons, linkshare, shareasale, ozon, flickr, youtube, commission junction, aliexpress, cj, images, wikipedia, freebase, ecommerce, links, shortcode, monetize, search engine optimization, ebay, zanox, moneymaking, price comparison, google images, timesaving, clickbank, linkshare, pixabay, admitad, affilitewindow, otimisemedia, tradedoubler, flipkart, paytm, price alert, tracker
+Tags: content, affiliate, autoblogging, amazon, affilinet, coupons, linkshare, shareasale, ozon, flickr, youtube, commission junction, aliexpress, cj, images, wikipedia, freebase, ecommerce, links, shortcode, monetize, search engine optimization, ebay, zanox, moneymaking, price comparison, google images, timesaving, clickbank, linkshare, pixabay, admitad, affilitewindow, otimisemedia, tradedoubler, flipkart, paytm, price alert, tracker, impactradius
 Requires at least: 4.2.2
 Tested up to: 4.7
-Stable tag: 2.9.1
+Stable tag: 3.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -41,9 +41,9 @@ Easily adding auto updating products from affiliate systems and additional conte
 > <strong>PRO version</strong><br>
 >Do you want to get even more? Pro version offers tons of additional modules and extended functions. 
 >
->Modules of free version: Amazon, Pixabay, Google Images, Youtube, Commission Junction Links, Freebase, Affili.net Coupons, Related Keywords, RSS Fetcher, Admitad Products.
+>Modules of free version: Amazon, Pixabay, Google Images, Youtube, Commission Junction Links, Freebase, Affili.net Coupons, Related Keywords, RSS Fetcher, Admitad Products, Offer.
 >
->Additional modules of PRO version: Ebay, Zanox, Aliexpress, CJ Products, ClickBank, Admitad Coupons, Affilitewindow, Flipkart, Otimisemedia, Tradedoubler, Affili.net Products, Linkshare, Shareasale, Cityads, Ozon, Paytm, Flickr, Bing Images, Google Books, Google News, Twitter, VK news, Yandex Market...
+>Additional modules of PRO version: Ebay, Zanox, Aliexpress, CJ Products, ClickBank, Admitad Coupons, Affilitewindow, Flipkart, Otimisemedia, Tradedoubler, Affili.net Products, Linkshare, Shareasale, Impactradius, Cityads, Ozon, Paytm, Flickr, Bing Images, Google Books, Google News, Twitter, VK news, Yandex Market...
 >
 >And we don't stop on these modules. All buyers of pro version can suggest us new module. 
 >
@@ -107,6 +107,19 @@ If you can do any Wordpress page templates – you can do also templates for Con
 7. Price Tracker/Alert
 
 == Changelog ==
+
+= 3.0.0 =
+* New: Offer module - manually create offer from any site with price update.
+* New: BingImages - new Cognitive Services API.
+* New: RelatedKeywords - new Cognitive Services API.
+* New: Post type for autoblogging.
+* New: Custom fields for autoblogging.
+* New: Main product for autoblogging. You can use tags: %PRODUCT.title%, %PRODUCT.price%
+* New: Separate keywords for modules - autoblogging.
+* New: Search by EAN for some modules.
+* New: Search by ASIN for Amazon module.
+* New: Button color option.
+* New: Source language in English.
 
 = 2.9.0 =
 * New: Products update via cron job.

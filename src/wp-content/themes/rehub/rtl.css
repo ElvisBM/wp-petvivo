@@ -23,11 +23,7 @@ body { direction: rtl; unicode-bidi: embed; }
 article em { }
 p em { }
 
-/****************************************************************************
-
-Header
-
-****************************************************************************/
+.news .detail .not_masked_coupon{float: right;}
 nav.top_menu ul li i{margin: 0 0 0 5px}
 .woocommerce div.product .summary form.cart .variations select{margin: 0 0 0 15px; float: right;}
 .main-nav .user-dropdown-intop, .dl-menuwrapper button.icon-search-onclick, .dl-menuwrapper button.act-rehub-login-popup, #wcvendor_search_shops{float: left;}
@@ -75,6 +71,7 @@ nav.top_menu > ul > li > ul > li:first-child > a:after {right: 19px;}
 .custom_search_box i.inside-search{ left: auto; right: 16px }
 .custom_search_box button[type="submit"] { right: auto; left: 3px }
 .re-search-result-div{text-align: right;}
+.rhgreedylinks{-ms-justify-content: flex-end; -webkit-justify-content: flex-end;justify-content: flex-end;}
 
 /****************************************************************************
 
@@ -199,8 +196,6 @@ ul.newsticker li { float: right; margin-right: 0px !important; margin-left: 75px
 .widget.better_menu li:before, .footer-bottom .footer_widget .widget_categories ul li:before, .footer-bottom .footer_widget .widget_archive ul li:before, .footer-bottom .footer_widget .widget_nav_menu ul li:before{ right: 0; left: inherit; }
 .footer-bottom .footer_widget .woocommerce ul li { padding-right: 0 }
 footer#theme_footer .left { float: right; }
-footer#theme_footer.block_foot .left { padding-left: 0px; padding-right: 20px;}
-footer#theme_footer.block_foot .right { padding-right: 0px; padding-left: 20px;}
 footer#theme_footer .right { float: left; text-align: left; }
 
 /****************************************************************************
@@ -298,11 +293,11 @@ ul.postpagination li { float: right; margin-left: 0px; margin-right: 5px; }
 
 ****************************************************************************/
 
-.single .star { float: left; }
-.single .star.left { float: right }
+.single .rh-star-ajax { float: left; }
+.single .rh-star-ajax.left { float: right }
 .single .rate-line { float: right; }
-.rating_bar .star .title_stars { float: right; }
-.rating_bar .star { text-align: left; }
+.rating_bar .rh-star-ajax .title_star-ajax { float: right; }
+.rating_bar .rh-star-ajax { text-align: left; }
 #topcontrol { right: inherit; left: 10px }
 
 @media (max-width: 768px) {
@@ -400,7 +395,7 @@ article.post .wpsm_toplist_heading:before{ float: right; margin: -8px 0 10px 15p
 
 /* Colors */
 
-.sidebar .tabs-item figure, .news_block .left figure, .f-post figure {box-sizing: border-box; -moz-box-sizing: border-box; }
+.sidebar .tabs-item figure, .news_block .left figure, .f-post figure {  }
 
 /* style for darkheader */
 
@@ -435,8 +430,6 @@ span.stars-rate span { float: right; }
 
 .rehub_feat_block .offer_thumb { float: right; margin: 0 0 10px 15px; }
 .rehub_feat_block.table_view_block .offer_thumb { padding-right: 5px; padding-left: 10px }
-.rehub_feat_block.table_view_block .btn_offer_block:after { border-width: 1em 0.4em 1em 0; }
-.rehub_feat_block.table_view_block .btn_offer_block { padding: 0.5em 0.4em 0.5em 0.3em; }
 .rehub_feat_block.table_view_block table.shop_attributes th { text-align: right; }
 .rehub_feat_block.table_view_block table.shop_attributes td { font-style: none; }
 .rehub_offer_coupon.masked_coupon i.fa{ padding-left: 0px; padding-right: 6px; }
@@ -450,9 +443,6 @@ span.stars-rate span { float: right; }
 .vip_badge i{ -webkit-transform: rotate(-35deg);-ms-transform: rotate(-35deg);transform: rotate(-35deg); }
 .vip_corner{ left: auto; right: 0px }
 .offer_grid .offer_thumb:before, .offer_grid figure:before { margin-right: 0; margin-left: -0.25em }
-.offer_grid.column_grid{ margin: 0 0 18px 3.2%; }
-.column_grid.col_4_grid{ margin: 0 0 18px 2%; }
-.column_grid.col_4_grid.last-col{ margin-right: inherit; margin-left: 0 }
 .eq_grid .sale_a_proc { right: auto; left: 10px;}
 .offer_grid h4:after { left: auto; right: 0 }
 .offer_grid .priced_block .btn_offer_block:not(.coupon_btn):before{ right: auto; left: -30% }

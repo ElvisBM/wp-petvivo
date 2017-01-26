@@ -47,6 +47,17 @@ function rehub_vc_remove_woocommerce() {
 add_action( 'vc_build_admin_page', 'rehub_vc_remove_woocommerce', 11 );
 add_action( 'vc_load_shortcode', 'rehub_vc_remove_woocommerce', 11 );
 
+
+add_filter( 'vc_load_default_templates', 'rh_delete_vc_default_templates' ); // we deleted default templates of VC
+function rh_delete_vc_default_templates( $data ) {
+    return array(); 
+}
+
+add_action( 'vc_load_default_templates_action','rh_custom_default_templates_for_vc' ); // We added our templates
+function rh_custom_default_templates_for_vc() {
+    include (rh_locate_template( 'functions/vc_templates/basic_templates.php' ) );
+}
+
 //Disable frontend
 if(rehub_option('rehub_enable_front_vc') !='1'){
     vc_disable_frontend();
@@ -1435,20 +1446,35 @@ vc_remove_param("full_carousel", "enable_pagination");
 
 //DEAL CAROUSEL BLOCK
 vc_map( array(
-    "name" => __('Deal carousel block', 'rehub_framework'),
+    "name" => __('Deal Full width carousel', 'rehub_framework'),
     "base" => "post_carousel_mod",
     "icon" => "icon-p-c-mod",
     "category" => __('Deal helper', 'rehub_framework'),
     'description' => __('Shows post deals', 'rehub_framework'), 
     "params" => rehub_vc_filter_formodules(),
 ));
-vc_add_params("post_carousel_mod", array(    
+vc_add_params("post_carousel_mod", array(
+    array(
+        "type" => "dropdown",
+        "class" => "",
+        "heading" => __('Carousel style', 'rehub_framework'),
+        "group" => __('Carousel control', 'rehub_framework'),    
+        "param_name" => "style",
+        "value" => array(
+            __('Horizontal items (use for areas without sidebar)', 'rehub_framework') => "3",             
+            __('Square items', 'rehub_framework') => "2",                             
+        ),
+    ),    
     array(
         "type" => "dropdown",
         "class" => "",
         "heading" => __('Number of items in row', 'rehub_framework'),
         "group" => __('Carousel control', 'rehub_framework'),    
         "param_name" => "showrow",
+        'dependency' => array(
+            'element' => 'style',
+            'value_not_equal_to' => array( '3' ),
+        ),        
         "value" => array(
             __('4', 'rehub_framework') => "4",   
             __('5', 'rehub_framework') => "5",
@@ -1554,6 +1580,7 @@ vc_map( array(
     "base" => "news_no_thumbs_mod",
     "category" => __('Content modules', 'rehub_framework'), 
     'description' => __('News block', 'rehub_framework'),
+    'deprecated' => '5.0',
     "icon" => "icon-n-n-thumbs",    
     "params" => array(
         array(
@@ -2213,7 +2240,7 @@ vc_add_params("columngrid_loop", array(
         'heading' => __( 'Symbols in exerpt', 'js_composer' ),
         'param_name' => 'exerpt_count',
         'group' => __('Control', 'rehub_framework'),
-        'value' => '120',
+        'value' => '110',
         'description' => __('Set 0 to disable exerpt', 'rehub_framework'),
     ),        
     array(
@@ -2255,7 +2282,16 @@ vc_add_params("columngrid_loop", array(
         "value" => array(__("Yes", "rehub_framework") => true ),
         "param_name" => "aff_link", 
         "description" => __('This will change all inner post links to affiliate link of post offer', 'rehub_framework'),        
-    ),            
+    ),  
+    array(
+        "type" => "checkbox",
+        "class" => "",
+        "group" => __('Control', 'rehub_framework'),        
+        "heading" => __('Make boxed', 'rehub_framework'),       
+        "value" => array(__("Yes", "rehub_framework") => true ),
+        "param_name" => "boxed", 
+        "description" => __('This will make each item as boxed design', 'rehub_framework'),        
+    ),              
 ));
 vc_add_params("columngrid_loop", rehub_vc_aj_filter_btns_formodules());
 
@@ -2782,6 +2818,7 @@ vc_map( array(
 vc_map( array(
     "name" => __("Image carousel", "rehub_framework"),
     "base" => "gal_carousel",
+    'deprecated' => '5.0',
     "icon" => "icon-gal-carousel",
     "category" => __('Helper modules', 'rehub_framework'),
     'description' => __('For row with sidebar', 'rehub_framework'), 
@@ -2998,6 +3035,7 @@ vc_map( array(
     "name" => __('Numbered Headings', 'rehub_framework'),
     "base" => "wpsm_numhead",
     "icon" => "icon-numhead",
+    'deprecated' => '4.9',
     "category" => __('Helper modules', 'rehub_framework'),
     'description' => __('Numbered Headings', 'rehub_framework'), 
     "params" => array(  
@@ -3047,6 +3085,7 @@ vc_map( array(
     "name" => __('Box with number', 'rehub_framework'),
     "base" => "wpsm_numbox",
     "icon" => "icon-numbox",
+    'deprecated' => '4.9',
     "category" => __('Helper modules', 'rehub_framework'),
     'description' => __('Box with number', 'rehub_framework'), 
     "params" => array(  
@@ -3221,6 +3260,7 @@ vc_map( array(
     "name" => __('Colored Table', 'rehub_framework'),
     "base" => "wpsm_colortable",
     "icon" => "icon-colortable",
+    'deprecated' => '4.9',
     "category" => __('Helper modules', 'rehub_framework'),
     'description' => __('Table with color header', 'rehub_framework'), 
     "params" => array(  
@@ -3634,7 +3674,7 @@ if ( class_exists( 'WPBakeryShortCode' ) ) {
 }
 
 //CUSTOM BLOCKS FOR CHILD THEMES
-include ( locate_template( 'functions/vc_functions_theme.php' ) );
+include ( rh_locate_template( 'functions/vc_functions_theme.php' ) );
 
 }
 ?>

@@ -10,14 +10,14 @@
 ?>
 <?php get_header(); ?>
 <!-- CONTENT -->
-<div class="content"> 
+<div class="rh-container"> 
     <?php if(rehub_option('rehub_featured_toggle') && is_front_page()) : ?>
         <?php get_template_part('inc/parts/featured'); ?>
     <?php endif; ?>
     <?php if(rehub_option('rehub_homecarousel_toggle') && is_front_page()) : ?>
         <?php get_template_part('inc/parts/home_carousel'); ?>
     <?php endif; ?> 
-    <div class="clearfix">
+    <div class="rh-content-wrap clearfix">
           <!-- Main Side -->
           <div class="main-side clearfix">
             <div class="title"><h1><?php the_title(); ?></h1></div>
@@ -26,7 +26,8 @@
                     <?php if (have_posts()) : while (have_posts()) : the_post(); ?><?php the_content(); ?><?php endwhile; endif; ?>
                 </article>
                 <div class="clearfix"></div>
-            <?php endif; ?>                     
+            <?php endif; ?>
+            <div class="rh-flex-eq-height col_wrap_three">                     
             <?php $temp = $wp_query; $wp_query = null; ?>
             <?php $args = array( 
                 'thirstylink-category' => $module_cats, 
@@ -59,7 +60,7 @@
                 $term_ids =  wp_get_post_terms($post->ID, 'thirstylink-category', array("fields" => "ids")); if (!empty($term_ids)) {$term_brand = $term_ids[0]; $term_brand_image = get_option("taxonomy_term_$term_ids[0]");} else {$term_brand_image ='';}
                 ?>                           
                 
-                <div class="offer_grid column_grid<?php if (($i % 3) == '0') :?> last-col<?php endif ?><?php if (($i % 3) == '1') :?> first-col<?php endif ?>">
+                <div class="offer_grid column_grid col_item">
                     <?php if (get_post_meta( $post->ID, 'rehub_aff_sticky', true) == '1') :?><span class="vip_badge"><i class="fa fa-thumbs-o-up"></i></span><?php endif ?> 
                         
                         <div class="aff_grid_top">
@@ -157,6 +158,7 @@
             <?php else : ?>		
                 <div class="wpsm-title middle-size-title wpsm-cat-title"><h5><?php _e('Sorry. No posts in this category yet', 'rehub_framework'); ?></h5></div>				   
             <?php endif; ?>
+            </div>
             <div class="pagination"><?php rehub_pagination();?></div>
             <?php $wp_query = null; $wp_query = $temp;  // Reset ?>
             <?php wp_reset_query(); ?>

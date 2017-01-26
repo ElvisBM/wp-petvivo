@@ -21,7 +21,7 @@
 	bcg_loop_start();//please do not remove it
 	while( $q->have_posts() ):$q->the_post();
  ?>
- 	<?php include(locate_template('inc/parts/query_type1.php')); ?>
+ 	<?php include(rh_locate_template('inc/parts/query_type1.php')); ?>
 
 	<?php endwhile;?>
 	<?php 

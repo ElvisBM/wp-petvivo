@@ -1,8 +1,9 @@
 <?php if (!defined('ABSPATH')) die('No direct access allowed'); ?>
 <?php global $mdf_loop;?>
 <div class="clearfix"></div>
+<div class="rh-flex-eq-height col_wrap_three">
 <?php $i=1; while ($mdf_loop->have_posts()) : $mdf_loop->the_post(); ?>
-<article class="column_grid<?php if (($i % 3) == '0') :?> last-col<?php endif ?><?php if (($i % 3) == '1') :?> first-col<?php endif ?>">
+<article class="column_grid col_item">
     <figure>             
         <a href="<?php the_permalink();?>"><?php wpsm_thumb ('news_big') ?></a>
     </figure>
@@ -14,4 +15,5 @@
     </div>
 </article>
 <?php $i++; endwhile; // end of the loop.    ?> 
+</div>
 <div class="clearfix"></div>

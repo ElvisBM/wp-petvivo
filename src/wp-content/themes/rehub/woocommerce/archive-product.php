@@ -21,18 +21,18 @@ get_header(); ?>
             $vendor_id   = WCV_Vendors::get_vendor_id( $vendor_shop );
         }
         if ($vendor_id){
-            return include(locate_template('inc/wcvendor/storepage.php'));
+            return include(rh_locate_template('inc/wcvendor/storepage.php'));
         }
 
     ?>
 
 <?php if (is_tax('store')):?>  
-      <?php include(locate_template('woocommerce/brandarchive.php')); ?>                                                  
+      <?php include(rh_locate_template('woocommerce/brandarchive.php')); ?>                                                  
 <?php else :?>    
 
 <!-- CONTENT -->
-<div class="content"> 
-	<div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
         <!-- Main Side -->
         <div class="main-side woocommerce page clearfix<?php if(rehub_option('woo_archive_sidebar') =='1') {echo ' full_width';}?>">
             <article class="post" id="page-<?php the_ID(); ?>">

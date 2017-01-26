@@ -13,7 +13,7 @@
             <strong ng-show="result.title">{{result.title}}</strong><br>
             <span ng-show="result.description">{{result.description}}<br></span>
             <span ng-show="result.extra.couponCode">
-                <em><?php _e('Код купона:', 'content-egg'); ?> {{result.extra.couponCode}}- <span ng-show="result.extra.promotionStartDate">{{result.extra.promotionStartDate * 1000|date:'mediumDate'}} - {{result.extra.promotionEndDate * 1000|date:'mediumDate'}}</span></em> 
+                <em><?php _e('Coupon code:', 'content-egg'); ?> {{result.extra.couponCode}}- <span ng-show="result.extra.promotionStartDate">{{result.extra.promotionStartDate * 1000|date:'mediumDate'}} - {{result.extra.promotionEndDate * 1000|date:'mediumDate'}}</span></em> 
             </span>
         </div>
     </div>

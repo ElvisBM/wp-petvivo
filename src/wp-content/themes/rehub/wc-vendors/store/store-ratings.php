@@ -34,7 +34,7 @@ get_header(); ?>
 	<style scoped>#wcvendor_image_bg{<?php echo rh_show_vendor_bg($vendor_id);?>}</style>
 	<div id="wcvendor_image_bg">	
 		<div id="wcvendor_profile_wrap">
-			<div class="content">
+			<div class="rh-container">
 	    		<div id="wcvendor_profile_logo" class="wcvendor_profile_cell">
 	    			<a href="<?php echo $vendor_shop_url;?>"><img src="<?php echo rh_show_vendor_avatar($vendor_id, 150, 150);?>" class="vendor_store_image_single" width=150 height=150 />	</a>        
 	    		</div>
@@ -74,7 +74,7 @@ get_header(); ?>
 		<span class="wcvendor-cover-image-mask"></span>
 	</div>
 	<div id="wcvendor_profile_menu">
-		<div class="content">			
+		<div class="rh-container">			
 			<form id="wcvendor_search_shops" role="search" action="<?php echo $vendor_shop_url;?>" method="get" class="wcvendor-search-inside search-form">
 				<input type="text" name="rh_wcv_search" placeholder="<?php _e('Search in this shop', 'rehub_framework');?>" value="">
 				<button type="submit" class="btnsearch"><i class="fa fa-search"></i></button>					
@@ -89,8 +89,8 @@ get_header(); ?>
 </div>
 
 <!-- CONTENT -->
-<div class="content mt0 mb25"> 
-	<div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
         <!-- Main Side -->
         <div class="main-side woocommerce page clearfix full_width">
             <article class="post" id="page-<?php the_ID(); ?>">

@@ -1,17 +1,15 @@
 <div class="cegg-rightcol">
     <?php if (\ContentEgg\application\Plugin::isFree()): ?>
         <div class="cegg-box" style="margin-top: 95px;">
-            <h2><?php _e('Работай, как профи', 'content-egg'); ?></h2>
+            <h2><?php _e('Maximum profit with minimum efforts', 'content-egg'); ?></h2>
 
-            <img src="<?php echo ContentEgg\PLUGIN_RES; ?>/img/ce_pro_header.png" class="cegg-imgcenter" />        
-            <?php
-            /*
-              <a href="http://www.keywordrush.com/<?php if (!in_array(\get_locale(), array('ru_RU', 'uk'))) echo 'en/' ?>contentegg">
-              <img src="<?php echo ContentEgg\PLUGIN_RES; ?>/img/ce_pro_coupon.png" class="cegg-imgcenter" />
-              </a>
-             */
-            ?>
-            <h4><?php _e('Все включено: контент + монетизация.', 'content-egg'); ?></h4>
+            <a href="<?php echo ContentEgg\application\Plugin::pluginSiteUrl(); ?>">
+                <img src="<?php echo ContentEgg\PLUGIN_RES; ?>/img/ce_pro_header.png" class="cegg-imgcenter" />        
+            </a>
+            <a href="<?php echo ContentEgg\application\Plugin::pluginSiteUrl(); ?>">
+                <img src="<?php echo ContentEgg\PLUGIN_RES; ?>/img/ce_pro_coupon.png" class="cegg-imgcenter" />
+            </a>
+            <h4><?php _e('Many additional modules and extended functions.', 'content-egg'); ?></h4>
 
             <?php /*
               <h3><?php _e('Монетизация:', 'content-egg'); ?></h3>
@@ -47,17 +45,17 @@
              */
             ?>
             <p>
-                <a target="_blank" class="button-cegg-banner" href="http://www.keywordrush.com/<?php if (!in_array(\get_locale(), array('ru_RU', 'uk'))) echo 'en/' ?>contentegg">Get it now!</a>
+                <a target="_blank" class="button-cegg-banner" href="<?php echo ContentEgg\application\Plugin::pluginSiteUrl(); ?>">Get it now!</a>
             </p>
         </div>
     <?php endif; ?>
     <?php if (\ContentEgg\application\Plugin::isEnvato()): ?>
         <div class="cegg-box" style="margin-top: 95px;">
-            <h2><?php _e('Активируйте плагин', 'content-egg'); ?></h2>
-            <p><?php _e('Активируйте плагин, чтобы получить срочные автоматические апдейты в админ-панели Wordpress и официальную поддержку от авторов плагина.', 'content-egg'); ?></p>
+            <h2><?php _e('Activate plugin', 'content-egg'); ?></h2>
+            <p><?php _e('Activate plugin, to get urgent important updates of plugin inside admin panel and official support. ', 'content-egg'); ?></p>
 
             <p>
-                <a class="button-cegg-banner" href="<?php echo get_admin_url(\get_current_blog_id(), 'admin.php?page=content-egg-lic'); ?>"><?php _e('Перейти', 'content-egg'); ?></a>
+                <a class="button-cegg-banner" href="<?php echo get_admin_url(\get_current_blog_id(), 'admin.php?page=content-egg-lic'); ?>"><?php _e('Go to ', 'content-egg'); ?></a>
             </p>
 
 

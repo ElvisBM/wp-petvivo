@@ -10,7 +10,7 @@ use ContentEgg\application\helpers\TemplateHelper;
         <div class="wpsm-table wpsm-icecat-spec">
             <table>
                 <?php foreach($item['extra']['specificationList'] as $specarray): ?>
-                    <?php if(!empty($specarray['values'])):?>
+                    <?php if(!empty($specarray['values']) && !empty($specarray['key']) && $specarray['key'] !='Important Note'):?>
                         <tr class="heading-th-spec-line">
                             <th colspan="2"></th>
                         </tr>            

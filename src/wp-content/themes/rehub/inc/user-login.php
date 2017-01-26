@@ -1,6 +1,4 @@
 <?php
-
-
 # 	
 # 	USER REGISTRATION/LOGIN MODAL
 # 	========================================================================================
@@ -10,7 +8,7 @@
 if( !function_exists('rehub_login_register_modal') ) {
 function rehub_login_register_modal() {
 	// only show the registration/login form to non-logged-in members
-	if(!is_user_logged_in()){ 
+	if(!is_user_logged_in() && rehub_option('custom_login_url') == ''){ 
 
 		if(rehub_option('userlogin_captcha_enable') =='1' && rehub_option('userlogin_gapi_sitekey') !='' && rehub_option('userlogin_gapi_secretkey') !='') {
 			$captcha_enabled = '1';
@@ -186,6 +184,10 @@ function rehub_login_register_modal() {
 		} ?>
 
 		<?php
+	}else{
+		if (rehub_option('custom_login_url') !=''){
+			echo '<span id="rehub-custom-login-url" data-customloginurl="'.rehub_option('custom_login_url').'"></span>';			
+		}
 	}
 }
 add_action('wp_footer', 'rehub_login_register_modal');
@@ -203,6 +205,16 @@ function rehub_login_member_popup_function(){
 	$user_login		= sanitize_user($_POST['rehub_user_login']);	
 	$user_pass		= sanitize_text_field($_POST['rehub_user_pass']);
 	$remember 	= !empty($_POST['rehub_remember']) ? true : false;
+	$redirect_to = rehub_option('custom_redirect_after_login');
+	if($redirect_to){
+		if ( stripos( $user_login, '@' ) !== false ) {
+			$user = get_user_by('email', $user_login);
+			if($user) {
+				$user_login = $user->user_login;
+			}
+		}
+		$redirect_to = str_replace('%%userlogin%%', $user_login, $redirect_to);
+	}
 
 	// Check CSRF token
 	if( !check_ajax_referer( 'ajax-login-nonce', 'loginsecurity', false) ){
@@ -221,7 +233,7 @@ function rehub_login_member_popup_function(){
 			echo json_encode(array('error' => true, 'message'=> '<div class="wpsm_box warning_type"><i></i>'.$user->get_error_message().'</div>'));
 		}
 	    else{
-			echo json_encode(array('error' => false, 'message'=> '<div class="wpsm_box green_type">'.__('Login successful, reloading page...', 'rehub_framework').'</div>'));
+			echo json_encode(array('error' => false, 'message'=> '<div class="wpsm_box green_type">'.__('Login successful, reloading page...', 'rehub_framework').'</div>', 'redirecturl' => esc_url($redirect_to)));
 		}
  	}
  	die();
@@ -239,8 +251,13 @@ function rehub_register_member_popup_function(){
 	$user_signonpassword = sanitize_text_field($_POST['rehub_user_signonpassword']);
 	$user_confirmpassword	= sanitize_text_field($_POST['rehub_user_confirmpassword']);
 	$wcv_apply_as_vendor = (!empty($_POST['wcv_apply_as_vendor'])) ? $_POST['wcv_apply_as_vendor'] : '';	
-
 	$show_terms_conditions = rehub_option('userlogin_terms_enable');
+	$redirect_to = rehub_option('custom_redirect_after_login');
+	if($redirect_to){
+		$redirect_to = str_replace('%%userlogin%%', $user_login, $redirect_to);
+	}
+	$bp_logic_popup = rehub_option('bp_deactivateemail_confirm');
+	$usermeta = $user_error_req_fields = array();
 
 	if(rehub_option('userlogin_captcha_enable') =='1'){
 		require_once get_template_directory().'/inc/vendor/recaptcha/src/ReCaptcha/ReCaptcha.php';
@@ -250,13 +267,9 @@ function rehub_register_member_popup_function(){
 		require_once get_template_directory().'/inc/vendor/recaptcha/src/ReCaptcha/RequestMethod/Post.php';
 		require_once get_template_directory().'/inc/vendor/recaptcha/src/ReCaptcha/RequestMethod/Socket.php';
 		require_once get_template_directory().'/inc/vendor/recaptcha/src/ReCaptcha/RequestMethod/SocketPost.php';
-
 		$secret = rehub_option('userlogin_gapi_secretkey');
-
 		$recaptcha = new \ReCaptcha\ReCaptcha($secret);
-
 		$resp = $recaptcha->verify( $_POST['g-recaptcha-response'], $_SERVER['REMOTE_ADDR'] );
-
 		if(!$resp->isSuccess()){
 		    // $errors = $resp->getErrorCodes();
 			echo json_encode(array('error' => true, 'message'=> '<div class="wpsm_box warning_type">'.__('Wrong captcha response, please try again.', 'rehub_framework').'</div>'));
@@ -289,11 +302,47 @@ function rehub_register_member_popup_function(){
  	elseif(mb_strlen($user_signonpassword) < 6){
 		echo json_encode(array('error' => true, 'message'=> '<div class="wpsm_box warning_type">'.__('Your passwords must have minimum 6 symbols.', 'rehub_framework').'</div>'));
 		die();
- 	}  		
-	
-	$errors = wp_create_user( $user_login, $user_signonpassword, $user_email );
-	if(is_wp_error($errors)){
-		$registration_error_messages = $errors->errors;
+ 	}  
+
+	if (!empty($_POST['signup_profile_field_ids']) && rehub_option('userpopup_xprofile_hidename') !=1){
+		$signup_profile_field_ids = explode(',', $_POST['signup_profile_field_ids']);
+		foreach ((array)$signup_profile_field_ids as $field_id) {
+			if ( ! isset( $_POST['field_' . $field_id] ) ) {
+				if ( ! empty( $_POST['field_' . $field_id . '_day'] ) && ! empty( $_POST['field_' . $field_id . '_month'] ) && ! empty( $_POST['field_' . $field_id . '_year'] ) ) {
+					// Concatenate the values.
+					$date_value = $_POST['field_' . $field_id . '_day'] . ' ' . $_POST['field_' . $field_id . '_month'] . ' ' . $_POST['field_' . $field_id . '_year'];
+
+					// Turn the concatenated value into a timestamp.
+					$_POST['field_' . $field_id] = date( 'Y-m-d H:i:s', strtotime( $date_value ) );
+					
+				}
+			}
+			// Create errors for required fields without values.
+			if ( xprofile_check_is_required_field( $field_id ) && empty( $_POST[ 'field_' . $field_id ] ) && ! bp_current_user_can( 'bp_moderate' ) ){
+				$field_data = xprofile_get_field($field_id );
+				if(is_object($field_data)){
+					$user_error_req_fields[]= $field_data->name;
+				}		
+			}
+		}
+		if(!empty($user_error_req_fields)){
+			echo json_encode(array('error' => true, 'message'=> '<div class="wpsm_box warning_type">'.__('Next fields are required: ', 'rehub_framework').implode(', ',$user_error_req_fields).'</div>'));
+			die();				
+		}
+		$usermeta['profile_field_ids'] = $_POST['signup_profile_field_ids'];
+	} 	
+
+	if($bp_logic_popup == 'bp' && class_exists( 'BuddyPress' )){
+		$usermeta['password'] = wp_hash_password( $_POST['signup_password'] );
+		$usermeta = apply_filters( 'bp_signup_usermeta', $usermeta );
+		$userid = bp_core_signup_user( $user_login, $user_signonpassword, $user_email, $usermeta );
+	}	
+	else{
+		$userid = wp_create_user( $user_login, $user_signonpassword, $user_email );
+	}
+
+	if(is_wp_error($userid)){
+		$registration_error_messages = $userid->errors;
 		$display_errors = '<div class="wpsm_box warning_type">';
 			foreach($registration_error_messages as $error){
 				$display_errors .= '<p>'.$error[0].'</p>';
@@ -316,10 +365,14 @@ function rehub_register_member_popup_function(){
 				}
 				if(!empty($_POST['field_' . $field_id])){
 					$field_val = $_POST['field_' . $field_id];
-					xprofile_set_field_data($field_id, $errors, $field_val);
-				}			
+					xprofile_set_field_data($field_id, $userid, $field_val);
+					$visibility_level = ! empty( $_POST['field_' . $field_id . '_visibility'] ) ? $_POST['field_' . $field_id . '_visibility'] : 'public';
+					xprofile_set_field_visibility_level( $field_id, $userid, $visibility_level );
+				}	
+					
 			}
-		}		
+		}	
+		do_action('rh_before_wcv_register', $userid );	
 		if ($wcv_apply_as_vendor){
 			$secure_cookie = (!is_ssl()) ? false : '';
 			$manual = WC_Vendors::$pv_options->get_option( 'manual_vendor_registration' );
@@ -329,8 +382,8 @@ function rehub_register_member_popup_function(){
 					$role = 'customer';
 				}
 			}		
-			$user_id = wp_update_user( array( 'ID' => $errors, 'role' => $role ));
-			do_action( 'wcvendors_application_submited', $errors );
+			$user_id = wp_update_user( array( 'ID' => $userid, 'role' => $role ));
+			do_action( 'wcvendors_application_submited', $userid );
 		    if (class_exists('WCVendors_Pro') ) {
 		        $redirect_to = get_permalink(WCVendors_Pro::get_option( 'dashboard_page_id' ));
 		    }
@@ -340,30 +393,47 @@ function rehub_register_member_popup_function(){
 		    $errorshow = false;
 			if ($role == 'vendor'){
 				$status = 'approved';				
-				$message = '<div class="wpsm_box green_type">'.__( 'Congratulations! You are now a vendor. Be sure to configure your store settings before adding products.', 'rehub_framework').'</div>';				
+				$message = '<div class="wpsm_box green_type">'.__( 'Congratulations! You are now a vendor. Be sure to configure your store settings before adding products.', 'rehub_framework').'</div>';
+				if($bp_logic_popup == 'bp' && class_exists( 'BuddyPress' )){
+					$message .= '<div class="wpsm_box blue_type mt15">'.__( 'Before login this site you will need to activate your account via the email we have just sent to your address.', 'rehub_framework').'</div>';	
+					$errorshow = true;	
+				}				
 			}
 			elseif ($role == 'customer'){
 				$status = 'customer';				
 				$message = '<div class="wpsm_box green_type">'.__( 'Congratulations! Now you must add some settings before application', 'rehub_framework').'</div>';
+				if($bp_logic_popup == 'bp' && class_exists( 'BuddyPress' )){
+					$message .= '<div class="wpsm_box blue_type mt15">'.__( 'Before login this site you will need to activate your account via the email we have just sent to your address.', 'rehub_framework').'</div>';	
+					$errorshow = true;	
+				}				
 			}			
 			else{
                 $status = 'pending';
 				$message = '<div class="wpsm_box green_type">'.__( 'Your application has been received. You will be notified by email the results of your application. Currently you can use site as Pending vendor.', 'rehub_framework').'</div>';
+				if($bp_logic_popup == 'bp' && class_exists( 'BuddyPress' )){
+					$message .= '<div class="wpsm_box blue_type mt15">'.__( 'Before login this site you will need to activate your account via the email we have just sent to your address.', 'rehub_framework').'</div>';	
+					$errorshow = true;	
+				}				
 			}
 			if ($status != 'customer' && $status != ''){
 				global $woocommerce;
 	            $mails = $woocommerce->mailer()->get_emails();
 	            if (!empty( $mails ) ) {
-	                $mails[ 'WC_Email_Approve_Vendor' ]->trigger($errors, $status );
+	                $mails[ 'WC_Email_Approve_Vendor' ]->trigger($userid, $status );
 	            }
 			}			
 			wp_signon( array('user_login' => $user_login, 'user_password' => $user_signonpassword), $secure_cookie );
 			echo json_encode(array('error' => $errorshow, 'message' => $message, 'redirecturl' => $redirect_to));			
 		}else{
-			update_user_meta($errors, '_um_cool_but_hard_to_guess_plain_pw', $user_signonpassword);
+			update_user_meta($userid, '_um_cool_but_hard_to_guess_plain_pw', $user_signonpassword);
 			$secure_cookie = (!is_ssl()) ? false : '';
+			do_action('rh_before_user_signon', $userid );
 			wp_signon( array('user_login' => $user_login, 'user_password' => $user_signonpassword), $secure_cookie );
-			echo json_encode(array('error' => false, 'message' => '<div class="wpsm_box green_type">'.__( 'Registration complete. Now you can use your account. Reloading page...', 'rehub_framework').'</div>'));			
+			if($bp_logic_popup == 'bp' && class_exists( 'BuddyPress' )){
+				echo json_encode(array('error' => true, 'message' => '<div class="wpsm_box green_type">'.__( 'You have successfully created your account! To begin using this site you will need to activate your account via the email we have just sent to your address.', 'rehub_framework' ).'</div>', 'redirecturl' => $redirect_to));
+			}else{
+				echo json_encode(array('error' => false, 'message' => '<div class="wpsm_box green_type">'.__( 'Registration complete. Now you can use your account. Reloading page...', 'rehub_framework').'</div>', 'redirecturl' => $redirect_to));
+			}			
 		}
 
 	}

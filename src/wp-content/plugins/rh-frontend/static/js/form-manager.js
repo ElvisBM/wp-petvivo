@@ -2,10 +2,10 @@ jQuery(document).ready(function($){
 	
 	$( "#wpfepp-sortable" ).sortable({helper : 'clone'});
 	$('body').on('click', ".wpfepp-widget-head", function(e){
-		$(this).find('.wpfepp-expand i').first().toggleClass('wpfepp-icon-arrow-down').toggleClass('wpfepp-icon-arrow-up');
+		$(this).find('.wpfepp-expand span.dashicons').first().toggleClass('dashicons-arrow-down').toggleClass('dashicons-arrow-up');
 		$(this).siblings('.wpfepp-widget-body').first().slideToggle();
 	});
-	$('body').on('click', ".wpfepp-custom-field-delete i.wpfepp-icon-remove", function(e){
+	$('body').on('click', ".wpfepp-custom-field-delete span.dashicons-trash", function(e){
 		var confirmation = confirm(objectL10n.areyousure);
 		if(confirmation)
 			$(this).closest('.wpfepp-widget-container').remove();

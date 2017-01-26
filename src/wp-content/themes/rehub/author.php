@@ -14,8 +14,8 @@ $mycredrank = ( function_exists( 'mycred_get_users_rank' ) ) ? mycred_get_users_
 $mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_users_fcred($author_ID ) : '';
  ?>
 <!-- CONTENT -->
-<div class="content user-profile-div"> 
-    <div class="clearfix">
+<div class="rh-container user-profile-div"> 
+    <div class="rh-content-wrap clearfix">
         <!-- Sidebar -->
         <aside class="sidebar authorsidebar">
             <div class="author_widget clearfix">
@@ -25,6 +25,16 @@ $mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_user
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name">
                         <?php echo $author_name; ?> <?php if (!empty($mycredrank) && is_object( $mycredrank)) :?><span class="rh-user-rank-mc rh-user-rank-<?php echo $mycredrank->post_id; ?>"><?php echo $mycredrank->title ;?></span><?php endif;?>
+                        <?php   
+                            if (function_exists('bp_get_member_type')){      
+                                $membertype = bp_get_member_type($author_ID);
+                                $membertype_object = bp_get_member_type_object($membertype);
+                                $membertype_label = (!empty($membertype_object) && is_object($membertype_object)) ? $membertype_object->labels['singular_name'] : '';
+                                if($membertype_label){
+                                    echo '<span class="rh-user-rank-mc rh-user-rank-'.$membertype.'">'.$membertype_label.'</span>';
+                                }
+                            }
+                        ?>
                     </div>
                 </div>
                 <div class="profile-stats">
@@ -93,7 +103,7 @@ $mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_user
                 </div>          
                 <?php if ( have_posts() ) : ?>
                     <?php while ( have_posts() ) : the_post(); ?>
-                        <?php get_template_part('inc/parts/query_type1'); ?>
+                        <?php include(rh_locate_template('inc/parts/query_type1.php')); ?>
                     <?php endwhile; ?>
                     <?php rehub_pagination(); ?>
                 <?php else : ?>     
@@ -111,7 +121,7 @@ $mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_user
                 <?php if ( $deals->have_posts() ) : ?>
                     <div class="woo_offer_list">
                     <?php while ( $deals->have_posts() ) : $deals->the_post(); ?>
-                        <?php include(locate_template('inc/parts/woolistpart.php')); ?>
+                        <?php include(rh_locate_template('inc/parts/woolistpart.php')); ?>
                     <?php endwhile; ?>
                     </div>
                     <?php rehub_pagination(); ?>

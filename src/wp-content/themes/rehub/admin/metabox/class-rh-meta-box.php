@@ -187,7 +187,7 @@ class RH_Meta_Box_Post {
 		<small><?php _e('Add video links, each link from new line. Youtube and vimeo are supported', 'rehub_framework');?></small>
 			<textarea id="rh_post_image_videos" rows="3" name="rh_post_image_videos"><?php echo get_post_meta( $post->ID, 'rh_post_image_videos', true );?></textarea>
 		</p> 
-		<p class="rh_add_post_images hide-if-no-js"><small><?php _e('Some post layouts renders gallery thumbnails automatically. Also, you can add them to post with shortcode [rh_get_post_thumbnails video=1]. video=1 - include also video, ', 'rehub_framework');?></small></p>
+		<p class="rh_add_post_images hide-if-no-js"><small><?php _e('Some post layouts renders gallery thumbnails automatically. Also, you can add them to post with shortcode [rh_get_post_thumbnails video=1 height=200 justify=1]. video=1 - include also video. Height is maximum height, justify=1 is parameter to show pretty justify gallery.', 'rehub_framework');?></small></p>
 		<?php
 	}
 
@@ -195,12 +195,14 @@ class RH_Meta_Box_Post {
 	 * Save meta box data.
 	 */
 	public static function save( $post_id, $post ) {
-		if(!empty($_POST['rh_post_image_gallery']) && !is_array($_POST['rh_post_image_gallery'])){
+		if( !empty($_POST['rh_post_image_gallery']) && !is_array($_POST['rh_post_image_gallery'])){
 			$attachment_ids = sanitize_text_field( $_POST['rh_post_image_gallery']);
 			update_post_meta( $post_id, 'rh_post_image_gallery', $attachment_ids );
+		}elseif(isset($_POST['rh_post_image_gallery'])){
+			delete_post_meta( $post_id, 'rh_post_image_gallery' );
 		}
 		if(!empty($_POST['rh_post_image_videos'])){
-			$videos = sanitize_text_field($_POST['rh_post_image_videos']);
+			$videos = esc_textarea($_POST['rh_post_image_videos']);
 			update_post_meta( $post_id, 'rh_post_image_videos', $videos);
 		}		
 	}

@@ -3,7 +3,7 @@
 Plugin Name: RH Frontend Publishing Pro
 Plugin URI: https://bitbucket.org/bizdirect/rehub-frontend-pro
 Description: Allow your users to create, edit and delete posts directly from the WordPress frontend area.
-Version: 3.3.0.4
+Version: 3.3.1.3
 Author: Wpsoul.com
 Author URI: http://wpsoul.com
 Text Domain: wpfepp-plugin
@@ -32,7 +32,7 @@ if( $data_settings && $data_settings['turn_on_payment'] ){
 }
 
 function wpfepp_run_plugin() {
-	$wpfepp = new Frontend_Publishing_Pro( "3.3.0.4" );
+	$wpfepp = new Frontend_Publishing_Pro( "3.3.1.3" );
 	$wpfepp->run();
 }
 

@@ -46,7 +46,7 @@ class PrefillController {
 
     public function add_admin_menu()
     {
-        \add_submenu_page(Plugin::slug, __('Заполнить', 'content-egg') . ' &lsaquo; Content Egg', __('Заполнить', 'content-egg'), 'publish_posts', self::slug, array($this, 'actionIndex'));
+        \add_submenu_page(Plugin::slug, __('Fill', 'content-egg') . ' &lsaquo; Content Egg', __('Fill', 'content-egg'), 'publish_posts', self::slug, array($this, 'actionIndex'));
     }
 
     public function actionIndex()
@@ -92,14 +92,14 @@ class PrefillController {
         // data exists?
         if (ContentManager::isDataExists($post->ID, $parser->getId()))
         {
-            $log .= ' - ' . __('Данные уже существуют.', 'content-egg');
+            $log .= ' - ' . __('Data already exist.', 'content-egg');
             $this->printResult($log);
         }
 
         $keyword = $this->getKeyword($post_id, $keyword_source, $keyword_count);
 
         if (!$keyword)
-            $this->printResult($log . ' - ' . __('Невозможно определить ключевое слово.', 'content-egg'));
+            $this->printResult($log . ' - ' . __('Impossible to determine a keyword', 'content-egg'));
 
         $log .= ' Keyword: "' . $keyword . '"';
 
@@ -108,11 +108,11 @@ class PrefillController {
         {
             // exists?
             if (\get_post_meta($post->ID, ContentManager::META_PREFIX_KEYWORD . $parser->getId(), true))
-                $this->printResult($log . ' - ' . __('Ключевое слово для автоапдейта уже существует.', 'content-egg'));
+                $this->printResult($log . ' - ' . __('Keyword for autoupdate already exists.', 'content-egg'));
 
             // save & exit...
             \update_post_meta($post->ID, ContentManager::META_PREFIX_KEYWORD . $parser->getId(), $keyword);
-            $this->printResult($log . ' - ' . __('Ключевое слово для автоапдейта сохранено.', 'content-egg'));
+            $this->printResult($log . ' - ' . __('Keyword for autoupdate was saved.', 'content-egg'));
         }
 
         try
@@ -121,20 +121,20 @@ class PrefillController {
         } catch (\Exception $e)
         {
             // error
-            $log .= ' - ' . __('Ошибка:', 'content-egg') . ' ' . $e->getMessage();
+            $log .= ' - ' . __('Error:', 'content-egg') . ' ' . $e->getMessage();
             $this->printResult($log);
         }
 
         // nodata!
         if (!$data)
         {
-            $log .= ' - ' . __('Данные не найдены.', 'content-egg');
+            $log .= ' - ' . __('No data found...', 'content-egg');
             $this->printResult($log);
         }
 
         // save
         ContentManager::saveData($data, $parser->getId(), $post->ID);
-        $log .= ' - ' . __('Данные сохранены:', 'content-egg') . ' ' . count($data) . '.';
+        $log .= ' - ' . __('Data saved:', 'content-egg') . ' ' . count($data) . '.';
         $this->printResult($log);
     }
 

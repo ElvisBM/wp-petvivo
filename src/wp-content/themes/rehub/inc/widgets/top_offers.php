@@ -43,7 +43,7 @@ function widget( $args, $instance ) {
 	    	<?php rehub_top_offers_widget_block_post($tags, $number, $order, $random);?>
 	    <?php elseif ($post_type == 'thirsty'):?>
 	    	<?php rehub_top_offers_widget_block_thirsty($tags, $number, $order, $random);?> 
-	    <?php elseif ($post_type == 'woo'):?>
+	    <?php elseif ($post_type == 'woo' && class_exists('Woocommerce')):?>
 	    	<?php rehub_top_offers_widget_block_woo($tags, $number, $order, $random);?>
 	    <?php else : ?> 	              
 	    	<?php rehub_top_offers_widget_block_post($tags, $number, $order, $random);?>

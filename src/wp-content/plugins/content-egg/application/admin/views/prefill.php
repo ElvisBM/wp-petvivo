@@ -8,19 +8,19 @@ use ContentEgg\application\components\ModuleManager;
     <?php endif; ?>
     <div class="wrap">
         <h2>
-            <?php _e('Заполнить', 'content-egg'); ?>
+            <?php _e('Fill', 'content-egg'); ?>
         </h2>
 
         <p>
-            <?php _e('Эта утилита заполняет данные модулей для всех существующих постов.', 'content-egg'); ?>
-            <?php _e('Существующие данные и ключевые слова для автообновления не перезатираются!', 'content-egg'); ?>
+            <?php _e('This extension will fill module\'s data for all existed posts.', 'content-egg'); ?>
+            <?php _e('All existing data and keywords will not be erased or overwritten.', 'content-egg'); ?>
 
         </p>
 
         <table class="form-table">
 
             <tr>
-                <th scope="row"><label for="module_id"><?php _e('Добавить данные для модуля', 'content-egg'); ?></label></th>
+                <th scope="row"><label for="module_id"><?php _e('Add data for module', 'content-egg'); ?></label></th>
                 <td>
                     <select id="module_id">
                         <?php foreach (ModuleManager::getInstance()->getParserModules() as $module): ?>
@@ -30,36 +30,36 @@ use ContentEgg\application\components\ModuleManager;
                 </td>
             </tr>
             <tr>
-                <th scope="row"><label for="keyword_source"><?php _e('Источник ключевого слова', 'content-egg'); ?></label></th>
+                <th scope="row"><label for="keyword_source"><?php _e('Keyword source', 'content-egg'); ?></label></th>
                 <td>
                     <select id="keyword_source">
-                        <option value="_density"><?php _e('Вычислить на основании плотности ключевых слов поста', 'content-egg'); ?></option>                                                
-                        <option value="_title"><?php _e('Заголовк поста', 'content-egg'); ?></option>
-                        <option value="_tags"><?php _e('Тэги поста', 'content-egg'); ?></option>
+                        <option value="_density"><?php _e('Calculate as base of the density of keywords inside post', 'content-egg'); ?></option>                                                
+                        <option value="_title"><?php _e('Title for post', 'content-egg'); ?></option>
+                        <option value="_tags"><?php _e('Post tags', 'content-egg'); ?></option>
                         <?php foreach (ModuleManager::getInstance()->getAffiliateParsers() as $module): ?>
-                            <option value="<?php echo $module->getId(); ?>"><?php _e('Копировать с', 'content-egg'); ?> <?php echo esc_html($module->getName()); ?></option>
+                            <option value="<?php echo $module->getId(); ?>"><?php _e('Copy from', 'content-egg'); ?> <?php echo esc_html($module->getName()); ?></option>
                         <?php endforeach; ?>
                     </select>
                 </td>
             </tr>
 
             <tr>
-                <th scope="row"><label for="autoupdate"><?php _e('Автообновление', 'content-egg'); ?></label></th>
+                <th scope="row"><label for="autoupdate"><?php _e('Autoupdate', 'content-egg'); ?></label></th>
                 <td>
-                    <label><input id="autoupdate" type="checkbox" checked="1" value="1"> <?php _e('Добавить ключевое слово для автообновления', 'content-egg'); ?></label>
-                    <p class="description"><?php _e('Только для модулей, которые имеют функцию автообновления.', 'content-egg'); ?></p>
+                    <label><input id="autoupdate" type="checkbox" checked="1" value="1"> <?php _e('Add Keyword for the automatic update', 'content-egg'); ?></label>
+                    <p class="description"><?php _e('Only for those modules, which have autoupdate function.', 'content-egg'); ?></p>
                 </td>
             </tr>            
 
             <tr>
-                <th scope="row"><label for="keyword_count"><?php _e('Количество слов', 'content-egg'); ?></label></th>
+                <th scope="row"><label for="keyword_count"><?php _e('Number of words', 'content-egg'); ?></label></th>
                 <td>
                     <select id="keyword_count">
                         <?php for ($i = 1; $i <= 10; $i++): ?>
                             <option value="<?php echo $i; ?>"<?php if ($i == 5) echo ' selected="selected"'; ?>><?php echo $i; ?></option>
                         <?php endfor; ?>
                     </select>
-                    <p class="description"><?php _e('Максимум слов в поисковом запросе.', 'content-egg'); ?></p>
+                    <p class="description"><?php _e('Maximum words for one search query.', 'content-egg'); ?></p>
 
                 </td>
             </tr>            
@@ -70,9 +70,9 @@ use ContentEgg\application\components\ModuleManager;
 
         <div>
             <br>
-            <button class="button-primary" type="button" id="start_prefill"><?php _e('Старт', 'content-egg'); ?></button>
-            <button class="button-primary" type="button" id="start_prefill_begin"><?php _e('Начать сначала', 'content-egg'); ?></button>
-            <button class="button-secondary" type="button" id="stop_prefill" disabled><?php _e('Стоп', 'content-egg'); ?></button>
+            <button class="button-primary" type="button" id="start_prefill"><?php _e('Start', 'content-egg'); ?></button>
+            <button class="button-primary" type="button" id="start_prefill_begin"><?php _e('Run again', 'content-egg'); ?></button>
+            <button class="button-secondary" type="button" id="stop_prefill" disabled><?php _e('Stop', 'content-egg'); ?></button>
 
             <span id="ajaxWaiting__" style="display:none;"><img src="<?php echo \ContentEgg\PLUGIN_RES . '/img/ajax-loader.gif' ?>" /></span>
             <span id="ajaxBusy" style="display:none;"><img src="<?php echo \ContentEgg\PLUGIN_RES . '/img/ajax-loader.gif' ?>" /></span>

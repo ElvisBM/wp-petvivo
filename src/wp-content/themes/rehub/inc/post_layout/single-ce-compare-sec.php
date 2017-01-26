@@ -1,6 +1,6 @@
 <!-- CONTENT -->
-<div class="content"> 
-	<div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
         <!-- Title area -->
         <div class="rh_post_layout_default rh_post_layout_outside">
             <div class="title_single_area">
@@ -61,7 +61,7 @@
                                 <?php echo do_shortcode('[wpsm_compare_multioffer ce_enable=1 pricehistory=1]');?>
                                 <?php if(rehub_option('rehub_disable_share_top') =='1' || vp_metabox('rehub_post_side.disable_parts') == '1')  : ?>
                                 <?php else :?>
-                                    <div class="top_share"><?php get_template_part('inc/parts/post_share'); ?></div>
+                                    <div class="top_share"><?php include(rh_locate_template('inc/parts/post_share.php')); ?></div>
                                     <div class="clearfix"></div> 
                                 <?php endif; ?>                                                                                                      
                             </div> 
@@ -69,7 +69,7 @@
                     </div>
 
                     <?php $no_featured_image_layout = 1;?>
-                    <?php include(locate_template('inc/parts/top_image.php')); ?>                                       
+                    <?php include(rh_locate_template('inc/parts/top_image.php')); ?>                                       
 
                     <?php if(rehub_option('rehub_single_before_post') && vp_metabox('rehub_post_side.show_banner_ads') != '1') : ?><div class="mediad mediad_before_content"><?php echo do_shortcode(rehub_option('rehub_single_before_post')); ?></div><?php endif; ?>
 
@@ -77,7 +77,7 @@
 
                 </article>
                 <div class="clearfix"></div>
-                <?php include(locate_template('inc/post_layout/single-common-footer.php')); ?>                    
+                <?php include(rh_locate_template('inc/post_layout/single-common-footer.php')); ?>                    
             <?php endwhile; endif; ?>
             <?php comments_template(); ?>
 		</div>	

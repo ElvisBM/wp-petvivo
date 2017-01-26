@@ -3,13 +3,17 @@
 ?>
 <?php get_header(); ?>
 <!-- CONTENT -->
-<div class="content"> 
-    <div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
           <!-- Main Side -->
           <div class="main-side page clearfix">
             <div class="title"><h1><?php the_title(); ?></h1></div>
             <article class="post" id="page-<?php the_ID(); ?>">       
-                <?php $favorites = get_user_favorites();
+                
+                 <?php RhGetUserFavorites();?>
+
+                <?php if(function_exists('get_user_favorites')):?>
+                    <?php $favorites = get_user_favorites();
                 if ( isset($favorites) && !empty($favorites) ) :
                     echo '<ul class="re-favorites-posts">';
                     foreach ( $favorites as $favorite ) :
@@ -21,7 +25,8 @@
                         echo '</li>';                
                     endforeach; 
                     echo '</ul>';
-                endif; ?>                     
+                endif; ?>
+                <?php endif;?>                     
             </article>
         </div>	
         <!-- /Main Side -->  

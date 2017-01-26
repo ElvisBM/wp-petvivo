@@ -100,12 +100,12 @@ $theme_url = 'https://wpsoul.com/';
 			<div class="theme">
 				<div class="theme-screenshot">
 					<img src="<?php echo get_template_directory_uri()?>/admin/screens/images/rhfrontend.png" alt="">
-					<div class="plugin-info">For frontend posting<br>Version: 3.23										</div>
+					<div class="plugin-info">For frontend posting<br>Version: 3.3.0.5										</div>
 				</div>
 				<h3 class="theme-name">RH Frontend Posting</h3>
 				<div class="theme-actions">
 					<?php if( $registration_complete ) :?>						
-						<a href="http://rehub.wpsoul.com/bonusplugin/rh-frontend.zip" class="button button-primary" title="Get link">Download</a>
+						<a href="http://rehub.wpsoul.com/plugins/packages/rh-frontend.zip" class="button button-primary" title="Get link">Download</a>
 					<?php else :?>
 						<?php printf( '<a href="%s" class="button button-primary">%s</a>', admin_url( 'admin.php?page=rehub' ), __( "Register theme to get link", "rehub_framework" ) ); ?>
 					<?php endif;?>		
@@ -113,13 +113,27 @@ $theme_url = 'https://wpsoul.com/';
 			</div>
 			<div class="theme">
 				<div class="theme-screenshot">
+					<img src="<?php echo get_template_directory_uri()?>/admin/screens/images/rhbpm.jpg" alt="">
+					<div class="plugin-info">RH Buddypress Member<br>Version: 1.0										</div>
+				</div>
+				<h3 class="theme-name">RH Buddypress Member Types</h3>
+				<div class="theme-actions">
+					<?php if( $registration_complete ) :?>						
+						<a href="http://rehub.wpsoul.com/plugins/packages/rh-bp-member-type.zip" class="button button-primary" title="Get link">Download</a>
+					<?php else :?>
+						<?php printf( '<a href="%s" class="button button-primary">%s</a>', admin_url( 'admin.php?page=rehub' ), __( "Register theme to get link", "rehub_framework" ) ); ?>
+					<?php endif;?>		
+				</div>
+			</div>			
+			<div class="theme">
+				<div class="theme-screenshot">
 					<img src="<?php echo get_template_directory_uri()?>/admin/screens/images/rhspecification.jpg" alt="">
-					<div class="plugin-info">For specification and post tab building <br>Version: 1.1										</div>
+					<div class="plugin-info">For specification and post tab building <br>Version: 1.2										</div>
 				</div>
 				<h3 class="theme-name">RH Specification Fields</h3>
 				<div class="theme-actions">
 					<?php if( $registration_complete ) :?>						
-						<a href="http://rehub.wpsoul.com/bonusplugin/specification-fields.zip" class="button button-primary" title="Get link">Download</a>
+						<a href="http://rehub.wpsoul.com/plugins/packages/specification-fields.zip" class="button button-primary" title="Get link">Download</a>
 					<?php else :?>
 						<?php printf( '<a href="%s" class="button button-primary">%s</a>', admin_url( 'admin.php?page=rehub' ), __( "Register theme to get link", "rehub_framework" ) ); ?>
 					<?php endif;?>		

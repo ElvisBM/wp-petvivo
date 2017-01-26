@@ -194,8 +194,7 @@ jQuery(document).ready(function($){
 		this.post_id_field 		= this.jq_obj.find('.wpfepp-post-id-field').first();
 		this.submit_button 		= this.jq_obj.find('.wpfepp-submit-button').first();
 		this.save_button 		= this.jq_obj.find('.wpfepp-save-button').first();
-		this.submit_button_icon = this.submit_button.find('i').first();
-		this.save_button_icon 	= this.save_button.find('i').first();
+		this.submit_button_icon = this.jq_obj.find('.dashicons-update').first();
 		this.thumb_container 	= this.jq_obj.find('.wpfepp-thumbnail-container').first();
 		this.thumb_id_field 	= this.jq_obj.find('.wpfepp-thumbnail-id').first();
 		this.captcha 			= this.jq_obj.find('.g-recaptcha').first();
@@ -203,6 +202,11 @@ jQuery(document).ready(function($){
 		this.hide_captcha = function(){
 			this.captcha.hide();
 		}
+		
+		if( this.thumb_container.html() != '' ) {
+			this.thumb_container.siblings(".wpfepp-thumbnail-close").show();
+		}
+			
 		//A simple wrapper for jQuery's ajax function
 		this.make_request = function(_data, successCallback, errorCallback){
 			$.ajax({ type:'POST', dataType: 'json', url: wpfepp.ajaxurl, data: _data, success: successCallback, error: errorCallback });
@@ -248,6 +252,9 @@ jQuery(document).ready(function($){
 		//Displays a success message and optionally hides the form.
 		this.show_success = function(messages, hide_form){
 			this.form_message.addClass('success').removeClass('error').html(messages.form).show();
+			if($('.rh_wpeff_noticebox').length > 0){
+				$('.rh_wpeff_noticebox').remove();
+			}
 			if(hide_form)
 				this.hide_form();
 			wpfepp_scroll_to(this.form_message);
@@ -256,17 +263,13 @@ jQuery(document).ready(function($){
 		this.disable_buttons = function(animated_btn){
 			this.submit_button.attr('disabled', true);
 			this.save_button.attr('disabled', true);
-			if(animated_btn == 'submit')
-				this.submit_button_icon.addClass('wpfepp-icon-loop');
-			else
-				this.save_button_icon.addClass('wpfepp-icon-loop');
+			this.submit_button_icon.css("opacity", "1");
 		}
 		//Enables all the buttons and hides the animation.
 		this.enable_buttons = function(){
 			this.submit_button.attr('disabled', false);
 			this.save_button.attr('disabled', false);
-			this.submit_button_icon.removeClass('wpfepp-icon-loop');
-			this.save_button_icon.removeClass('wpfepp-icon-loop');
+			this.submit_button_icon.css("opacity", "0");
 		}
 		this.save_draft = function(){
 			this.disable_buttons('save');
@@ -350,7 +353,7 @@ jQuery(document).ready(function($){
 		e.stopPropagation();
 		wpfepp_forms.get( $(this).closest('.wpfepp-form') ).save_draft();
 	});
-
+		
 	$('.wpfepp-thumbnail-link').click(function(e){
 		e.preventDefault();
 		var clicked = $(this);
@@ -366,11 +369,13 @@ jQuery(document).ready(function($){
             wpfepp_forms.get( $(clicked).closest('.wpfepp-form') ).load_thumb(attachment.id);
         });
 		custom_uploader.open();
+		clicked.siblings(".wpfepp-thumbnail-close").show();
 	});
 
 	$('.wpfepp-thumbnail-close').click(function(e){
 		e.preventDefault();
 		wpfepp_forms.get( $(this).closest('.wpfepp-form') ).reset_thumb();
+		$(this).hide();
 	});
 
 	$('body').on('click', '.wpfepp-continue-editing', function(e){
@@ -383,23 +388,23 @@ jQuery(document).ready(function($){
 		var deletion_link = $(this);
 		if( deletion_link.hasClass('processing-req') ) return;
 		deletion_link.addClass('processing-req');
-		var icon = deletion_link.children('i');
-		icon.removeClass('wpfepp-icon-remove').addClass('wpfepp-icon-loop');
+		var icon = deletion_link.children('span.dashicons');
+		icon.removeClass('dashicons-trash').addClass('dashicons-update');
 		var row = deletion_link.closest('tr.wpfepp-row');
 
 		var _post_id = $(this).siblings('.post-id').first().val();
-		var _nonce 	= $(this).siblings('#wpfepp-delete-post-'+_post_id+'-nonce').first().val();
+		var _nonce = $(this).siblings('#wpfepp-delete-post-'+_post_id+'-nonce').first().val();
 		$.ajax({
 			type:'POST',
 			dataType: 'json',
 			url: wpfepp.ajaxurl,
 			data: {
-				action: 		'wpfepp_delete_post',
-				post_id: 		_post_id,
-				delete_nonce: 	_nonce
+				action: 'wpfepp_delete_post',
+				post_id: _post_id,
+				delete_nonce: _nonce
 			},
 			success: function(data,textStatus,XMLHttpRequest){
-				icon.removeClass('wpfepp-icon-loop').addClass('wpfepp-icon-remove');
+				icon.removeClass('dashicons-update').addClass('dashicons-trash');
 				deletion_link.removeClass('processing-req');
 				var message_container = $('.wpfepp-posts .wpfepp-message');
 				if(data.success){

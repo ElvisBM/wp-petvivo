@@ -15,7 +15,6 @@ class WPFEPP_Form
 	/**
 	 * Plugin version.
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $version;
@@ -23,7 +22,6 @@ class WPFEPP_Form
 	/**
 	 * An instance of our table class for making database calls
 	 * 
-	 * @access private
 	 * @var WPFEPP_DB_Table
 	 **/
 	private $db;
@@ -31,7 +29,6 @@ class WPFEPP_Form
 	/**
 	 * Id of the form from the database table
 	 *
-	 * @access private
 	 * @var integer
 	 **/
 	private $id;
@@ -39,7 +36,6 @@ class WPFEPP_Form
 	/**
 	 * Name of the form from the database table
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $name;
@@ -47,7 +43,6 @@ class WPFEPP_Form
 	/**
 	 * A short description of this form from the database table
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $description;
@@ -55,7 +50,6 @@ class WPFEPP_Form
 	/**
 	 * The post type for which the current form will work
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $post_type;
@@ -63,7 +57,6 @@ class WPFEPP_Form
 	/**
 	 * An array containing all the form fields and their restrictions. The array is stored in the Database as a serialized string.
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $fields;
@@ -71,7 +64,6 @@ class WPFEPP_Form
 	/**
 	 * An array containing all the form settings. The array is stored in the Database as a serialized string.
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $settings;
@@ -79,7 +71,6 @@ class WPFEPP_Form
 	/**
 	 * An array containing all the extended form settings. The array is stored in the Database as a serialized string.
 	 *
-	 * @access private
 	 * @var string
 	 **/
 	private $extended;
@@ -87,7 +78,6 @@ class WPFEPP_Form
 	/**
 	 * A boolean flag that keeps track of whether the form exists in the database table or not.
 	 *
-	 * @access private
 	 * @var boolean
 	 **/
 	private $valid;
@@ -95,7 +85,6 @@ class WPFEPP_Form
 	/**
 	 * A boolean flag that keeps track of whether the form paid or not.
 	 *
-	 * @access private
 	 * @var boolean
 	 **/
 	private $paid_on;	
@@ -132,13 +121,13 @@ class WPFEPP_Form
 			$this->valid = false;
 
 		if( $this->valid ) {
-			$this->name 		= $row['name'];
-			$this->description 	= $row['description'];
-			$this->post_type 	= $row['post_type'];
-			$this->fields 		= $row['fields'];
-			$this->settings 	= $row['settings'];
-			$this->emails 		= $row['emails'];
-			$this->extended 	= $row['extended'];
+			$this->name = $row['name'];
+			$this->description = $row['description'];
+			$this->post_type = $row['post_type'];
+			$this->fields = $row['fields'];
+			$this->settings = $row['settings'];
+			$this->emails 	= $row['emails'];
+			$this->extended = $row['extended'];
 
 			//Necessary because we need to check if the post type is public before showing any links to the end user.
 			$this->post_type_obj = get_post_type_object( $this->post_type );
@@ -149,7 +138,6 @@ class WPFEPP_Form
 		require_once plugin_dir_path( __FILE__ ) . 'class-wpfepp-copyscape.php';
 		require_once plugin_dir_path( __FILE__ ) . 'class-wpfepp-captcha.php';
 		require_once plugin_dir_path( __FILE__ ) . 'class-wpfepp-post-previews.php';
-		
 	}
 
 	/**
@@ -157,20 +145,20 @@ class WPFEPP_Form
 	 * 
 	 * @param  int $post_id The ID of the post that the form should be populated with on page load. It is used only when the form is created for editing an existing post.
 	 **/
-	public function display( $post_id = -1 ){
+	public function display( $post_id = -1 ) {
 		//Make sure the form exists in the database. If it does not, display a friendly error message.
-		if(!$this->valid){
-			_e("No form with the specified ID was found", 'wpfepp-plugin');
+		if( ! $this->valid ){
+			_e( "No form with the specified ID was found", "wpfepp-plugin" );
 			return;
 		}
 
-		if(!is_user_logged_in()){
-			printf(__('You need to %s first.', 'wpfepp-plugin'), sprintf('<a href="%s" id="rh_login_trigger_url">%s</a>', wp_login_url(), __('log in', 'wpfepp-plugin')));
+		if( ! is_user_logged_in() ) {
+			printf( __( "You need to %s first.", "wpfepp-plugin" ), sprintf( '<a href="%s" id="rh_login_trigger_url" class="act-rehub-login-popup">%s</a>', wp_login_url(), __( "login", "wpfepp-plugin") ) );
 			return;
 		}
 		
-		if($this->post_type == 'product' and !class_exists('Woocommerce') and current_user_can('install_plugins')) {
-			printf( '<div class="wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Woocommerce plugin is deactivated or not installed.", "wpfepp-plugin" ));
+		if( $this->post_type == 'product' and ! class_exists( 'Woocommerce' ) and current_user_can( 'install_plugins' ) ) {
+			printf( '<div class="wpfepp wpfepp wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Woocommerce plugin is deactivated or not installed.", "wpfepp-plugin" ) );
 			return;
 		}
 
@@ -195,29 +183,54 @@ class WPFEPP_Form
 
 		//Finally print the form
 		do_action( 'wpfepp_do_before_print_form' );
-		do_action( 'wpfepp_do_before_'.$this->id.'_print_form' );		
-		$this->print_form( $current, $result );
+		do_action( 'wpfepp_do_before_'. $this->id .'_print_form' );	
 
+		//Here we check if user has access to form if form has limits
+		if(!empty($this->extended['limit_number']) && $this->extended['limit_number']>0){
+			$currentuserid = get_current_user_id();
+			$user_numb_post_meta = '_rhf_user_submit_counter_form_'.$this->id;
+			$author_number_post_package = get_user_meta( $currentuserid, $user_numb_post_meta, true );
+
+			if (is_numeric($author_number_post_package) || $author_number_post_package === 0){
+				if ($author_number_post_package <= 0) {
+					$message = (!empty($this->extended['limit_number_message'])) ? $this->extended['limit_number_message'] : __('You reached the limit for submit to this form', 'wpfepp-plugin');
+					echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';					
+						echo do_shortcode($message);
+					echo '</div>';							
+					return;
+				}else{			
+					$message = (!empty($this->extended['pre_limit_message'])) ? $this->extended['pre_limit_message'] : __('You have %%count%% available submissions', 'wpfepp-plugin');
+					$message = str_replace('%%count%%', $author_number_post_package, $message);
+					echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';					
+						echo do_shortcode($message);
+					echo '</div>';										
+				}
+			}else{
+				$message = (!empty($this->extended['pre_limit_message'])) ? $this->extended['pre_limit_message'] : __('You have %%count%% available submissions', 'wpfepp-plugin');
+				$message = str_replace('%%count%%', $this->extended['limit_number'], $message);
+				echo '<div class="wpsm_box blue_type nonefloat_box rh_wpeff_noticebox">';
+					echo do_shortcode($message);
+				echo '</div>';
+			}			
+		}				
+
+		$this->print_form( $current, $result );
 	}
 
 	/**
 	 * A simple wrapper for PHP's own stripslashes() function. It makes sure that the original function is applied only on strings.
 	 *
-	 * @access private
-	 *
 	 * @param  string $str The string on which stripslashes() needs to be called.
 	 * @return string The input string with slashed stripped out.
 	 **/
-	private function stripslashes($str){
-		if(!is_string($str))
+	private function stripslashes( $str ){
+		if( ! is_string( $str ) )
 			return $str;
-		return stripslashes(trim($str));
+		return stripslashes( trim( $str ) );
 	}
 
 	/**
 	 * Prints the form populated with existing values ($current) and displays errors if any exist.
-	 *
-	 * @access private
 	 *
 	 * @param  array $current An array containing the current field values. These values are either fetched from the DB using $this->get_post() or from the $_POST array.
 	 * @param  array $result The array obtained from handle_submission(). It contains a success flag, a list of errors/messages and id of the newly generated post.
@@ -346,7 +359,7 @@ class WPFEPP_Form
 				$this->fields[WPFEPP_CopyScape::$meta_key] 	= array('type' => 'custom_field');
 				$post_data[WPFEPP_CopyScape::$meta_key] 	= $column_msg;
 
-				if(!$passed){
+				if( ! $passed ) {
 					if($copyscape_block){
 						$return_val['errors']['form'][] 	= $user_defined_errors['copyscape'];
 						break;
@@ -357,18 +370,18 @@ class WPFEPP_Form
 				}
 			}
 			else {
-				$this->fields[WPFEPP_CopyScape::$meta_key] 	= array('type' => 'custom_field');
-				$post_data[WPFEPP_CopyScape::$meta_key] 	= '';
+				$this->fields[WPFEPP_CopyScape::$meta_key] = array( 'type' => 'custom_field' );
+				$post_data[WPFEPP_CopyScape::$meta_key] = '';
 			}
 
 			$result = $this->insert_post($post_data);
-			if(is_wp_error($result)){
+			if( is_wp_error( $result ) ) {
 				$return_val['errors']['form'][] = $result->get_error_message();
 				break;
 			}
 
-			$return_val['success'] 	= true;
-			$return_val['post_id'] 	= $result;
+			$return_val['success'] = true;
+			$return_val['post_id'] = $result;
 			$return_val['redirect_url'] = ($this->settings['redirect_url']) ? $this->settings['redirect_url'] : false;
 			$action = ( $old_status == 'new' || $old_status == 'draft' ) ? 'created' : 'updated';
 			$preview_link 	= sprintf( '<a target="_blank" href="%s">%s</a>', WPFEPP_Post_Previews::make_preview_link( $result ), __( "Preview", "wpfepp-plugin" ) );
@@ -376,11 +389,25 @@ class WPFEPP_Form
 			$final_link = ( $post_data['post_status'] == 'publish' ) ? $permalink : $preview_link;
 			$final_link = ( $this->post_type_obj->public ) ? $final_link : '';
 
-			if( 'created' == $action ){
-				$display_message 	= __("The post has been created successfully. %s %s", 'wpfepp-plugin');
+			if( 'created' == $action ) {
+				//Here we save limit number to user meta to check if user has access to form later
+				if(!empty($post_data['form_id']) && !empty($post_data['form_limit_number']) && $post_data['form_limit_number']>0){
+					$currentuserid = get_current_user_id();
+					$default_counter = (int)$post_data['form_limit_number'] - 1;	
+					$user_numb_post_meta = '_rhf_user_submit_counter_form_'.$post_data['form_id'];
+					$author_number_post_package = get_user_meta( $currentuserid, $user_numb_post_meta, true );
+					
+					if ( !$author_number_post_package) {
+						update_user_meta( $currentuserid, $user_numb_post_meta, $default_counter );	
+					} else {
+						$author_number_post_package = (int)$author_number_post_package - 1;
+						update_user_meta( $currentuserid, $user_numb_post_meta, $author_number_post_package );	
+					}					
+				}
+				$display_message = __( "The post has been created successfully. %s %s", "wpfepp-plugin" );
 			}
 			else if( 'updated' == $action ){
-				$display_message 	= __("The post has been updated successfully. %s %s", 'wpfepp-plugin');
+				$display_message = __("The post has been updated successfully. %s %s", "wpfepp-plugin" );
 			}
 
 			$return_val['errors']['form'][] = sprintf(
@@ -403,28 +430,25 @@ class WPFEPP_Form
 	 * Checks if the user-submitted data meets the minimum requirements of the form, set by the site administrator in the options panel.
 	 * 
 	 * This function goes through each field and makes sure that the submitted data corresponding to that field ($post_data[$key]) meets the requirements set by the admin. Note that the key of each field is used as the name attribute in the form.
-	 * 
-	 * @access private
 	 *
 	 * @param array $post_data An array containing all the data from the form.
 	 * @return array $errors A multidimmensional array of errors. Each array member contains all the errors for a particular field.
 	 **/
-	private function check_restrictions($post_data){
+	private function check_restrictions( $post_data ) {
 		$errors = array();
-		$user_defined_errors = get_option('wpfepp_errors');
-		if( wpfepp_current_user_has($this->settings['no_restrictions']) )
+		$user_defined_errors = get_option( 'wpfepp_errors' );
+		if( wpfepp_current_user_has( $this->settings['no_restrictions']) )
 			return $errors;
 
 		foreach ($this->get_fields() as $key => $field) {
 
-			if( wpfepp_is_field_supported($field['type'], $this->post_type) && isset($field['enabled']) && $field['enabled'] && isset($field['required']) && $field['required'] ){
+			if( wpfepp_is_field_supported( $field['type'], $this->post_type ) && isset( $field['enabled'] ) && $field['enabled'] && isset( $field['required']) && $field['required'] ) {
 				$stripped_value = isset($post_data[$key]) ? $post_data[$key] : "";
-				if(is_string($stripped_value))
-					$stripped_value = strip_tags(trim($stripped_value));
-
-				if( empty($stripped_value) || $stripped_value == -1 || (is_array($stripped_value) && !count($stripped_value)) )
+				if( is_string( $stripped_value ) )
+					$stripped_value = strip_tags( trim( $stripped_value ) );
+				if( empty( $stripped_value ) || $stripped_value == -1 || ( is_array( $stripped_value ) && ! count( $stripped_value ) ) )
 					$errors[$key][] = $user_defined_errors['required'];
-				if( isset($field['min_words']) && is_numeric($field['min_words']) && $this->word_count($stripped_value) < $field['min_words'] )
+				if( isset( $field['min_words'] ) && is_numeric( $field['min_words'] ) && $this->word_count( $stripped_value ) < $field['min_words'] )
 					$errors[$key][] = sprintf(str_replace('{0}', '%s', $user_defined_errors['min_words']), $field['min_words']);
 				if( isset($field['max_words']) && is_numeric($field['max_words']) && $this->word_count($stripped_value) > $field['max_words'] )
 					$errors[$key][] = sprintf(str_replace('{0}', '%s', $user_defined_errors['max_words']), $field['max_words']);
@@ -446,8 +470,6 @@ class WPFEPP_Form
 	/**
 	 * Counts links (anchor tags) in a string with the help of a simple regular expression.
 	 *
-	 * @access private
-	 *
 	 * @param string $str An HTML string.
 	 * @return integer Number of links in the input HTML string.
 	 **/
@@ -459,8 +481,6 @@ class WPFEPP_Form
 	 * Inserts user submitted data into DB with WordPress' own wp_insert_post(). If insertion is successful, sets terms, saves meta and creates the thumbnail.
 	 * 
 	 * It traverses through the form fields and by checking their types puts the corresponding data items ($post_data[$key]) into either $post, $custom_fields, $hierarchical_taxonomies or $non_hierarchical_taxonomies. The first one is inserted using wp_insert_post(). It should be noted that the key of each field is used as the name attribute in the form. This is why we are able to access the right piece of information using $post_data[$key].
-	 * 
-	 * @access private
 	 *
 	 * @param array $post_data An array containing all the data from the form. It is actually $_POST.
 	 * @return int or WP_Error Either the ID of the new post is returned or a WP_Error object.
@@ -474,10 +494,10 @@ class WPFEPP_Form
 		$thumbnail = 0;
 		$form_fields = $this->get_fields();
 						
-		foreach ($form_fields as $key => $field) { //$key - field name; $field - options array (e.g. enabled[1|0], type, label, element, widget_label)
-			switch ($field['type']) {
+		foreach ( $form_fields as $key => $field ) { //$key - field name; $field - options array (e.g. enabled[1|0], type, label, element, widget_label)
+			switch ( $field['type'] ) {
 				case 'title':
-					if(!empty($post_data[$key])) $post['post_title'] = $this->sanitize($post_data[$key], $field);
+					if( ! empty( $post_data[$key] ) ) $post['post_title'] = $this->sanitize( $post_data[$key], $field );
 					break;
 				case 'content':
 					if(!empty($post_data[$key])) $post['post_content'] = $this->sanitize($post_data[$key], $field);
@@ -531,7 +551,7 @@ class WPFEPP_Form
 						$custom_fields['_external'] = (!empty($post_data[$key .'_external']) && $post_data[$key .'_external'] == 1) ? 'yes' : 'no';
 						$custom_fields['_product_url'] = !empty($post_data[$key .'_product_url']) ? sanitize_text_field($post_data[$key .'_product_url']) : '';
 						$custom_fields['_product_image_gallery'] = !empty($post_data['product_image_gallery']) ? sanitize_text_field($post_data['product_image_gallery']) : '';
-						$custom_fields['_visibility'] = 'visible'; // Catalog visibility: Catalog/search
+						$custom_fields['_visibility'] = 'visible'; // Product Catalog visibility: Catalog/search
 					}
 					break;
 				case 'custom_field':
@@ -553,6 +573,9 @@ class WPFEPP_Form
 		// hidden field for check if form is being paid
 		if(!empty($post_data['wpfepp_paid_post'])) $custom_fields['_wpfepp_paid_post'] = $this->sanitize($post_data['wpfepp_paid_post'], array('strip_tags' => 'all'));
 
+		// hidden field for check if form is limited form
+		if(!empty($post_data['form_limit_number'])) $custom_fields['_form_limit_number'] = $this->sanitize($post_data['form_limit_number'], array('strip_tags' => 'all'));		
+
 		if( $post_data['form_id'] > 0 ) {
 			$custom_fields['wpfepp_submit_with_form_id'] = $this->sanitize($post_data['form_id'], array('strip_tags' => 'all'));
 		}		
@@ -570,12 +593,13 @@ class WPFEPP_Form
 
 		$post_id = wp_insert_post( $post, true );
 		if( !is_wp_error( $post_id ) ) {
+
+
 			
 			$tax_attrs = array();
 			$wc_tax_attrs = wpfepp_get_attribute_taxonomies();
 			
 			foreach ( $hierarchical_taxonomies as $tax => $tax_terms ) {
-				
 				wp_set_post_terms( $post_id, $tax_terms, $tax, false );
 				
 				// searches Product Attribut taxonomy, check if they have terms and collects them into array
@@ -625,22 +649,20 @@ class WPFEPP_Form
 	/**
 	 * Takes a string and removes potentially harmful HTML and PHP tags from it. This function is run right before post insertion and the writer of the post is not shown any errors.
 	 *
-	 * @access private
-	 *
 	 * @param string $value The string from which harmful tags are to be stripped.
 	 * @param array $field The settings array for this field.
 	 * @return string The stripped string
 	 **/
-	private function sanitize($value, $field){
+	private function sanitize( $value, $field ) {
 
-		if( isset($field['unixtime']) && $field['unixtime'] == 1 )
-			$value = strtotime($value);
+		if( isset( $field['unixtime'] ) && $field['unixtime'] == 1 )
+			$value = strtotime( $value );
 
-		if( isset($field['strip_tags']) && $field['strip_tags'] == 'all' )
-			$value = wp_strip_all_tags($value);
+		if( isset( $field['strip_tags'] ) && $field['strip_tags'] == 'all' )
+			$value = wp_strip_all_tags( $value );
 		
 		if( isset($field['strip_tags']) && $field['strip_tags'] == 'unsafe' )
-			$value = wp_kses($value, $this->get_whitelist());
+			$value = wp_kses( $value, $this->get_whitelist() );
 		
 		if( isset($field['nofollow']) && $field['nofollow'] )
 			$value = stripslashes(wp_rel_nofollow($value));
@@ -650,8 +672,6 @@ class WPFEPP_Form
 
 	/**
 	 * Fetches a post using the function get_post() and prepares it for display within our form.
-	 *
-	 * @access private
 	 *
 	 * @param integer $post_id The id of the WordPress post to be fetched.
 	 * @return array An array containing the post data in the formal that can directly be used by our form.
@@ -718,8 +738,6 @@ class WPFEPP_Form
 	/**
 	 * Prints all the restrictions for a field (for instance outputs 'required=""' on required fields). Used while printing form elements.
 	 *
-	 * @access private
-	 *
 	 * @param array $field An array containing field data.
 	 * @return string A string containing all the restrictions for the field, ready to be inserted in the form element.
 	 **/
@@ -771,8 +789,6 @@ class WPFEPP_Form
 	/**
 	 * Takes a multidimensional array and converts every second level array (the errors for an individual field) into an HTML string for output.
 	 *
-	 * @access private
-	 *
 	 * @param array $errors A 2D array of errors.
 	 * @return array A 1D array in which each element is an HTML string containing
 	 **/
@@ -786,8 +802,6 @@ class WPFEPP_Form
 
 	/**
 	 * Counts comma seperated segments in a string. Used for counting the terms of non-hierarichal taxonomies.
-	 *
-	 * @access private
 	 *
 	 * @param string $str The string of terms
 	 * @return integer Number of comma-seperated terms
@@ -803,8 +817,6 @@ class WPFEPP_Form
 	/**
 	 * Prints out the image source of a thumbnail
 	 *
-	 * @access private
-	 *
 	 * @param integer $image_id The thumbnail ID.
 	 **/
 	private function output_thumbnail($image_id){
@@ -816,60 +828,58 @@ class WPFEPP_Form
 	/**
 	 * Builds and returns a whitelist array of safe HTML tags and attributes to be used with wp_kses
 	 *
-	 * @access private
-	 *
 	 * @return array An array of safe HTML tags and their attributes.
 	 **/
-	private function get_whitelist(){
+	private function get_whitelist() {
 		$allowed_attrs = array(
-								'class' => array(),
-								'id' 	=> array(),
-								'style' => array(),
-								'title' => array()
-							);
+			'class' => array(),
+			'id' => array(),
+			'style' => array(),
+			'title' => array()
+		);
 		$allowed_html = array(
-							'a' 	=> array_merge( $allowed_attrs, array( 'href' => array() ) ),
-							'img' 	=> array_merge( 
-											$allowed_attrs,
-											array(
-												'src' => array(),
-												'alt' => array(),
-												'width' => array(),
-												'height' => array()
-											)
-										),
-							'ins' 	=> array_merge($allowed_attrs, array('datetime'=>array())),
-							'del' 	=> array_merge($allowed_attrs, array('datetime'=>array())),
-							'p' 	=> $allowed_attrs,
-							'br' 	=> $allowed_attrs,
-							'em' 	=> $allowed_attrs,
-							'b' 	=> $allowed_attrs,
-							'ol'	=> $allowed_attrs,
-							'ul'	=> $allowed_attrs,
-							'li'	=> $allowed_attrs,
-							'table' => $allowed_attrs,
-							'tbody' => $allowed_attrs,
-							'tr' 	=> $allowed_attrs,
-							'td'	=> $allowed_attrs,
-							'div' 	=> $allowed_attrs,
-							'code' 	=> $allowed_attrs,
-							'pre' 	=> $allowed_attrs,
-							'sub' 	=> $allowed_attrs,
-							'sup' 	=> $allowed_attrs,
-							'span' 	=> $allowed_attrs,
-							'q' 	=> $allowed_attrs,
-							'code' 	=> $allowed_attrs,
-							'h1' 	=> $allowed_attrs,
-							'h2' 	=> $allowed_attrs,
-							'h3' 	=> $allowed_attrs,
-							'h4' 	=> $allowed_attrs,
-							'h5' 	=> $allowed_attrs,
-							'h6' 	=> $allowed_attrs,
-							'abbr'	=> $allowed_attrs,
-							'strong'		=> $allowed_attrs,
-							'blockquote' 	=> $allowed_attrs,
-							'address' 		=> $allowed_attrs,
-						);
+			'a' => array_merge( $allowed_attrs, array( 'href' => array() ) ),
+			'img' => array_merge( 
+				$allowed_attrs,
+				array(
+					'src' => array(),
+					'alt' => array(),
+					'width' => array(),
+					'height' => array()
+				)
+			),
+			'ins' 	=> array_merge( $allowed_attrs, array( 'datetime' => array() ) ),
+			'del' => array_merge($allowed_attrs, array( 'datetime' => array() ) ),
+			'p' => $allowed_attrs,
+			'br' => $allowed_attrs,
+			'em' => $allowed_attrs,
+			'b' => $allowed_attrs,
+			'ol' => $allowed_attrs,
+			'ul' => $allowed_attrs,
+			'li'	=> $allowed_attrs,
+			'table' => $allowed_attrs,
+			'tbody' => $allowed_attrs,
+			'tr' => $allowed_attrs,
+			'td' => $allowed_attrs,
+			'div' => $allowed_attrs,
+			'code' => $allowed_attrs,
+			'pre' => $allowed_attrs,
+			'sub' => $allowed_attrs,
+			'sup' => $allowed_attrs,
+			'span' => $allowed_attrs,
+			'q' => $allowed_attrs,
+			'code' => $allowed_attrs,
+			'h1' => $allowed_attrs,
+			'h2' => $allowed_attrs,
+			'h3' => $allowed_attrs,
+			'h4' => $allowed_attrs,
+			'h5' => $allowed_attrs,
+			'h6' => $allowed_attrs,
+			'abbr' => $allowed_attrs,
+			'strong' => $allowed_attrs,
+			'blockquote' => $allowed_attrs,
+			'address' => $allowed_attrs,
+		);
 		$allowed_html = apply_filters('wpfepp_form_'.$this->id.'_safe_tags', $allowed_html);
 		return $allowed_html;
 	}
@@ -987,8 +997,6 @@ class WPFEPP_Form
 	
 	/**
 	 * Prints out user defined form fields with the help of do_action() function provided by WordPress.
-	 *
-	 * @access private
 	 **/
 	private function user_defined_fields( $current_values ) {
 		do_action( 'wpfepp_form_'.$this->id.'_fields', $current_values );
@@ -997,8 +1005,6 @@ class WPFEPP_Form
 
 	/**
 	 * Gives users the ability to perform custom operations on the post data after a post has been successfully added/updated.
-	 *
-	 * @access private
 	 **/
 	private function user_defined_actions( $post_data ) {
 		do_action( 'wpfepp_form_'.$this->id.'_actions', $post_data );
@@ -1008,8 +1014,6 @@ class WPFEPP_Form
 	/**
 	 * By default WordPress does not allow subscribers and contributors to edit their own posts. This function aims rectifies this problem.
 	 *
-	 * @access private
-	 *
 	 * @param string $action The action to check.
 	 * @param int Post id.
 	 * @return boolean Whether or not the current user can perform the specified action.
@@ -1017,7 +1021,6 @@ class WPFEPP_Form
 	private function current_user_can_edit( $post_id ) {
 		$post_author_id = get_post_field( 'post_author', $post_id );
 		$current_user = wp_get_current_user();
-
 		return ( $post_author_id == $current_user->ID || current_user_can('edit_post', $post_id) );
 	}
 
@@ -1032,7 +1035,7 @@ class WPFEPP_Form
 	}
 
 	private function print_spaces($times){
-		for ($i=0; $i < $times; $i++) { 
+		for ( $i=0; $i < $times; $i++ ) { 
 			echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 		}
 	}
@@ -1109,7 +1112,6 @@ class WPFEPP_Form
 		}
 		return $files;
 	}
-	
 }
 
 ?>

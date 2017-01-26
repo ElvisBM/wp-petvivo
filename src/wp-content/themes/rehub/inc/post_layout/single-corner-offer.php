@@ -1,6 +1,6 @@
 <!-- CONTENT -->
-<div class="content"> 
-	<div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
 	    <!-- Main Side -->
         <div class="main-side single<?php if(vp_metabox('rehub_post_side.post_size') == 'full_post') : ?> full_width<?php endif; ?> clearfix">            
             <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
@@ -60,11 +60,11 @@
                         <?php if(rehub_option('hotmeter_disable') !='1') :?><?php echo getHotLike(get_the_ID()); ?><?php endif ;?>
                     </div>
                     <?php if(rehub_option('rehub_single_after_title') && vp_metabox('rehub_post_side.show_banner_ads') != '1') : ?><div class="mediad mediad_top"><?php echo do_shortcode(rehub_option('rehub_single_after_title')); ?></div><div class="clearfix"></div><?php endif; ?>     
-                    <?php include(locate_template('inc/parts/top_image.php')); ?>
+                    <?php include(rh_locate_template('inc/parts/top_image.php')); ?>
                     <?php echo rh_get_post_thumbnails(array('video'=>1, 'class'=> 'mb30'));?>
                     <?php if(rehub_option('rehub_disable_share_top') !='1' && vp_metabox('rehub_post_side.disable_parts') != '1')  : ?>
                         <div class="top_share">
-                            <?php include(locate_template('inc/parts/post_share.php')); ?>
+                            <?php include(rh_locate_template('inc/parts/post_share.php')); ?>
                         </div>
                     <?php endif; ?>                                                           
 
@@ -74,7 +74,7 @@
 
                 </article>
                 <div class="clearfix"></div>
-                <?php include(locate_template('inc/post_layout/single-common-footer.php')); ?>                    
+                <?php include(rh_locate_template('inc/post_layout/single-common-footer.php')); ?>                    
             <?php endwhile; endif; ?>
             <?php comments_template(); ?>
 		</div>	

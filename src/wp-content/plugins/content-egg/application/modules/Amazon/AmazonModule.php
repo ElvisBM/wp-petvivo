@@ -25,7 +25,7 @@ class AmazonModule extends AffiliateParserModule {
         return array(
             'name' => 'Amazon',
             'api_agreement' => 'https://affiliate-program.amazon.com/gp/advertising/api/detail/agreement.html',
-            'description' => __('Добавляет товары amazon.', 'content-egg'),
+            'description' => __('Adds goods from Amazon.', 'content-egg'),
         );
     }
 
@@ -52,7 +52,7 @@ class AmazonModule extends AffiliateParserModule {
     public function doRequest($keyword, $query_params = array(), $is_autoupdate = false)
     {
         $options = array();
-
+        $keyword = trim($keyword);
         $search_index = $this->config('search_index');
         // Если не задана категория для поиска, то все остальные опции фильтрации работать не будут!
         if ($search_index != 'All' && $search_index != 'Blended')
@@ -76,7 +76,7 @@ class AmazonModule extends AffiliateParserModule {
 
             // Specifies the minimum percentage off for the items to return.
             // @link: http://docs.aws.amazon.com/AWSECommerceService/latest/DG/LocaleUS.html
-            if ($query_params['min_percentage_off'])
+            if (!empty($query_params['min_percentage_off']))
                 $options['MinPercentageOff'] = (int) $query_params['min_percentage_off'];
             elseif ($this->config('min_percentage_off'))
                 $options['MinPercentageOff'] = (int) $this->config('min_percentage_off');
@@ -129,10 +129,30 @@ class AmazonModule extends AffiliateParserModule {
         $pages_count = ceil($total / 10);
         $results = array();
 
+        // EAN or ASIN search
+        if (TextHelper::isEan($keyword) && $search_index != 'All') 
+        {
+            $options['IdType'] = 'EAN';
+            // All IdTypes except ASINx require a SearchIndex to be specified.
+            $options['SearchIndex'] = $search_index;            
+            unset($options['Keywords']);
+            $ItemLookup = true;
+        } elseif (TextHelper::isAsin($keyword))
+        {
+            $options['IdType'] = 'ASIN';
+            unset($options['Keywords']);
+            $ItemLookup = true;
+        } else
+            $ItemLookup = false;
+        
         for ($i = 0; $i < $pages_count; $i++)
         {
             $options['ItemPage'] = $i + 1;
-            $data = $client->ItemSearch($this->config('search_index'), $options);
+            if ($ItemLookup)
+                $data = $client->ItemLookup($keyword, $options); // EAN or ASIN search
+            else
+                $data = $client->ItemSearch($search_index, $options); // keyword search
+            
             if (!is_array($data))
                 break;
 
@@ -240,7 +260,7 @@ class AmazonModule extends AffiliateParserModule {
                 $items[$key]['extra']['customerReviews'] = (array) new ExtraAmazonCustomerReviews;
                 $items[$key]['extra']['customerReviews'] = ExtraData::fillAttributes($items[$key]['extra']['customerReviews'], $results[$i]['CustomerReviews']);
             }
-
+            $items[$key]['domain'] = AmazonConfig::getDomainByLocale($locale);
             $return[$item['unique_id']] = $items[$key];
             $i++;
         }
@@ -481,6 +501,8 @@ class AmazonModule extends AffiliateParserModule {
             $content->currency = TextHelper::currencyTyping($content->currencyCode);
         } else
             $content->price = 0;
+        
+        $content->ean = $extra->itemAttributes->EAN;        
 
         if ($return_array)
         {

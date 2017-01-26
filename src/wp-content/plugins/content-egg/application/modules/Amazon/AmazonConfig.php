@@ -19,7 +19,7 @@ class AmazonConfig extends AffiliateParserModuleConfig {
         $options = array(
             'access_key_id' => array(
                 'title' => 'Access Key ID <span class="cegg_required">*</span>',
-                'description' => __('Специальный ключ для доступа к Amazon API.', 'content-egg'),
+                'description' => __('Special key to access the Amazon API.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -27,14 +27,14 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Access Key ID" не может быть пустым.', 'content-egg'),
+                        'message' => __('The "Access Key ID" can not be empty', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'secret_access_key' => array(
                 'title' => 'Secret Access Key <span class="cegg_required">*</span>',
-                'description' => __('Еще один специальный ключ для доступа к Amazon API.', 'content-egg'),
+                'description' => __('Another special key to access the Amazon API.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -42,16 +42,16 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Secret Access Key" не может быть пустым.', 'content-egg'),
+                        'message' => __('The "Secret Access Key" can not be empty.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'associate_tag' => array(
-                'title' => __('Tracking ID по-умолчанию', 'content-egg') . ' <span class="cegg_required">*</span>',
-                'description' => __('Связь с вашим аккаунтом в партнерской программе. Чтобы получать комиссию от продаж, правильно укажите этот параметр.', 'content-egg') . ' ' .
-                __('Tracking ID должен соотвествовать установке локали по-умолчанию.', 'content-egg') . ' ' .
-                __('Ниже вы можете задать значения Tracking ID для остальных локалей, если хотите добавить товары более чем с одной локали.', 'content-egg'),
+                'title' => __('Default Tracking ID', 'content-egg') . ' <span class="cegg_required">*</span>',
+                'description' => __('Connection with your account in the affiliate program. In order to receive a commission from sales, specify this option correctly.', 'content-egg') . ' ' .
+                __('Tracking ID must point to locale settings by default', 'content-egg') . ' ' .
+                __('You can set Tracking ID for other locales if you want to add products more than one locale.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -59,24 +59,24 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'required'),
                         'when' => 'is_active',
-                        'message' => __('Поле "Tracking ID" не может быть пустым.', 'content-egg'),
+                        'message' => __('The "Tracking ID" can not be empty.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
                 'metaboxInit' => true,
             ),
             'locale' => array(
-                'title' => __('Локаль по-умолчанию', 'content-egg'),
-                'description' => __('Локаль/сайт amazon. Для каждой локали необходима отдельная регистрация в соответствующей партнерской программе.', 'content-egg'),
+                'title' => __('Default locale', 'content-egg'),
+                'description' => __('The branch/locale of Amazon. Each branch requires a separate registration in certain affiliate program.', 'content-egg'),
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => self::getLocalesList(),
                 'default' => self::getDefaultLocale(),
                 'section' => 'default',
             ),
             'entries_per_page' => array(
-                'title' => __('Результатов', 'content-egg'),
-                'description' => __('Количество результатов для одного поискового запроса.', 'content-egg') . ' ' .
-                __('Получение более 10 результатов потребует дополнительное время на запрос данных.', 'content-egg'),
+                'title' => __('Results', 'content-egg'),
+                'description' => __('Number of results for one search query.', 'content-egg') . ' ' .
+                __('It needs a bit more time to get more than 10 results in one request', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 10,
                 'validator' => array(
@@ -85,15 +85,15 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
                         'arg' => 50, // The value you specified for ItemPage is invalid. Valid values must be between 1 and 5.
-                        'message' => __('Поле "Результатов" не может быть больше 50.', 'content-egg'),
+                        'message' => __('The field "Results" can not be more than 50.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'entries_per_page_update' => array(
-                'title' => __('Результатов для обновления', 'content-egg'),
-                'description' => __('Количество результатов для автоматического обновления и автоблоггинга.', 'content-egg') . ' ' .
-                __('Получение более 10 результатов потребует дополнительное время на запрос данных.', 'content-egg'),
+                'title' => __('Results for updates ', 'content-egg'),
+                'description' => __('Number of results for automatic updates and autoblogging.', 'content-egg') . ' ' .
+                __('It needs a bit more time to get more than 10 results in one request', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 3,
                 'validator' => array(
@@ -102,14 +102,14 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
                         'arg' => 50,
-                        'message' => __('Поле "Результатов" не может быть больше 50.', 'content-egg'),
+                        'message' => __('The field "Results" can not be more than 50.', 'content-egg'),
                     ),
                 ),
                 'section' => 'default',
             ),
             'link_type' => array(
-                'title' => __('Вид ссылок', 'content-egg'),
-                'description' => __('Вид партнерских ссылок. Узнайте больше про amazon <a target="_blank" href="https://affiliate-program.amazon.com/gp/associates/help/t2/a11">90 day cookie</a>.', 'content-egg'),
+                'title' => __('Link type', 'content-egg'),
+                'description' => __('Type of partner links. Know more about amazon <a target="_blank" href="https://affiliate-program.amazon.com/gp/associates/help/t2/a11">90 day cookie</a>.', 'content-egg'),
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
                     'product' => 'Product page',
@@ -119,16 +119,17 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'search_index' => array(
-                'title' => __('Категория для поиска', 'content-egg'),
-                'description' => __('Список категорий для US Amazon. Для локальных филиалов некоторые категории могут быть недоступны. Если Вы не зададите категорию для поиска, то никакие другие опции фильтрации кроме поиска по ключевому слову (например, минимальная цена или сортировка) работать не будут.', 'content-egg'),
+                'title' => __('Categories for search', 'content-egg'),
+                'description' => __('The list of categories for US Amazon. For local branches some of categories may be not available. If you do not set category for searching, no other filtering options in addition to searching for the keyword (for example, the minimal price or sorting) will not working. ', 'content-egg')
+                    . ' ' . __('Search by EAN require a Category to be specified.', 'content-egg'),                
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array('All' => '[ All ]', 'Blended' => '[ Blended ]', 'Music' => '[ Music ]', 'Video' => '[ Video ]', 'Apparel' => 'Apparel', 'Automotive' => 'Automotive', 'Baby' => 'Baby', 'Beauty' => 'Beauty', 'Books' => 'Books', 'Classical' => 'Classical', 'DigitalMusic' => 'DigitalMusic', 'DVD' => 'DVD', 'Electronics' => 'Electronics', 'GourmetFood' => 'GourmetFood', 'Grocery' => 'Grocery', 'HealthPersonalCare' => 'HealthPersonalCare', 'HomeGarden' => 'HomeGarden', 'Industrial' => 'Industrial', 'Jewelry' => 'Jewelry', 'KindleStore' => 'KindleStore', 'Kitchen' => 'Kitchen', 'Magazines' => 'Magazines', 'Merchants' => 'Merchants', 'Miscellaneous' => 'Miscellaneous', 'MP3Downloads' => 'MP3Downloads', 'MusicalInstruments' => 'MusicalInstruments', 'MusicTracks' => 'MusicTracks', 'OfficeProducts' => 'OfficeProducts', 'OutdoorLiving' => 'OutdoorLiving', 'PCHardware' => 'PCHardware', 'PetSupplies' => 'PetSupplies', 'Photo' => 'Photo', 'Shoes' => 'Shoes', 'Software' => 'Software', 'SportingGoods' => 'SportingGoods', 'Tools' => 'Tools', 'Toys' => 'Toys', 'UnboxVideo' => 'UnboxVideo', 'VHS' => 'VHS', 'VideoGames' => 'VideoGames', 'Watches' => 'Watches', 'Wireless' => 'Wireless', 'WirelessAccessories' => 'WirelessAccessories'),
                 'default' => 'All',
                 'section' => 'default',
             ),
             'sort' => array(
-                'title' => __('Порядок сортировки', 'content-egg'),
-                'description' => __('Варианты сортировки зависят от locale и выбранной категории. Список доступных значений можно найти <a href="http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?APPNDX_SortValuesArticle.html">здесь</a>.', 'content-egg'),
+                'title' => __('Sorting order', 'content-egg'),
+                'description' => __('Sorting variants depend on locale and chosed category. List of all available values you can find <a href="http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/index.html?APPNDX_SortValuesArticle.html">here</a>.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -138,7 +139,7 @@ class AmazonConfig extends AffiliateParserModuleConfig {
             ),
             'brouse_node' => array(
                 'title' => __('Brouse node', 'content-egg'),
-                'description' => __('Целочисленное ID "узла" на amazon. Поиск будет произведен только в этом "узле".', 'content-egg'),
+                'description' => __('Integer ID "node" on Amazon. The search will be made only in this "node".', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -147,22 +148,22 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'title' => array(
-                'title' => __('Поиск в названии', 'content-egg'),
-                'description' => __('Поиск будет произведет только по названиям товаров.', 'content-egg'),
+                'title' => __('Search in title', 'content-egg'),
+                'description' => __('The search will produce only by product name.', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
             ),
             'merchant_id' => array(
-                'title' => __('Только Amazon', 'content-egg'),
-                'description' => __('Выбрать товары, которые продает Amazon. Другие продавцы исключаются из поиска.', 'content-egg'),
+                'title' => __('Only Amazon', 'content-egg'),
+                'description' => __('Select products that are selling by Amazon. Other sellers are excluded from the search.', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
             ),
             'minimum_price' => array(
-                'title' => __('Минимальная цена', 'content-egg'),
-                'description' => __('Например, 8.99', 'content-egg'),
+                'title' => __('Minimal price', 'content-egg'),
+                'description' => __('Example, 8.99', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -171,8 +172,8 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'maximum_price' => array(
-                'title' => __('Максимальная цена', 'content-egg'),
-                'description' => __('Например, 98.50', 'content-egg'),
+                'title' => __('Maximal price', 'content-egg'),
+                'description' => __('Example, 98.50', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(
@@ -181,11 +182,11 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'min_percentage_off' => array(
-                'title' => __('Минимальная скидка', 'content-egg'),
-                'description' => __('Выбрать товары со скидкой. Обязательно должна быть задана категория. Обратите внимание, эта опция работает не для всех категорий.', 'content-egg'),
+                'title' => __('Minimal discount', 'content-egg'),
+                'description' => __('Choose products with discount. You must set category of product. Note, that this option works not for all categories.', 'content-egg'),
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
-                    '' => __('Неважно', 'content-egg'),
+                    '' => __('Any', 'content-egg'),
                     '5%' => '5%',
                     '10%' => '10%',
                     '15%' => '15%',
@@ -207,8 +208,8 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                 'metaboxInit' => true,
             ),
             'customer_reviews' => array(
-                'title' => __('Отзывы покупателей', 'content-egg'),
-                'description' => __('Получить отзывы покупателей. Отзывы будут показаны в iframe. iframe URL валидный 24 часа, используйте функцию автообноления, чтобы держать URL в актуальном состоянии.', 'content-egg'),
+                'title' => __('Customer reviews', 'content-egg'),
+                'description' => __('Get user reviews. Reviews will be in iframe. Iframe url is valid only 24 hours, please, use autoupdating function with less than 24 hour to keep actual url.', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
@@ -223,8 +224,8 @@ class AmazonConfig extends AffiliateParserModuleConfig {
               ),
              */
             'truncate_reviews_at' => array(
-                'title' => __('Обрезать отзывы', 'content-egg'),
-                'description' => __('Количество символов для одного отзыва. 0 - максимально возможная длина текста.', 'content-egg'),
+                'title' => __('Cut reviews', 'content-egg'),
+                'description' => __('Number of characters for one review. 0 - the maximal length of the text.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 500,
                 'validator' => array(
@@ -248,28 +249,28 @@ class AmazonConfig extends AffiliateParserModuleConfig {
              * 
              */
             'editorial_reviews' => array(
-                'title' => __('Парсить отписание', 'content-egg'),
-                'description' => __('Парсить описание товаров от продавца.', 'content-egg'),
+                'title' => __('Parse description', 'content-egg'),
+                'description' => __('Parse description of products from seller', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
             ),
             'editorial_reviews_type' => array(
-                'title' => __('Вид описания', 'content-egg'),
+                'title' => __('Type of description', 'content-egg'),
                 'description' => '',
                 'callback' => array($this, 'render_dropdown'),
                 'dropdown_options' => array(
-                    'allow_all' => __('Как на Amazon', 'content-egg'),
-                    'safe_html' => __('Безопасный HTML', 'content-egg'),
-                    'allowed_tags' => __('Только разрешенные теги HTML', 'content-egg'),
-                    'text' => __('Только текст', 'content-egg'),
+                    'allow_all' => __('Like on Amazon', 'content-egg'),
+                    'safe_html' => __('Safe HTML', 'content-egg'),
+                    'allowed_tags' => __('Only allowed HTML tags', 'content-egg'),
+                    'text' => __('Text only', 'content-egg'),
                 ),
                 'default' => 'All',
                 'section' => 'default',
             ),
             'editorial_reviews_size' => array(
-                'title' => __('Размер описания', 'content-egg'),
-                'description' => __('Максимальный размер описания товара. 0 - не обрезать.', 'content-egg'),
+                'title' => __('Size of description', 'content-egg'),
+                'description' => __('The maximum size of the item description. 0 - do not cut.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 1000,
                 'validator' => array(
@@ -279,15 +280,15 @@ class AmazonConfig extends AffiliateParserModuleConfig {
                 'section' => 'default',
             ),
             'https_img' => array(
-                'title' => __('Картинки через https', 'content-egg'),
-                'description' => __('Перезаписать адреса картинок через https протокол. Включите эту опцию, если вы используете SSL сертификат на своем домене.', 'content-egg'),
+                'title' => __('Use images with https (use it if you also have https site)', 'content-egg'),
+                'description' => __('Rewrite url of images with https. Use it if you have SSL on your domain', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
             ),
             'save_img' => array(
-                'title' => __('Сохранять картинки', 'content-egg'),
-                'description' => __('Сохранять картинки на сервер.', 'content-egg') . ' ' . __('Включение этой опции возможно нарушает правила API. Используйте на свой страх и риск.', 'content-egg'),
+                'title' => __('Save images', 'content-egg'),
+                'description' => __('Save images on server', 'content-egg') . ' ' . __('Enabling this option violates rules of API.', 'content-egg'),
                 'callback' => array($this, 'render_checkbox'),
                 'default' => false,
                 'section' => 'default',
@@ -297,8 +298,8 @@ class AmazonConfig extends AffiliateParserModuleConfig {
         foreach (self::getLocalesList() as $locale_id => $locale_name)
         {
             $options['associate_tag_' . $locale_id] = array(
-                'title' => sprintf(__('Tracking ID для %s локали', 'content-egg'), $locale_name),
-                'description' => __('Задайте, если хотите добавлять товары с соответствующего amazon сайта (локали).', 'content-egg'),
+                'title' => sprintf(__('Tracking ID for %s locale', 'content-egg'), $locale_name),
+                'description' => __('Type here your tracking ID for this locale if you need multiple locale parsing', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => '',
                 'validator' => array(

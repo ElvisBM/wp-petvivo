@@ -22,7 +22,7 @@ class GoogleImagesModule extends ParserModule {
     {
         return array(
             'name' => 'Google Images',
-            'description' => __('<span style="color:red;">Этот модуль больше не работает по причине закрытия Google Image Search API. Модуль оставлен в целях совместимости с предыдущими версиями плагина.</span>', 'content-egg'),
+            'description' => __('<span style="color:red;">This module is deprecated because of closing Google Image Search API. The module is left for compatibility with previous versions of the plugin</span>', 'content-egg'),
                 //'api_agreement' => 'https://developers.google.com/image-search/terms',
         );
     }

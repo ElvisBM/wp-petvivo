@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the Content Egg package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Content Egg 2.9.0\n"
+"Project-Id-Version: Content Egg 3.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/content-egg-tpl\n"
-"POT-Creation-Date: 2016-11-25 12:24:13+00:00\n"
+"POT-Creation-Date: 2016-12-13 15:20:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -108,10 +108,10 @@ msgid "Current Price: <strong>%s</strong>"
 msgstr ""
 
 #: application/PriceAlert.php:311
-#: application/modules/Amazon/templates/data_compare.php:112
-#: application/modules/Ozon/templates/data_compare.php:75
-#: application/templates/data_item.php:64
-#: application/templates/data_price_tracker_alert.php:43
+#: application/modules/Amazon/templates/data_compare.php:114
+#: application/modules/Ozon/templates/data_compare.php:77
+#: application/templates/data_item.php:62
+#: application/templates/data_price_tracker_alert.php:39
 msgid "as of"
 msgstr ""
 
@@ -129,6 +129,15 @@ msgstr ""
 
 #: application/PriceAlert.php:318
 msgid "If you don't want to receive any price alerts from us in the future, <a href=\"%s\">please click here</a>."
+msgstr ""
+
+#: application/admin/views/_metabox_results.php:15
+#: application/admin/views/_metabox_search_results.php:12
+msgid "EAN:"
+msgstr ""
+
+#: application/admin/views/_metabox_results.php:16
+msgid "Last update:"
 msgstr ""
 
 #: application/helpers/TemplateHelper.php:22
@@ -152,57 +161,59 @@ msgstr ""
 #: application/helpers/TemplateHelper.php:119
 #: application/helpers/TemplateHelper.php:121
 #: application/modules/Ebay/templates/data_item.php:71
-#: application/modules/Ebay/templates/data_list.php:53
 msgid "m"
 msgstr ""
 
 #: application/helpers/TemplateHelper.php:302
-#: application/modules/Amazon/templates/data_compare.php:79
-#: application/modules/Ozon/templates/data_compare.php:65
-#: application/templates/data_price_tracker_alert.php:41
+#: application/modules/Amazon/templates/data_compare.php:81
+#: application/modules/Ozon/templates/data_compare.php:67
+#: application/templates/data_price_tracker_alert.php:37
 msgid "Price"
 msgstr ""
 
-#: application/modules/AE/templates/data_grid.php:6
-#: application/modules/AdmitadProducts/templates/data_grid.php:6
-#: application/modules/Affiliatewindow/templates/data_grid.php:6
-#: application/modules/AffilinetProducts/templates/data_grid.php:6
-#: application/modules/Aliexpress/templates/data_grid.php:6
-#: application/modules/Amazon/templates/data_grid.php:8
-#: application/modules/CityadsProducts/templates/data_grid.php:6
-#: application/modules/CjProducts/templates/data_grid.php:6
-#: application/modules/Ebay/templates/data_grid.php:6
-#: application/modules/Flipkart/templates/data_grid.php:6
-#: application/modules/GdeSlon/templates/data_grid.php:6
-#: application/modules/Linkshare/templates/data_grid.php:6
-#: application/modules/Optimisemedia/templates/data_grid.php:6
-#: application/modules/Ozon/templates/data_list.php:6
-#: application/modules/PayTM/templates/data_grid.php:6
-#: application/modules/Shareasale/templates/data_grid.php:6
-#: application/modules/TradedoublerProducts/templates/data_grid.php:6
-#: application/modules/Zanox/templates/data_grid.php:6
+#: application/modules/AE/templates/data_grid.php:7
+#: application/modules/AdmitadProducts/templates/data_grid.php:7
+#: application/modules/Affiliatewindow/templates/data_grid.php:7
+#: application/modules/AffilinetProducts/templates/data_grid.php:7
+#: application/modules/Aliexpress/templates/data_grid.php:7
+#: application/modules/Amazon/templates/data_grid.php:9
+#: application/modules/CityadsProducts/templates/data_grid.php:7
+#: application/modules/CjProducts/templates/data_grid.php:7
+#: application/modules/Ebay/templates/data_grid.php:7
+#: application/modules/Flipkart/templates/data_grid.php:7
+#: application/modules/GdeSlon/templates/data_grid.php:7
+#: application/modules/Impactradius/templates/data_grid.php:7
+#: application/modules/Linkshare/templates/data_grid.php:7
+#: application/modules/Offer/templates/data_grid.php:7
+#: application/modules/Optimisemedia/templates/data_grid.php:7
+#: application/modules/PayTM/templates/data_grid.php:7
+#: application/modules/Shareasale/templates/data_grid.php:7
+#: application/modules/TradedoublerProducts/templates/data_grid.php:7
+#: application/modules/Zanox/templates/data_grid.php:7
 msgid "Grid"
 msgstr ""
 
-#: application/modules/AE/templates/data_item.php:6
-#: application/modules/AdmitadProducts/templates/data_item.php:6
-#: application/modules/Affiliatewindow/templates/data_item.php:6
-#: application/modules/AffilinetProducts/templates/data_item.php:6
-#: application/modules/Aliexpress/templates/data_item.php:6
-#: application/modules/Amazon/templates/data_item.php:6
-#: application/modules/CityadsProducts/templates/data_item.php:6
-#: application/modules/CjProducts/templates/data_item.php:6
+#: application/modules/AE/templates/data_item.php:7
+#: application/modules/AdmitadProducts/templates/data_item.php:7
+#: application/modules/Affiliatewindow/templates/data_item.php:7
+#: application/modules/AffilinetProducts/templates/data_item.php:7
+#: application/modules/Aliexpress/templates/data_item.php:7
+#: application/modules/Amazon/templates/data_item.php:7
+#: application/modules/CityadsProducts/templates/data_item.php:7
+#: application/modules/CjProducts/templates/data_item.php:7
 #: application/modules/Ebay/templates/data_item.php:6
-#: application/modules/Flipkart/templates/data_item.php:6
-#: application/modules/GdeSlon/templates/data_item.php:6
-#: application/modules/Linkshare/templates/data_item.php:6
+#: application/modules/Flipkart/templates/data_item.php:7
+#: application/modules/GdeSlon/templates/data_item.php:7
+#: application/modules/Impactradius/templates/data_item.php:7
+#: application/modules/Linkshare/templates/data_item.php:7
 #: application/modules/Market/templates/data_item.php:5
-#: application/modules/Optimisemedia/templates/data_item.php:6
-#: application/modules/Ozon/templates/data_item.php:6
-#: application/modules/PayTM/templates/data_item.php:6
-#: application/modules/Shareasale/templates/data_item.php:6
-#: application/modules/TradedoublerProducts/templates/data_item.php:6
-#: application/modules/Zanox/templates/data_item.php:6
+#: application/modules/Offer/templates/data_item.php:7
+#: application/modules/Optimisemedia/templates/data_item.php:7
+#: application/modules/Ozon/templates/data_item.php:7
+#: application/modules/PayTM/templates/data_item.php:7
+#: application/modules/Shareasale/templates/data_item.php:7
+#: application/modules/TradedoublerProducts/templates/data_item.php:7
+#: application/modules/Zanox/templates/data_item.php:7
 msgid "Product card"
 msgstr ""
 
@@ -217,9 +228,12 @@ msgstr ""
 #: application/modules/Ebay/templates/data_list.php:6
 #: application/modules/Flipkart/templates/data_list.php:6
 #: application/modules/GdeSlon/templates/data_list.php:6
+#: application/modules/Impactradius/templates/data_list.php:6
 #: application/modules/Linkshare/templates/data_list.php:6
+#: application/modules/Offer/templates/data_list.php:6
 #: application/modules/Optimisemedia/templates/data_list.php:6
 #: application/modules/Ozon/templates/data_grid.php:7
+#: application/modules/Ozon/templates/data_list.php:6
 #: application/modules/PayTM/templates/data_list.php:6
 #: application/modules/Shareasale/templates/data_list.php:6
 #: application/modules/TradedoublerProducts/templates/data_list.php:6
@@ -227,21 +241,23 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-#: application/modules/AE/templates/data_price_tracker_alert.php:6
-#: application/modules/AdmitadProducts/templates/data_price_tracker_alert.php:6
-#: application/modules/Affiliatewindow/templates/data_price_tracker_alert.php:6
-#: application/modules/AffilinetProducts/templates/data_price_tracker_alert.php:6
-#: application/modules/Aliexpress/templates/data_price_tracker_alert.php:6
-#: application/modules/Amazon/templates/data_price_tracker_alert.php:6
-#: application/modules/CjProducts/templates/data_price_tracker_alert.php:6
-#: application/modules/GdeSlon/templates/data_price_tracker_alert.php:6
-#: application/modules/Linkshare/templates/data_price_tracker_alert.php:6
-#: application/modules/Optimisemedia/templates/data_price_tracker_alert.php:6
-#: application/modules/Ozon/templates/data_price_tracker_alert.php:6
-#: application/modules/PayTM/templates/data_price_tracker_alert.php:6
-#: application/modules/Shareasale/templates/data_price_tracker_alert.php:6
-#: application/modules/TradedoublerProducts/templates/data_price_tracker_alert.php:6
-#: application/modules/Zanox/templates/data_price_tracker_alert.php:6
+#: application/modules/AE/templates/data_price_tracker_alert.php:7
+#: application/modules/AdmitadProducts/templates/data_price_tracker_alert.php:7
+#: application/modules/Affiliatewindow/templates/data_price_tracker_alert.php:7
+#: application/modules/AffilinetProducts/templates/data_price_tracker_alert.php:7
+#: application/modules/Aliexpress/templates/data_price_tracker_alert.php:7
+#: application/modules/Amazon/templates/data_price_tracker_alert.php:7
+#: application/modules/CjProducts/templates/data_price_tracker_alert.php:7
+#: application/modules/GdeSlon/templates/data_price_tracker_alert.php:7
+#: application/modules/Impactradius/templates/data_price_tracker_alert.php:7
+#: application/modules/Linkshare/templates/data_price_tracker_alert.php:7
+#: application/modules/Offer/templates/data_price_tracker_alert.php:7
+#: application/modules/Optimisemedia/templates/data_price_tracker_alert.php:7
+#: application/modules/Ozon/templates/data_price_tracker_alert.php:7
+#: application/modules/PayTM/templates/data_price_tracker_alert.php:7
+#: application/modules/Shareasale/templates/data_price_tracker_alert.php:7
+#: application/modules/TradedoublerProducts/templates/data_price_tracker_alert.php:7
+#: application/modules/Zanox/templates/data_price_tracker_alert.php:7
 #: application/templates/data_price_tracker_alert.php:5
 msgid "Price tracker & alert"
 msgstr ""
@@ -264,65 +280,68 @@ msgstr ""
 msgid "User Rating"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:67
+#: application/modules/Amazon/templates/data_compare.php:69
 msgid "ratings"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:71
-#: application/modules/Ozon/templates/data_compare.php:57
+#: application/modules/Amazon/templates/data_compare.php:73
+#: application/modules/Ozon/templates/data_compare.php:59
 msgid "See all reviews"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:91
-#: application/modules/Amazon/templates/data_list.php:45
-#: application/templates/data_item.php:51 templates/block_offers_list.php:72
+#: application/modules/Amazon/templates/data_compare.php:93
+#: application/templates/data_item.php:49
+#: application/templates/data_list.php:59 templates/block_offers_list.php:72
 #: templates/block_offers_logo.php:51
 msgid "Too low to display"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:94
-#: application/modules/Amazon/templates/data_list.php:49
+#: application/modules/Amazon/templates/data_compare.php:96
 #: application/modules/Ebay/templates/data_item.php:81
-#: application/modules/Ebay/templates/data_list.php:79
-#: application/templates/blocks/item_after_price_row.php:21
-#: templates/block_offers_list.php:80 templates/block_offers_logo.php:60
+#: application/templates/blocks/item_after_price_row.php:20
+#: application/templates/data_list.php:66 templates/block_offers_list.php:80
+#: templates/block_offers_logo.php:60
 msgid "Free shipping"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:100
-#: application/templates/blocks/item_after_price_row.php:10
+#: application/modules/Amazon/templates/data_compare.php:102
+#: application/templates/blocks/item_after_price_row.php:9
+#: application/templates/data_list.php:31
 msgid "new"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:102
-#: application/modules/Amazon/templates/data_compare.php:107
-#: application/templates/blocks/item_after_price_row.php:12
-#: application/templates/blocks/item_after_price_row.php:17
+#: application/modules/Amazon/templates/data_compare.php:104
+#: application/modules/Amazon/templates/data_compare.php:109
+#: application/templates/blocks/item_after_price_row.php:11
+#: application/templates/blocks/item_after_price_row.php:16
+#: application/templates/data_list.php:33
+#: application/templates/data_list.php:40
 msgid "from"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:107
-#: application/templates/blocks/item_after_price_row.php:17
+#: application/modules/Amazon/templates/data_compare.php:109
+#: application/templates/blocks/item_after_price_row.php:16
+#: application/templates/data_list.php:40
 msgid "used"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:120
-#: application/modules/Amazon/templates/data_compare.php:241
-#: application/modules/Ozon/templates/data_compare.php:83
-#: application/modules/Ozon/templates/data_compare.php:164
+#: application/modules/Amazon/templates/data_compare.php:122
+#: application/modules/Amazon/templates/data_compare.php:243
+#: application/modules/Ozon/templates/data_compare.php:85
+#: application/modules/Ozon/templates/data_compare.php:166
 msgid "Shop Now"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:124
-#: application/modules/Amazon/templates/data_compare.php:245
+#: application/modules/Amazon/templates/data_compare.php:126
+#: application/modules/Amazon/templates/data_compare.php:247
 #: application/modules/Ebay/templates/data_item.php:53
-#: application/modules/Ozon/templates/data_compare.php:87
-#: application/modules/Ozon/templates/data_compare.php:168
-#: application/templates/data_price_tracker_alert.php:48
+#: application/modules/Ozon/templates/data_compare.php:89
+#: application/modules/Ozon/templates/data_compare.php:170
+#: application/templates/data_price_tracker_alert.php:44
 msgid "BUY THIS ITEM"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:133
+#: application/modules/Amazon/templates/data_compare.php:135
 #: application/templates/blocks/item_features.php:3
 #: application/templates/blocks/item_features.php:13
 #: application/templates/blocks/item_features.php:22
@@ -332,26 +351,21 @@ msgstr ""
 msgid "Features"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:183
-#: application/modules/Ozon/templates/data_compare.php:137
+#: application/modules/Amazon/templates/data_compare.php:185
+#: application/modules/Ozon/templates/data_compare.php:139
 msgid "User Reviews"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:208
+#: application/modules/Amazon/templates/data_compare.php:210
 msgid "Expert Reviews"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:224
+#: application/modules/Amazon/templates/data_compare.php:226
 msgid "Barcodes"
 msgstr ""
 
-#: application/modules/Amazon/templates/data_compare.php:252
+#: application/modules/Amazon/templates/data_compare.php:254
 msgid "Images"
-msgstr ""
-
-#: application/modules/Amazon/templates/data_list.php:57
-#: application/templates/data_grid.php:83
-msgid "Last updated on"
 msgstr ""
 
 #: application/modules/BingImages/templates/data_image.php:5
@@ -363,7 +377,7 @@ msgstr ""
 #: application/modules/BingImages/templates/data_justified_gallery.php:7
 #: application/modules/Flickr/templates/data_justified_gallery.php:7
 #: application/modules/GoogleImages/templates/data_justified_gallery.php:7
-#: application/modules/Ozon/templates/data_compare.php:177
+#: application/modules/Ozon/templates/data_compare.php:179
 #: application/modules/Pixabay/templates/data_justified_gallery.php:7
 msgid "Gallery"
 msgstr ""
@@ -373,12 +387,12 @@ msgid "Universal"
 msgstr ""
 
 #: application/modules/CjLinks/templates/data_universal.php:38
-#: application/templates/data_coupon.php:40
+#: application/templates/data_coupon.php:38
 msgid "Ends:"
 msgstr ""
 
 #: application/modules/CjLinks/templates/data_universal.php:49
-#: application/templates/data_coupon.php:56
+#: application/templates/data_coupon.php:54
 msgid "Shop Sale"
 msgstr ""
 
@@ -394,7 +408,6 @@ msgid "Simple"
 msgstr ""
 
 #: application/modules/Ebay/templates/data_item.php:39
-#: application/modules/Ebay/templates/data_list.php:44
 msgid "Buy It Now"
 msgstr ""
 
@@ -403,8 +416,7 @@ msgid "VIEW THIS ITEM"
 msgstr ""
 
 #: application/modules/Ebay/templates/data_item.php:58
-#: application/modules/Ebay/templates/data_list.php:46
-#: application/templates/data_grid.php:65
+#: application/templates/data_grid.php:66
 msgid "Bids:"
 msgstr ""
 
@@ -413,24 +425,15 @@ msgid "Item condition:"
 msgstr ""
 
 #: application/modules/Ebay/templates/data_item.php:70
-#: application/modules/Ebay/templates/data_list.php:52
 msgid "Time left:"
 msgstr ""
 
 #: application/modules/Ebay/templates/data_item.php:75
-#: application/modules/Ebay/templates/data_list.php:58
 msgid "Ended:"
 msgstr ""
 
 #: application/modules/Ebay/templates/data_item.php:85
 msgid "EEK:"
-msgstr ""
-
-#: application/modules/Ebay/templates/data_list.php:75
-#: application/templates/data_grid.php:70
-#: application/templates/data_item.php:58 templates/block_offers_list.php:77
-#: templates/block_offers_logo.php:57
-msgid "Buy This Item"
 msgstr ""
 
 #: application/modules/Flickr/templates/data_justified_gallery.php:62
@@ -445,65 +448,69 @@ msgstr ""
 msgid "Source:"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:34
+#: application/modules/Market/templates/data_item.php:33
 msgid "Customer reviews:"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:41
+#: application/modules/Market/templates/data_item.php:42
 msgid "Average price"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:48
+#: application/modules/Market/templates/data_item.php:49
 msgid "Data from Yandex.Market"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:81
+#: application/modules/Market/templates/data_item.php:82
 msgid "free"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:88
+#: application/modules/Market/templates/data_item.php:89
 msgid "Pickup"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:92
+#: application/modules/Market/templates/data_item.php:93
 msgid "In stock"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:94
+#: application/modules/Market/templates/data_item.php:95
 msgid "Not available"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:99
+#: application/modules/Market/templates/data_item.php:100
 msgid "Visit store"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:107
+#: application/modules/Market/templates/data_item.php:108
 #: application/templates/blocks/item_reviews.php:4
 #: application/templates/blocks/item_reviews.php:57
 msgid "Customer reviews"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:125
+#: application/modules/Market/templates/data_item.php:126
 msgid "Pros:"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:126
+#: application/modules/Market/templates/data_item.php:127
 msgid "Cons:"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:127
+#: application/modules/Market/templates/data_item.php:128
 msgid "Comment:"
 msgstr ""
 
-#: application/modules/Market/templates/data_item.php:133
+#: application/modules/Market/templates/data_item.php:134
 msgid "All reviews on Yandex.Market"
 msgstr ""
 
-#: application/modules/Ozon/templates/data_compare.php:54
+#: application/modules/Offer/views/metabox_module.php:91
+msgid "Last update: "
+msgstr ""
+
+#: application/modules/Ozon/templates/data_compare.php:56
 msgid "Reviews:"
 msgstr ""
 
-#: application/modules/Ozon/templates/data_compare.php:96
+#: application/modules/Ozon/templates/data_compare.php:98
 msgid "Description"
 msgstr ""
 
@@ -513,6 +520,10 @@ msgstr ""
 
 #: application/modules/Youtube/templates/data_tile.php:5
 msgid "Tile"
+msgstr ""
+
+#: application/templates/blocks/item_features.php:59
+msgid "Specifications"
 msgstr ""
 
 #: application/templates/blocks/item_reviews.php:9
@@ -577,9 +588,21 @@ msgstr ""
 msgid "Last price changes"
 msgstr ""
 
-#: application/templates/data_coupon.php:28
-#: application/templates/data_coupon.php:35
+#: application/templates/data_coupon.php:26
+#: application/templates/data_coupon.php:33
 msgid "OFF"
+msgstr ""
+
+#: application/templates/data_grid.php:71
+#: application/templates/data_item.php:56
+#: application/templates/data_list.php:63 templates/block_offers_list.php:77
+#: templates/block_offers_logo.php:57
+msgid "Buy This Item"
+msgstr ""
+
+#: application/templates/data_grid.php:84
+#: application/templates/data_list.php:76
+msgid "Last updated on"
 msgstr ""
 
 #: templates/block_offers_list.php:9

@@ -1,9 +1,9 @@
 <?php get_header(); ?>
 <!-- CONTENT -->
-<div class="content"> 
-    <div class="clearfix">
-          <!-- Main Side -->
-          <div class="main-side clearfix<?php if (rehub_option('rehub_framework_archive_layout') == 'rehub_framework_archive_gridfull') : ?> full_width<?php endif ;?>">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
+        <!-- Main Side -->
+        <div class="main-side clearfix<?php if (rehub_option('rehub_framework_archive_layout') == 'rehub_framework_archive_gridfull') : ?> full_width<?php endif ;?>">
             <?php
                 if(isset($_GET['author_name'])) :
                 $curauth = get_userdatabylogin($author_name);
@@ -33,13 +33,13 @@
             <?php if (have_posts()) : ?>
             <?php while (have_posts()) : the_post(); ?>
                 <?php if (rehub_option('rehub_framework_archive_layout') == 'rehub_framework_archive_blog') : ?>
-                    <?php get_template_part('inc/parts/query_type2'); ?>
+                    <?php include(rh_locate_template('inc/parts/query_type2.php')); ?>
                 <?php elseif (rehub_option('rehub_framework_archive_layout') == 'rehub_framework_archive_list') : ?>
-                    <?php get_template_part('inc/parts/query_type1'); ?>
+                    <?php include(rh_locate_template('inc/parts/query_type1.php')); ?>
                 <?php elseif (rehub_option('rehub_framework_archive_layout') == 'rehub_framework_archive_grid' || rehub_option('rehub_framework_archive_layout') == 'rehub_framework_archive_gridfull') : ?>
-                    <?php get_template_part('inc/parts/query_type3'); ?>                    
+                    <?php include(rh_locate_template('inc/parts/query_type3.php')); ?>                    
                 <?php else : ?>
-                    <?php get_template_part('inc/parts/query_type1'); ?>	
+                    <?php include(rh_locate_template('inc/parts/query_type1.php')); ?>	
                 <?php endif ;?>
             <?php endwhile; ?>
             <?php else : ?>		

@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 <!-- CONTENT -->
-<div class="content"> 
-    <div class="clearfix">
+<div class="rh-container"> 
+    <div class="rh-content-wrap clearfix">
           <!-- Main Side -->
           <div class="main-side clearfix">
             <div class="post errorpage">				

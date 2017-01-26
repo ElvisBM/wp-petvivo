@@ -29,7 +29,7 @@ use ContentEgg\application\helpers\TemplateHelper;
                             <input type="hidden" name="module_id" value="<?php echo esc_attr($module_id); ?>">
                             <input type="hidden" name="unique_id" value="<?php echo esc_attr($unique_id); ?>">
                             <input type="hidden" name="post_id" value="<?php echo $postid; ?>">        
-                            <div class="tabledisplay mobileblockdisplay flowhidden">
+                            <div class="tabledisplay mobilecenterdisplay mobiledisplaycenter flowhidden">
                                 <div class="celldisplay pr15">                    
                                     <input type="email" name="email" placeholder="<?php _e('Your Email', 'rehub_framework'); ?>:" class="mb10">
                                 </div>

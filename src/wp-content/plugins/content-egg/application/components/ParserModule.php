@@ -60,9 +60,10 @@ abstract class ParserModule extends Module {
                 if (!empty($item['orig_url']))
                     $url = $item['orig_url'];
                 elseif (!empty($item['img']))
-                    $url = $item['orig_url'];
+                    $url = $item['img'];
                 else
                     $url = $item['url'];
+					
                 if ($url)
                     $data[$key]['domain'] = TextHelper::getHostName($url);
             }

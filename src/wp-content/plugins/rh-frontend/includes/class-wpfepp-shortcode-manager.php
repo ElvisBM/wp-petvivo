@@ -167,7 +167,7 @@ class WPFEPP_Shortcode_Manager
 			
 			} else {
 				if(current_user_can('install_plugins'))
-					printf( '<div class="wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Please check Payment Settings of the plugin to enable paid submit function.", "wpfepp-plugin" ));
+					printf( '<div class="wpfepp wpfepp wpfepp-posts"><div class="wpfepp-message error display">%s</div></div>', __( "Please check Payment Settings of the plugin to enable paid submit function.", "wpfepp-plugin" ));
 			}
 			
 		} else {

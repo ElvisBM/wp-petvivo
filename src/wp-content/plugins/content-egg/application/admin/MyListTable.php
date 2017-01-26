@@ -124,7 +124,7 @@ class MyListTable extends \WP_List_Table {
         $current_timestamp = current_time('timestamp');
         $time_diff = $current_timestamp - $modified_timestamp;
         if ($time_diff >= 0 && $time_diff < DAY_IN_SECONDS)
-            $time_diff = human_time_diff($modified_timestamp, $current_timestamp) . __(' назад', 'content-egg');
+            $time_diff = human_time_diff($modified_timestamp, $current_timestamp) . __(' back', 'content-egg');
         else
             $time_diff = TemplateHelper::formatDatetime($item[$col_name], 'mysql', '<br />');
 
@@ -162,7 +162,7 @@ class MyListTable extends \WP_List_Table {
     function get_bulk_actions()
     {
         $actions = array(
-            'delete' => __('Удалить', 'content-egg')
+            'delete' => __('Delete', 'content-egg')
         );
         return $actions;
     }

@@ -313,7 +313,7 @@ function rehub_woocommerce_placeholder_img_src( $src ) {
 //////////////////////////////////////////////////////////////////
 // Woo update cart in header
 //////////////////////////////////////////////////////////////////
-if (rehub_option('woo_cart_place') =='1' || rehub_option('woo_cart_place') =='2'){
+if (rehub_option('woo_cart_place') =='1' || rehub_option('woo_cart_place') =='2' || rehub_option('rehub_header_style') =='header_seven'){
 	add_filter('add_to_cart_fragments', 'woocommerce_header_add_to_cart_fragment');
 	if( !function_exists('woocommerce_header_add_to_cart_fragment') ) { 
 	function woocommerce_header_add_to_cart_fragment( $fragments ) {
@@ -322,7 +322,7 @@ if (rehub_option('woo_cart_place') =='1' || rehub_option('woo_cart_place') =='2'
 		?>
 		<?php if (rehub_option('woo_cart_place') =='1'):?>
 			<a class="cart-contents cart_count_<?php echo $woocommerce->cart->cart_contents_count; ?>" href="<?php echo $woocommerce->cart->get_cart_url(); ?>"><i class="fa fa-shopping-cart"></i> <?php _e( 'Cart', 'rehub_framework' ); ?> (<?php echo $woocommerce->cart->cart_contents_count; ?>) - <?php echo $woocommerce->cart->get_cart_total(); ?></a>		
-		<?php elseif (rehub_option('woo_cart_place') =='2'):?>
+		<?php elseif (rehub_option('woo_cart_place') =='2' || rehub_option('rehub_header_style') =='header_seven'):?>
 			<a class="rh_woocartmenu-link icon-in-main-menu menu-item-one-line cart-contents cart_count_<?php echo $woocommerce->cart->cart_contents_count; ?>" href="<?php echo $woocommerce->cart->get_cart_url(); ?>"><span class="rh_woocartmenu-icon"><strong><?php echo $woocommerce->cart->cart_contents_count;?></strong><span class="rh_woocartmenu-icon-handle"></span></span><span class="rh_woocartmenu-amount"><?php echo $woocommerce->cart->get_cart_total();?></span></a>		
 		<?php endif;?>
 		<?php
@@ -891,6 +891,8 @@ if (rehub_option('wooregister_xprofile') == 1){
 				if(!empty($_POST['field_' . $field_id])){
 					$field_val = $_POST['field_' . $field_id];
 					xprofile_set_field_data($field_id, $user_id, $field_val);
+					$visibility_level = ! empty( $_POST['field_' . $field_id . '_visibility'] ) ? $_POST['field_' . $field_id . '_visibility'] : 'public';
+					xprofile_set_field_visibility_level( $field_id, $user_id, $visibility_level );					
 				}			
 			}
 		}

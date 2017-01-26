@@ -30,7 +30,8 @@ use ContentEgg\application\helpers\TemplateHelper;
 <div class="widget_logo_list">
     
     <?php  foreach ($all_items as $key => $item): ?>
-        <?php $afflink = $item['url'] ;?>
+        <?php $offer_post_url = $item['url'] ;?>
+        <?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
         <?php $aff_thumb = $item['img'] ;?>
         <?php $offer_title = wp_trim_words( $item['title'], 10, '...' ); ?>
         <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>

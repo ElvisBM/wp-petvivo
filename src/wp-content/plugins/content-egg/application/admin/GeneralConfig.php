@@ -28,7 +28,7 @@ class GeneralConfig extends Config {
 
     public function add_admin_menu()
     {
-        \add_submenu_page(Plugin::slug, __('Настройки', 'content-egg') . ' &lsaquo; Content Egg', __('Настройки', 'content-egg'), 'manage_options', $this->page_slug, array($this, 'settings_page'));
+        \add_submenu_page(Plugin::slug, __('Settings', 'content-egg') . ' &lsaquo; Content Egg', __('Settings', 'content-egg'), 'manage_options', $this->page_slug, array($this, 'settings_page'));
     }
 
     public static function langs()
@@ -93,8 +93,8 @@ class GeneralConfig extends Config {
 
         return array(
             'lang' => array(
-                'title' => __('Язык сайта', 'content-egg'),
-                'description' => __('Модули, которые имеют поддержку мультиязычности, будут отдавать предпочтение контенту на этом языке. Также эта настройка указывает на язык для локализации шаблонов.', 'content-egg'),
+                'title' => __('Website language', 'content-egg'),
+                'description' => __('Modules, which have Multilanguage support, will have priority for this language. Also, this setting will point on language of output templates', 'content-egg'),
                 'dropdown_options' => self::langs(),
                 'callback' => array($this, 'render_dropdown'),
                 'default' => self::getDefaultLang(),
@@ -102,25 +102,25 @@ class GeneralConfig extends Config {
             ),
             'post_types' => array(
                 'title' => 'Post Types',
-                'description' => __('К каким типам постов добавить Content Egg metabox?', 'content-egg') . ' ' .
-                __('Эта настройка также показывает к каким типам постов применять автозаполнение на странице "Заполнить".', 'content-egg'),
+                'description' => __('What post types do you want to use for Content Egg?', 'content-egg') . ' ' .
+                __('This setting also shows post types for Autofill extension', 'content-egg'),
                 'checkbox_options' => $post_types,
                 'callback' => array($this, 'render_checkbox_list'),
                 'default' => array('post', 'page'),
                 'section' => 'default',
             ),
             'filter_bots' => array(
-                'title' => __('Фильтровать ботов', 'content-egg'),
-                'description' => __('Боты не могут запускать парсеры.', 'content-egg') .
-                '<p class="description">' . __('Актуально, если обновление цены или обновление выдачи по ключевому слову происходит при открытии страницы поста. Если мы определим по useragent, что на страницу зашел один из известных ботов, никакие парсеры запускаться не будут.', 'content-egg') . '</p>',
+                'title' => __('Filter bots', 'content-egg'),
+                'description' => __('Bots can\'t activate parsers.', 'content-egg') .
+                '<p class="description">' . __('Updating price and keyword updating is made with page opening. If we determine update by useragent, and page is opened by one of known bots, no parsers will work in this case.', 'content-egg') . '</p>',
                 'checkbox_options' => $post_types,
                 'callback' => array($this, 'render_checkbox'),
                 'default' => true,
                 'section' => 'default',
             ),
             'price_history_days' => array(
-                'title' => __('История изменения цены', 'content-egg'),
-                'description' => __('Сколько дней хранить историю изменения цены для товаров. 0 - не сохранять историю.', 'content-egg'),
+                'title' => __('Price history', 'content-egg'),
+                'description' => __('How long save price history. 0 - deactivate price history.', 'content-egg'),
                 'callback' => array($this, 'render_input'),
                 'default' => 180,
                 'validator' => array(
@@ -129,22 +129,31 @@ class GeneralConfig extends Config {
                     array(
                         'call' => array('\ContentEgg\application\helpers\FormValidator', 'less_than_equal_to'),
                         'arg' => 365,
-                        'message' => sprintf(__('Поле "%s" не может быть больше %d.', 'content-egg'), __('История изменения цены', 'content-egg'), 362),
+                        'message' => sprintf(__('The field "%s" can\'t be more than %d.', 'content-egg'), __('Price history', 'content-egg'), 362),
                     ),
                 ),
             ),
             'price_alert_enabled' => array(
                 'title' => 'Price alert',
-                'description' => __('Разрешить посетителям подписываться на уведомления по email о снижении цены.', 'content-egg') .
-                '<p class="description">' . sprintf(__('Активных подписок сейчас: <b>%d</b>', 'content-egg'), $total_price_alerts) .
-                '. ' . sprintf(__('Отправлено уведомлений за последнии %d дней: <b>%d</b>', 'content-egg'), PriceAlertModel::CLEAN_DELETED_DAYS, $sent_price_alerts) . '.</p>' .
-                '<p class="description">' . __('Для работы этой опции "История изменения цены" также должна быть включена.', 'content-egg') . '</p>',
-                'checkbox_options' => $post_types,
+                'description' => __('Allow members to subscribe for price drop alert on email.', 'content-egg') .
+                '<p class="description">' . sprintf(__('Active subscriptions now: <b>%d</b>', 'content-egg'), $total_price_alerts) .
+                '. ' . sprintf(__('Messages are sent for last %d days: <b>%d</b>', 'content-egg'), PriceAlertModel::CLEAN_DELETED_DAYS, $sent_price_alerts) . '.</p>' .
+                '<p class="description">' . __('This option requires "Price history" option (must be enabled) to work.', 'content-egg') . '</p>',
                 'callback' => array($this, 'render_checkbox'),
                 'default' => true,
                 'section' => 'default',
             ),
+            'button_color' => array(
+                'title' => __('Button color', 'content-egg'),
+                'description' => __('Button color for standard templates.', 'content-egg'),
+                'callback' => array($this, 'render_color_picker'),
+                'default' => '#5cb85c',
+                'validator' => array(
+                    'trim',
+                ),
+            ),            
         );
+        
     }
 
     public static function getDefaultLang()

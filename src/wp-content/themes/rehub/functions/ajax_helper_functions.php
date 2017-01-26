@@ -167,7 +167,7 @@ function ajax_action_re_filterpost() {
     $response = $page_sorting = '';
 
     if ($offset !='') {$args['offset'] = $offset;}
-    $offsetnext = (!empty($args['posts_per_page'])) ? $offset + $args['posts_per_page'] : $offset + 12;
+    $offsetnext = (!empty($args['posts_per_page'])) ? (int)$offset + $args['posts_per_page'] : (int)$offset + 12;
     $args['no_found_rows'] = true;
     $args['post_status'] = 'publish';   
     if(!empty($sorttype) && is_array($sorttype)) { //if sorting panel  
@@ -278,7 +278,7 @@ function ajax_action_re_filterpost() {
             ob_start();
             if(!empty($innerargs)) {extract($innerargs);}
 
-            include(locate_template('inc/parts/'.$template.'.php'));
+            include(rh_locate_template('inc/parts/'.$template.'.php'));
             $i++;
             $response .= ob_get_clean();
         }
@@ -286,7 +286,7 @@ function ajax_action_re_filterpost() {
         $response .='<div class="re_ajax_pagination"><span data-offset="'.$offsetnext.'" data-containerid="'.$containerid.'"'.$page_sorting.' class="re_ajax_pagination_btn def_btn">' . __('Next', 'rehub_framework') . '</span></div>'; 
     }           
     else {
-        $response .= '<div class="clearfix"><span class="no_more_posts">'.__('No more!', 'rehub_framework').'<span></div>';
+        $response .= '<div class="clearfix flexbasisclear"><span class="no_more_posts">'.__('No more!', 'rehub_framework').'<span></div>';
     }       
 
     echo $response ;

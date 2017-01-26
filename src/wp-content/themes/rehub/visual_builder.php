@@ -1,13 +1,11 @@
 <?php
-
 	/* Template Name: Page for visual layout builder */
-
 ?>
 <?php 
     $header_disable = vp_metabox('vcr.header_disable');
     $footer_disable = vp_metabox('vcr.footer_disable');
     $content_type = vp_metabox('vcr.content_type');
-    if ($content_type =='def') {$content_type = '';}      
+    if ($content_type =='def') {$content_type = '';}     
 ?>
 <?php if ($header_disable =='1') :?>
 <!DOCTYPE html>
@@ -24,34 +22,34 @@
 <!--[if lt IE 9]><script src="<?php echo get_template_directory_uri(); ?>/js/html5shiv.js"></script><![endif]-->	
 <?php wp_head(); ?>
 <?php if(rehub_option('rehub_custom_css')) : ?><style><?php echo rehub_option('rehub_custom_css'); ?></style><?php endif; ?>
+<?php if(rehub_option('rehub_analytics_header')) : ?><?php echo rehub_option('rehub_analytics_header'); ?><?php endif; ?>
 </head>
 <body <?php body_class(); ?>>
+<div class="rh-outer-wrap">
 <div id="top_ankor"></div>
 <?php get_template_part('inc/parts/branded_bg'); ?>
-<?php get_template_part('inc/parts/branded_banner'); ?>	
+<?php include(rh_locate_template('inc/parts/branded_banner.php')); ?>	
 <!-- HEADER -->	
 <?php else :?>
 <?php get_header(); ?>
 <?php endif ;?>
 
-    <!-- CONTENT -->
-    <div class="content <?php echo $content_type ?>">     
-		<div class="clearfix">
-		    <!-- Main Side -->
-            <div class="main-side visual_page_builder page_builder clearfix full_width">
-					
-					<!-- CONTENT -->
-					<?php while (have_posts()) : the_post(); ?>
-						<?php the_content();?>
-					<?php endwhile; ?>
-
-			</div>	
-            <!-- /Main Side -->   
-        </div>
+<!-- CONTENT -->
+<div class="rh-container <?php echo $content_type ?>"> 
+    <div class="rh-content-wrap clearfix">    
+	    <!-- Main Side -->
+        <div class="main-side visual_page_builder page_builder clearfix full_width">			
+			<?php while (have_posts()) : the_post(); ?>
+				<?php the_content();?>
+			<?php endwhile; ?>
+		</div>	
+        <!-- /Main Side -->   
     </div>
-    <!-- /CONTENT -->     
+</div>
+<!-- /CONTENT -->     
 <!-- FOOTER -->
 <?php if ($footer_disable =='1') :?>
+</div>
 <?php if(rehub_option('rehub_analytics')) : ?><?php echo rehub_option('rehub_analytics'); ?><?php endif; ?>
 <?php if(rehub_option('rehub_disable_totop') !='1')  : ?><span class="rehub_scroll" id="topcontrol" data-scrollto="#top_ankor"><i class="fa fa-chevron-up"></i></span><?php endif; ?>
 <?php wp_footer(); ?>
