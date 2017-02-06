@@ -71,11 +71,6 @@
                 <div class="header_top_wrap<?php echo $header_topline_style;?>">
                     <div class="rh-container">
                         <div class="header-top clearfix">    
-                            <?php if(has_nav_menu('user_logged_in_menu') && is_user_logged_in() && rehub_option('rehub_logged_enable_intop') == '1'): ?>
-                                <?php wp_nav_menu( array( 'container_class' => 'top-nav', 'container' => 'div', 'theme_location' => 'user_logged_in_menu', 'fallback_cb' => 'add_top_menu_for_blank', 'depth' => '1', 'items_wrap' => '<i class="fa fa-caret-down re-top-menu-collapse"></i><ul id="%1$s" class="%2$s">%3$s</ul>'  ) ); ?> 
-                            <?php else :?>
-                                <?php wp_nav_menu( array( 'container_class' => 'top-nav', 'container' => 'div', 'theme_location' => 'top-menu', 'fallback_cb' => 'add_top_menu_for_blank', 'depth' => '1', 'items_wrap' => '<i class="fa fa-caret-down re-top-menu-collapse"></i><ul id="%1$s" class="%2$s">%3$s</ul>'  ) ); ?>
-                            <?php endif;?>
                             <div class="top-social"> 
                                 <?php if(rehub_option('rehub_login_icon') == 'top' && rehub_option('userlogin_enable') == '1') : ?>
                                     <?php $loginurl = (rehub_option('custom_login_url')) ? esc_url(rehub_option('custom_login_url')) : '';?>
