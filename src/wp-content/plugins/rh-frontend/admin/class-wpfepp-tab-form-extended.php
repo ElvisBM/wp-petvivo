@@ -38,7 +38,7 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 	 **/
 	public function add_actions(){
 		add_action( 'admin_init', array( $this, 'save_extended' ) );
-		add_action( 'enqueue_admin_add_scripts', array( $this, 'admin_enqueue_location_scripts' ), 0 );
+		add_action( 'wpfepp_extended_form_settings', array( $this, 'admin_enqueue_location_scripts' ), 0 );
 	}
 
 	/**
@@ -85,10 +85,10 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 	public function display() {
 		$form_extended = $this->get_extended_settings();
 
-		$page 		= 'wpfepp_form_extended_tab';
-		$section1 	= 'wpfepp_form_googlemap_section';
-		$callback 	= array($this->renderer, 'render');
-		$args 		= array('group' => 'form_extended', 'curr' 	=> $form_extended);
+		$page = 'wpfepp_form_extended_tab';
+		$section1 = 'wpfepp_form_googlemap_section';
+		$callback = array( $this->renderer, 'render' );
+		$args = array( 'group' => 'form_extended', 'curr' => $form_extended );
 
 		add_settings_section( 'wpfepp_form_limitnumber_section', __("Limit post submit for form", "wpfepp-plugin"), null, $page);
 
@@ -193,8 +193,9 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 				), $args )
 	    );
 
-
 	    add_settings_section( 'wpfepp_paid_help_section', __('Payment Settings', 'wpfepp-plugin'), array($this, 'paidhelper_callback'), $page );
+		
+		do_action( 'wpfepp_extended_form_settings', $page, $callback, $args );
 
 	    ?>
 			<form method="POST">
@@ -204,7 +205,6 @@ class WPFEPP_Tab_Form_Extended extends WPFEPP_Tab
 			</form>
 			
 	    <?php 
-		do_action( 'enqueue_admin_add_scripts' );
 	}
 	
 	/**

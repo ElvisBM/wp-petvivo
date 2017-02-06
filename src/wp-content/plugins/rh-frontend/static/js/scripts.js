@@ -62,6 +62,12 @@ function wpfepp_scroll_to(item){
 
 jQuery(document).ready(function($){
 
+	$('.wpfepp-form-field-container[style*="width"]').each(function(){
+		if($(this).length > 0){
+			$(this).css("display", "inline-block");
+		}
+	});
+
 	//Initialize qTips on page load
 	$('.wpfepp-form-field-container').qtip({
 		content: ' ',
@@ -520,7 +526,7 @@ jQuery(document).ready(function($){
 		}
 	});
 
-});
+}); // End Document.ready
 
 // WP Media Uploader
 (function($) {

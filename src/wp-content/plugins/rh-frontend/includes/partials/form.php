@@ -25,7 +25,6 @@
 			
 			<?php if ( wpfepp_is_field_supported( $field['type'], $this->post_type ) ) :?>
 				<?php if ( $field['enabled'] ) : ?>
-
 				<div class="wpfepp-<?php echo $field_key; ?>-field-container wpfepp-form-field-container" style="<?php echo $element_width; ?>">
 					<label for="wpfepp-<?php echo $unique_key; ?>-field" class="wpfepp-form-field-label"><?php echo $field['label']; ?></label>
 					
@@ -218,16 +217,18 @@
 						</select>
 					<?php } ?>
 					
-					<?php if ( $field['type'] == 'custom_field' ) : ?>
-						<?php if($field['element'] == 'input'  || $field['element'] == 'email' || $field['element'] == 'url'): ?>
+					<?php if( $field['type'] == 'custom_field' ) : ?>
+						<?php if( $field['element'] == 'input' || $field['element'] == 'email' || $field['element'] == 'url' ) : ?>
 							<?php $cf_input_type = ($field['element'] == 'input') ? 'text' : $field['element']; ?>
 							<input id="wpfepp-<?php echo $unique_key; ?>-field" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" type="<?php echo $cf_input_type; ?>" name="<?php echo $field_key; ?>" value="<?php echo esc_attr($field_current); ?>" <?php echo $this->print_restrictions($field); ?> />
 						<?php elseif($field['element'] == 'textarea'): ?>
 							<textarea id="wpfepp-<?php echo $unique_key; ?>-field" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" name="<?php echo $field_key; ?>" <?php echo $this->print_restrictions($field); ?> ><?php echo esc_textarea($field_current); ?></textarea>
-						<?php elseif($field['element'] == 'inputdate'): ?>
+						<?php elseif($field['element'] == 'inputdate') : ?>
 							<?php $field_current = ($field['unixtime'] == 1 && !empty($field_current)) ? date_i18n( 'Y-m-d', $field_current ) : $field_current; ?>
 							<input id="wpfepp-<?php echo $unique_key; ?>-field" type="text" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field wpfepp-form-field-date" name="<?php echo $field_key; ?>" <?php echo $this->print_restrictions($field); ?> value="<?php echo esc_attr($field_current); ?>" /> 
-						<?php elseif($field['element'] == 'inputnumb'): ?>
+						<?php elseif( $field['element'] == 'inputtime' ) : ?>
+							<input id="wpfepp-<?php echo $unique_key; ?>-field" type="time" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" name="<?php echo $field_key; ?>" value="<?php echo esc_attr( $field_current ); ?>" /> 
+						<?php elseif($field['element'] == 'inputnumb') : ?>
 							<input id="wpfepp-<?php echo $unique_key; ?>-field" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" type="number" name="<?php echo $field_key; ?>" value="<?php echo esc_attr($field_current); ?>" <?php echo $this->print_restrictions($field); ?> />	
 						<?php elseif($field['element'] == 'map'): ?>
 							<input id="wpfepp_map_start_location" class="wpfepp-<?php echo $field_key; ?>-field wpfepp-form-field" type="text" name="<?php echo $field_key; ?>" value="<?php echo esc_attr($field_current); ?>" <?php echo $this->print_restrictions($field); ?> placeholder="<?php echo $this->extended['adress_placeholder']; ?>" />
@@ -278,28 +279,28 @@
 						<?php endif; ?>
 					<?php endif; ?>
 				</div>
-				
 				<?php else: ?>
 					<?php if ( isset( $field['fallback_value'] ) && $field['fallback_value'] ) : ?>
+						<?php if ( $field['type'] == 'custom_field' && $field['element'] == 'input' ) : ?>
+						<input type="hidden" name="<?php echo $field_key; ?>" value="<?php echo $field['fallback_value']; ?>" />
+						<?php else : ?>
 						<textarea style="display:none;" name="<?php echo $field_key; ?>"><?php echo $field['fallback_value']; ?></textarea>
+						<?php endif; ?>
 					<?php endif; ?>
 				<?php endif; ?>
+				
 			<?php endif; ?>
-
 		<?php endforeach; ?>
 
 		<?php $this->user_defined_fields( $current ); ?>
 
-		<?php
-			if( $this->settings['captcha_enabled'] && $this->post_status( $final_post_id ) == 'new' ) {
-				$this->captcha->render();
-			}
-		?>		
-		<?php //Now that all the visible fields have been generated, create the hidden fields ?>
-		<?php if($this->paid_on) { ?>
+		<?php if( $this->settings['captcha_enabled'] && $this->post_status( $final_post_id ) == 'new' ) : $this->captcha->render(); endif; ?>
+		
+		<?php // hidden fields ?>
+		<?php if( $this->paid_on ) : ?>
 			<input class="wpfepp-paid-id-field" type="hidden" name="wpfepp_paid_post" value="<?php echo $this->id; ?>" />
-		<?php } ?>
-		<?php  if(!empty($this->extended['limit_number']) && $this->extended['limit_number']>0): ?>
+		<?php endif; ?>
+		<?php if( !empty($this->extended['limit_number']) && $this->extended['limit_number'] > 0 ) : ?>
 			<input class="wpfepp-limit-number-field" type="hidden" name="form_limit_number" value="<?php echo $this->extended['limit_number']; ?>" />
 		<?php endif;?>
 		<input class="wpfepp-form-id-field" type="hidden" name="form_id" value="<?php echo $this->id; ?>" />
@@ -307,7 +308,7 @@
 		<?php wp_nonce_field( 'wpfepp-form-'.$this->id.'-nonce', '_wpnonce', false, true ); ?>
 		<input type="hidden" name="action" value="wpfepp_handle_submission_ajax" />
 
-		<?php /* Send form */ ?>
+		<?php // send form ?>
 		<button type="submit" class="wpfepp-button wpfepp-submit-button <?php echo (isset($this->settings['button_color'])) ? $this->settings['button_color'] : 'blue'; ?>" name="wpfepp-form-<?php echo $this->id; ?>-submit"><?php _e( "Submit", "wpfepp-plugin" ); ?></button>
 		<?php if( $this->settings['enable_drafts'] && ($this->post_status($final_post_id) == 'new' || $this->post_status($final_post_id) == 'draft') ): ?>
 		<button type="submit" class="wpfepp-button wpfepp-save-button cancel" name="wpfepp-form-<?php echo $this->id; ?>-save"><?php _e( "Save Draft", "wpfepp-plugin" ); ?></button>

@@ -127,7 +127,7 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 							'type' => 'select',
 							'items' => array( 
 								'input' => __( "Text field", "wpfepp-plugin" ), 
-								'textarea' => __( "Text area", "wpfepp-plugin" ), 
+								'textarea' => __( "Textarea", "wpfepp-plugin" ), 
 								'checkbox' => __( "Checkbox", "wpfepp-plugin" ), 
 								'select' => __( "Select", "wpfepp-plugin" ), 
 								'radio' => __( "Radio buttons", "wpfepp-plugin" ), 
@@ -135,7 +135,8 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 								'url' => __( "URL field", "wpfepp-plugin" ), 
 								'image_url' => __( "File upload", "wpfepp-plugin" ), 
 								'inputdate' => __( "Date field", "wpfepp-plugin" ), 
-								'inputnumb' => __( "Number field", "wpfepp-plugin" ), 
+								'inputtime' => __( "Time field", "wpfepp-plugin" ), 
+								'inputnumb' => __( "Numeric field", "wpfepp-plugin" ), 
 								'map' => __( "Address input", "wpfepp-plugin" ), 
 								'image_galery' => __( "Image galery", "wpfepp-plugin" ) 
 							)
@@ -358,14 +359,21 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 					$args
 				)
 			);
+			$dashicon_yes = '<span class="dashicons dashicons-yes"></span>';
 			?>
 				<li class="wpfepp-widget-container<?php echo wpfepp_is_field_supported( $field['type'], $post_type ) ? '' : ' hidden'; ?>">
 					<div class="wpfepp-widget-head">
-						<strong><?php echo $field['widget_label']; ?></strong>
+						<strong><?php echo $field['widget_label']; ?></strong> : 
 						<span class="wpfepp-expand"><span class="dashicons dashicons-arrow-down"></span></span>
+						<span><?php if( $field['enabled'] ) :  echo __( 'Enabled', 'wpfepp-plugin' ), $dashicon_yes; endif; ?></span>
+						<span><?php if( $field['required'] ) :  echo __( 'Required', 'wpfepp-plugin' ), $dashicon_yes; endif; ?></span>
+						<span><?php if( $field['fallback_value'] && !$field['enabled'] ) : echo __( 'Hidden', 'wpfepp-plugin' ), $dashicon_yes; endif; ?></span>
 						<?php if( $field['type'] == 'custom_field' ) : ?>
 							<span class="wpfepp-custom-field-delete"><span class="dashicons dashicons-trash"></span></span>
-							<span>: <code><?php echo $field_key; ?></code></span>
+							<span><?php _e( 'Meta Field', 'wpfepp-plugin' ); ?>
+								<code><?php echo $field_key; ?><?php if( $field['fallback_value'] ) : echo " = '". $field['fallback_value'] ."'"; endif; ?></code>
+							</span>
+							<span></span>
 						<?php endif; ?>
 					</div>
 					<div class="wpfepp-widget-body">
@@ -422,15 +430,22 @@ class WPFEPP_Tab_Form_Fields extends WPFEPP_Tab
 					<h3><?php _e( "REhub Theme Fields", "wpfepp-plugin" ); ?></h3>
 					<ul class="wpfepp-rehub-fields">
 						<li data-field="rh_post_image_gallery"><?php _e( "Image gallery", "wpfepp-plugin" ); ?></li>
+						<li data-field="rh_post_image_video"><?php _e( "Post video", "wpfepp-plugin" ); ?></li>
 						<li data-field="rehub_offer_product_url"><?php _e( "Offer product URL", "wpfepp-plugin" ); ?>
 						<li data-field="rehub_offer_name"><?php _e( "Offer product Name", "wpfepp-plugin" ); ?>
 						<li data-field="rehub_offer_product_desc"><?php _e( "Offer product Description", "wpfepp-plugin" ); ?>
 						<li data-field="rehub_offer_product_price_old"><?php _e( "Offer product Old price", "wpfepp-plugin" ); ?>
 						<li data-field="rehub_offer_product_price"><?php _e( "Offer product Price", "wpfepp-plugin" ); ?>
 						<li data-field="rehub_offer_product_coupon"><?php _e( "Offer product Coupon code", "wpfepp-plugin" ); ?>
-						<li data-field="rehub_offer_coupon_date"><?php _e( "Offer product Expiration date", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_offer_coupon_date"><?php _e( "Offer product Coupon date", "wpfepp-plugin" ); ?>
 						<li data-field="rehub_offer_product_thumb"><?php _e( "Offer product Image URL", "wpfepp-plugin" ); ?>
 						<li data-field="rehub_offer_logo_url"><?php _e( "Offer product Logo URL", "wpfepp-plugin" ); ?>
+						<?php if( class_exists( 'WooCommerce' ) ) : ?>
+						<li data-field="rehub_woo_coupon_code"><?php _e( "WC product Coupon code", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_woo_coupon_date"><?php _e( "WC product Coupon date", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_woo_coupon_url"><?php _e( "WC product Coupon URL", "wpfepp-plugin" ); ?>
+						<li data-field="rehub_woo_coupon_coupon_img_url"><?php _e( "WC product Image URL", "wpfepp-plugin" ); ?>
+						<?php endif; ?>
 					</ul>
 				</div>
 			<?php } ?>

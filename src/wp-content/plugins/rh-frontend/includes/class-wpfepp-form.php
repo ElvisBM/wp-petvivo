@@ -186,7 +186,7 @@ class WPFEPP_Form
 		do_action( 'wpfepp_do_before_'. $this->id .'_print_form' );	
 
 		//Here we check if user has access to form if form has limits
-		if(!empty($this->extended['limit_number']) && $this->extended['limit_number']>0){
+		if( !empty($this->extended['limit_number']) && $this->extended['limit_number'] > 0 ){
 			$currentuserid = get_current_user_id();
 			$user_numb_post_meta = '_rhf_user_submit_counter_form_'.$this->id;
 			$author_number_post_package = get_user_meta( $currentuserid, $user_numb_post_meta, true );
@@ -215,6 +215,7 @@ class WPFEPP_Form
 		}				
 
 		$this->print_form( $current, $result );
+
 	}
 
 	/**
@@ -535,7 +536,7 @@ class WPFEPP_Form
 						$custom_fields['_sale_price'] = $this->sanitize($post_data[$key], $field);
 						$custom_fields['_price'] = $custom_fields['_sale_price'];
 					} else {
-						$custom_fields['_price'] = $custom_fields['_regular_price'];
+						$custom_fields['_price'] = isset( $custom_fields['_regular_price'] ) ? $custom_fields['_regular_price'] : '';
 					}
 					break;
 				case 'product_options':
@@ -594,8 +595,6 @@ class WPFEPP_Form
 		$post_id = wp_insert_post( $post, true );
 		if( !is_wp_error( $post_id ) ) {
 
-
-			
 			$tax_attrs = array();
 			$wc_tax_attrs = wpfepp_get_attribute_taxonomies();
 			
