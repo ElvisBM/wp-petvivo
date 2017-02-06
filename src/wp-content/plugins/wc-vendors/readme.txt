@@ -5,8 +5,8 @@ Donate link: http://www.wcvendors.com/
 Author URI: http://www.wcvendors.com/
 Plugin URI: http://www.wcvendors.com/
 Requires at least: 4.4.0
-Tested up to: 4.7.0
-Stable tag: 1.9.7
+Tested up to: 4.7.1
+Stable tag: 1.9.8
 License: GPLv2 or later
 
 The free marketplace plugin for WooCommerce.  Now you can allow anyone to open a store on your site!
@@ -74,6 +74,7 @@ We currently ship WC Vendors free with the following language translations. If y
 * Austrian German
 * German
 * Chinese 
+* Japanese (thanks Shohei Tanaka)
 * Brazilian Portuguese
 * Italian
 * Spanish
@@ -120,6 +121,18 @@ Also be sure to visit our KnowledgeBase at https://www.wcvendors.com/kb/
 No Upgrade required at this time.
 
 == Changelog ==
+
+* Fixed: Capabilities Fix for Resetting Roles #329
+
+= Version 1.9.8 - 18th January 2017 =
+
+* Fixed: Paypal adaptive payments url changes 
+* Added: Store Vendor ID in vendor child order #326
+* Added: 100% Japanese translations thanks to Shohei Tanaka 
+
+= Version 1.9.7 - 13 December 2016 =
+
+* Fixed: Capabilities Fix for Resetting Roles #329
 
 = Version 1.9.6 - 4th November 2016 = 
 
