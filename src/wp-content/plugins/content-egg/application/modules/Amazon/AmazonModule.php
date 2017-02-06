@@ -130,11 +130,11 @@ class AmazonModule extends AffiliateParserModule {
         $results = array();
 
         // EAN or ASIN search
-        if (TextHelper::isEan($keyword) && $search_index != 'All') 
+        if (TextHelper::isEan($keyword) && $search_index != 'All')
         {
             $options['IdType'] = 'EAN';
             // All IdTypes except ASINx require a SearchIndex to be specified.
-            $options['SearchIndex'] = $search_index;            
+            $options['SearchIndex'] = $search_index;
             unset($options['Keywords']);
             $ItemLookup = true;
         } elseif (TextHelper::isAsin($keyword))
@@ -144,7 +144,7 @@ class AmazonModule extends AffiliateParserModule {
             $ItemLookup = true;
         } else
             $ItemLookup = false;
-        
+
         for ($i = 0; $i < $pages_count; $i++)
         {
             $options['ItemPage'] = $i + 1;
@@ -152,7 +152,7 @@ class AmazonModule extends AffiliateParserModule {
                 $data = $client->ItemLookup($keyword, $options); // EAN or ASIN search
             else
                 $data = $client->ItemSearch($search_index, $options); // keyword search
-            
+
             if (!is_array($data))
                 break;
 
@@ -261,6 +261,24 @@ class AmazonModule extends AffiliateParserModule {
                 $items[$key]['extra']['customerReviews'] = ExtraData::fillAttributes($items[$key]['extra']['customerReviews'], $results[$i]['CustomerReviews']);
             }
             $items[$key]['domain'] = AmazonConfig::getDomainByLocale($locale);
+
+            if (!$this->config('save_img'))
+            {
+                $items[$key]['img'] = $this->rewriteSslImageUrl($items[$key]['img']);
+            }
+
+            foreach ($items[$key]['extra']['imageSet'] as $set_key => $set)
+            {
+                if (!$set)
+                    continue;
+                $items[$key]['extra']['imageSet'][$set_key]['SwatchImage'] = $this->rewriteSslImageUrl($set['SwatchImage']);
+                $items[$key]['extra']['imageSet'][$set_key]['SmallImage'] = $this->rewriteSslImageUrl($set['SmallImage']);
+                $items[$key]['extra']['imageSet'][$set_key]['ThumbnailImage'] = $this->rewriteSslImageUrl($set['ThumbnailImage']);
+                $items[$key]['extra']['imageSet'][$set_key]['TinyImage'] = $this->rewriteSslImageUrl($set['TinyImage']);
+                $items[$key]['extra']['imageSet'][$set_key]['MediumImage'] = $this->rewriteSslImageUrl($set['MediumImage']);
+                $items[$key]['extra']['imageSet'][$set_key]['LargeImage'] = $this->rewriteSslImageUrl($set['LargeImage']);
+            }
+            
             $return[$item['unique_id']] = $items[$key];
             $i++;
         }
@@ -501,8 +519,8 @@ class AmazonModule extends AffiliateParserModule {
             $content->currency = TextHelper::currencyTyping($content->currencyCode);
         } else
             $content->price = 0;
-        
-        $content->ean = $extra->itemAttributes->EAN;        
+
+        $content->ean = $extra->itemAttributes->EAN;
 
         if ($return_array)
         {
@@ -521,34 +539,24 @@ class AmazonModule extends AffiliateParserModule {
                 return 'http://www.amazon.co.uk';
             case 'de':
                 return 'http://www.amazon.de';
-                break;
             case 'fr':
                 return 'http://www.amazon.fr';
-                break;
             case 'jp':
                 return 'http://www.amazon.co.jp';
-                break;
             case 'cn':
                 return 'http://www.amazon.cn';
-                break;
             case 'it':
                 return 'http://www.amazon.it';
-                break;
             case 'es':
                 return 'http://www.amazon.es';
-                break;
             case 'ca':
                 return 'http://www.amazon.ca';
-                break;
             case 'br':
                 return 'http://www.amazon.br';
-                break;
             case 'in':
                 return 'http://www.amazon.in';
-                break;
             default: //'us'
                 return 'http://www.amazon.com';
-                break;
         }
     }
 

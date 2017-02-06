@@ -1,14 +1,14 @@
-# Copyright (C) 2016 Content Egg
+# Copyright (C) 2017 Content Egg
 # This file is distributed under the same license as the Content Egg package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Content Egg 3.0.0\n"
+"Project-Id-Version: Content Egg 3.2.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/content-egg\n"
-"POT-Creation-Date: 2016-12-13 15:19:50+00:00\n"
+"POT-Creation-Date: 2017-01-24 19:09:19+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -67,7 +67,7 @@ msgstr ""
 msgid "Add autoblogging - bulk mode"
 msgstr ""
 
-#: application/admin/AutoblogController.php:199
+#: application/admin/AutoblogController.php:201
 msgid "Autoblogging is not found"
 msgstr ""
 
@@ -86,7 +86,7 @@ msgstr ""
 
 #: application/admin/AutoblogTable.php:56 application/admin/MyListTable.php:165
 #: application/admin/views/_metabox_results.php:14
-#: application/modules/Offer/views/metabox_module.php:90
+#: application/modules/Offer/views/metabox_module.php:96
 msgid "Delete"
 msgstr ""
 
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Error."
 msgstr ""
 
-#: application/admin/GeneralConfig.php:31 application/admin/PluginAdmin.php:91
+#: application/admin/GeneralConfig.php:31 application/admin/PluginAdmin.php:92
 msgid "Settings"
 msgstr ""
 
@@ -209,11 +209,11 @@ msgstr ""
 msgid "This option requires \"Price history\" option (must be enabled) to work."
 msgstr ""
 
-#: application/admin/GeneralConfig.php:148
+#: application/admin/GeneralConfig.php:147
 msgid "Button color"
 msgstr ""
 
-#: application/admin/GeneralConfig.php:149
+#: application/admin/GeneralConfig.php:148
 msgid "Button color for standard templates."
 msgstr ""
 
@@ -275,7 +275,7 @@ msgstr ""
 msgid " back"
 msgstr ""
 
-#: application/admin/PluginAdmin.php:77
+#: application/admin/PluginAdmin.php:78
 msgid "Are you sure?"
 msgstr ""
 
@@ -284,38 +284,38 @@ msgstr ""
 msgid "Fill"
 msgstr ""
 
-#: application/admin/PrefillController.php:95
+#: application/admin/PrefillController.php:98
 msgid "Data already exist."
 msgstr ""
 
-#: application/admin/PrefillController.php:102
+#: application/admin/PrefillController.php:111
 msgid "Impossible to determine a keyword"
 msgstr ""
 
-#: application/admin/PrefillController.php:111
+#: application/admin/PrefillController.php:120
 msgid "Keyword for autoupdate already exists."
 msgstr ""
 
-#: application/admin/PrefillController.php:115
+#: application/admin/PrefillController.php:124
 msgid "Keyword for autoupdate was saved."
 msgstr ""
 
-#: application/admin/PrefillController.php:124
+#: application/admin/PrefillController.php:133
 #: application/admin/views/metabox_module.php:85
 msgid "Error:"
 msgstr ""
 
-#: application/admin/PrefillController.php:131
+#: application/admin/PrefillController.php:140
 #: application/admin/views/metabox_module.php:50
 msgid "No data found..."
 msgstr ""
 
-#: application/admin/PrefillController.php:137
+#: application/admin/PrefillController.php:146
 msgid "Data saved:"
 msgstr ""
 
 #: application/admin/views/_metabox_autoblog.php:10
-#: application/models/AutoblogModel.php:68
+#: application/models/AutoblogModel.php:70
 #: application/modules/Ozon/OzonConfig.php:82
 msgid "Name"
 msgstr ""
@@ -370,7 +370,7 @@ msgstr ""
 
 #: application/admin/views/_metabox_autoblog.php:51
 #: application/admin/views/_metabox_autoblog.php:140
-#: application/models/AutoblogModel.php:74
+#: application/models/AutoblogModel.php:76
 msgid "Keywords"
 msgstr ""
 
@@ -524,7 +524,7 @@ msgid "You can use shortcodes, for example:"
 msgstr ""
 
 #: application/admin/views/_metabox_autoblog.php:216
-#: application/admin/views/_metabox_autoblog.php:391
+#: application/admin/views/_metabox_autoblog.php:408
 msgid "\"Formulas\", and also all tags from title template, will also work here."
 msgstr ""
 
@@ -569,9 +569,10 @@ msgstr ""
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:87
 #: application/modules/CjLinks/CjLinksConfig.php:123
 #: application/modules/Clickbank/ClickbankConfig.php:67
-#: application/modules/Ebay/EbayConfig.php:137
+#: application/modules/Ebay/EbayConfig.php:147
 #: application/modules/Linkshare/LinkshareConfig.php:104
 #: application/modules/Ozon/OzonConfig.php:91
+#: application/modules/Pepperjam/PepperjamConfig.php:96
 #: application/modules/Pixabay/PixabayConfig.php:108
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:57
 msgid "Category "
@@ -615,41 +616,65 @@ msgid "Post will not be publicized if no results for these modules."
 msgstr ""
 
 #: application/admin/views/_metabox_autoblog.php:373
-msgid "Add custom fields"
+msgid "Main product"
 msgstr ""
 
 #: application/admin/views/_metabox_autoblog.php:377
+msgid "Minimum price"
+msgstr ""
+
 #: application/admin/views/_metabox_autoblog.php:378
+msgid "Maximum price"
+msgstr ""
+
 #: application/admin/views/_metabox_autoblog.php:379
-#: application/admin/views/_metabox_autoblog.php:380
-#: application/admin/views/_metabox_autoblog.php:381
+msgid "Random"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:382
+msgid "How to choose \"main\" product?"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:383
+msgid "Then you can use tags:"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:390
+msgid "Add custom fields"
+msgstr ""
+
+#: application/admin/views/_metabox_autoblog.php:394
+#: application/admin/views/_metabox_autoblog.php:395
+#: application/admin/views/_metabox_autoblog.php:396
+#: application/admin/views/_metabox_autoblog.php:397
+#: application/admin/views/_metabox_autoblog.php:398
 msgid "Custom Field"
 msgstr ""
 
-#: application/admin/views/_metabox_autoblog.php:384
-#: application/admin/views/_metabox_autoblog.php:385
-#: application/admin/views/_metabox_autoblog.php:386
-#: application/admin/views/_metabox_autoblog.php:387
-#: application/admin/views/_metabox_autoblog.php:388
+#: application/admin/views/_metabox_autoblog.php:401
+#: application/admin/views/_metabox_autoblog.php:402
+#: application/admin/views/_metabox_autoblog.php:403
+#: application/admin/views/_metabox_autoblog.php:404
+#: application/admin/views/_metabox_autoblog.php:405
 msgid "Value"
 msgstr ""
 
 #: application/admin/views/_metabox_results.php:9
 #: application/components/ParserModuleConfig.php:57
-#: application/modules/Offer/views/metabox_module.php:51
+#: application/modules/Offer/views/metabox_module.php:53
 #: application/modules/Youtube/YoutubeConfig.php:64
 #: application/modules/Youtube/views/search_panel.php:11
 msgid "Title"
 msgstr ""
 
 #: application/admin/views/_metabox_results.php:10
-#: application/modules/Offer/views/metabox_module.php:86
+#: application/modules/Offer/views/metabox_module.php:92
 msgid "Description"
 msgstr ""
 
 #: application/admin/views/_metabox_results.php:13
-#: application/admin/views/_promo_box.php:58
-#: application/modules/Offer/views/metabox_module.php:89
+#: application/admin/views/_promo_box.php:37
+#: application/modules/Offer/views/metabox_module.php:95
 msgid "Go to "
 msgstr ""
 
@@ -671,17 +696,34 @@ msgstr ""
 msgid "Maximum profit with minimum efforts"
 msgstr ""
 
-#: application/admin/views/_promo_box.php:12
+#: application/admin/views/_promo_box.php:17
 msgid "Many additional modules and extended functions."
 msgstr ""
 
-#: application/admin/views/_promo_box.php:54
+#: application/admin/views/_promo_box.php:24
+msgid "Thanks for use this plugin!"
+msgstr ""
+
+#: application/admin/views/_promo_box.php:25
+msgid "If you like it and want to thank, you can write a 5 star review on Wordpress."
+msgstr ""
+
+#: application/admin/views/_promo_box.php:27
+msgid "Rate"
+msgstr ""
+
+#: application/admin/views/_promo_box.php:33
 msgid "Activate plugin"
 msgstr ""
 
-#: application/admin/views/_promo_box.php:55
+#: application/admin/views/_promo_box.php:34
+#: application/admin/views/envato_activation.php:4
+msgid "In order to receive all benefits of Contennt Egg, you need to activate your copy of the plugin."
+msgstr ""
+
+#: application/admin/views/_promo_box.php:35
 #: application/admin/views/envato_activation.php:5
-msgid "Activate plugin, to get urgent important updates of plugin inside admin panel and official support. "
+msgid "By activating Contennt Egg license you will unlock premium options - direct plugin updates, access to user panel and official support."
 msgstr ""
 
 #: application/admin/views/ae_integration.php:5
@@ -697,14 +739,18 @@ msgid "For search by keyword, plugin will use search of original site."
 msgstr ""
 
 #: application/admin/views/ae_integration.php:15
+msgid "Here are the <a href=\"http://www.keywordrush.com/res/ae_supported_shops.txt\">full list</a> of Affiliate Egg supported shops."
+msgstr ""
+
+#: application/admin/views/ae_integration.php:19
 msgid "For first step make next actions:"
 msgstr ""
 
-#: application/admin/views/ae_integration.php:17
+#: application/admin/views/ae_integration.php:21
 msgid "Set and activate <a href=\"www.keywordrush.com/en/affiliateegg\">Affiliate Egg</a>"
 msgstr ""
 
-#: application/admin/views/ae_integration.php:18
+#: application/admin/views/ae_integration.php:22
 msgid "Version of Affiliate Egg must be great than"
 msgstr ""
 
@@ -851,67 +897,75 @@ msgstr ""
 msgid "Not found..."
 msgstr ""
 
-#: application/admin/views/prefill.php:15
+#: application/admin/views/prefill.php:14
 msgid "This extension will fill module's data for all existed posts."
 msgstr ""
 
-#: application/admin/views/prefill.php:16
+#: application/admin/views/prefill.php:15
 msgid "All existing data and keywords will not be erased or overwritten."
 msgstr ""
 
-#: application/admin/views/prefill.php:23
+#: application/admin/views/prefill.php:19
 msgid "Add data for module"
 msgstr ""
 
-#: application/admin/views/prefill.php:33
+#: application/admin/views/prefill.php:29
 msgid "Keyword source"
 msgstr ""
 
-#: application/admin/views/prefill.php:36
+#: application/admin/views/prefill.php:32
 msgid "Calculate as base of the density of keywords inside post"
 msgstr ""
 
-#: application/admin/views/prefill.php:37
+#: application/admin/views/prefill.php:33
 msgid "Title for post"
 msgstr ""
 
-#: application/admin/views/prefill.php:38
+#: application/admin/views/prefill.php:34
 msgid "Post tags"
 msgstr ""
 
-#: application/admin/views/prefill.php:40
+#: application/admin/views/prefill.php:36
 msgid "Copy from"
 msgstr ""
 
-#: application/admin/views/prefill.php:47
+#: application/admin/views/prefill.php:43
 msgid "Autoupdate"
 msgstr ""
 
-#: application/admin/views/prefill.php:49
+#: application/admin/views/prefill.php:45
 msgid "Add Keyword for the automatic update"
 msgstr ""
 
-#: application/admin/views/prefill.php:50
+#: application/admin/views/prefill.php:46
 msgid "Only for those modules, which have autoupdate function."
 msgstr ""
 
-#: application/admin/views/prefill.php:55
+#: application/admin/views/prefill.php:51
 msgid "Number of words"
 msgstr ""
 
-#: application/admin/views/prefill.php:62
+#: application/admin/views/prefill.php:58
 msgid "Maximum words for one search query."
 msgstr ""
 
-#: application/admin/views/prefill.php:73
+#: application/admin/views/prefill.php:63
+msgid "\"Minus\" words"
+msgstr ""
+
+#: application/admin/views/prefill.php:66
+msgid "Remove these words from keyword. You can set several minus words/phrases with commas."
+msgstr ""
+
+#: application/admin/views/prefill.php:76
 msgid "Start"
 msgstr ""
 
-#: application/admin/views/prefill.php:74
+#: application/admin/views/prefill.php:77
 msgid "Run again"
 msgstr ""
 
-#: application/admin/views/prefill.php:75
+#: application/admin/views/prefill.php:78
 msgid "Stop"
 msgstr ""
 
@@ -1049,43 +1103,43 @@ msgstr ""
 msgid "Make links with local 301 redirect"
 msgstr ""
 
-#: application/components/TemplateManager.php:83
+#: application/components/TemplateManager.php:84
 msgid "[user]"
 msgstr ""
 
-#: application/models/AutoblogModel.php:69
+#: application/models/AutoblogModel.php:71
 msgid "Date of creation"
 msgstr ""
 
-#: application/models/AutoblogModel.php:70
+#: application/models/AutoblogModel.php:72
 msgid "Last work"
 msgstr ""
 
-#: application/models/AutoblogModel.php:71
+#: application/models/AutoblogModel.php:73
 msgid "Status"
 msgstr ""
 
-#: application/models/AutoblogModel.php:72
+#: application/models/AutoblogModel.php:74
 msgid "Total posts"
 msgstr ""
 
-#: application/models/AutoblogModel.php:73
+#: application/models/AutoblogModel.php:75
 msgid "Last error"
 msgstr ""
 
-#: application/models/AutoblogModel.php:198
+#: application/models/AutoblogModel.php:200
 msgid "Required module %s will not run. The module is not configured or deleted."
 msgstr ""
 
-#: application/models/AutoblogModel.php:259
+#: application/models/AutoblogModel.php:260
 msgid "Data was not found for required module %s."
 msgstr ""
 
-#: application/models/AutoblogModel.php:266
+#: application/models/AutoblogModel.php:267
 msgid "It does not reach the desired amount of data. Minimum required modules: %d."
 msgstr ""
 
-#: application/models/AutoblogModel.php:309
+#: application/models/AutoblogModel.php:319
 msgid "Post can't be created. Unknown error."
 msgstr ""
 
@@ -1112,7 +1166,7 @@ msgstr ""
 #: application/modules/CjLinks/CjLinksConfig.php:50
 #: application/modules/CjProducts/CjProductsConfig.php:50
 #: application/modules/Clickbank/ClickbankConfig.php:35
-#: application/modules/Ebay/EbayConfig.php:87
+#: application/modules/Ebay/EbayConfig.php:97
 #: application/modules/Flickr/FlickrConfig.php:35
 #: application/modules/Flipkart/FlipkartConfig.php:50
 #: application/modules/Freebase/FreebaseConfig.php:35
@@ -1126,10 +1180,11 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:94
 #: application/modules/Ozon/OzonConfig.php:40
 #: application/modules/PayTM/PayTMConfig.php:30
+#: application/modules/Pepperjam/PepperjamConfig.php:56
 #: application/modules/Pixabay/PixabayConfig.php:35
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:37
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:47
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:63
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:36
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:46
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:62
 #: application/modules/RssFetcher/RssFetcherConfig.php:35
 #: application/modules/Shareasale/ShareasaleConfig.php:65
 #: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:35
@@ -1153,7 +1208,7 @@ msgstr ""
 #: application/modules/CjLinks/CjLinksConfig.php:51
 #: application/modules/CjProducts/CjProductsConfig.php:51
 #: application/modules/Clickbank/ClickbankConfig.php:36
-#: application/modules/Ebay/EbayConfig.php:88
+#: application/modules/Ebay/EbayConfig.php:98
 #: application/modules/Flipkart/FlipkartConfig.php:51
 #: application/modules/GdeSlon/GdeSlonConfig.php:46
 #: application/modules/Impactradius/ImpactradiusConfig.php:49
@@ -1161,6 +1216,7 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:95
 #: application/modules/Ozon/OzonConfig.php:41
 #: application/modules/PayTM/PayTMConfig.php:31
+#: application/modules/Pepperjam/PepperjamConfig.php:57
 #: application/modules/Shareasale/ShareasaleConfig.php:66
 #: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:36
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:36
@@ -1192,7 +1248,7 @@ msgstr ""
 #: application/modules/CjLinks/CjLinksConfig.php:61
 #: application/modules/CjProducts/CjProductsConfig.php:61
 #: application/modules/Clickbank/ClickbankConfig.php:51
-#: application/modules/Ebay/EbayConfig.php:103
+#: application/modules/Ebay/EbayConfig.php:113
 #: application/modules/Flipkart/FlipkartConfig.php:66
 #: application/modules/GdeSlon/GdeSlonConfig.php:61
 #: application/modules/Impactradius/ImpactradiusConfig.php:63
@@ -1200,6 +1256,7 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:110
 #: application/modules/Ozon/OzonConfig.php:51
 #: application/modules/PayTM/PayTMConfig.php:41
+#: application/modules/Pepperjam/PepperjamConfig.php:71
 #: application/modules/Shareasale/ShareasaleConfig.php:76
 #: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:46
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:46
@@ -1219,7 +1276,7 @@ msgstr ""
 #: application/modules/CjLinks/CjLinksConfig.php:62
 #: application/modules/CjProducts/CjProductsConfig.php:62
 #: application/modules/Clickbank/ClickbankConfig.php:52
-#: application/modules/Ebay/EbayConfig.php:104
+#: application/modules/Ebay/EbayConfig.php:114
 #: application/modules/Flipkart/FlipkartConfig.php:67
 #: application/modules/GdeSlon/GdeSlonConfig.php:62
 #: application/modules/Impactradius/ImpactradiusConfig.php:64
@@ -1227,6 +1284,7 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:111
 #: application/modules/Ozon/OzonConfig.php:52
 #: application/modules/PayTM/PayTMConfig.php:42
+#: application/modules/Pepperjam/PepperjamConfig.php:72
 #: application/modules/Shareasale/ShareasaleConfig.php:77
 #: application/modules/TradedoublerCoupons/TradedoublerCouponsConfig.php:47
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:47
@@ -1235,6 +1293,14 @@ msgid "Number of results for automatic updates and autoblogging."
 msgstr ""
 
 #: application/modules/AE/AEConfig.php:62
+msgid "Reviews as post comments"
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:63
+msgid "Save user reviews as post comments."
+msgstr ""
+
+#: application/modules/AE/AEConfig.php:69
 #: application/modules/AdmitadProducts/AdmitadProductsConfig.php:115
 #: application/modules/Affiliatewindow/AffiliatewindowConfig.php:128
 #: application/modules/AffilinetProducts/AffilinetProductsConfig.php:165
@@ -1243,7 +1309,7 @@ msgstr ""
 #: application/modules/BingImages/BingImagesConfig.php:202
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:215
 #: application/modules/CjProducts/CjProductsConfig.php:216
-#: application/modules/Ebay/EbayConfig.php:334
+#: application/modules/Ebay/EbayConfig.php:344
 #: application/modules/Flickr/FlickrConfig.php:104
 #: application/modules/Flipkart/FlipkartConfig.php:82
 #: application/modules/Freebase/FreebaseConfig.php:67
@@ -1258,6 +1324,7 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:163
 #: application/modules/Ozon/OzonConfig.php:178
 #: application/modules/PayTM/PayTMConfig.php:103
+#: application/modules/Pepperjam/PepperjamConfig.php:140
 #: application/modules/Pixabay/PixabayConfig.php:165
 #: application/modules/Shareasale/ShareasaleConfig.php:107
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:157
@@ -1267,7 +1334,7 @@ msgstr ""
 msgid "Save images"
 msgstr ""
 
-#: application/modules/AE/AEConfig.php:63
+#: application/modules/AE/AEConfig.php:70
 #: application/modules/AdmitadProducts/AdmitadProductsConfig.php:116
 #: application/modules/Affiliatewindow/AffiliatewindowConfig.php:129
 #: application/modules/AffilinetProducts/AffilinetProductsConfig.php:166
@@ -1276,7 +1343,7 @@ msgstr ""
 #: application/modules/BingImages/BingImagesConfig.php:203
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:216
 #: application/modules/CjProducts/CjProductsConfig.php:217
-#: application/modules/Ebay/EbayConfig.php:335
+#: application/modules/Ebay/EbayConfig.php:345
 #: application/modules/Flickr/FlickrConfig.php:105
 #: application/modules/Flipkart/FlipkartConfig.php:83
 #: application/modules/Freebase/FreebaseConfig.php:68
@@ -1291,6 +1358,7 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:164
 #: application/modules/Ozon/OzonConfig.php:179
 #: application/modules/PayTM/PayTMConfig.php:104
+#: application/modules/Pepperjam/PepperjamConfig.php:141
 #: application/modules/Shareasale/ShareasaleConfig.php:108
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:158
 #: application/modules/Twitter/TwitterConfig.php:126
@@ -1299,7 +1367,7 @@ msgstr ""
 msgid "Save images on server"
 msgstr ""
 
-#: application/modules/AE/AEModule.php:38
+#: application/modules/AE/AEModule.php:39
 msgid "Affiliate Egg parser for %s"
 msgstr ""
 
@@ -1378,7 +1446,7 @@ msgstr ""
 #: application/modules/Amazon/AmazonConfig.php:165
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:118
 #: application/modules/CjProducts/CjProductsConfig.php:96
-#: application/modules/Ebay/EbayConfig.php:281
+#: application/modules/Ebay/EbayConfig.php:291
 #: application/modules/Impactradius/ImpactradiusConfig.php:84
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:136
 #: application/modules/PayTM/PayTMConfig.php:69
@@ -1392,7 +1460,7 @@ msgstr ""
 #: application/modules/Amazon/AmazonConfig.php:175
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:128
 #: application/modules/CjProducts/CjProductsConfig.php:106
-#: application/modules/Ebay/EbayConfig.php:271
+#: application/modules/Ebay/EbayConfig.php:281
 #: application/modules/Impactradius/ImpactradiusConfig.php:94
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:146
 #: application/modules/PayTM/PayTMConfig.php:79
@@ -1419,6 +1487,7 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:170
 #: application/modules/Ozon/OzonConfig.php:185
 #: application/modules/PayTM/PayTMConfig.php:110
+#: application/modules/Pepperjam/PepperjamConfig.php:147
 #: application/modules/Shareasale/ShareasaleConfig.php:114
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:164
 #: application/modules/VkNews/VkNewsConfig.php:49
@@ -1445,6 +1514,7 @@ msgstr ""
 #: application/modules/Optimisemedia/OptimisemediaConfig.php:171
 #: application/modules/Ozon/OzonConfig.php:186
 #: application/modules/PayTM/PayTMConfig.php:111
+#: application/modules/Pepperjam/PepperjamConfig.php:148
 #: application/modules/Shareasale/ShareasaleConfig.php:115
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:165
 #: application/modules/VkNews/VkNewsConfig.php:50
@@ -1491,7 +1561,7 @@ msgstr ""
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:178
 #: application/modules/CjProducts/CjProductsConfig.php:156
 #: application/modules/Clickbank/ClickbankConfig.php:100
-#: application/modules/Ebay/EbayConfig.php:119
+#: application/modules/Ebay/EbayConfig.php:129
 #: application/modules/Flickr/FlickrConfig.php:57
 #: application/modules/GdeSlon/GdeSlonConfig.php:77
 #: application/modules/GoogleBooks/GoogleBooksConfig.php:85
@@ -1584,6 +1654,7 @@ msgid "Limit the search of goods by this category."
 msgstr ""
 
 #: application/modules/Aliexpress/AliexpressConfig.php:92
+#: application/modules/Pepperjam/PepperjamConfig.php:100
 #: application/modules/TradedoublerProducts/TradedoublerProductsConfig.php:61
 msgid "All categories"
 msgstr ""
@@ -1860,12 +1931,12 @@ msgid "Text only"
 msgstr ""
 
 #: application/modules/Amazon/AmazonConfig.php:272
-#: application/modules/Ebay/EbayConfig.php:323
+#: application/modules/Ebay/EbayConfig.php:333
 msgid "Size of description"
 msgstr ""
 
 #: application/modules/Amazon/AmazonConfig.php:273
-#: application/modules/Ebay/EbayConfig.php:324
+#: application/modules/Ebay/EbayConfig.php:334
 msgid "The maximum size of the item description. 0 - do not cut."
 msgstr ""
 
@@ -1954,7 +2025,7 @@ msgid "Key access to Bing Search API. You can get <a href=\"https://www.microsof
 msgstr ""
 
 #: application/modules/BingImages/BingImagesConfig.php:22
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:23
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:22
 msgid "You can set several Subscription Keys with commas."
 msgstr ""
 
@@ -1964,13 +2035,19 @@ msgstr ""
 
 #: application/modules/BingImages/BingImagesConfig.php:37
 #: application/modules/Pixabay/PixabayConfig.php:36
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:38
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:37
 msgid "Number of results for a single query."
 msgstr ""
 
 #: application/modules/BingImages/BingImagesConfig.php:46
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:47
-msgid "The field field \"%s\" can not be more than %d."
+#: application/modules/BingImages/BingImagesConfig.php:62
+#: application/modules/Impactradius/ImpactradiusConfig.php:58
+#: application/modules/Impactradius/ImpactradiusConfig.php:73
+#: application/modules/Pepperjam/PepperjamConfig.php:66
+#: application/modules/Pepperjam/PepperjamConfig.php:81
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:46
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:62
+msgid "The field \"%s\" can not be more than %d."
 msgstr ""
 
 #: application/modules/BingImages/BingImagesConfig.php:52
@@ -1981,7 +2058,7 @@ msgstr ""
 #: application/modules/GoogleNews/GoogleNewsConfig.php:36
 #: application/modules/Market/MarketConfig.php:64
 #: application/modules/Pixabay/PixabayConfig.php:51
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:53
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:52
 #: application/modules/RssFetcher/RssFetcherConfig.php:51
 #: application/modules/Twitter/TwitterConfig.php:96
 #: application/modules/VkNews/VkNewsConfig.php:31
@@ -1997,7 +2074,7 @@ msgstr ""
 #: application/modules/GoogleNews/GoogleNewsConfig.php:37
 #: application/modules/Market/MarketConfig.php:65
 #: application/modules/Pixabay/PixabayConfig.php:52
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:54
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:53
 #: application/modules/RssFetcher/RssFetcherConfig.php:52
 #: application/modules/Twitter/TwitterConfig.php:97
 #: application/modules/VkNews/VkNewsConfig.php:32
@@ -2005,25 +2082,18 @@ msgstr ""
 msgid "Number of results for autoblogging."
 msgstr ""
 
-#: application/modules/BingImages/BingImagesConfig.php:62
-#: application/modules/Impactradius/ImpactradiusConfig.php:58
-#: application/modules/Impactradius/ImpactradiusConfig.php:73
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:63
-msgid "The field \"%s\" can not be more than %d."
-msgstr ""
-
 #: application/modules/BingImages/BingImagesConfig.php:68
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:69
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:68
 msgid "Market code"
 msgstr ""
 
 #: application/modules/BingImages/BingImagesConfig.php:69
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:70
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:69
 msgid "The market where the results come from. The market must be in the form [language code]-[country code]."
 msgstr ""
 
 #: application/modules/BingImages/BingImagesConfig.php:71
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:72
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:71
 msgid "(unspecified)"
 msgstr ""
 
@@ -2322,13 +2392,13 @@ msgid "The field \"Remote_auth\" can not be empty."
 msgstr ""
 
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:45
-#: application/modules/Ebay/EbayConfig.php:97
+#: application/modules/Ebay/EbayConfig.php:107
 #: application/modules/GdeSlon/GdeSlonConfig.php:55
 msgid "Field \"Results\" can not be more than 100."
 msgstr ""
 
 #: application/modules/CityadsProducts/CityadsProductsConfig.php:61
-#: application/modules/Ebay/EbayConfig.php:113
+#: application/modules/Ebay/EbayConfig.php:123
 #: application/modules/GdeSlon/GdeSlonConfig.php:71
 msgid "Field \"Results for autoupdating\" can not be more than 100."
 msgstr ""
@@ -2554,151 +2624,161 @@ msgid "Set this if you want to direct traffic over <a href=\"http://www.keywordr
 msgstr ""
 
 #: application/modules/Ebay/EbayConfig.php:79
-msgid "Locale"
+#: application/modules/Offer/views/metabox_module.php:71
+#: application/modules/Ozon/OzonConfig.php:30
+msgid "Deeplink"
 msgstr ""
 
 #: application/modules/Ebay/EbayConfig.php:80
+msgid "Set Deeplink for one of CPA-networks. You can use parameter as <em>partner_id=12345</em>, or make link as template, for example, <em>{{url}}/partner_id-12345/</em>. Another example is   https://ad.admitad.com/g/g8f0qmlavfa/?ulp={{url_encoded}}. {{url}} and {{url_encoded}} - will be replaced by product url. If product url is after affiliate url - use {{url_encoded}}"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:89
+msgid "Locale"
+msgstr ""
+
+#: application/modules/Ebay/EbayConfig.php:90
 msgid "Local site of Ebay. For each local site you must have separate registration in affiliate program."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:127
+#: application/modules/Ebay/EbayConfig.php:137
 msgid "Ending time"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:128
+#: application/modules/Ebay/EbayConfig.php:138
 msgid "Lifetime of lots in seconds. Only lots which will be closed not later than the specified time will be chosen."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:138
+#: application/modules/Ebay/EbayConfig.php:148
 msgid "Id of category for searching. Id of categories you can find in URL of category on <a href=\"http://www.ebay.com/sch/allcategories/all-categories\">this page</a>. You can set maximum 3 categories separated with comma. Example, \"2195,2218,20094\"."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:147
+#: application/modules/Ebay/EbayConfig.php:157
 msgid "Search in description"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:148
+#: application/modules/Ebay/EbayConfig.php:158
 msgid "Include description of product in searching. This will take more time, than searching only by title."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:154
+#: application/modules/Ebay/EbayConfig.php:164
 #: application/modules/Linkshare/LinkshareConfig.php:67
 msgid "Searching logic"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:162
+#: application/modules/Ebay/EbayConfig.php:172
 msgid "Product condition"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:170
+#: application/modules/Ebay/EbayConfig.php:180
 msgid "Exclude category"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:171
+#: application/modules/Ebay/EbayConfig.php:181
 msgid "Id of category, which must be excluded while searching. Id of categories you can find in URL of category on <a href=\"http://www.ebay.com/sch/allcategories/all-categories\">this page</a>. You can set maximum 25 categories separated with comma. Example, \"2195,2218,20094\"."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:180
+#: application/modules/Ebay/EbayConfig.php:190
 msgid "Minimal seller rating"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:188
+#: application/modules/Ebay/EbayConfig.php:198
 msgid "Best Offer"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:189
+#: application/modules/Ebay/EbayConfig.php:199
 msgid "Only  \"Best Offer\" lots."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:195
+#: application/modules/Ebay/EbayConfig.php:205
 msgid "Featured"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:196
+#: application/modules/Ebay/EbayConfig.php:206
 msgid "Only \"Featured\" lots."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:202
+#: application/modules/Ebay/EbayConfig.php:212
 msgid "Free Shipping"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:203
+#: application/modules/Ebay/EbayConfig.php:213
 msgid "Only lots with free delivery"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:209
+#: application/modules/Ebay/EbayConfig.php:219
 msgid "Local Pickup"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:210
+#: application/modules/Ebay/EbayConfig.php:220
 msgid "Only lots with \"local pickup\" option."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:216
+#: application/modules/Ebay/EbayConfig.php:226
 msgid "Get It Fast"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:217
+#: application/modules/Ebay/EbayConfig.php:227
 msgid "Only \"Get It Fast\" lots."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:223
+#: application/modules/Ebay/EbayConfig.php:233
 msgid "Top-rated seller"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:224
+#: application/modules/Ebay/EbayConfig.php:234
 msgid "Only products from Top-rated \"Top-rated\" vendors."
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:230
+#: application/modules/Ebay/EbayConfig.php:240
 msgid "Hide dublicates"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:231
+#: application/modules/Ebay/EbayConfig.php:241
 msgid "Filter similar lots"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:237
+#: application/modules/Ebay/EbayConfig.php:247
 msgid "Type of auction"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:251
+#: application/modules/Ebay/EbayConfig.php:261
 msgid "Maximum bids"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:252
+#: application/modules/Ebay/EbayConfig.php:262
 msgid "Example, 10"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:261
+#: application/modules/Ebay/EbayConfig.php:271
 msgid "Minimum bids"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:262
+#: application/modules/Ebay/EbayConfig.php:272
 msgid "Example, 3"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:272
+#: application/modules/Ebay/EbayConfig.php:282
 msgid "Example, 300.50"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:282
+#: application/modules/Ebay/EbayConfig.php:292
 msgid "Example, 10.98"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:291
+#: application/modules/Ebay/EbayConfig.php:301
 msgid "Payment options"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:316
+#: application/modules/Ebay/EbayConfig.php:326
 msgid "Get description"
 msgstr ""
 
-#: application/modules/Ebay/EbayConfig.php:317
+#: application/modules/Ebay/EbayConfig.php:327
 msgid "Get description of product. This takes more requests for Ebay API and slow down searching. Description will be requested only for 20 first products for one searching"
 msgstr ""
 
-#: application/modules/Ebay/EbayModule.php:30
+#: application/modules/Ebay/EbayModule.php:31
 msgid "Adds Ebay products. Supports different local sites. Several ways of moneymaking."
 msgstr ""
 
@@ -2892,7 +2972,7 @@ msgid "Numeric or alphabet identificator for segment data about traffic. "
 msgstr ""
 
 #: application/modules/GdeSlon/GdeSlonConfig.php:82
-#: application/modules/Offer/views/metabox_module.php:63
+#: application/modules/Offer/views/metabox_module.php:77
 msgid "Price"
 msgstr ""
 
@@ -3038,6 +3118,7 @@ msgstr ""
 
 #: application/modules/Impactradius/ImpactradiusConfig.php:29
 #: application/modules/Impactradius/ImpactradiusConfig.php:43
+#: application/modules/Pepperjam/PepperjamConfig.php:30
 msgid "The field \"%s\" can not be empty."
 msgstr ""
 
@@ -3062,6 +3143,7 @@ msgid "The product category. A list of valid categories can be found here <a hre
 msgstr ""
 
 #: application/modules/Impactradius/ImpactradiusModule.php:27
+#: application/modules/Pepperjam/PepperjamModule.php:27
 msgid "Adds products from %s."
 msgstr ""
 
@@ -3189,24 +3271,35 @@ msgstr ""
 msgid "Add offer"
 msgstr ""
 
-#: application/modules/Offer/views/metabox_module.php:54
-msgid "Offer URL"
+#: application/modules/Offer/views/metabox_module.php:53
+#: application/modules/Offer/views/metabox_module.php:68
+msgid "required"
 msgstr ""
 
 #: application/modules/Offer/views/metabox_module.php:57
-#: application/modules/Ozon/OzonConfig.php:30
-msgid "Deeplink"
+#: application/modules/Offer/views/metabox_module.php:58
+#: application/modules/Offer/views/metabox_module.php:59
+#: application/modules/Offer/views/metabox_module.php:60
+#: application/modules/Offer/views/metabox_module.php:61
+#: application/modules/Ozon/OzonConfig.php:172
+#: application/modules/Youtube/YoutubeConfig.php:62
+#: application/modules/Youtube/views/search_panel.php:9
+msgid "Rating"
 msgstr ""
 
-#: application/modules/Offer/views/metabox_module.php:60
+#: application/modules/Offer/views/metabox_module.php:68
+msgid "Offer URL"
+msgstr ""
+
+#: application/modules/Offer/views/metabox_module.php:74
 msgid "Image URL"
 msgstr ""
 
-#: application/modules/Offer/views/metabox_module.php:81
+#: application/modules/Offer/views/metabox_module.php:87
 msgid "XPath Price Selector"
 msgstr ""
 
-#: application/modules/Offer/views/metabox_module.php:91
+#: application/modules/Offer/views/metabox_module.php:97
 msgid "Last update: "
 msgstr ""
 
@@ -3389,12 +3482,6 @@ msgstr ""
 msgid "Date of publication"
 msgstr ""
 
-#: application/modules/Ozon/OzonConfig.php:172
-#: application/modules/Youtube/YoutubeConfig.php:62
-#: application/modules/Youtube/views/search_panel.php:9
-msgid "Rating"
-msgstr ""
-
 #: application/modules/Ozon/OzonModule.php:26
 msgid "Adds goods from OZON.ru."
 msgstr ""
@@ -3413,6 +3500,26 @@ msgstr ""
 
 #: application/modules/PayTM/PayTMModule.php:24
 msgid "Adds items from paytm.com"
+msgstr ""
+
+#: application/modules/Pepperjam/PepperjamConfig.php:22
+msgid "You can generate publisher API Key <a href=\"http://www.pepperjamnetwork.com/affiliate/api/\">here</a>."
+msgstr ""
+
+#: application/modules/Pepperjam/PepperjamConfig.php:37
+msgid "A single website id used for website tracking. Adding this will add this parameter to your tracking link."
+msgstr ""
+
+#: application/modules/Pepperjam/PepperjamConfig.php:47
+msgid "A single SID parameter used for publisher tracking. Adding this will add this parameter to your tracking link."
+msgstr ""
+
+#: application/modules/Pepperjam/PepperjamConfig.php:86
+msgid "Program ID"
+msgstr ""
+
+#: application/modules/Pepperjam/PepperjamConfig.php:87
+msgid "A comma-separated list of program ids to filter by."
 msgstr ""
 
 #: application/modules/Pixabay/PixabayConfig.php:21
@@ -3455,11 +3562,11 @@ msgstr ""
 msgid "Search photo with free license CC0 Public Domain on pixabay.com"
 msgstr ""
 
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:22
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:21
 msgid "Key access to Bing Autosuggest API. You can get <a href=\"https://www.microsoft.com/cognitive-services/en-us/subscriptions\">here</a>."
 msgstr ""
 
-#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:31
+#: application/modules/RelatedKeywords/RelatedKeywordsConfig.php:30
 msgid "The \"%\" can not be empty."
 msgstr ""
 
@@ -3683,7 +3790,7 @@ msgid "http://www.keywordrush.com/contentegg"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "Easily adding auto updating products from affiliate systems and additional content to posts."
+msgid "Easily adding auto updating products from affiliate systems and additional content to posts. [ATTENTION: before update PRO version of plugin, activate plugin!]"
 msgstr ""
 
 #. Author of the plugin/theme

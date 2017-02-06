@@ -1,69 +1,69 @@
 
-jQuery(document).ready(function($) {
+jQuery(document).ready(function ($) {
 
     jQuery('#cegg-parsers-tabs').tabs();
     jQuery("#sug_btn_group").buttonset();
     jQuery("#trend_google, #trend_goods").button();
     keywords_count();
-    
-    jQuery( "#tool_capitalise" ).button({
-      icons: {
-        primary: "ui-icon-triangle-1-n"
-      },
-      text: false
+
+    jQuery("#tool_capitalise").button({
+        icons: {
+            primary: "ui-icon-triangle-1-n"
+        },
+        text: false
     }).next().button({
-      icons: {
-        primary: "ui-icon-carat-1-n"
-      },
-      text: false
+        icons: {
+            primary: "ui-icon-carat-1-n"
+        },
+        text: false
     }).next().button({
-      icons: {
-        primary: "ui-icon-arrow-1-s"
-      },
-      text: false      
+        icons: {
+            primary: "ui-icon-arrow-1-s"
+        },
+        text: false
     }).next().button({
-      icons: {
-        primary: "ui-icon-minus"
-      },
-      text: false      
+        icons: {
+            primary: "ui-icon-minus"
+        },
+        text: false
     }).next().button({
-      icons: {
-        primary: "ui-icon-plus",
-      },
-      text: false      
+        icons: {
+            primary: "ui-icon-plus",
+        },
+        text: false
     }).next().button({
-      icons: {
-        primary: "ui-icon-closethick",
-      },
-      text: false      
-    });    
+        icons: {
+            primary: "ui-icon-closethick",
+        },
+        text: false
+    });
 
 
     /** Suggestion tool */
     var sug_parser = 'sug_google';
     //sug parser source
-    jQuery("#sug_btn_group input").click(function() {
+    jQuery("#sug_btn_group input").click(function () {
         sug_parser = jQuery(this).val();
         if (jQuery('#sug_query').val())
             suggest(jQuery('#sug_query').val(), sug_parser);
     });
-    jQuery('#sug_query').keyup(function() {
+    jQuery('#sug_query').keyup(function () {
         suggest(jQuery(this).val(), sug_parser);
     });
     //--------------------------------------
 
 
     //add buttons
-    jQuery('#add_selected').click(function() {
+    jQuery('#add_selected').click(function () {
         add_selected()
     });
 
-    jQuery('#add_all').click(function() {
+    jQuery('#add_all').click(function () {
         add_all();
     });
 
     // keywords count
-    jQuery('#keywords').keyup(function(e) {
+    jQuery('#keywords').keyup(function (e) {
         var code = e.which;
         if (code == 13) {
             keywords_count();
@@ -71,38 +71,38 @@ jQuery(document).ready(function($) {
     });
 
     //tools
-    jQuery('#tool_capitalise').click(function(event ) {
-        event.preventDefault();        
+    jQuery('#tool_capitalise').click(function (event) {
+        event.preventDefault();
         var keywords = jQuery('#keywords').val();
         jQuery('#keywords').val(keywords.capitalize());
     });
 
-    jQuery('#tool_sort').click(function(event) {
-        event.preventDefault();                
+    jQuery('#tool_sort').click(function (event) {
+        event.preventDefault();
         var keywords = jQuery('#keywords').val();
         jQuery('#keywords').val(SortWords(keywords));
     });
 
-    jQuery('#tool_delete').click(function(event) {
-        event.preventDefault();                        
+    jQuery('#tool_delete').click(function (event) {
+        event.preventDefault();
         jQuery('#keywords').val('');
         keywords_count();
     });
 
-    jQuery('#tool_add_minus').click(function(event) {
-        event.preventDefault();                        
+    jQuery('#tool_add_minus').click(function (event) {
+        event.preventDefault();
         var keywords = jQuery('#keywords').val();
         jQuery('#keywords').val(addMinus(keywords));
     });
 
-    jQuery('#tool_del_minus').click(function(event) {
-        event.preventDefault();                        
+    jQuery('#tool_del_minus').click(function (event) {
+        event.preventDefault();
         var keywords = jQuery('#keywords').val();
         jQuery('#keywords').val(delMinus(keywords));
     });
 
-    jQuery('#tool_upper_first').click(function(event) {
-        event.preventDefault();                        
+    jQuery('#tool_upper_first').click(function (event) {
+        event.preventDefault();
         var keywords = jQuery('#keywords').val();
         jQuery('#keywords').val(upperFirst(keywords));
     });
@@ -111,20 +111,20 @@ jQuery(document).ready(function($) {
     /**
      * Hot Trends
      */
-    jQuery("#trend_google").click(function() {
+    jQuery("#trend_google").click(function () {
         jQuery("#trend_google").prop("disabled", true).addClass("ui-state-disabled");
         trend_google();
         jQuery('#trend_google').removeAttr('disabled').removeClass('ui-state-disabled');
     });
 
-    jQuery("#trend_goods").click(function() {
+    jQuery("#trend_goods").click(function () {
         jQuery("#trend_goods").prop("disabled", true).addClass("ui-state-disabled");
         amazon_trends();
         jQuery('#trend_goods').removeAttr('disabled').removeClass('ui-state-disabled');
     });
 
 
-    jQuery("#trend_keywords,#sug_keywords,#goods_keywords").change(function() {
+    jQuery("#trend_keywords,#sug_keywords,#goods_keywords").change(function () {
         var opt = jQuery(this).children(":selected");
         add_keyword(opt.val());
         opt.remove();
@@ -137,11 +137,11 @@ function suggest(query, sug_parser) {
 
 function sug_yandex(query) {
     var url = 'https://suggest.yandex.ru/suggest-ya.cgi?callback=?&v=4&part=' + encodeURIComponent(query);
-    jQuery.getJSON(url, function() {
+    jQuery.getJSON(url, function () {
     })
-            .done(function(data) {
+            .done(function (data) {
                 var keywords = '';
-                jQuery.each(data[1], function(i, keyword) {
+                jQuery.each(data[1], function (i, keyword) {
                     keywords = keywords + '<option>' + keyword + '</option>';
                 });
                 jQuery('#sug_keywords').html(keywords);
@@ -151,11 +151,11 @@ function sug_yandex(query) {
 function sug_market(query) {
 
     var url = 'http://suggest.market.yandex.ru/suggest-market?callback=?&part=' + encodeURIComponent(query);
-    jQuery.getJSON(url, function() {
+    jQuery.getJSON(url, function () {
     })
-            .done(function(data) {
+            .done(function (data) {
                 var keywords = '';
-                jQuery.each(data[1], function(i, keyword) {
+                jQuery.each(data[1], function (i, keyword) {
                     keywords = keywords + '<option>' + keyword + '</option>';
                 });
                 jQuery('#sug_keywords').html(keywords);
@@ -168,10 +168,10 @@ function sug_amazon(query) {
         dataType: 'jsonp',
         cache: true
     });
-    request.done(function(data) {
+    request.done(function (data) {
         jQuery('#sug_keywords').empty();
         var keywords = '';
-        jQuery.each(data[1], function(i, keyword) {
+        jQuery.each(data[1], function (i, keyword) {
             keywords = keywords + '<option>' + keyword + '</option>';
         });
         jQuery('#sug_keywords').html(keywords);
@@ -186,10 +186,10 @@ function sug_google(query) {
         dataType: "jsonp",
         cache: true
     });
-    request.done(function(data) {
+    request.done(function (data) {
         jQuery('#sug_keywords').empty();
         var keywords = '';
-        jQuery.each(data[1], function(i, keyword) {
+        jQuery.each(data[1], function (i, keyword) {
             keywords = keywords + '<option>' + keyword[0] + '</option>';
         });
         jQuery('#sug_keywords').html(keywords);
@@ -198,7 +198,7 @@ function sug_google(query) {
 
 
 // ebay hardcoded callback
-jQuery.namespace = function() {
+jQuery.namespace = function () {
     var a = arguments, o = null, i, j, d;
     for (i = 0; i < a.length; i = i + 1) {
         d = a[i].split(".");
@@ -211,7 +211,7 @@ jQuery.namespace = function() {
     return o;
 };
 vjoObj = jQuery.namespace("vjo.darwin.domain.finding.autofill.AutoFill");
-vjoObj._do = function(data) {
+vjoObj._do = function (data) {
     sug_ebay_callback(data);
 }
 
@@ -222,14 +222,14 @@ function sug_ebay(query) {
         dataType: "jsonp",
         cache: true
     });
-    request.done(function(data) {
+    request.done(function (data) {
     });
 }
 
 function sug_ebay_callback(data) {
     jQuery('#sug_keywords').empty();
     var keywords;
-    jQuery.each(data.res.sug, function(i, keyword) {
+    jQuery.each(data.res.sug, function (i, keyword) {
         keywords = keywords + '<option>' + keyword + '</option>';
     });
     jQuery('#sug_keywords').html(keywords);
@@ -245,15 +245,15 @@ function keywords_uniq() {
     // delete duplicates
     var arr = jQuery("#keywords").val().split("\n");
     var arrDistinct = new Array();
-    jQuery(arr).each(function(index, item) {
+    jQuery(arr).each(function (index, item) {
         if (jQuery.inArray(item, arrDistinct) == -1)
             arrDistinct.push(item);
     });
     jQuery("#keywords").val(arrDistinct.join("\n"));
 }
 
-String.prototype.capitalize = function() {
-    return this.replace(/(^|\s)([a-zа-я])/g, function(m, p1, p2) {
+String.prototype.capitalize = function () {
+    return this.replace(/(^|\s)([a-zа-я])/g, function (m, p1, p2) {
         return p1 + p2.toUpperCase();
     });
 };
@@ -280,7 +280,7 @@ function delMinus(words) {
 
 function upperFirst(words) {
     words = words.toLowerCase();
-    return words.replace(/(^|\n)(.)/g, function(m, p1, p2, offset, s) {
+    return words.replace(/(^|\n)(.)/g, function (m, p1, p2, offset, s) {
         return m.toUpperCase();
     });
 }
@@ -320,51 +320,41 @@ function trend_google() {
     else
         zone = 'com';
 
-    var url = 'https://ajax.googleapis.com/ajax/services/feed/load?callback=?&v=1.0&scoring=h&num=100&q=http%3A%2F%2Fwww.google.' + zone + '%2Ftrends%2Fhottrends%2Fatom%2Fhourly';
-    jQuery.getJSON(url, function() {
-    })
-            .done(function(data) {
-                var keywords = {};
-                var keyword;
-                jQuery.each(data.responseData.feed.entries, function(i, row) {
-                    var as = jQuery(row.content).find('a');
-                    as.each(function() {
-                        var keyword = jQuery(this).text();
-                        if (!keywords.hasOwnProperty(keyword)) {
-                            keywords[keyword] = keyword;
-                            jQuery('#trend_keywords')
-                                    .append(jQuery("<option></option>")
-                                            .attr("value", keyword)
-                                            .text(keyword));
-                        }
-                    });
-                });
-            });
+    var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'https%3A%2F%2Fwww.google." + zone + "%2Ftrends%2Fhottrends%2Fatom%2Fhourly'%20and%20xpath%3D'.%2F%2Fa'&format=json&diagnostics=true&callback=";
+    jQuery.getJSON(url, function () {
+    }).done(function (data) {
+        var keywords = {};
+        var keyword;
+        jQuery.each(data.query.results.a, function (i, row) {
+            var keyword = row.content;
+            keywords[keyword] = keyword;
+            jQuery('#trend_keywords')
+                    .append(jQuery("<option></option>")
+                            .attr("value", keyword)
+                            .text(keyword));
+        });
+    });
 }
 function amazon_trends() {
 
     var category_id = jQuery('#amazon_categ').val();
     var amazon_section = jQuery('#amazon_section').val();
-    var url = 'http://www.amazon.com/gp/rss/' + amazon_section + '/' + category_id + '/';
-    var gurl = 'https://ajax.googleapis.com/ajax/services/feed/load?callback=?&v=1.0&num=50&q=';
-    gurl += encodeURI(url);
+    var aurl = 'http://www.amazon.com/gp/rss/' + amazon_section + '/' + category_id + '/';
+    var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20html%20where%20url%3D'" + encodeURI(aurl) + "%2F'%20and%20xpath%3D'.%2F%2Fspan%2Fa'&format=json&callback=";
     jQuery('#goods_keywords').empty();
-    jQuery.getJSON(gurl, function() {
-    })
-            .done(function(data) {
-                var keyword;
-                jQuery.each(data.responseData.feed.entries, function(i, row) {
-                    keyword = row.title;
-                    i++;
-                    keyword = keyword.replace('#' + i + ': ', "");
-                    jQuery.trim(keyword);
-                    jQuery('#goods_keywords')
-                            .append(jQuery("<option></option>")
-                                    .attr("value", keyword)
-                                    .text(keyword));
-                });
-            });
-
+    jQuery.getJSON(url, function () {
+    }).done(function (data) {
+        var keywords = {};
+        var keyword;
+        jQuery.each(data.query.results.a, function (i, row) {
+            var keyword = row.content;
+            keywords[keyword] = keyword;
+            jQuery('#goods_keywords')
+                    .append(jQuery("<option></option>")
+                            .attr("value", keyword)
+                            .text(keyword));
+        });
+    });
 }
 
 function add_keyword(keyword) {

@@ -90,12 +90,14 @@ function prefill() {
     var module_id = jQuery("#module_id").val();
     var keyword_source = jQuery("#keyword_source").val();
     var keyword_count = jQuery("#keyword_count").val();
+    var minus_words = jQuery("#minus_words").val();
     var autoupdate = jQuery("#autoupdate").is(':checked');
 
     prefill_url += '&module_id=' + module_id;
     prefill_url += '&keyword_source=' + keyword_source;
     prefill_url += '&keyword_count=' + keyword_count;
     prefill_url += '&autoupdate=' + autoupdate;
+    prefill_url += '&minus_words=' + minus_words;
     prefill_url += '&nonce=' + content_egg_prefill.nonce;
 
     cegg_xxx = jQuery.ajax({

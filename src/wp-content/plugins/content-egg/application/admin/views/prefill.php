@@ -10,15 +10,11 @@ use ContentEgg\application\components\ModuleManager;
         <h2>
             <?php _e('Fill', 'content-egg'); ?>
         </h2>
-
         <p>
             <?php _e('This extension will fill module\'s data for all existed posts.', 'content-egg'); ?>
             <?php _e('All existing data and keywords will not be erased or overwritten.', 'content-egg'); ?>
-
         </p>
-
         <table class="form-table">
-
             <tr>
                 <th scope="row"><label for="module_id"><?php _e('Add data for module', 'content-egg'); ?></label></th>
                 <td>
@@ -60,11 +56,18 @@ use ContentEgg\application\components\ModuleManager;
                         <?php endfor; ?>
                     </select>
                     <p class="description"><?php _e('Maximum words for one search query.', 'content-egg'); ?></p>
-
                 </td>
-            </tr>            
+            </tr>      
+            
+            <tr>
+                <th scope="row"><label for="minus_words"><?php _e('"Minus" words', 'content-egg'); ?></label></th>
+                <td>
+                    <input id="minus_words" type="text" class="regular-text">
+                    <p class="description"><?php _e('Remove these words from keyword. You can set several minus words/phrases with commas.', 'content-egg'); ?></p>
+                </td>
+            </tr>              
+            
         </table>        
-
 
         <div id="progressbar" name="progressbar"></div>
 

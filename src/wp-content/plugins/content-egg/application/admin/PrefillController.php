@@ -78,6 +78,9 @@ class PrefillController {
         $keyword_source = InputHelper::get('keyword_source');
         $autoupdate = (bool) InputHelper::get('autoupdate', false);
         $keyword_count = (int) InputHelper::get('keyword_count');
+        $minus_words = TextHelper::commaList(InputHelper::get('minus_words'));
+        if ($minus_words)
+            $minus_words = explode(',', $minus_words);
 
         $parser = ModuleManager::getInstance()->parserFactory($module_id);
         if (!$parser->isActive())
@@ -97,6 +100,12 @@ class PrefillController {
         }
 
         $keyword = $this->getKeyword($post_id, $keyword_source, $keyword_count);
+
+        if ($minus_words)
+        {
+            $keyword = trim(str_replace($minus_words, '', $keyword));
+            $keyword = preg_replace("/\s+/ui", ' ', $keyword);
+        }
 
         if (!$keyword)
             $this->printResult($log . ' - ' . __('Impossible to determine a keyword', 'content-egg'));

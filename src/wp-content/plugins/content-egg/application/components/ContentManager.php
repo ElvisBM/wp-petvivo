@@ -56,10 +56,10 @@ class ContentManager {
              * we need force data update because title or description can be edited manually or items price update
               if (!$data_changed)
               return;
-             * 
+             *
              */
         }
-        // Sanitize content for allowed HTML tags and more. 
+        // Sanitize content for allowed HTML tags and more.
         array_walk_recursive($data, array('self', 'sanitizeData'));
         $module = ModuleManager::getInstance()->factory($module_id);
         $data = $module->presavePrepare($data, $post_id);
@@ -297,6 +297,152 @@ class ContentManager {
     public static function object2Array($object)
     {
         return json_decode(json_encode($object), true);
+    }
+
+    public static function getNormalizedReviews($data)
+    {
+        $struct = array(
+            'summary' => '',
+            'comment' => '',
+            'rating' => '',
+            'name' => '',
+            'date' => '',
+            'pros' => '',
+            'cons' => '',
+            'review' => '',
+        );
+
+        $reviews = array();
+        foreach ($data as $item)
+        {
+            // AE modules
+            if (!empty($item['extra']['comments']))
+            {
+                foreach ($item['extra']['comments'] as $r)
+                {
+                    $review = $struct;
+                    $review['comment'] = $r['comment'];
+                    if (!empty($r['name']))
+                        $review['name'] = $r['name'];
+                    if (!empty($r['date']))
+                        $review['date'] = $r['date'];
+                    if (!empty($r['review']))
+                        $review['review'] = $r['review'];
+                    if (!empty($r['rating']))
+                        $review['rating'] = $r['rating'];
+                    if (!empty($r['pros']))
+                        $review['pros'] = $r['pros'];
+                    if (!empty($r['cons']))
+                        $review['cons'] = $r['cons'];
+                    $reviews[] = $review;
+                }
+            }
+            // Ozon
+            elseif (!empty($item['extra']['Reviews']))
+            {
+                foreach ($item['extra']['Reviews'] as $r)
+                {
+                    $review = $struct;
+                    $review['summary'] = $r->Title;
+                    $review['date'] = $r->Date;
+                    $review['rating'] = $r->Rate;
+                    $review['comment'] = $r->Comment;
+                    $review['name'] = $r->FIO;
+                    $reviews[] = $review;
+                }
+            }
+        }
+
+        foreach ($reviews as $i => $review)
+        {
+            if (!$review['comment'])
+            {
+                if ($review['review'])
+                    $review['comment'] = $review['review'];
+                if ($review['pros'])
+                    $review['comment'] .= "\r\n" . __('Pros:', 'affegg-tpl') . $review['pros'];
+                if ($review['cons'])
+                    $review['comment'] .= "\r\n" . __('Cons:', 'affegg-tpl') . $review['cons'];
+                $review['comment'] = trim($review['comment']);
+                $reviews[$i] = $review;
+            }
+        }
+        return $reviews;
+    }
+
+    public static function removeReviews($data)
+    {
+        foreach ($data as $i => $item)
+        {
+            if (!empty($item['extra']['comments']))
+                $data[$i]['extra']['comments'] = array();
+            elseif (!empty($item['extra']['Reviews']))
+                $data[$i]['extra']['Reviews'] = array();
+        }
+        return $data;
+    }
+
+    public static function saveReviewsAsComments($post_id, array $normalized_comments)
+    {
+        $comment_data = array(
+            'comment_post_ID' => $post_id,
+            'comment_author_email' => '',
+            'comment_author_url' => '',
+            'comment_type' => '',
+            'comment_parent' => 0,
+            'user_id' => 0,
+            'comment_approved' => 1,
+        );
+
+        $is_rehub_theme = (basename(get_template_directory()) == 'rehub') ? true : false;
+        $rehub_post_type = get_post_meta($post_id, 'rehub_framework_post_type', true);
+        if ($rehub_post_type && $rehub_post_type == 'review')
+            $is_review_post_type = true;
+        else
+            $is_review_post_type = false;
+
+        foreach ($normalized_comments as $comment)
+        {
+            $comment_pros = '';
+            $comment_cons = '';
+            $comment_rating = 0;
+
+            // rehub comment meta
+            if ($is_rehub_theme && $is_review_post_type && !empty($comment['review']))
+                $comment_content = $comment['review'];
+            else
+                $comment_content = $comment['comment'];
+
+            $comment_data['comment_content'] = \wp_kses($comment_content, 'default');
+            if (!empty($comment['name']))
+                $comment_data['comment_author'] = $comment['name'];
+            else
+                $comment_data['comment_author'] = $comment['User'];
+
+            if (!empty($comment['date']))
+                $comment_data['comment_date'] = date('Y-m-d H:i:s', $comment['date']);
+
+            $comment_id = \wp_insert_comment($comment_data);
+            //$comment_id = \wp_new_comment($comment_data);
+
+            if ($is_rehub_theme && $is_review_post_type)
+            {
+                if (!empty($comment['pros']))
+                    \add_comment_meta($comment_id, 'pros_review', $comment['pros']);
+                if (!empty($comment['cons']))
+                    \add_comment_meta($comment_id, 'cons_review', $comment['cons']);
+                if (!empty($comment['rating']))
+                {
+                    $rating_value = $comment['rating'] * 2;
+                    \add_comment_meta($comment_id, 'user_average', $rating_value);
+                    \add_comment_meta($comment_id, 'user_criteria', array(array('name' => __('Rating', 'content-egg-tpl'), 'value' => $rating_value)));
+                }
+                \add_comment_meta($comment_id, 'counted', 0);
+                // calculate rating
+                if (function_exists('add_comment_rates'))
+                    \add_comment_rates($comment_id);
+            }
+        }
     }
 
 }

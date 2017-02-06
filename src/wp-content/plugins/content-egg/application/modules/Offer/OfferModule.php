@@ -91,7 +91,7 @@ class OfferModule extends AffiliateParserModule {
             $item['img'] = trim($item['img']);
             $item['extra']['deeplink'] = trim($item['extra']['deeplink']);
             $item['price'] = (float) TextHelper::parsePriceAmount($item['price']);
-
+            $item['rating'] = TextHelper::ratingPrepare($item['rating']);
 
             if (!$item['title'])
                 continue;

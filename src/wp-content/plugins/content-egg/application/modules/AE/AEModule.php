@@ -8,6 +8,7 @@ use ContentEgg\application\components\ContentProduct;
 use ContentEgg\application\admin\PluginAdmin;
 use ContentEgg\application\helpers\TextHelper;
 use ContentEgg\application\components\LinkHandler;
+use ContentEgg\application\components\ContentManager;
 use \Keywordrush\AffiliateEgg\ParserManager;
 
 /**
@@ -104,7 +105,7 @@ class AEModule extends AffiliateParserModule {
             $content->unique_id = md5($r['orig_url']);
             $content->url = LinkHandler::createAffUrl($r['orig_url'], $deeplink);
             $content->orig_url = $r['orig_url'];
-            $content->domain = TextHelper::getHostName($r['orig_url']);            
+            $content->domain = TextHelper::getHostName($r['orig_url']);
             $content->img = $r['img'];
             $content->title = $r['title'];
             $content->description = $r['description'];
@@ -167,6 +168,27 @@ class AEModule extends AffiliateParserModule {
         }
 
         return $items;
+    }
+
+    public function presavePrepare($data, $post_id)
+    {
+        $data = parent::presavePrepare($data, $post_id);
+        
+
+        if ($this->config('reviews_as_comments'))
+        {
+            // get reviews from module data
+            $comments = ContentManager::getNormalizedReviews($data);
+            if ($comments)
+            {
+                // save reviews as post comments
+                ContentManager::saveReviewsAsComments($post_id, $comments);
+
+                // remove reviews from module data
+                $data = ContentManager::removeReviews($data);
+            }
+        }
+        return $data;
     }
 
     public function renderResults()

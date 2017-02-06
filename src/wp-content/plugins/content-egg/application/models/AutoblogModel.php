@@ -288,7 +288,13 @@ class AutoblogModel extends Model {
         {
             foreach ($autoblog['custom_field_names'] as $i => $custom_field)
             {
-                $meta_input[$custom_field] = $this->buildTemplate($autoblog['custom_field_values'][$i], $modules_data, $keyword, $module_keywords, $main_product);
+                $cf_value = $autoblog['custom_field_values'][$i];
+                if (\is_serialized($cf_value))
+                    $cf_value = @unserialize($cf_value);
+                else
+                    $cf_value = $this->buildTemplate($cf_value, $modules_data, $keyword, $module_keywords, $main_product);
+                
+                $meta_input[$custom_field] = $cf_value;
             }
         }
 
@@ -313,6 +319,7 @@ class AutoblogModel extends Model {
             throw new \Exception(sprintf(__('Post can\'t be created. Unknown error.', 'content-egg'), $autoblog['min_modules_count']));
 
         // save modules data & keyword for autoupdate
+        $comments = array();
         foreach ($modules_data as $module_id => $data)
         {
             $autoupdate_keyword = \sanitize_text_field($module_keywords[$module_id]);
@@ -322,7 +329,8 @@ class AutoblogModel extends Model {
                 \update_post_meta($post_id, ContentManager::META_PREFIX_KEYWORD . $module_id, $autoupdate_keyword);
             }
         }
-        //\do_action('content_egg_autoblog_create_post', $post_id);
+
+        // \do_action('content_egg_autoblog_create_post', $post_id);
         // set featured image
         $fi = new FeaturedImage();
         $fi->setImage($post_id);
@@ -459,7 +467,7 @@ class AutoblogModel extends Model {
                 $all_items[] = $item;
             }
         }
-        
+
         if (!$all_items)
             return null;
 

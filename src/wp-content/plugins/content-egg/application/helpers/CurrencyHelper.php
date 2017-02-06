@@ -84,6 +84,7 @@ class CurrencyHelper {
                 'thousand_sep' => ',',
                 'decimal_sep' => '.',
                 'num_decimals' => 2,
+                'name' => 'United States dollar',
             ),
             'EUR' => array(
                 'currency_symbol' => '&euro;',
@@ -98,6 +99,7 @@ class CurrencyHelper {
                 'thousand_sep' => '.',
                 'decimal_sep' => ',',
                 'num_decimals' => 2,
+                'name' => 'Euro',
             ),
             'CAD' => array(
                 'currency_symbol' => 'C $',
@@ -105,6 +107,7 @@ class CurrencyHelper {
                 'thousand_sep' => ',',
                 'decimal_sep' => '.',
                 'num_decimals' => 2,
+                'name' => 'Canadian dollar',
             ),
             'GBP' => array(
                 'currency_symbol' => '&pound;',
@@ -112,6 +115,7 @@ class CurrencyHelper {
                 'thousand_sep' => ',',
                 'decimal_sep' => '.',
                 'num_decimals' => 2,
+                'name' => 'British pound',
             ),
             'JPY' => array(
                 'currency_symbol' => '&yen;',
@@ -119,6 +123,7 @@ class CurrencyHelper {
                 'thousand_sep' => ',',
                 'decimal_sep' => '.',
                 'num_decimals' => 2,
+                'name' => 'Japanese yen',
             ),
             'CNY' => array(
                 'currency_symbol' => '&yen;',
@@ -126,6 +131,7 @@ class CurrencyHelper {
                 'thousand_sep' => ',',
                 'decimal_sep' => '.',
                 'num_decimals' => 2,
+                'name' => 'Chinese yuan',
             ),
             'RUB' => array(
                 'currency_symbol' => 'руб.',
@@ -133,6 +139,7 @@ class CurrencyHelper {
                 'thousand_sep' => ' ',
                 'decimal_sep' => ',',
                 'num_decimals' => 0,
+                'name' => 'Russian ruble',
             ),
             'RUR' => array(
                 'currency_symbol' => 'руб.',
@@ -140,6 +147,7 @@ class CurrencyHelper {
                 'thousand_sep' => ' ',
                 'decimal_sep' => ',',
                 'num_decimals' => 0,
+                'name' => 'Russian ruble',
             ),
             'UAH' => array(
                 'currency_symbol' => 'грн.',
@@ -147,6 +155,7 @@ class CurrencyHelper {
                 'thousand_sep' => ' ',
                 'decimal_sep' => ',',
                 'num_decimals' => 0,
+                'name' => 'Ukrainian hryvnia',
             ),
             'INR' => array(
                 'currency_symbol' => 'Rs.',
@@ -154,6 +163,7 @@ class CurrencyHelper {
                 'thousand_sep' => ',',
                 'decimal_sep' => '.',
                 'num_decimals' => 0,
+                'name' => 'Indian Rupee',
             ),
             'AUD' => array(
                 'currency_symbol' => 'AU $',
@@ -161,6 +171,7 @@ class CurrencyHelper {
                 'thousand_sep' => ',',
                 'decimal_sep' => '.',
                 'num_decimals' => 2,
+                'name' => 'Australian dollar',
             ),
             'VND' => array(
                 'currency_symbol' => '&#8363;',
@@ -168,6 +179,23 @@ class CurrencyHelper {
                 'thousand_sep' => '.',
                 'decimal_sep' => ',',
                 'num_decimals' => 0,
+                'name' => 'Vietnamese dong',
+            ),
+            'BRL' => array(
+                'currency_symbol' => 'R$',
+                'currency_pos' => 'left',
+                'thousand_sep' => '.',
+                'decimal_sep' => ',',
+                'num_decimals' => 2,
+                'name' => 'Brazilian real',
+            ),
+            'TND' => array(
+                'currency_symbol' => 'DT',
+                'currency_pos' => 'right',
+                'thousand_sep' => ',',
+                'decimal_sep' => '.',
+                'num_decimals' => 2,
+                'name' => 'Tunisian dinar',
             ),
         );
     }
@@ -232,6 +260,11 @@ class CurrencyHelper {
         return $this->getValue($currency, 'currency_symbol', $currency);
     }
 
+    public function getName($currency)
+    {
+        return $this->getValue($currency, 'name', $currency);
+    }
+
     public function numberFormat($number, $currency, $thousand_sep = null, $decimal_sep = null, $num_decimals = null)
     {
         if (!$thousand_sep)
@@ -241,6 +274,11 @@ class CurrencyHelper {
         if (!$num_decimals)
             $num_decimals = $this->getValue($currency, 'num_decimals', 2);
         return number_format((float) $number, absint($num_decimals), $decimal_sep, $thousand_sep);
+    }
+
+    public static function getCurrenciesList()
+    {
+        return array_keys(self::currencies());
     }
 
 }

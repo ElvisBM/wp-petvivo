@@ -12,6 +12,10 @@
 
         <?php if (!ContentEgg\application\admin\AeIntegrationConfig::isAEIntegrationPosible()): ?>
             <p>
+                <?php _e('Here are the <a href="http://www.keywordrush.com/res/ae_supported_shops.txt">full list</a> of Affiliate Egg supported shops.', 'content-egg'); ?>
+            </p>
+        
+            <p>
                 <b><?php _e('For first step make next actions:', 'content-egg'); ?></b>
             <ul>
                 <li><?php _e('Set and activate <a href="www.keywordrush.com/en/affiliateegg">Affiliate Egg</a>', 'content-egg'); ?></li>

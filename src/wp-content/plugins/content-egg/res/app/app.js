@@ -76,7 +76,7 @@ contentEgg.controller('ContentEggController', function ($scope, ModuleService) {
         var contentProduct = angular.copy(contentegg_params.contentProduct);
         contentProduct.unique_id = Math.random().toString(36).slice(2);
         $scope.models[module_id].added.push(contentProduct);
-        $scope.models[module_id].added_changed = true;        
+        $scope.models[module_id].added_changed = true;
     };
 
     $scope.addAll = function (module_id) {
@@ -258,6 +258,20 @@ contentEgg.directive('selectOnClick', function () {
         link: function (scope, element, attrs) {
             element.on('click', function () {
                 this.select();
+            });
+        }
+    };
+});
+
+contentEgg.directive('convertToNumber', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attrs, ngModel) {
+            ngModel.$parsers.push(function (val) {
+                return val != null ? parseInt(val, 10) : null;
+            });
+            ngModel.$formatters.push(function (val) {
+                return val != null ? '' + val : null;
             });
         }
     };

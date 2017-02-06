@@ -54,6 +54,10 @@ class ModuleManager {
     public function highlightAdminMenu($parent_file)
     {
         global $plugin_page;
+        
+        if (substr($plugin_page, 0, strlen(Plugin::slug())) !== Plugin::slug())
+            return $parent_file;
+        
         if (!$parent_file)
             $plugin_page = Plugin::slug;
         return $parent_file;

@@ -35,7 +35,7 @@ class PluginAdmin {
 
         \add_action('admin_menu', array($this, 'add_admin_menu'));
         \add_action('admin_enqueue_scripts', array($this, 'admin_load_scripts'));
-        \add_filter('parent_file', array($this, 'highlight_admin_menu'));        
+        \add_filter('parent_file', array($this, 'highlight_admin_menu'));
 
         if (isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'plugins.php')
         {
@@ -110,26 +110,26 @@ class PluginAdmin {
 
         include \ContentEgg\PLUGIN_PATH . 'application/admin/views/' . TextHelper::clear($view_name) . '.php';
     }
-    
+
     /**
      * Highlight menu for hidden submenu item
      */
     function highlight_admin_menu($file)
     {
         global $plugin_page;
-        
+
         // options.php - hidden submenu items
         if ($file != 'options.php' || substr($plugin_page, 0, strlen(Plugin::slug())) !== Plugin::slug())
             return $file;
-    
+
         $page_parts = explode('--', $plugin_page);
-        if (count($page_parts) > 1){
-            $plugin_page = $page_parts[0];}
-        else
+        if (count($page_parts) > 1)
+        {
+            $plugin_page = $page_parts[0];
+        } else
             $plugin_page = Plugin::slug();
-        
+
         return $file;
     }
-    
 
 }

@@ -72,7 +72,7 @@ class ArrayHelper {
         $max_key = key($array);
         foreach ($array as $k => $v)
         {
-            if ($v[$key_name] > $max_value)
+            if ((float) $v[$key_name] > (float) $max_value)
             {
                 $max_value = $v[$key_name];
                 $max_key = $k;
@@ -87,7 +87,7 @@ class ArrayHelper {
         $min_key = key($array);
         foreach ($array as $k => $v)
         {
-            if ($v[$key_name] < $min_value)
+            if ((float) $v[$key_name] < (float) $min_value)
             {
                 $min_value = $v[$key_name];
                 $min_key = $k;

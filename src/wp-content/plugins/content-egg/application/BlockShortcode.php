@@ -91,7 +91,7 @@ class BlockShortcode {
             return '';
 
         // Get supported modules for this tpl
-        $headers = \get_file_data($template_file, array('module_ids' => 'Modules', 'module_types' => 'Module Types'));
+        $headers = \get_file_data($template_file, array('module_ids' => 'Modules', 'module_types' => 'Module Types', 'shortcoded' => 'Shortcoded'));
         $supported_module_ids = array();
         if ($headers && !empty($headers['module_ids']))
         {
@@ -102,6 +102,12 @@ class BlockShortcode {
             $module_types = explode(',', $headers['module_types']);
             $module_types = array_map('trim', $module_types);
             $supported_module_ids = ModuleManager::getInstance()->getParserModuleIdsByTypes($module_types, true);
+        }
+
+        if ($headers && !empty($headers['shortcoded']))
+        {
+            // convert string to boolean
+            $a['shortcoded'] = filter_var($headers['shortcoded'], FILTER_VALIDATE_BOOLEAN);
         }
 
         // Module IDs from shortcode param. Validated.

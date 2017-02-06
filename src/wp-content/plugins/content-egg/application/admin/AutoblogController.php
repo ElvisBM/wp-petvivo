@@ -62,7 +62,7 @@ class AutoblogController {
 
         if ($GLOBALS['pagenow'] == 'admin.php' && !empty($_GET['page']) && $_GET['page'] == 'content-egg-autoblog-edit')
         {
-            \wp_enqueue_script('contentegg-keywords', \ContentEgg\PLUGIN_RES . '/js/keywords.js', array('jquery'));
+            \wp_enqueue_script('contentegg-keywords', \ContentEgg\PLUGIN_RES . '/js/keywords.js', array('jquery'), Plugin::version());
             // tabs
             \wp_enqueue_script('jquery-ui-tabs');
             \wp_enqueue_script('jquery-ui-button');
@@ -117,7 +117,7 @@ class AutoblogController {
             'post_type' => 'post',
             'custom_field_names' => array_fill(0, 5, ''),
             'custom_field_values' => array_fill(0, 5, ''),
-            'main_product' => 'min_price'
+            'main_product' => 'min_price',
         );
 
         $message = '';

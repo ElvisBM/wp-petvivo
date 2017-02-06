@@ -58,6 +58,13 @@ class AEConfig extends AffiliateParserModuleConfig {
                 ),
                 'section' => 'default',
             ),
+            'reviews_as_comments' => array(
+                'title' => __('Reviews as post comments', 'content-egg'),
+                'description' => __('Save user reviews as post comments.', 'content-egg'),
+                'callback' => array($this, 'render_checkbox'),
+                'default' => false,
+                'section' => 'default',
+            ),
             'save_img' => array(
                 'title' => __('Save images', 'content-egg'),
                 'description' => __('Save images on server', 'content-egg'),

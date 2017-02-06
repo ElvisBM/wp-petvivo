@@ -48,7 +48,21 @@
                             <img ng-if="data.img" ng-src="{{data.img}}" class="img-responsive" style="max-height: 100px;" />
                         </div>
                         <div ng-class="data.img ? 'col-md-9' : 'col-md-10'">
-                            <input type="text" placeholder="<?php _e('Title', 'content-egg'); ?> (<?php _e('required', 'content-egg'); ?>)" ng-model="data.title" class="form-control" style="margin-bottom: 5px;">
+                            <div class="row" style="margin:0px;">
+                                <div class="col-md-10" style="padding:0px;">
+                                    <input type="text" placeholder="<?php _e('Title', 'content-egg'); ?> (<?php _e('required', 'content-egg'); ?>)" ng-model="data.title" class="form-control" style="margin-bottom: 5px;">                                    
+                                </div>
+                                <div class="col-md-2" style="padding-right:0px;">
+                                    <select class="form-control" ng-model="data.rating" convert-to-number>
+                                        <option value="1"><?php _e('Rating', 'content-egg');?> - 1</option>
+                                        <option value="2"><?php _e('Rating', 'content-egg');?> - 2</option>
+                                        <option value="3"><?php _e('Rating', 'content-egg');?> - 3</option>
+                                        <option value="4"><?php _e('Rating', 'content-egg');?> - 4</option>
+                                        <option value="5"><?php _e('Rating', 'content-egg');?> - 5</option>
+                                    </select>                                
+                                </div>
+                            </div>                            
+                            
                             <div class="row" style="margin:0px;">
                                 <div class="col-md-6" style="padding:0px;">
                                     <input type="text" placeholder="<?php _e('Offer URL', 'content-egg'); ?> (<?php _e('required', 'content-egg'); ?>)" ng-model="data.orig_url" class="form-control" style="margin-bottom: 5px;">
@@ -64,17 +78,9 @@
                                 </div>
                                 <div class="col-md-1" style="padding-right:0px;">
                                     <select class="form-control" ng-model="data.currencyCode">
-                                        <option value="USD">USD</option>
-                                        <option value="EUR">EUR</option>
-                                        <option value="CAD">CAD</option>
-                                        <option value="GBP">GBP</option>
-                                        <option value="JPY">JPY</option>
-                                        <option value="CNY">CNY</option>
-                                        <option value="RUB">RUB</option>
-                                        <option value="UAH">UAH</option>
-                                        <option value="INR">INR</option>
-                                        <option value="AUD">AUD</option>
-                                        <option value="VND">VND</option>
+                                    <?php foreach (\ContentEgg\application\helpers\CurrencyHelper::getCurrenciesList() as $currency): ?>
+                                        <option value="<?php echo esc_attr($currency);?>"><?php echo esc_html($currency);?></option>
+                                    <?php endforeach; ?>
                                     </select>                                
                                 </div>
                                 <div class="col-md-7" style="padding-right:0px;">

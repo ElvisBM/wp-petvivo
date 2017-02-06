@@ -1,9 +1,9 @@
 ﻿=== Content Egg ===
 Contributors: keywordrush,wpsoul
-Tags: content, affiliate, autoblogging, amazon, affilinet, coupons, linkshare, shareasale, ozon, flickr, youtube, commission junction, aliexpress, cj, images, wikipedia, freebase, ecommerce, links, shortcode, monetize, search engine optimization, ebay, zanox, moneymaking, price comparison, google images, timesaving, clickbank, linkshare, pixabay, admitad, affilitewindow, otimisemedia, tradedoubler, flipkart, paytm, price alert, tracker, impactradius
+Tags: content, affiliate, autoblogging, amazon, affilinet, coupons, linkshare, shareasale, ozon, flickr, youtube, commission junction, aliexpress, cj, images, wikipedia, freebase, ecommerce, links, shortcode, monetize, search engine optimization, ebay, zanox, moneymaking, price comparison, google images, timesaving, clickbank, linkshare, pixabay, admitad, affilitewindow, optimisemedia, tradedoubler, flipkart, paytm, price alert, tracker, impactradius, pepperjam, pepperjamnetwork
 Requires at least: 4.2.2
 Tested up to: 4.7
-Stable tag: 3.0.5
+Stable tag: 3.2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -43,7 +43,7 @@ Easily adding auto updating products from affiliate systems and additional conte
 >
 >Modules of free version: Amazon, Pixabay, Google Images, Youtube, Commission Junction Links, Freebase, Affili.net Coupons, Related Keywords, RSS Fetcher, Admitad Products, Offer.
 >
->Additional modules of PRO version: Ebay, Zanox, Aliexpress, CJ Products, ClickBank, Admitad Coupons, Affilitewindow, Flipkart, Otimisemedia, Tradedoubler, Affili.net Products, Linkshare, Shareasale, Impactradius, Cityads, Ozon, Paytm, Flickr, Bing Images, Google Books, Google News, Twitter, VK news, Yandex Market...
+>Additional modules of PRO version: Ebay, Zanox, Aliexpress, CJ Products, ClickBank, Admitad Coupons, Affilitewindow, Flipkart, Optimisemedia, Tradedoubler, Affili.net Products, Linkshare, Shareasale, Impactradius, Cityads, Ozon, Paytm, Pepperjam Network, Flickr, Bing Images, Google Books, Google News, Twitter, VK news, Yandex Market...
 >
 >And we don't stop on these modules. All buyers of pro version can suggest us new module. 
 >
@@ -107,6 +107,15 @@ If you can do any Wordpress page templates – you can do also templates for Con
 7. Price Tracker/Alert
 
 == Changelog ==
+
+= 3.2.0 =
+* New: Block template: Price statistics.
+* New: Ability to add reviews as post comments for AE modules.
+* New: Rating field for Offer module.
+* New: Support for AMP plugin.
+* New: Minus words for Fill utility.
+* Fix: Hot trends keyword keyword tool.
+* Fix: Product keyword tool.
 
 = 3.0.0 =
 * New: Offer module - manually create offer from any site with price update.

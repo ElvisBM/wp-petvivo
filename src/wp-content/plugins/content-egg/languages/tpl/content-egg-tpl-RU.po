@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Content Egg 1.1.1\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/content-egg-tpl\n"
-"POT-Creation-Date: 2016-12-13 17:36+0200\n"
-"PO-Revision-Date: 2016-12-13 17:37+0200\n"
+"POT-Creation-Date: 2017-01-24 21:12+0200\n"
+"PO-Revision-Date: 2017-01-24 21:16+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -159,31 +159,35 @@ msgstr "EAN:"
 msgid "Last update:"
 msgstr "Обновлено:"
 
-#: application/helpers/TemplateHelper.php:22
-#: application/helpers/TemplateHelper.php:43
-msgid "number_format_decimal_point"
-msgstr ","
+#: application/components/ContentManager.php:438
+msgid "Rating"
+msgstr "Рейтинг"
 
 #: application/helpers/TemplateHelper.php:23
 #: application/helpers/TemplateHelper.php:44
+msgid "number_format_decimal_point"
+msgstr ","
+
+#: application/helpers/TemplateHelper.php:24
+#: application/helpers/TemplateHelper.php:45
 msgid "number_format_thousands_sep"
 msgstr " "
 
-#: application/helpers/TemplateHelper.php:115
+#: application/helpers/TemplateHelper.php:116
 msgid "d"
 msgstr "д"
 
-#: application/helpers/TemplateHelper.php:117
+#: application/helpers/TemplateHelper.php:118
 msgid "h"
 msgstr "ч"
 
-#: application/helpers/TemplateHelper.php:119
-#: application/helpers/TemplateHelper.php:121
+#: application/helpers/TemplateHelper.php:120
+#: application/helpers/TemplateHelper.php:122
 #: application/modules/Ebay/templates/data_item.php:71
 msgid "m"
 msgstr "м"
 
-#: application/helpers/TemplateHelper.php:302
+#: application/helpers/TemplateHelper.php:303
 #: application/modules/Amazon/templates/data_compare.php:81
 #: application/modules/Ozon/templates/data_compare.php:67
 #: application/templates/data_price_tracker_alert.php:37
@@ -206,6 +210,7 @@ msgstr "Цена"
 #: application/modules/Offer/templates/data_grid.php:7
 #: application/modules/Optimisemedia/templates/data_grid.php:7
 #: application/modules/PayTM/templates/data_grid.php:7
+#: application/modules/Pepperjam/templates/data_grid.php:7
 #: application/modules/Shareasale/templates/data_grid.php:7
 #: application/modules/TradedoublerProducts/templates/data_grid.php:7
 #: application/modules/Zanox/templates/data_grid.php:7
@@ -230,6 +235,7 @@ msgstr "Сетка"
 #: application/modules/Optimisemedia/templates/data_item.php:7
 #: application/modules/Ozon/templates/data_item.php:7
 #: application/modules/PayTM/templates/data_item.php:7
+#: application/modules/Pepperjam/templates/data_item.php:7
 #: application/modules/Shareasale/templates/data_item.php:7
 #: application/modules/TradedoublerProducts/templates/data_item.php:7
 #: application/modules/Zanox/templates/data_item.php:7
@@ -254,6 +260,7 @@ msgstr "Карточка товара"
 #: application/modules/Ozon/templates/data_grid.php:7
 #: application/modules/Ozon/templates/data_list.php:6
 #: application/modules/PayTM/templates/data_list.php:6
+#: application/modules/Pepperjam/templates/data_list.php:6
 #: application/modules/Shareasale/templates/data_list.php:6
 #: application/modules/TradedoublerProducts/templates/data_list.php:6
 #: application/modules/Zanox/templates/data_list.php:6
@@ -267,6 +274,7 @@ msgstr "Список"
 #: application/modules/Aliexpress/templates/data_price_tracker_alert.php:7
 #: application/modules/Amazon/templates/data_price_tracker_alert.php:7
 #: application/modules/CjProducts/templates/data_price_tracker_alert.php:7
+#: application/modules/Flipkart/templates/data_price_tracker_alert.php:7
 #: application/modules/GdeSlon/templates/data_price_tracker_alert.php:7
 #: application/modules/Impactradius/templates/data_price_tracker_alert.php:7
 #: application/modules/Linkshare/templates/data_price_tracker_alert.php:7
@@ -274,6 +282,7 @@ msgstr "Список"
 #: application/modules/Optimisemedia/templates/data_price_tracker_alert.php:7
 #: application/modules/Ozon/templates/data_price_tracker_alert.php:7
 #: application/modules/PayTM/templates/data_price_tracker_alert.php:7
+#: application/modules/Pepperjam/templates/data_price_tracker_alert.php:7
 #: application/modules/Shareasale/templates/data_price_tracker_alert.php:7
 #: application/modules/TradedoublerProducts/templates/data_price_tracker_alert.php:7
 #: application/modules/Zanox/templates/data_price_tracker_alert.php:7
@@ -310,16 +319,16 @@ msgstr "Все отзывы"
 
 #: application/modules/Amazon/templates/data_compare.php:93
 #: application/templates/data_item.php:49
-#: application/templates/data_list.php:59 templates/block_offers_list.php:72
-#: templates/block_offers_logo.php:51
+#: application/templates/data_list.php:59 templates/block_offers_list.php:69
+#: templates/block_offers_logo.php:47
 msgid "Too low to display"
 msgstr "Уточните на сайте"
 
 #: application/modules/Amazon/templates/data_compare.php:96
 #: application/modules/Ebay/templates/data_item.php:81
 #: application/templates/blocks/item_after_price_row.php:20
-#: application/templates/data_list.php:66 templates/block_offers_list.php:80
-#: templates/block_offers_logo.php:60
+#: application/templates/data_list.php:66 templates/block_offers_list.php:77
+#: templates/block_offers_logo.php:56
 msgid "Free shipping"
 msgstr "Бесплатная доставка"
 
@@ -521,7 +530,7 @@ msgstr "Комментарий:"
 msgid "All reviews on Yandex.Market"
 msgstr "Все отзывы на Яндекс.Маркет"
 
-#: application/modules/Offer/views/metabox_module.php:91
+#: application/modules/Offer/views/metabox_module.php:97
 msgid "Last update: "
 msgstr "Обновлено:"
 
@@ -614,8 +623,8 @@ msgstr "скидка"
 
 #: application/templates/data_grid.php:71
 #: application/templates/data_item.php:56
-#: application/templates/data_list.php:63 templates/block_offers_list.php:77
-#: templates/block_offers_logo.php:57
+#: application/templates/data_list.php:63 templates/block_offers_list.php:74
+#: templates/block_offers_logo.php:53
 msgid "Buy This Item"
 msgstr "Купить сейчас"
 
@@ -632,6 +641,30 @@ msgstr "Все предложения"
 msgid "All offers list with logos"
 msgstr "Все предложения с логотипами"
 
+#: templates/block_price_statistics.php:10
+msgid "Price statistics"
+msgstr ""
+
+#: templates/block_price_statistics.php:33
+msgid "All prices mentioned above are in %s."
+msgstr "Все цены представлены в %s."
+
+#: templates/block_price_statistics.php:35
+msgid "This product is available in %s."
+msgstr "Этот товар доступен в магазинах: %s."
+
+#: templates/block_price_statistics.php:36
+msgid "At %s you can purchase %s for only %s"
+msgstr "На сайте %s вы можете купить %s всего за %s"
+
+#: templates/block_price_statistics.php:36
+msgid "which is %s%% less than the cost in %s (%s)."
+msgstr "что на %s%% меньше, чем цена в %s (%s)."
+
+#: templates/block_price_statistics.php:37
+msgid "The lowest price of %s was obtained on %s."
+msgstr "Наименьшая цена на %s была получена %s."
+
 #. Plugin Name of the plugin/theme
 msgid "Content Egg"
 msgstr ""
@@ -643,7 +676,8 @@ msgstr "http://www.keywordrush.com/contentegg"
 #. Description of the plugin/theme
 msgid ""
 "Easily adding auto updating products from affiliate systems and additional "
-"content to posts."
+"content to posts. [ATTENTION: before update PRO version of plugin, activate "
+"plugin!]"
 msgstr ""
 
 #. Author of the plugin/theme

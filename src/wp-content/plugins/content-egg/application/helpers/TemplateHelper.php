@@ -4,6 +4,7 @@ namespace ContentEgg\application\helpers;
 
 use ContentEgg\application\components\ContentManager;
 use ContentEgg\application\models\PriceHistoryModel;
+use ContentEgg\application\helpers\ArrayHelper;
 
 /**
  * TemplateHelper class file
@@ -349,6 +350,11 @@ class TemplateHelper {
         return CurrencyHelper::getInstance()->getSymbol($currency);
     }
 
+    public static function getCurrencyName($currency)
+    {
+        return CurrencyHelper::getInstance()->getName($currency);
+    }
+
     private static function getMerchantImageUrl(array $item, $prefix = '', $remote_url = null, $blank_on_error = false)
     {
         $default_ext = 'png'; // ???
@@ -430,5 +436,55 @@ class TemplateHelper {
     {
         return \ContentEgg\PLUGIN_RES . '/img/blank.gif';
     }
+
+    public static function mergeData(array $data)
+    {
+        foreach ($data as $module_id => $items)
+        {
+            foreach ($items as $item_ar)
+            {
+                $item_ar['module_id'] = $module_id;
+                $all_items[] = $item_ar;
+            }
+        }
+        return $all_items;
+    }
+
+    public static function getMaxPriceItem(array $data)
+    {
+        return $data[ArrayHelper::getMaxKeyAssoc($data, 'price')];
+    }
+
+    public static function getMinPriceItem(array $data)
+    {
+        return $data[ArrayHelper::getMinKeyAssoc($data, 'price')];
+    }
+
+    public static function getCommonCurrencyCode($data)
+    {
+        $first = reset($data);
+        $currency = $first['currencyCode'];
+        foreach ($data as $d)
+        {
+            if (!empty($d['currencyCode']) && $d['currencyCode'] != $currency)
+                return false;
+        }
+        return $currency;
+    }
+
+    public static function getShopsList($data)
+    {
+        $list = array();
+        foreach ($data as $d)
+        {
+            if (!isset($list[$d['domain']]))
+            {
+                $parts = explode('.', $d['domain']);
+                $list[$d['domain']] = ucfirst($parts[0]);
+            }
+        }
+        return $list;
+    }
+
 
 }

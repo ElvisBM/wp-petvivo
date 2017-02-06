@@ -443,7 +443,7 @@ class TextHelper {
         // try to fix...
         if (!preg_match("/^[0-9]{13}$/", $barcode))
             $barcode = ltrim($barcode, '0');
-        
+
         if (!preg_match("/^[0-9]{13}$/", $barcode))
             return false;
 
@@ -470,6 +470,15 @@ class TextHelper {
             return true;
         else
             return false;
+    }
+
+    public static function ratingPrepare($rating, $min_rating = 1, $max_rating = 5)
+    {
+        $rating = abs(round($rating));
+        if ($rating < $min_rating || $rating > $max_rating)
+            return null;
+        else
+            return $rating;
     }
 
 }

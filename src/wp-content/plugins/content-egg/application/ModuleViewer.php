@@ -154,7 +154,8 @@ class ModuleViewer {
                 $data[$module_id] = $module_data;
 
             // shortcoded!
-            Shortcoded::getInstance($post_id)->setShortcodedModule($module_id);
+            if (!isset($params['shortcoded']) || (bool) $params['shortcoded'])
+                Shortcoded::getInstance($post_id)->setShortcodedModule($module_id);
         }
         if (!$data)
             return;
