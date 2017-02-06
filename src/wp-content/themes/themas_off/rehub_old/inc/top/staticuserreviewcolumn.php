@@ -1,1 +1,0 @@
-<?php echo do_shortcode('[wpsm_user_rating_stars]') ; ?>

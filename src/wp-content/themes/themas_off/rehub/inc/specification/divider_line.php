@@ -1,1 +1,0 @@
-<div class="clearfix specdivider"></div>
