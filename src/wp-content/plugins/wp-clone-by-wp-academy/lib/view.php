@@ -56,14 +56,17 @@ $backups = get_option( 'wpclone_backups' );
 <div id="wrapper">
 <div id="MainView">
 
-    <h2>Welcome to WP Clone by WP Academy</h2>
+    <h2>Welcome to WP Clone by <a href="http://wpacademy.com">WP Academy</a></h2>
 
     <p>You can use this tool to create a backup of this site and (optionally) restore it to another server, or another WordPress installation on the same server.</p>
 
     <p><strong>Here is how it works:</strong> the "Backup" function will give you a URL that you can then copy and paste
         into the "Restore" dialog of a new WordPress site, which will clone the original site to the new site. You must
         install the plugin on the new site and then run the WP Clone > Restore function.</p>
-
+    <p><b>Attention:</b> The restore process will fail on approximately 10% of installations and may render your site unusable.
+        Please carefully read <a href="http://members.wpacademy.com/wpclone-faq/">No Support and Disclaimer</a>.  
+        We do offer <a href="http://members.wpacademy.com/services/">Paid Site Transfer Services</a> using more reliable backup methods.</p>
+    
     <p><strong>Choose your selection below:</strong> either create a backup of this site, or choose which backup you
         would like to restore.</p>
 
@@ -201,32 +204,33 @@ $backups = get_option( 'wpclone_backups' );
 
     ?>
 </div>
-<div id="sidebar">
+<div id="sidebar">		
 
 		<ul>
-			<h2>WP Academy Resources</h2>
-                        <iframe src="//player.vimeo.com/video/98912458?title=0&amp;byline=0&amp;portrait=0" width="300" height="225" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-			<li><a href="http://wpencyclopedia.com" target="_blank" title="WP Encyclopedia">WordPress Business Encyclopedia</a></li>
-			<li><a href="http://www.wpacademy.com/wordpress-training" target="_blank" title="WP Live">WP Live</a></li>
-			<li><a href="http://wpacademy.com/websites" target="_blank" title="WP Academy Websites">Websites</a></li>
-			<li><a href="http://www.wpacademy.com/hosting" target="_blank" title="Managed WordPress Hosting">Managed WordPress Hosting</a></li>
+			<h2>Managed WordPress Hosting from $12/mth, with 6 months free!</h2>
+                        <p>Watch us test the performance of WP Academy hosting, and review benefits</p>
+                        <iframe src="//player.vimeo.com/video/187757407?title=0&amp;byline=0&amp;portrait=0" width="300" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>                        
+                        <p>Get true <a href="http://wpacademy.com/hosting">Managed WordPress Hosting</a> for just $12/mth (20% discount) 
+                            <a href ="https://wpwebsitenow.com/billing/cart.php?a=add&pid=9">here</a>.
+                            Enter coupon <b>FREE6</b> at checkout for additional 6 months free. Unlimited sites!</p>
+			
+		</ul>
+    
+                <ul>
+			<h2>Site Transfer Service from $10!</h2>
+                        <a href="http://members.wpacademy.com/services/"><img src="//d28zm3zq58hlat.cloudfront.net/img/wordpress-site-clone-backup-buddy.jpg" /></a>
+                        <p>Save time and avoid headaches: hire us to transfer your site.  
+                            The <a href="http://members.wpacademy.com/product/clone-backupbuddy/">upgrade option</a> even includes a lifetime license and configuration of 
+                            <b>Backup Buddy</b>, the best WordPress backup plugin!</p>
+			
 		</ul>
 
-		<ul>
-			<h2>WP Academy News</h2>
-			<h3>WPAcademy.com</h3>
-			<?php wpa_fetch_feed ('http://members.wpacademy.com/category/news/feed', 3); ?>
-			<h3>Twitter @WPAcademy</h3>
-			<?php /* wpa_fetch_feed ('http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=wpacademy', 5); */ ?>
-			<a class="twitter-timeline"  height="400" href="https://twitter.com/WPAcademy"  data-widget-id="342116561412304898">Tweets by @WPAcademy</a>
-			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-
-		</ul>
-
+    
 		<ul>
 			<h2>Help & Support</h2>
 			<li><a href="http://members.wpacademy.com/wpclone-faq" target="_blank" title="WP Clone FAQ">Visit the WP Clone FAQ Page</a></li>
 			<li><a href="http://wordpress.org/support/plugin/wp-clone-by-wp-academy" target="_blank" title="Support Forum">Support forum at WordPress.org</a></li>
+                        <li><a href="http://members.wpacademy.com/services/">Paid Site Transfer Service</a></li>
 		</ul>
 
 	</div>
@@ -260,24 +264,6 @@ $backups = get_option( 'wpclone_backups' );
         if (!is_writable(WPCLONE_WP_CONTENT)) { echo '<span style="color:#f11">wp-content is not writable, please change its permissions before you perform a restore.</span></br>'; }
         if (!is_writable(wpa_wpconfig_path())) { echo '<span style="color:#f11">wp-config.php is not writable, please change its permissions before you perform a restore.</span></br>'; }
         echo '</p></div>';
-    }
-    function wpa_fetch_feed ($feed, $limit) {
-        include_once(ABSPATH . WPINC . '/feed.php');
-        $rss = fetch_feed($feed);
-        if (!is_wp_error( $rss ) ) :
-            $maxitems = $rss->get_item_quantity($limit);
-            $rss_items = $rss->get_items(0, $maxitems);
-        endif;
-        if ( isset($maxitems) && $maxitems == 0 ) echo '<li>No items.</li>';
-        else
-        // Loop through each feed item and display each item as a hyperlink.
-        foreach ( $rss_items as $item ) : ?>
-        <li>
-            <a href='<?php echo esc_url( $item->get_permalink() ); ?>'
-            title='<?php echo 'Posted '.$item->get_date('j F Y | g:i a'); ?>'>
-            <?php echo esc_html( $item->get_title() ); ?></a>
-        </li>
-        <?php endforeach;
-    }
+    }    
 
 /** it all ends here folks. */

@@ -1,12 +1,12 @@
 === WP Clone by WP Academy ===
 Contributors: wpacademy
-Donate link: http://wpacademy.com/software
+Donate link: http://members.wpacademy.com/wpclone-faq/
 Tags: wp academy, wpacademy, move wordpress, copy wordpress, clone wordpress, install wordpress, wordpress hosting, backup, restore
 Author URI: http://wpacademy.com
 Plugin URI: http://wpacademy.com/software
 Requires at least: 3.0
-Tested up to: 4.6
-Stable tag: 2.2.3
+Tested up to: 4.7.1
+Stable tag: 2.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,11 +23,10 @@ WP Clone is a superior solution to even commercial WordPress cloning plugins for
 * It fetches the site backup via your host&apos;s direct http connection, which saves you from needing to upload large files through your internet connection
 
 <blockquote>
-= Update December 2015 =
-Prior to the latest update, WP Clone was failing in 10-20% of installations (particularly larger installations), as reflected in the negative reviews. 
-Since the latest update, we have successfully restored 2GB sites, but we cannot guarantee the reliability on all installations.  
-<strong>Please carefully read the section below NO SUPPORT AND DISCLAIMER before you attempt to use this plugin.</strong>
-
+= Update January 2017 =
+WP Clone fails to restore in approximately 10% of installations (particularly larger installations), 
+as reflected in the negative reviews. <strong>Please carefully read the section below NO SUPPORT AND DISCLAIMER before you attempt to use this plugin</strong>. 
+You also may use our <a href="http://members.wpacademy.com/services/">Paid Site Transfer Service</a>.
 </blockquote>
 
 = Help Video =
@@ -47,7 +46,9 @@ As mentioned above, WP Clone fails in 10-20% of installations.  As such it is NO
 You can also try the [Duplicator plugin](https://wordpress.org/plugins/duplicator/) or [All-in-One WP Migration](https://wordpress.org/plugins/all-in-one-wp-migration/), both of which work pretty good, but are not as fast as WP Clone to migrate sites; or use the manual method described here http://wpencyclopedia.com/enc/index.htm?moving-wordpress.htm
 
 = Donations =
-Although we are not able to provide support to every installation, we have spent countless hours improving the plugin and responding to user feedback.  We believe that WP Clone is far and away the easiest WordPress restoration plugin and intend to continue to develop it. If you are able to support our efforts, use the Donations Page.
+Although we are not able to provide support to every installation, we have spent countless hours improving the plugin and responding to user feedback.  
+We believe that WP Clone is far and away the easiest WordPress restoration plugin and intend to continue to develop it. 
+If you are able to support our efforts, use the [Donations Page](http://members.wpacademy.com/wpclone-faq/).
 
 = Additional documentation =
 Additional documentation, including supported hosts, at the [WP Clone FAQ Page](http://members.wpacademy.com/wpclone-faq "WP Clone FAQ")
@@ -69,6 +70,10 @@ If you are able to help out with plugin development or wish to contribute insigh
 Review FAQ's and Help Video at the [WP Clone FAQ Page](http://members.wpacademy.com/wpclone-faq "WP Clone FAQ")
 
 == Changelog ==
+= 2.2.4 - 2017-01-28 =
+* Updated: Admin area.
+* Updated: `Tested up to` tag.
+
 = 2.2.3 - 2016-11-29 =
 * Added: PHP7 support
 * Added: a multisite check during restore.
