@@ -54,6 +54,8 @@ class WC_Pagarme_API {
 	 */
 	public function __construct( $gateway = null ) {
 		$this->gateway = $gateway;
+
+		$this->split_rules = new WC_Pagarme_Split_checkout( $this );
 	}
 
 	/**
@@ -343,6 +345,8 @@ class WC_Pagarme_API {
 			$data['payment_method'] = 'boleto';
 		}
 
+		$data['split_rules'] = $this->split_rules->get_author_price_on_checkout( $order );
+
 		// Add filter for Third Party plugins.
 		return apply_filters( 'wc_pagarme_transaction_data', $data , $order );
 	}
@@ -485,12 +489,7 @@ class WC_Pagarme_API {
 			'metadata' => array(
 				'order_number' => $order->get_order_number(),
 			),
-
-		);	
-
-		//Regras Split
-		$data['split_rules'] = $this->get_split_rules( $order );
-
+		);
 
 		return apply_filters( 'wc_pagarme_checkout_data', $data );
 	}
@@ -669,6 +668,7 @@ class WC_Pagarme_API {
 			}
 		} else {
 			$data        = $this->generate_transaction_data( $order, $_POST );
+
 			$transaction = $this->do_transaction( $order, $data );
 		}
 
@@ -862,7 +862,7 @@ class WC_Pagarme_API {
 	 */
 	public function create_bank_account( $data ) {
 
-		$data['api_key'] = "ak_test_ImPZ4eVrT2Q84nzzgGs7Sh2vuYMJv3";
+		$data['api_key'] = "ak_test_Oq6uuxxWJB4WFCbWC5cFOaM6sjYvvx";
 
 		$response = $this->do_request( 'bank_accounts', 'POST', $data );
 
@@ -876,65 +876,25 @@ class WC_Pagarme_API {
 	 */
 	public function create_receiver( $data ) {
 
-
-		$data['api_key'] = "ak_test_ImPZ4eVrT2Q84nzzgGs7Sh2vuYMJv3";
+		$data['api_key'] = "ak_test_Oq6uuxxWJB4WFCbWC5cFOaM6sjYvvx";
 
 		$response = $this->do_request( 'recipients', 'POST', $data );
 
 		return json_decode($response['body']);
 	}
-	 /**
+
+	/**
 	 * Set Updating Receiver.
 	 *
 	 * @return array
 	 */
-	public function updating_receiver( $id ,$data ) {
+	public function updating_receiver( $receiver_id, $data ) {
 
-		$data['api_key'] = "ak_test_ImPZ4eVrT2Q84nzzgGs7Sh2vuYMJv3";
+		$data['api_key'] = "ak_test_Oq6uuxxWJB4WFCbWC5cFOaM6sjYvvx";
+		$url =  'recipients/'.$receiver_id;
 
-		$response = $this->do_request( 'recipients/'.$id , 'POST', $data );
+		$response = $this->do_request( $url, 'PUT', $data );
 
-		return json_decode($response['body']);
+		return json_decode( $response['body'] );
 	}
-
-	/**
-	 * Set Split Rules.
-	 *
-	 * @return array
-	 */
-	public function get_split_rules( $data ){
-
-
-
-
-		echo "<pre>";
-			printf( $data );
-		echo "</pre>";
-		die;
-		
-		//Add Rules 
-		$rules[0]['recipient_id'] = 're_cix28ozs006upa36ecpntmfuc';
-		//Define se o recebedor dessa regra irá ser cobrado pela taxa da Pagar.me
-		$rules[0]['charge_processing_fee'] = true;
-		//Risco da Transação
-		$rules[0]['liable'] = true;
-		//Porcentagem que o recebedor vai receber do valor da transação. 
-		$rules[0]['percentage']= 17;
-		//Valor que o recebedor vai receber da transação. 
-		$rules[0]['amount'] = null;
-		
-		//Add Rules
-		$rules[1]['recipient_id'] = 're_cix147thc03yhov6dt06dfx4q';
-		//Define se o recebedor dessa regra irá ser cobrado pela taxa da Pagar.me
-		$rules[1]['charge_processing_fee'] = false;
-		//Risco da Transação
-		$rules[1]['liable'] = false;
-		//Porcentagem que o recebedor vai receber do valor da transação. 
-		$rules[1]['percentage'] = 83;
-		//Valor que o recebedor vai receber da transação. 
-		$rules[1]['amount'] = null;
-
-		return $rules;
-	}
-
 }
