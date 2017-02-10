@@ -13,7 +13,7 @@
 -------------------------------------------------------------- */
 
 body { background: none #fff; }
-.main-nav.dark_style{background: none #00c2b4;}
+.main-nav.dark_style{background:#f3f3f3;}
 .main-nav.white_style nav.top_menu > ul > li > a  {padding: 5px 12px 8px 12px; font-weight: normal; font-size: 15px; text-transform: none; }
 .main-nav.dark_style nav.top_menu > ul > li > a  {font-size: 17px; text-transform: none; }
 nav.top_menu ul li ul li a{font-size: 95%}
