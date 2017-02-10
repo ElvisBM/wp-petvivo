@@ -283,7 +283,7 @@ function ajax_action_re_filterpost() {
             $response .= ob_get_clean();
         }
         wp_reset_query();
-        $response .='<div class="re_ajax_pagination"><span data-offset="'.$offsetnext.'" data-containerid="'.$containerid.'"'.$page_sorting.' class="re_ajax_pagination_btn def_btn">' . __('Next', 'rehub_framework') . '</span></div>'; 
+        $response .='<div class="re_ajax_pagination"><span data-offset="'.$offsetnext.'" data-containerid="'.$containerid.'"'.$page_sorting.' class="re_ajax_pagination_btn def_btn">' . __('Mais', 'rehub_framework') . '</span></div>'; 
     }           
     else {
         $response .= '<div class="clearfix flexbasisclear"><span class="no_more_posts">'.__('No more!', 'rehub_framework').'<span></div>';

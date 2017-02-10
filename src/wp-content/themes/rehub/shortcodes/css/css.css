@@ -68,8 +68,8 @@ display: inline; width: auto; height: auto; line-height: normal; vertical-align:
 /* Buttons
 ================================================== */
 .wpsm-button {margin: 0 5px 8px 0; cursor: pointer; display: inline-block; white-space: nowrap; text-align: center; text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5); outline: none; background: #aaaaaa; text-decoration: none !important; transition: all 0.4s ease 0s;
-border: 1px solid #7e7e7e;color: #fff !important;font-weight: bold !important; padding: 4px 10px; line-height: 0.8em; text-decoration: none; text-align: center; white-space: normal; text-shadow: 0 1px 0 rgba(0,0,0,0.25); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); position: relative; font-size: 15px; box-sizing:border-box; font-style: normal; }
-.wpsm-button.white{border: 1px solid #ccc; background-color: #fff; color: #111 !important; text-shadow: none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);}
+border: 1px solid #7e7e7e;color: #fff !important;padding: 4px 10px; line-height: 0.8em; text-decoration: none; text-align: center; white-space: normal; text-shadow: 0 1px 0 rgba(0,0,0,0.25); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); position: relative; font-size: 15px; box-sizing:border-box; font-style: normal; }
+.wpsm-button.white{font-family: 'Open Sans', sans-serif;font-weight: 400; border: 1px solid #fff362; background-color: #fff9af; color: #709b1d !important; text-shadow: none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);    margin: 5px 0px;}
 .wpsm-button.white:hover{background-color: #f5f5f5; border: 1px solid #111; }
 .wpsm-button.white:active{box-shadow: inset 0 3px 5px rgba(0,0,0,.125);background: #e6e6e6; border-color: #adadad;}
 .wpsm-button.small  { padding: 5px 12px; line-height: 12px !important; font-size: 12px }
@@ -339,7 +339,7 @@ div.wpsm-tabs ul.ui-tabs-nav li{float:none !important}
 }
 /*VC 4.6.*/
 .vc_tta-tabs.wpsm-tabs .vc_tta-tab > a { color: #555 !important; padding: 10px 20px !important; background-color: #f4f4f4 !important}
-.vc_tta-tabs.wpsm-tabs .vc_tta-tab.vc_active > a {  color: #111 !important; font-weight: bold; background-color: transparent !important;}
+.vc_tta-tabs.wpsm-tabs .vc_tta-tab.vc_active > a {  color: #709b1d !important; font-weight: bold; background-color: transparent !important;}
 .vc_tta-tabs.wpsm-tabs .vc_tta-panels{background-color: transparent !important;border-top-color:transparent !important}
 .vc_tta-tabs.wpsm-tabs .vc_tta-panel.vc_active .vc_tta-panel-heading a:after{ content: "\f107"; text-align: right; font-family: FontAwesome;  position: absolute;top: 12px;right: 15px;}
 .vc_tta-tabs.wpsm-tabs .vc_tta-panel .vc_tta-panel-body{background-color: transparent !important;}
@@ -351,8 +351,15 @@ div.wpsm-tabs ul.ui-tabs-nav li{float:none !important}
   border-top-color: transparent !important;
 }
 }
-.n_b_tab.vc_tta-tabs.wpsm-tabs .vc_tta-tab > a { border: none !important; font-size: 1.2em; text-transform: uppercase; background-color: transparent !important; font-weight: bold;}
-.n_b_tab.vc_tta-tabs.wpsm-tabs .vc_tta-tab.vc_active{border-bottom: 3px solid #fb7203 !important; border-top: none !important;}
+.vc_tta.vc_tta-o-no-fill.vc_tta-tabs .vc_tta-tabs-container{background: #709b1d;}
+.n_b_tab.vc_tta-tabs.wpsm-tabs .vc_tta-tab > a {     border: none !important;
+    font-size: 1.2em;
+    background-color: transparent !important;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 200;
+    color: #fff!important;}
+    .vc_tta-color-grey.vc_tta-style-flat .vc_tta-tab.vc_active>a{color:#709b1d!important;}
+.n_b_tab.vc_tta-tabs.wpsm-tabs .vc_tta-tab.vc_active{background: #fff;border-radius: 5px;border-top: 3px solid #a4dc32!important;}
 .n_b_tab.vc_tta-tabs.wpsm-tabs .vc_tta-panels-container{ margin: 10px 0}
 
 /* Testimonial
@@ -416,7 +423,11 @@ div.wpsm-tabs ul.ui-tabs-nav li{float:none !important}
 .vc_row .vc_icon_element.vc_icon_element-outer .vc_icon_element-inner.vc_icon_element-size-xl .vc_icon_element-icon {font-size: 6.5em !important;}
 .vc_row .vc_icon_element.vc_icon_element-outer .vc_icon_element-inner.vc_icon_element-size-xl{ width: 6.5em; height: 6.5em}
 /*Image title*/
-.wpb_singleimage_heading{ font: normal 12px trebuchet; margin-bottom: 10px}
+.wpb_singleimage_heading{ font-family: Open Sans;
+    font-weight: 400;
+    color: #709b1d;
+    margin-bottom: 5px;
+    font-size: 1em;}
 .wpb_single_image .vc_single_image-wrapper{display:block;}
 /*Heading bar*/
 .wpb_progress_bar_heading{ font: normal 18px trebuchet; margin-bottom: 10px}

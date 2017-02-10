@@ -1,6 +1,8 @@
 <?php
 
-require_once ( get_template_directory() . '/shortcodes/tinyMCE/tinyMCE.php'); 
+if (rehub_option('shortcode_enable') == '1') {
+	require_once ( get_template_directory() . '/shortcodes/tinyMCE/tinyMCE.php'); 
+}
 
 //////////////////////////////////////////////////////////////////
 // Buttons
@@ -586,7 +588,7 @@ if( !function_exists('wpsm_price_shortcode') ) {
 	  $Old     = array( '<br />', '<br>' );
 	  $New     = array( '','' );
 	  $content = str_replace( $Old, $New, $content );		
-	   return '<ul class="wpsm-price clearfix">' . $content . '</ul><br class="clear" />';
+	   return '<ul class="wpsm-price clear">' . $content . '</ul><br class="clear" />';
 	}
 	add_shortcode( 'wpsm_price_table', 'wpsm_price_shortcode' );
 }
@@ -872,13 +874,13 @@ function wpsm_member_shortcode( $atts, $content = null ) {
 	$Old     = array( '<br />', '<br>' );
 	$New     = array( '','' );
 	$content = str_replace( $Old, $New, $content );	
-	if($guest_text == '') $guest_text = ' This content visible only for members. You can login <a href="/wp-login.php" class="act-rehub-login-popup">here</a>.';
+	if($guest_text == '') $guest_text = ' Este conteúdo é visível apenas para membros. Você pode entrar <a href="/wp-login.php" class="act-rehub-login-popup">here</a>.';
 	if (is_user_logged_in() && !is_null( $content ) && !is_feed()) {
-		return '<div class="wpsm-members"><strong>'.__("Members only", "rehub_framework").'</strong>' . do_shortcode( $content ) . '</div>';
+		return '<div class="wpsm-members"><strong>'.__("Para membros", "rehub_framework").'</strong>' . do_shortcode( $content ) . '</div>';
 	}
 	else { 
 
-		return '<div class="wpsm-members not-logined"><strong>'.__("Members only", "rehub_framework").'</strong> '.$guest_text.'</div>';	
+		return '<div class="wpsm-members not-logined"><strong>'.__("Para membros", "rehub_framework").'</strong> '.$guest_text.'</div>';	
 		 }
 
 	}	
@@ -1010,14 +1012,13 @@ if( !function_exists('wpsm_shortcode_customer_user') ) {
 function wpsm_shortcode_customer_user( $atts, $content = null ) {
 	//@extract($atts);
 	// Remove all instances of "<p>&nbsp;</p><br>" to avoid extra lines.
-
-	if ( is_user_logged_in() && !in_array( 'customer', (array) $user->roles )  && !is_null( $content ) && !is_feed()) {
 	$content = do_shortcode($content);
 	$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
 	$Old     = array( '<br />', '<br>' );
 	$New     = array( '','' );
 	$content = str_replace( $Old, $New, $content );
-	$user = wp_get_current_user();		
+	$user = wp_get_current_user();
+	if ( is_user_logged_in() && !in_array( 'customer', (array) $user->roles )  && !is_null( $content ) && !is_feed()) {
 		return $content;
 	}		
 	else { 
@@ -1143,7 +1144,7 @@ function wpsm_woocompare_shortcode( $atts, $content = null ) {
 		                        <?php if(!empty($logo)) :?>
 		                            <?php WPSM_image_resizer::show_static_resized_image(array('src'=> $logo, 'lazy'=>false, 'height'=> 50, 'title' => get_the_title(), 'no_thumb_url' => get_template_directory_uri().'/images/default/noimage_100_70.png'));?>
 		                        <?php elseif (!empty($store)) :?>
-		                          	<div class="aff_logo_text"><?php echo $store; ?></div>                          
+		                            <div class="aff_logo_text"><?php echo $store; ?></div>                          
 		                        <?php endif ;?>                                                           
 		                    </a>						
 						<?php endif;?>
@@ -1344,7 +1345,7 @@ function rehub_affbtn_function( $atts, $content = null ) {
 		elseif (rehub_option('rehub_btn_text') !='') :
 			$out .= rehub_option("rehub_btn_text");
 		else :
-			$out .= __("Buy this item", "rehub_framework");	
+			$out .= __("Comprar", "rehub_framework");	
 		endif;
 		$out .='</a></div></div>';
 	endif;            
@@ -1916,15 +1917,15 @@ function wpsm_toptable_shortcode( $atts, $content = null ) {
                     echo do_shortcode(wp_kses_post($row['column_html']));                       
                     $element = $row['column_type'];
                         if ($element == 'meta_value') {
-                            include(rh_locate_template('inc/top/metacolumn.php'));
+                            include(locate_template('inc/top/metacolumn.php'));
                         } else if ($element == 'review_function') {
-                            include(rh_locate_template('inc/top/reviewcolumn.php'));
+                            include(locate_template('inc/top/reviewcolumn.php'));
                         } else if ($element == 'taxonomy_value') {
-                            include(rh_locate_template('inc/top/taxonomyrow.php'));                            
+                            include(locate_template('inc/top/taxonomyrow.php'));                            
                         } else if ($element == 'user_review_function') {
-                            include(rh_locate_template('inc/top/userreviewcolumn.php')); 
+                            include(locate_template('inc/top/userreviewcolumn.php')); 
                         } else if ($element == 'static_user_review_function') {
-                            include(rh_locate_template('inc/top/staticuserreviewcolumn.php'));                                                                       
+                            include(locate_template('inc/top/staticuserreviewcolumn.php'));                                                                       
                         } else {
                             
                         };
@@ -2055,25 +2056,25 @@ function wpsm_topcharts_shortcode( $atts, $content = null ) {
 		                    $element = $row['column_type'];
 		                        echo '<li class="row_chart_'.$pbid.' '.$element.'_row_chart">';
 		                        if ($element == 'meta_value') {                                
-		                            include(rh_locate_template('inc/top/metarow.php'));
+		                            include(locate_template('inc/top/metarow.php'));
 		                        } else if ($element == 'image') {
-		                            include(rh_locate_template('inc/top/imagerow.php'));
+		                            include(locate_template('inc/top/imagerow.php'));
                                 } else if ($element == 'imagefull') {
-                                        include(rh_locate_template('inc/top/imagefullrow.php'));
+                                        include(locate_template('inc/top/imagefullrow.php'));
 		                        } else if ($element == 'title') {
-		                            include(rh_locate_template('inc/top/titlerow.php'));   
+		                            include(locate_template('inc/top/titlerow.php'));   
 		                        } else if ($element == 'taxonomy_value') {
-		                            include(rh_locate_template('inc/top/taxonomyrow.php'));     
+		                            include(locate_template('inc/top/taxonomyrow.php'));     
 		                        } else if ($element == 'affiliate_btn') {
-		                            include(rh_locate_template('inc/top/btnrow.php'));
+		                            include(locate_template('inc/top/btnrow.php'));
 		                        } else if ($element == 'review_link') {
-		                            include(rh_locate_template('inc/top/reviewlinkrow.php'));
+		                            include(locate_template('inc/top/reviewlinkrow.php'));
 		                        } else if ($element == 'review_function') {
-		                            include(rh_locate_template('inc/top/reviewrow.php'));                                    
+		                            include(locate_template('inc/top/reviewrow.php'));                                    
 		                        } else if ($element == 'user_review_function') {
-		                            include(rh_locate_template('inc/top/userreviewcolumn.php'));
+		                            include(locate_template('inc/top/userreviewcolumn.php'));
                                 } else if ($element == 'static_user_review_function') {
-                                    include(rh_locate_template('inc/top/staticuserreviewcolumn.php'));
+                                    include(locate_template('inc/top/staticuserreviewcolumn.php'));
                                 } else if ($element == 'shortcode') {
                                     $shortcodevalue = (isset($row['shortcode_value'])) ? $row['shortcode_value'] : '';
                                     echo do_shortcode(wp_kses_post($shortcodevalue));                                     
@@ -2307,23 +2308,26 @@ function wpsm_woocharts_shortcode( $atts, $content = null ) {
                                 <?php if(!empty($common_attributes)):?>                                
 	                                <li class="row_chart_8 heading_row_chart">
 	                                </li>                                                               
-			                        <?php $i = 8; foreach($common_attributes as $attkey => $attribute):?>
+			                        <?php $i = 8; foreach($common_attributes as $attribute):?>
 			                            <?php $i++;?>
 			                            <li class="row_chart_<?php echo $i;?> meta_value_row_chart">
 											<?php
 												if ( $attribute['is_taxonomy'] ) {
+
 													$values = wc_get_product_terms( $product->id, $attribute['name'], array( 'fields' => 'names' ) );
 													if(!empty($values)){
-														echo apply_filters( 'woocommerce_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );	
+														echo apply_filters( 'woocommerce_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );													
 													}
-												} else {	
-													$customattributes = $product->get_attributes();
-													$custom_attribute_array = wp_list_pluck($customattributes, 'value', 'name' );
+
+
+												} else {
+
 													// Convert pipes to commas and display values
-													$values = array_map( 'trim', explode( WC_DELIMITER, $custom_attribute_array[$attkey] ) );
+													$values = array_map( 'trim', explode( WC_DELIMITER, $attribute['value'] ) );
 													if(!empty($values)){
 														echo apply_filters( 'woocommerce_attribute', wpautop( wptexturize( implode( ', ', $values ) ) ), $attribute, $values );
 													}
+
 												}
 											?>
 			                            </li>
@@ -2580,308 +2584,306 @@ function wpsm_scorebox_shortcode( $atts, $content = null ) {
 	<?php if(isset($atts['title']) && $atts['title']) :?>		
 		<?php $title = $atts['title'];?>
 	<?php else :?>   
-    	<?php $title = __('Average Score', 'rehub_framework');?>
+    	<?php $title = __('Total Score', 'rehub_framework');?>
     <?php endif ;?>
 
 
     <?php $args = array('no_found_rows' => 1,'p' => $revid); $query = new WP_Query($args);?>
     <?php if ($query->have_posts()) : ?>
-    <?php while ($query->have_posts()) : $query->the_post(); global $post; ?>
-    	<div class="wpsm_score_box">    
-			<?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'review') :?>
-		    	<?php $overal_score = rehub_get_overall_score(); 
-		    	if($overal_score !='0') :?>	    	
-		    		<div class="wpsm_score_title">
-		    			<span class="overall-text"><?php echo $title; ?></span>
-		    			<span class="overall-score"><?php echo round($overal_score, 1) ?></span>
-		    		</div>
-		    		<div class="wpsm_inside_scorebox">
-		    			<?php if ($simplestar == 'yes') :?><div class="rating_bar"><?php echo rehub_get_user_rate() ; ?></div><?php endif ;?>
-			    		<?php if ($criterias == 'editor' || $criterias == 'both') :?>
-			    			<?php $thecriteria = vp_metabox('rehub_post.review_post.0.review_post_criteria'); $firstcriteria = $thecriteria[0]['review_post_name']; ?>
-				    		<?php if($firstcriteria) : ?>
-				    		<div class="rate_bar_wrap">
-								<div class="review-criteria">
-									<?php foreach ($thecriteria as $criteria) { ?>
-										<?php $perc_criteria = $criteria['review_post_score']*10; ?>
-										<div class="rate-bar clearfix" data-percent="<?php echo $perc_criteria; ?>%">
-											<div class="rate-bar-title"><span><?php echo $criteria['review_post_name']; ?></span></div>
-											<div class="rate-bar-bar r_score_<?php echo round($criteria['review_post_score']); ?>"></div>
-											<div class="rate-bar-percent"><?php echo $criteria['review_post_score']; ?></div>
-										</div>
+    <?php while ($query->have_posts()) : $query->the_post(); global $post; ?>    
+		<?php if(vp_metabox('rehub_post.rehub_framework_post_type') == 'review') :?>
+	    	<?php $overal_score = rehub_get_overall_score(); 
+	    	if($overal_score !='0') :?>
+	    	<div class="wpsm_score_box">
+	    		<div class="wpsm_score_title">
+	    			<span class="overall-text"><?php echo $title; ?></span>
+	    			<span class="overall-score"><?php echo round($overal_score, 1) ?></span>
+	    		</div>
+	    		<div class="wpsm_inside_scorebox">
+	    			<?php if ($simplestar == 'yes') :?><div class="rating_bar"><?php echo rehub_get_user_rate() ; ?></div><?php endif ;?>
+		    		<?php if ($criterias == 'editor' || $criterias == 'both') :?>
+		    			<?php $thecriteria = vp_metabox('rehub_post.review_post.0.review_post_criteria'); $firstcriteria = $thecriteria[0]['review_post_name']; ?>
+			    		<?php if($firstcriteria) : ?>
+			    		<div class="rate_bar_wrap">
+							<div class="review-criteria">
+								<?php foreach ($thecriteria as $criteria) { ?>
+									<?php $perc_criteria = $criteria['review_post_score']*10; ?>
+									<div class="rate-bar clearfix" data-percent="<?php echo $perc_criteria; ?>%">
+										<div class="rate-bar-title"><span><?php echo $criteria['review_post_name']; ?></span></div>
+										<div class="rate-bar-bar r_score_<?php echo round($criteria['review_post_score']); ?>"></div>
+										<div class="rate-bar-percent"><?php echo $criteria['review_post_score']; ?></div>
+									</div>
+								<?php } ?>
+							</div>
+						</div>
+						<?php endif; ?>
+		    		<?php endif ;?>	
+		    		<?php if ($criterias == 'user' || $criterias == 'both') :?>
+		    			<?php $postAverage = get_post_meta(get_the_ID(), 'post_user_average', true); ?>
+			    		<?php if($postAverage !='0' && $postAverage !='') : ?>
+						<div class="rate_bar_wrap">	
+							<?php $user_rates = get_post_meta(get_the_ID(), 'post_user_raitings', true); $usercriterias = $user_rates['criteria'];  ?>
+							<div class="review-criteria user-review-criteria">
+								<div class="r_criteria">
+									<?php foreach ($usercriterias as $usercriteria) { ?>
+									<?php $perc_criteria = $usercriteria['average']*10; ?>
+									<div class="rate-bar user-rate-bar clearfix" data-percent="<?php echo $perc_criteria; ?>%">
+										<div class="rate-bar-title"><span><?php echo $usercriteria['name']; ?></span></div>
+										<div class="rate-bar-bar r_score_<?php echo round($usercriteria['average']); ?>"></div>
+										<div class="rate-bar-percent"><?php echo $usercriteria['average']; ?></div>
+									</div>
 									<?php } ?>
 								</div>
 							</div>
-							<?php endif; ?>
-			    		<?php endif ;?>	
-			    		<?php if ($criterias == 'user' || $criterias == 'both') :?>
-			    			<?php $postAverage = get_post_meta(get_the_ID(), 'post_user_average', true); ?>
-				    		<?php if($postAverage !='0' && $postAverage !='') : ?>
-							<div class="rate_bar_wrap">	
-								<?php $user_rates = get_post_meta(get_the_ID(), 'post_user_raitings', true); $usercriterias = $user_rates['criteria'];  ?>
-								<div class="review-criteria user-review-criteria">
-									<div class="r_criteria">
-										<?php foreach ($usercriterias as $usercriteria) { ?>
-										<?php $perc_criteria = $usercriteria['average']*10; ?>
-										<div class="rate-bar user-rate-bar clearfix" data-percent="<?php echo $perc_criteria; ?>%">
-											<div class="rate-bar-title"><span><?php echo $usercriteria['name']; ?></span></div>
-											<div class="rate-bar-bar r_score_<?php echo round($usercriteria['average']); ?>"></div>
-											<div class="rate-bar-percent"><?php echo $usercriteria['average']; ?></div>
-										</div>
-										<?php } ?>
-									</div>
-								</div>
+						</div>
+						<?php endif; ?>
+		    		<?php endif ;?>	
+					<?php if($proscons):?>
+						<?php 	
+					    	$prosvalues = vp_metabox('rehub_post.review_post.0.review_post_pros_text');	
+							$consvalues = vp_metabox('rehub_post.review_post.0.review_post_cons_text');
+						?> 
+						<!-- PROS CONS BLOCK-->
+						<div class="prosconswidget">
+						<?php if(!empty($prosvalues)):?>
+							<div class="wpsm_pros mb30 mt10">
+								<div class="title_pros"><?php echo $prostitle;?></div>
+								<ul>		
+									<?php $prosvalues = explode(PHP_EOL, $prosvalues);?>
+									<?php foreach ($prosvalues as $prosvalue) {
+										echo '<li>'.$prosvalue.'</li>';
+									}?>
+								</ul>
 							</div>
-							<?php endif; ?>
-			    		<?php endif ;?>	
-						<?php if($proscons):?>
-							<?php 	
-						    	$prosvalues = vp_metabox('rehub_post.review_post.0.review_post_pros_text');	
-								$consvalues = vp_metabox('rehub_post.review_post.0.review_post_cons_text');
-							?> 
-							<!-- PROS CONS BLOCK-->
-							<div class="prosconswidget">
-							<?php if(!empty($prosvalues)):?>
-								<div class="wpsm_pros mb30 mt10">
-									<div class="title_pros"><?php echo $prostitle;?></div>
-									<ul>		
-										<?php $prosvalues = explode(PHP_EOL, $prosvalues);?>
-										<?php foreach ($prosvalues as $prosvalue) {
-											echo '<li>'.$prosvalue.'</li>';
-										}?>
-									</ul>
-								</div>
-							<?php endif;?>	
-							<?php if(!empty($consvalues)):?>
-								<div class="wpsm_cons">
-									<div class="title_cons"><?php echo $constitle;?></div>
-									<ul>
-										<?php $consvalues = explode(PHP_EOL, $consvalues);?>
-										<?php foreach ($consvalues as $consvalue) {
-											echo '<li>'.$consvalue.'</li>';
-										}?>
-									</ul>
-								</div>
-							<?php endif;?>
-							</div>	
-							<!-- PROS CONS BLOCK END-->
-						<?php endif;?>		    		    		
-			    		<?php if ($offerbtn=="yes") :?>
-			    			<?php $multiofferrows = get_post_meta($post->ID, 'rehub_multioffer_group', true);?>
-			    			<?php if (!empty($multiofferrows[0]['multioffer_url'])) :?>
-			    				<div class="btn_score_btm rh_deal_block">
-			    				<?php foreach ($multiofferrows as $key => $value):?>
-			    					<?php 
-			    						$brand_image_url = $brand_link = $brandtermname = $brandterm = '';
-			    						$offer_post_url = (!empty($value['multioffer_url'])) ? $value['multioffer_url'] : '';
-										$offer_url = apply_filters('rh_post_multioffer_url_filter', $offer_post_url );
-										$offer_price = (!empty($value['multioffer_price'])) ? $value['multioffer_price'] : '';
-										$offer_price_old = (!empty($value['multioffer_price_old'])) ? $value['multioffer_price_old'] : '';
-										$offer_btn_text = (!empty($value['multioffer_btn_text'])) ? $value['multioffer_btn_text'] : '';	
-										$offer_title = (!empty($value['multioffer_name'])) ? $value['multioffer_name'] : '';
-										$offer_badge = (!empty($value['featured_multioffer'])) ? $value['featured_multioffer'] : '';
-										$offer_user = (!empty($value['multioffer_user'])) ? $value['multioffer_user'] : '';
-										$offer_brand = (!empty($value['multioffer_brand'])) ? $value['multioffer_brand'] : '';	
-										$offer_coupon = (!empty($value['multioffer_coupon'])) ? $value['multioffer_coupon'] : '';
-										if($offer_brand){
-											$brandterm = get_term((int)$offer_brand);
-											if(!empty($brandterm) && !is_wp_error($brandterm )){
-												$brand_image_url = get_term_meta((int)$offer_brand, 'brandimage', true );
-									        	$brand_link = get_term_link((int)$offer_brand );
-									        	$brandtermname = $brandterm->name;
-											}
-										}																									
-									?>
-									<?php $featured_class = ($offer_badge) ? ' featured_multioffer' : ''; ?>
-									<div class="deal_block_row">
-										<div class="rh-deal-details-noimage">
-												<?php if(!empty($offer_coupon)) : ?>
-													<div class="redemptionText"><?php _e('Use Coupon Code:', 'rehub_framework');?><span class="code"><?php echo $offer_coupon ?></span></div>	
-											  	<?php endif;?>									            
-											<div class="rh-deal-pricetable">
-												<div class="rh-deal-left">
-													<div class="rh-deal-name"><h5><a href="<?php echo esc_url($offer_url); ?>"><?php echo $offer_title;?></a></h5></div>
-									                <?php if ($brand_link):?>
-									                	<div class="rh-deal-brandlogo">
-								                        <a class="retailer_multioffer" href="<?php echo $brand_link ?>">
-									                        <?php if($brand_image_url) :?>
-	            												<?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> false, 'src'=> $brand_image_url, 'crop'=> false, 'width'=> 70, 'height'=> 70));?>
-	            											<?php else:?>
-	            												<?php echo $brandtermname; ?>
-	            											<?php endif;?>
-	        											</a>
-	        											</div>
-	        										<?php else:?>
-	        											<div class="mb10 font90">
-	        											<?php echo rehub_get_site_favicon(esc_url($offer_url)); ?>
-	        											</div>
-									                <?php endif;?>														
-													<div class="rh-deal-tag">												
-										                <?php if ($offer_user):?>
-										                    <span>
-										                        <?php _e('Posted by:', 'rehub_framework');?>
-										                        <?php if ( class_exists( 'BuddyPress' ) ):?>
-										                             <a class="admin" href="<?php echo bp_core_get_user_domain( $offer_user ) ?>"><?php the_author_meta( 'display_name', $offer_user ); ?>
-										                             </a>
-										                        <?php else:?>
-										                             <a class="admin" href="<?php echo get_author_posts_url( $offer_user ) ?>"><?php the_author_meta( 'display_name', $offer_user ); ?>
-										                             </a>
-										                        <?php endif;?>
-										                    </span>
-										                <?php endif;?> 							
-													</div>
+						<?php endif;?>	
+						<?php if(!empty($consvalues)):?>
+							<div class="wpsm_cons">
+								<div class="title_cons"><?php echo $constitle;?></div>
+								<ul>
+									<?php $consvalues = explode(PHP_EOL, $consvalues);?>
+									<?php foreach ($consvalues as $consvalue) {
+										echo '<li>'.$consvalue.'</li>';
+									}?>
+								</ul>
+							</div>
+						<?php endif;?>
+						</div>	
+						<!-- PROS CONS BLOCK END-->
+					<?php endif;?>		    		    		
+		    		<?php if ($offerbtn=="yes") :?>
+		    			<?php $multiofferrows = get_post_meta($post->ID, 'rehub_multioffer_group', true);?>
+		    			<?php if (!empty($multiofferrows[0]['multioffer_url'])) :?>
+		    				<div class="btn_score_btm rh_deal_block">
+		    				<?php foreach ($multiofferrows as $key => $value):?>
+		    					<?php 
+		    						$brand_image_url = $brand_link = $brandtermname = $brandterm = '';
+		    						$offer_post_url = (!empty($value['multioffer_url'])) ? $value['multioffer_url'] : '';
+									$offer_url = apply_filters('rh_post_multioffer_url_filter', $offer_post_url );
+									$offer_price = (!empty($value['multioffer_price'])) ? $value['multioffer_price'] : '';
+									$offer_price_old = (!empty($value['multioffer_price_old'])) ? $value['multioffer_price_old'] : '';
+									$offer_btn_text = (!empty($value['multioffer_btn_text'])) ? $value['multioffer_btn_text'] : '';	
+									$offer_title = (!empty($value['multioffer_name'])) ? $value['multioffer_name'] : '';
+									$offer_badge = (!empty($value['featured_multioffer'])) ? $value['featured_multioffer'] : '';
+									$offer_user = (!empty($value['multioffer_user'])) ? $value['multioffer_user'] : '';
+									$offer_brand = (!empty($value['multioffer_brand'])) ? $value['multioffer_brand'] : '';	
+									$offer_coupon = (!empty($value['multioffer_coupon'])) ? $value['multioffer_coupon'] : '';
+									if($offer_brand){
+										$brandterm = get_term((int)$offer_brand);
+										if(!empty($brandterm) && !is_wp_error($brandterm )){
+											$brand_image_url = get_term_meta((int)$offer_brand, 'brandimage', true );
+								        	$brand_link = get_term_link((int)$offer_brand );
+								        	$brandtermname = $brandterm->name;
+										}
+									}																									
+								?>
+								<?php $featured_class = ($offer_badge) ? ' featured_multioffer' : ''; ?>
+								<div class="deal_block_row">
+									<div class="rh-deal-details-noimage">
+											<?php if(!empty($offer_coupon)) : ?>
+												<div class="redemptionText"><?php _e('Use Coupon Code:', 'rehub_framework');?><span class="code"><?php echo $offer_coupon ?></span></div>	
+										  	<?php endif;?>									            
+										<div class="rh-deal-pricetable">
+											<div class="rh-deal-left">
+												<div class="rh-deal-name"><h5><a href="<?php echo esc_url($offer_url); ?>"><?php echo $offer_title;?></a></h5></div>
+								                <?php if ($brand_link):?>
+								                	<div class="rh-deal-brandlogo">
+							                        <a class="retailer_multioffer" href="<?php echo $brand_link ?>">
+								                        <?php if($brand_image_url) :?>
+            												<?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> false, 'src'=> $brand_image_url, 'crop'=> false, 'width'=> 70, 'height'=> 70));?>
+            											<?php else:?>
+            												<?php echo $brandtermname; ?>
+            											<?php endif;?>
+        											</a>
+        											</div>
+        										<?php else:?>
+        											<div class="mb10 font90">
+        											<?php echo rehub_get_site_favicon(esc_url($offer_url)); ?>
+        											</div>
+								                <?php endif;?>														
+												<div class="rh-deal-tag">												
+									                <?php if ($offer_user):?>
+									                    <span>
+									                        <?php _e('Posted by:', 'rehub_framework');?>
+									                        <?php if ( class_exists( 'BuddyPress' ) ):?>
+									                             <a class="admin" href="<?php echo bp_core_get_user_domain( $offer_user ) ?>"><?php the_author_meta( 'display_name', $offer_user ); ?>
+									                             </a>
+									                        <?php else:?>
+									                             <a class="admin" href="<?php echo get_author_posts_url( $offer_user ) ?>"><?php the_author_meta( 'display_name', $offer_user ); ?>
+									                             </a>
+									                        <?php endif;?>
+									                    </span>
+									                <?php endif;?> 							
 												</div>
-												<div class="rh-deal-right">
-													<?php if(!empty($offer_price)) : ?>
-							                            <div class="rh-deal-price">
-							                                <ins><?php echo $offer_price ?></ins>
-							                                <?php if(!empty($offer_price_old)) : ?>
-								                                <del>
-								                                    <?php echo $offer_price_old ?>
-								                                </del>
-							                                <?php endif ;?>                                
-							                            </div>
-							                        <?php endif ;?>
-													<div class="rh-deal-btn">
-										                <a href="<?php echo $offer_url ?>" class="re_track_btn rh-deal-compact-btn btn_offer_block" target="_blank" rel="nofollow">
-										                    <?php if($offer_btn_text !='') :?>
-										                        <?php echo $offer_btn_text ; ?>
-										                    <?php elseif(rehub_option('rehub_btn_text') !='') :?>
-										                        <?php echo rehub_option('rehub_btn_text') ; ?>
-										                    <?php else :?>
-										                        <?php _e('Buy Now', 'rehub_framework') ?>
-										                    <?php endif ;?>
-										                </a>	            					
-													</div>						
-												</div>					
 											</div>
+											<div class="rh-deal-right">
+												<?php if(!empty($offer_price)) : ?>
+						                            <div class="rh-deal-price">
+						                                <ins><?php echo $offer_price ?></ins>
+						                                <?php if(!empty($offer_price_old)) : ?>
+							                                <del>
+							                                    <?php echo $offer_price_old ?>
+							                                </del>
+						                                <?php endif ;?>                                
+						                            </div>
+						                        <?php endif ;?>
+												<div class="rh-deal-btn">
+									                <a href="<?php echo $offer_url ?>" class="re_track_btn rh-deal-compact-btn btn_offer_block" target="_blank" rel="nofollow">
+									                    <?php if($offer_btn_text !='') :?>
+									                        <?php echo $offer_btn_text ; ?>
+									                    <?php elseif(rehub_option('rehub_btn_text') !='') :?>
+									                        <?php echo rehub_option('rehub_btn_text') ; ?>
+									                    <?php else :?>
+									                        <?php _e('Buy Now', 'rehub_framework') ?>
+									                    <?php endif ;?>
+									                </a>	            					
+												</div>						
+											</div>					
 										</div>
-									</div>								
-			    				<?php endforeach;?>
+									</div>
+								</div>								
+		    				<?php endforeach;?>
+		    				</div>
+		    			<?php else:?>
+			    			<div class="btn_score_btm">
+			    				<?php rehub_create_btn('no')?>
+			    				<div class="centered_brand_logo">
+			    				<?php WPSM_Postfilters::re_show_brand_tax('logo'); //show brand logo?>
 			    				</div>
-			    			<?php else:?>
-				    			<div class="btn_score_btm">
-				    				<?php rehub_create_btn('no')?>
-				    				<div class="centered_brand_logo">
-				    				<?php WPSM_Postfilters::re_show_brand_tax('logo'); //show brand logo?>
-				    				</div>
-				    			</div>
-			    			<?php endif ;?>
-			    		<?php endif ;?>
-		    		</div>
-		    	<?php endif;?>	    	
-		    <?php endif;?>
-    		<?php if ($ce_enable) :?>
-    			<div class="wpsm_inside_scorebox">
-	                <?php
-	                    $cegg_field_array = rehub_option('save_meta_for_ce');
-	                    $cegg_fields = array();
-	                    if (!empty($cegg_field_array) && is_array($cegg_field_array)) {
-	                        foreach ($cegg_field_array as $cegg_field) {
-	                            $cegg_field_value = get_post_meta ($post->ID, '_cegg_data_'.$cegg_field.'', true);
-	                            if (!empty ($cegg_field_value) && is_array($cegg_field_value)) {
-	                                $cegg_fields[$cegg_field]= $cegg_field_value;
-	                            }       
-	                        }		                        
-	                        if (!empty($cegg_fields) && is_array($cegg_fields)) {
-								$all_items = array(); 
-							    foreach ($cegg_fields as $module_id => $items) {
-							        foreach ($items as $item_ar) {
-							            $item_ar['module_id'] = $module_id;
-							            $all_items[] = $item_ar;
+			    			</div>
+		    			<?php endif ;?>
+		    		<?php endif ;?>
+		    		<?php if ($ce_enable) :?>
+		                <?php
+		                    $cegg_field_array = rehub_option('save_meta_for_ce');
+		                    $cegg_fields = array();
+		                    if (!empty($cegg_field_array) && is_array($cegg_field_array)) {
+		                        foreach ($cegg_field_array as $cegg_field) {
+		                            $cegg_field_value = get_post_meta ($post->ID, '_cegg_data_'.$cegg_field.'', true);
+		                            if (!empty ($cegg_field_value) && is_array($cegg_field_value)) {
+		                                $cegg_fields[$cegg_field]= $cegg_field_value;
+		                            }       
+		                        }		                        
+		                        if (!empty($cegg_fields) && is_array($cegg_fields)) {
+    								$all_items = array(); 
+								    foreach ($cegg_fields as $module_id => $items) {
+								        foreach ($items as $item_ar) {
+								            $item_ar['module_id'] = $module_id;
+								            $all_items[] = $item_ar;
 
-							        }       
-							    }		                        	
-	                        	?>
-				    			<div class="btn_score_btm rh_deal_block">		                        	
-		                        	<?php foreach ($all_items as $key => $item) :?>
-		                        		<?php                             
-		                        			$currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : '';                                
-	                        				$offer_price = (!empty($item['price'])) ? RhPriceTemplateHelper::formatPriceCurrency($item['price'], $currency_code) : '';
-	                        				$offer_price_old = (!empty($item['priceOld'])) ? RhPriceTemplateHelper::formatPriceCurrency($item['priceOld'], $currency_code) : '';    
-	                        				$offer_title = (!empty($item['title'])) ? $item['title'] : '';
-	                        				$offer_post_url = (!empty($item['url'])) ? $item['url'] : '';
-	                        				$offer_url = apply_filters('rh_post_multioffer_url_filter', $offer_post_url );
-	                        			?>
-								        <?php if (!empty($item['domain'])):?>
-								            <?php $domain = $item['domain'];?>
-								        <?php elseif (!empty($item['extra']['domain'])):?>
-								            <?php $domain = $item['extra']['domain'];?>
-								        <?php else:?>
-								            <?php $domain = '';?>        
-								        <?php endif;?>  	                            			
-	                        			<?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
-								        <?php if (!empty($item['logo'])) :?>
-								            <?php $logo = $item['logo']; ?>	
-								        <?php elseif (!empty($item['extra']['logo'])) :?>
-								            <?php $logo = $item['extra']['logo']; ?>
-								        <?php elseif (!empty($item['extra']['MerchantLogoURL'])) :?>
-								            <?php $logo = $item['extra']['MerchantLogoURL']; ?>
-								        <?php elseif (!empty($item['extra']['programLogo'])) :?>
-								            <?php $logo = $item['extra']['programLogo']; ?>                         
-								        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Amazon') :?>
-								            <?php $logo = get_template_directory_uri().'/images/logos/amazon.png' ;?>
-								        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Aliexpress') :?>
-								            <?php $logo = get_template_directory_uri().'/images/logos/aliexpress.png' ;?> 
-								        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Ebay') :?>
-								            <?php $logo = get_template_directory_uri().'/images/logos/ebay.png' ;?> 
-								        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Flipkart') :?>
-								            <?php $logo = get_template_directory_uri().'/images/logos/flipkart.png' ;?>  
-								        <?php elseif(isset($item['module_id']) && $item['module_id'] =='PayTM') :?>
-								            <?php $logo = get_template_directory_uri().'/images/logos/paytm.jpg' ;?>
-								        <?php elseif(isset($item['module_id']) && !empty($domain)) :?>
-								                <?php $logo = rh_ae_logo_get('http://'.$domain); ?>         
-								        <?php else :?>
-								            <?php $logo = ''; ?>
-								        <?php endif;?>
-										<div class="deal_block_row">									
-											<div class="rh-deal-pricetable">
-												<div class="rh-deal-left">
-													<div class="rh-deal-name">
-														<h5><a href="<?php echo esc_url($offer_url); ?>"><?php echo $offer_title;?></a></h5>
+								        }       
+								    }		                        	
+		                        	?>
+					    			<div class="btn_score_btm rh_deal_block">		                        	
+			                        	<?php foreach ($all_items as $key => $item) :?>
+			                        		<?php                             
+			                        			$currency_code = (!empty($item['currencyCode'])) ? $item['currencyCode'] : '';                                
+	                            				$offer_price = (!empty($item['price'])) ? RhPriceTemplateHelper::formatPriceCurrency($item['price'], $currency_code) : '';
+	                            				$offer_price_old = (!empty($item['priceOld'])) ? RhPriceTemplateHelper::formatPriceCurrency($item['priceOld'], $currency_code) : '';    
+	                            				$offer_title = (!empty($item['title'])) ? $item['title'] : '';
+	                            				$offer_post_url = (!empty($item['url'])) ? $item['url'] : '';
+	                            				$offer_url = apply_filters('rh_post_multioffer_url_filter', $offer_post_url );
+	                            			?>
+									        <?php if (!empty($item['domain'])):?>
+									            <?php $domain = $item['domain'];?>
+									        <?php elseif (!empty($item['extra']['domain'])):?>
+									            <?php $domain = $item['extra']['domain'];?>
+									        <?php else:?>
+									            <?php $domain = '';?>        
+									        <?php endif;?>  	                            			
+	                            			<?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
+									        <?php if (!empty($item['logo'])) :?>
+									            <?php $logo = $item['logo']; ?>	
+									        <?php elseif (!empty($item['extra']['logo'])) :?>
+									            <?php $logo = $item['extra']['logo']; ?>
+									        <?php elseif (!empty($item['extra']['MerchantLogoURL'])) :?>
+									            <?php $logo = $item['extra']['MerchantLogoURL']; ?>
+									        <?php elseif (!empty($item['extra']['programLogo'])) :?>
+									            <?php $logo = $item['extra']['programLogo']; ?>                         
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Amazon') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/amazon.png' ;?>
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Aliexpress') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/aliexpress.png' ;?> 
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Ebay') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/ebay.png' ;?> 
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='Flipkart') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/flipkart.png' ;?>  
+									        <?php elseif(isset($item['module_id']) && $item['module_id'] =='PayTM') :?>
+									            <?php $logo = get_template_directory_uri().'/images/logos/paytm.jpg' ;?>
+									        <?php elseif(isset($item['module_id']) && !empty($domain)) :?>
+									                <?php $logo = rh_ae_logo_get('http://'.$domain); ?>         
+									        <?php else :?>
+									            <?php $logo = ''; ?>
+									        <?php endif;?>
+											<div class="deal_block_row">									
+												<div class="rh-deal-pricetable">
+													<div class="rh-deal-left">
+														<div class="rh-deal-name">
+															<h5><a href="<?php echo esc_url($offer_url); ?>"><?php echo $offer_title;?></a></h5>
+														</div>
+										                <?php if ($logo):?>
+										                	<div class="rh-deal-brandlogo">
+		            											<?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> false, 'src'=> $logo, 'crop'=> false, 'width'=> 70, 'height'=> 70));?>
+		        											</div>
+		        										<?php elseif ($merchant):?>
+		        											<div class="rh-deal-tag">
+		        												<span><?php echo $merchant;?></span>
+		        											</div>
+										                <?php endif;?>
 													</div>
-									                <?php if ($logo):?>
-									                	<div class="rh-deal-brandlogo">
-	            											<?php WPSM_image_resizer::show_static_resized_image(array('lazy'=> false, 'src'=> $logo, 'crop'=> false, 'width'=> 70, 'height'=> 70));?>
-	        											</div>
-	        										<?php elseif ($merchant):?>
-	        											<div class="rh-deal-tag">
-	        												<span><?php echo $merchant;?></span>
-	        											</div>
-									                <?php endif;?>
+													<div class="rh-deal-right">
+														<?php if(!empty($offer_price)) : ?>
+								                            <div class="rh-deal-price">
+								                                <ins><?php echo $offer_price ?></ins>
+								                                <?php if(!empty($offer_price_old)) : ?>
+									                                <del>
+									                                    <?php echo $offer_price_old ?>
+									                                </del>
+								                                <?php endif ;?>                                
+								                            </div>
+								                        <?php endif ;?>
+														<div class="rh-deal-btn">
+											                <a href="<?php echo $offer_url ?>" class="re_track_btn rh-deal-compact-btn btn_offer_block" target="_blank" rel="nofollow">
+											                    <?php if(rehub_option('rehub_btn_text') !='') :?>
+											                        <?php echo rehub_option('rehub_btn_text') ; ?>
+											                    <?php else :?>
+											                        <?php _e('Buy Now', 'rehub_framework') ?>
+											                    <?php endif ;?>
+											                </a>	            					
+														</div>						
+													</div>					
 												</div>
-												<div class="rh-deal-right">
-													<?php if(!empty($offer_price)) : ?>
-							                            <div class="rh-deal-price">
-							                                <ins><?php echo $offer_price ?></ins>
-							                                <?php if(!empty($offer_price_old)) : ?>
-								                                <del>
-								                                    <?php echo $offer_price_old ?>
-								                                </del>
-							                                <?php endif ;?>                                
-							                            </div>
-							                        <?php endif ;?>
-													<div class="rh-deal-btn">
-										                <a href="<?php echo $offer_url ?>" class="re_track_btn rh-deal-compact-btn btn_offer_block" target="_blank" rel="nofollow">
-										                    <?php if(rehub_option('rehub_btn_text') !='') :?>
-										                        <?php echo rehub_option('rehub_btn_text') ; ?>
-										                    <?php else :?>
-										                        <?php _e('Buy Now', 'rehub_framework') ?>
-										                    <?php endif ;?>
-										                </a>	            					
-													</div>						
-												</div>					
-											</div>
-										</div>                             			
-		                        	<?php endforeach;?>
-		                        </div>
-	                        	<?php
-	                        }
-	                    }
-	                ?>	    		
-				</div>
-			<?php endif ;?>		    
-	    </div>
+											</div>                             			
+			                        	<?php endforeach;?>
+			                        </div>
+		                        	<?php
+		                        }
+		                    }
+		                ?>	    		
+	    			<?php endif ;?>
+	    		</div>
+	    	</div>
+	    	<?php endif;?>	    	
+	    <?php endif;?>
     <?php endwhile; endif; wp_reset_postdata(); ?>
 
     <?php 
@@ -2943,7 +2945,7 @@ if (is_user_logged_in()) {
 	$mycredpoint = ( function_exists( 'mycred_get_users_fcred' ) ) ? mycred_get_users_fcred($user_id) : '';    
 	if ( function_exists('bp_notifications_get_notifications_for_user')) {
 		$notifications = bp_notifications_get_notifications_for_user($user_id, 'object');
-		$notification_bp_item .='<li class="bp-profile-edit-menu-item menu-item"><a href="'.bp_core_get_user_domain( $user_id ).'"><i class="fa fa-cogs"></i></i><span>'. __("Edit Profile", "rehub_framework") .'</span></a></li>';		
+		$notification_bp_item .='<li class="bp-profile-edit-menu-item menu-item"><a href="'.bp_core_get_user_domain( $user_id ).'"><i class="fa fa-cogs"></i></i><span>'. __("Editar perfil", "rehub_framework") .'</span></a></li>';		
 		if (!empty($notifications)){
 			$notice_bp_number = count($notifications);
 			$notice_number = 0;
@@ -2962,24 +2964,21 @@ if (is_user_logged_in()) {
     $output .= '<ul class="user-dropdown-intop-menu">';
         $output .= '<li class="user-name-and-badges-intop"><span class="user-image-in-name">'.get_avatar( $user_id, 35 ).'</span>';
         $output .=$current_user->display_name;
-        if(function_exists('bp_get_member_type')){
-			$membertype = bp_get_member_type($user_id);
-			$membertype_object = bp_get_member_type_object($membertype);
-			$membertype_label = (!empty($membertype_object) && is_object($membertype_object)) ? $membertype_object->labels['singular_name'] : '';        	
-        	$output .='<br /><span class="rh_user_s2_label">'.$membertype_label.'</span>';
+        if(defined('WS_PLUGIN__S2MEMBER_MIN_PRO_VERSION')){
+        	$output .='<br /><span class="rh_user_s2_label">'.get_user_field("s2member_access_label").'</span>';
         }        
         if (!empty($mycredpoint)){
         	$output .='<br /><i class="fa fa-star-o"></i> '.$mycredpoint.'';
         }
         $output .= '</li>';
         if ($profile_url) :
-        	$output .= '<li class="user-profile-link-intop menu-item"><a href="'. esc_url(get_the_permalink($profile_url)) .'"><i class="fa fa-user"></i><span>'. __("My profile", "rehub_framework") .'</span></a></li>';
+        	$output .= '<li class="user-profile-link-intop menu-item"><a href="'. esc_url(get_the_permalink($profile_url)) .'"><i class="fa fa-user"></i><span>'. __("Meu Perfil", "rehub_framework") .'</span></a></li>';
         endif;
         if ($sumbit_url) :
-        	$output .= '<li class="user-addsome-link-intop menu-item"><a href="'. esc_url(get_the_permalink($sumbit_url)) .'"><i class="fa fa-cloud-upload"></i><span>'. __("Submit a Post", "rehub_framework") .'</span></a></li>';
+        	$output .= '<li class="user-addsome-link-intop menu-item"><a href="'. esc_url(get_the_permalink($sumbit_url)) .'"><i class="fa fa-cloud-upload"></i><span>'. __("Enviar um artigo", "rehub_framework") .'</span></a></li>';
         endif; 
         if ($edit_url) :
-        	$output .= '<li class="user-editposts-link-intop menu-item"><a href="'. esc_url(get_the_permalink($edit_url)) .'"><i class="fa fa-pencil"></i><span>'. __("Edit My Posts", "rehub_framework") .'</span></a></li>';
+        	$output .= '<li class="user-editposts-link-intop menu-item"><a href="'. esc_url(get_the_permalink($edit_url)) .'"><i class="fa fa-pencil"></i><span>'. __("Editar meus artigos", "rehub_framework") .'</span></a></li>';
         endif;  
         if (defined('wcv_plugin_dir')) :
 		    if (class_exists('WCV_Vendors') && class_exists('WCVendors_Pro') && WCV_Vendors::is_vendor($user_id) ) {
@@ -2989,28 +2988,31 @@ if (is_user_logged_in()) {
 		    	$redirect_to = get_permalink(WC_Vendors::$pv_options->get_option( 'vendor_dashboard_page' ));
 		    }
         	if (!empty($redirect_to)){
-	        	$output .= '<li class="user-editshop-link-intop menu-item"><a href="'. esc_url($redirect_to) .'"><i class="fa fa-shopping-bag" aria-hidden="true"></i><span>'. __("Manage Your Shop", "rehub_framework") .'</span></a></li>';        	
+	        	$output .= '<li class="user-editshop-link-intop menu-item"><a href="'. esc_url($redirect_to) .'"><i class="fa fa-shopping-bag" aria-hidden="true"></i><span>'. __("Gerenciar minha loja", "rehub_framework") .'</span></a></li>';        	
         	}
         endif;                            
         if(has_nav_menu('user_logged_in_menu')):
         	$output .= wp_nav_menu( array( 'theme_location' => 'user_logged_in_menu','menu_class' => '','container' => false,'depth' => 1,'items_wrap'=> '%3$s', 'echo' => false ) );
         endif;
+        $output .= '<li class="user-editshop-link-intop menu-item"><a href="'. esc_url($redirect_to) .'product"><i class="fa fa-gift" aria-hidden="true"></i><span>'. __("Produtos da Loja", "rehub_framework") .'</span></a></li>';   
+        $output .= '<li class="user-editshop-link-intop menu-item"><a href="'. esc_url($redirect_to) .'order"><i class="fa fa-truck" aria-hidden="true"></i><span>'. __("Pedidos da Loja", "rehub_framework") .'</span></a></li>'; 
+        $output .= '<li class="user-editshop-link-intop menu-item"><a href="'. esc_url($redirect_to) .'settings"><i class="fa fa-check-square-o" aria-hidden="true"></i><span>'. __("Configurações da loja", "rehub_framework") .'</span></a></li>';        
         $output .=$notification_bp_item;
-        $output .= '<li class="user-logout-link-intop menu-item"><a href="'. wp_logout_url( home_url()) .'"><i class="fa fa-lock"></i><span>'. __("Log out", "rehub_framework") .'</span></a></li>';
+        $output .= '<li class="user-logout-link-intop menu-item"><a href="'. wp_logout_url( home_url()) .'"><i class="fa fa-lock"></i><span>'. __("Sair", "rehub_framework") .'</span></a></li>';
 $output .= '</ul></div>';
 } else {
 	if(get_option('users_can_register')) :
 		if (empty ($loginurl)):
 			if ($wrap =='a'):
-				$output .= '<a class="act-rehub-login-popup menu-item-one-line'.$as_button.$class_show.'" data-type="login" href="#"><i class="fa fa-sign-in"></i><span>'.__("Login / Register", "rehub_framework").'</span></a>';
+				$output .= '<a class="act-rehub-login-popup menu-item-one-line'.$as_button.$class_show.'" data-type="login" href="#"><i class="fa fa-sign-in"></i> <span>'.__("Entrar | Cadastrar", "rehub_framework").'</span> <i class="fa fa-user-circle-o" aria-hidden="true"></i></a>';
 			else:
-				$output .= '<span class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="login"><i class="fa fa-sign-in"></i><span>'.__("Login / Register", "rehub_framework").'</span></span>';
+				$output .= '<span class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="login"><i class="fa fa-sign-in"></i> <span>'.__("Entrar | Cadastrar", "rehub_framework").'</span> <i class="fa fa-user-circle-o" aria-hidden="true"></i></span>';
 			endif;
 		else:
-			$output .= '<span class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="url" data-customurl="'.esc_url($loginurl).'"><i class="fa fa-sign-in"></i><span>'.__("Login / Register", "rehub_framework").'</span></span>';
+			$output .= '<span class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="url" data-customurl="'.esc_url($loginurl).'"><i class="fa fa-sign-in"></i> <span>'.__("Entrar | Cadastrar", "rehub_framework").'</span> <i class="fa fa-user-circle-o" aria-hidden="true"></i></span>';
 		endif;
 	else:
-		$output .= '<a class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="restrict" href="#"><i class="fa fa-sign-in"></i><span>'.__("Login / Register is disabled", "rehub_framework").'</span></a>';
+		$output .= '<a class="act-rehub-login-popup'.$as_button.$class_show.'" data-type="restrict" href="#"><i class="fa fa-sign-in"></i> 	<span>'.__("Entrar / Registro desabilitado", "rehub_framework").'</span></a>';
 	endif;	
 	
 }
@@ -3088,7 +3090,7 @@ function wpsm_comparison_button( $atts, $content = null ) {
 	
 	if($multicats_on =='1' && !empty($multicats_array)) {
 		foreach( $multicats_array as $multicat ){
-			$page_id = (int)$multicat[2];
+			$page_id = $multicat[2];
 			$post_ids_arr[] = get_transient('re_compare_'. $page_id .'_' . $userid);
 		}
 		$post_ids = implode(',', $post_ids_arr);
@@ -3103,7 +3105,7 @@ function wpsm_comparison_button( $atts, $content = null ) {
 	$compare_active = ( in_array( $postid, $post_ids_arr ) ) ? ' comparing' : ' not-incompare';
 	
 	$out = '<span';   
-    $out .=' class="wpsm-button wpsm-button-new-compare addcompare-id-'.$postid.' '.$atts['color'].' '.$atts['size'].''.$compare_active.$class_show.'" data-addcompare-id="'.$postid.'"><i class="fa re-icon-compare"></i>'.__("Add to compare", "rehub_framework").'</span>';
+    $out .=' class="wpsm-button wpsm-button-new-compare addcompare-id-'.$postid.' '.$atts['color'].' '.$atts['size'].''.$compare_active.$class_show.'" data-addcompare-id="'.$postid.'"><i class="fa re-icon-compare"></i>'.__("Adicionar comparação", "rehub_framework").'</span>';
     return $out;
 }
 add_shortcode('wpsm_compare_button', 'wpsm_comparison_button');
@@ -3129,7 +3131,7 @@ function wpsm_icecat_shortcode( $atts, $content = null ) {
 
     if (isset($atts['ean']) && $atts['ean']!='') :
         $data['ean'] = $atts['ean'];
-        include(rh_locate_template('functions/icecat.php'));
+        include(locate_template('functions/icecat.php'));
         $data = icecat_to_array($data); 
     	if(!isset($data['id'])) :
             if(isset($data[1])) :
@@ -3208,29 +3210,12 @@ function wpsm_tax_archive_shortcode( $atts, $content = null ) {
 			'type' => 'alpha',
 			'taxonomy' => 'store',
 			'show_images' => 1,
-			'limit' =>'',
-			'random' => '',
 		), $atts, 'wpsm_tax_archive' )
 	);
 
-	if($random){
-		$number = '';
-	}else{
-		$number = $limit;
-	}
-
-	$args = array( 'hide_empty' => false, 'order' => 'ASC', 'taxonomy'=> $taxonomy, 'number'=> $number);
+	$args = array( 'hide_empty' => false, 'order' => 'ASC', 'taxonomy'=> $taxonomy);
 	 
 	$terms = get_terms($args );
-
-	if(is_wp_error($terms)) return;
-
-	if($random){
-		shuffle($terms);
-		if ($limit){
-			$terms = array_slice($terms, 0, $limit);
-		}
-	}
 
 	$letter_keyed_terms = array();
 
@@ -3447,25 +3432,25 @@ if ( !function_exists( 'wpsm_spec_builders_shortcode' ) ) {
                     echo '<div class="wpsm_spec_row_'.$id.'_'.$pbid.'">';                       
                     $element = $row['column_type'];
                         if ($element == 'heading_line') {
-                            include(rh_locate_template('inc/specification/heading_line.php'));
+                            include(locate_template('inc/specification/heading_line.php'));
                         } else if ($element == 'meta_line') {
-                            include(rh_locate_template('inc/specification/meta_line.php'));                          
+                            include(locate_template('inc/specification/meta_line.php'));                          
                         } else if ($element == 'divider_line') {
-                            include(rh_locate_template('inc/specification/divider_line.php'));                            
+                            include(locate_template('inc/specification/divider_line.php'));                            
                         } else if ($element == 'tax_line') {
-                            include(rh_locate_template('inc/specification/tax_line.php'));                            
+                            include(locate_template('inc/specification/tax_line.php'));                            
                         } else if ($element == 'shortcode_line') {
-                            include(rh_locate_template('inc/specification/shortcode_line.php')); 
+                            include(locate_template('inc/specification/shortcode_line.php')); 
                         } else if ($element == 'photo_line') {
-                            include(rh_locate_template('inc/specification/photo_line.php'));
+                            include(locate_template('inc/specification/photo_line.php'));
                         } else if ($element == 'video_line') {
-                            include(rh_locate_template('inc/specification/video_line.php'));
+                            include(locate_template('inc/specification/video_line.php'));
                         } else if ($element == 'mdtf_line') {
-                            include(rh_locate_template('inc/specification/mdtf_line.php'));   
+                            include(locate_template('inc/specification/mdtf_line.php'));   
                         } else if ($element == 'proscons_line') {
-                            include(rh_locate_template('inc/specification/proscons_line.php'));  
+                            include(locate_template('inc/specification/proscons_line.php'));  
                         } else if ($element == 'map_line') {
-                            include(rh_locate_template('inc/specification/map_line.php'));
+                            include(locate_template('inc/specification/map_line.php'));
                         } else {
                             
                         };
@@ -3714,7 +3699,7 @@ function rh_wcv_vendorslist_flat( $atts ) {
 	    	if ( class_exists( 'WCVendors_Pro' ) ) {
 	    		$vendor_meta = array_map( function( $a ){ return $a[0]; }, get_user_meta( $vendor->ID ) );
 	    	}
-	    	include(rh_locate_template('inc/wcvendor/vendorlist.php'));
+	    	include(locate_template('inc/wcvendor/vendorlist.php'));
 
 	    } // End foreach 
 	   	
@@ -3874,14 +3859,13 @@ function wpsm_get_merchant_list($atts){
 			<?php $countitems = count($items);?>
 	        <?php if($pricealert):?>
 				<?php if (version_compare(PHP_VERSION, '5.3.0', '>=') && $unique_id && $module_id && !empty($syncitem)) {	
-					include(rh_locate_template( 'inc/parts/pricealertpopup.php' ) );
+					include(locate_template( 'inc/parts/pricealertpopup.php' ) );
 				} ?>			        	
 	        <?php endif;?>			
 			<div class="widget_merchant_list<?php if ($countitems > 7):?> expandme<?php endif;?>">
 			    <div class="tabledisplay">
 			        <?php  foreach ($items as $key => $item): ?>
-			            <?php $offer_post_url = $item['url'] ;?>
-    					<?php $afflink = apply_filters('rh_post_offer_url_filter', $offer_post_url );?>
+			            <?php $afflink = $item['url'] ;?>
 			            <?php $merchant = (!empty($item['merchant'])) ? $item['merchant'] : ''; ?>
 			            <?php $offer_price = (!empty($item['price'])) ? $item['price'] : ''; ?>
 			            <?php $price_noclean = (!empty($item['price_noclean'])) ? $item['price_noclean'] : ''; ?>
@@ -3935,7 +3919,7 @@ function wpsm_get_merchant_list($atts){
 			    	<?php endif;?>
 			        <?php if($pricehistory):?>
 						<?php if (version_compare(PHP_VERSION, '5.3.0', '>=') && $unique_id && $module_id && !empty($syncitem)) {
-							include(rh_locate_template( 'inc/parts/pricehistorypopup.php' ) );
+							include(locate_template( 'inc/parts/pricehistorypopup.php' ) );
 						} ?>			        	
 			        <?php endif;?>
 			    </div>  
@@ -4119,8 +4103,7 @@ function rh_get_post_thumbnails($atts, $content = NULL){
         'video' => '',
         'height' => '100',
         'columns' => 5,
-        'class' => '',
-        'justify' => ''
+        'class' => ''
     ), $atts));	
 	global $post;
    	$post_id = (NULL === $postid) ? $post->ID : $postid;
@@ -4128,47 +4111,33 @@ function rh_get_post_thumbnails($atts, $content = NULL){
     $post_image_videos = get_post_meta( $post_id, 'rh_post_image_videos', true );
     $countimages = '';
     $columnclass = ($columns==5) ? ' five-thumbnails' : '';
-    $justifyclass = ($justify) ? 'justified-gallery rh-tilled-gallery ' : 'rh-flex-eq-height compare-full-thumbnails mt15 ';
 	ob_start();
 	?>    
     <?php if(!empty($post_image_gallery) || (!empty($post_image_videos) && $video == 1) ) :?>
-    	<?php $random_key = rand(0, 50);?>
-        <?php $post_image_gallery = explode(',', $post_image_gallery);?>
-        <?php if($post_image_videos):?>
-        	<?php $post_image_videos = array_map('trim', explode(PHP_EOL, $post_image_videos));?>
-        <?php endif;?> 
-        <?php if($justify):?>
-        	<div class="rh-line mt30 mb30 clearfix"></div>
-        <?php endif;?> 
-        <div class="<?php echo $justifyclass; echo $class; echo $columnclass;?>" data-galleryid="rhgal_<?php echo $random_key;?>">
+        <?php $post_image_gallery = explode(',', $post_image_gallery);?> 
+        <?php $post_image_videos = explode(PHP_EOL, $post_image_videos);?>  
+        <div class="rh-flex-eq-height compare-full-thumbnails mt15 <?php echo $class; echo $columnclass;?>">
             <?php foreach($post_image_gallery as $key=>$image_gallery):?>
-            	<?php if($image_gallery):?>
-	                <a href="<?php echo wp_get_attachment_url($image_gallery);?>" target="_blank" class="mb10"> 
-	                    <?php WPSM_image_resizer::show_static_resized_image(array('lazy'=>false, 'src'=> wp_get_attachment_url($image_gallery), 'crop'=> false, 'height'=> $height, 'title' => esc_attr(get_post_meta( $image_gallery, '_wp_attachment_image_alt', true))));?>                                                     
-	                    </a> 
-                <?php endif;?>                              
+                <a href="<?php echo wp_get_attachment_url($image_gallery);?>" target="_blank" class="mb10"> 
+                    <?php WPSM_image_resizer::show_static_resized_image(array('lazy'=>false, 'src'=> wp_get_attachment_url($image_gallery), 'crop'=> false, 'height'=> $height, 'title' => esc_attr(get_post_meta( $image_gallery, '_wp_attachment_image_alt', true))));?>                                                     
+                    </a>                               
             <?php endforeach;?>  
-            <?php if($video == 1 && !empty($post_image_videos)):?>   
+            <?php if($video == 1):?>   
 	            <?php foreach($post_image_videos as $key=>$video):?>
 	                <a href="<?php echo esc_url($video);?>" target="_blank" class="mb10 rh_videothumb_link"> 
-						<img src="<?php echo parse_video_url(esc_url($video), 'hqthumb'); ?>" width="<?php echo $height;?>" alt="" />
+						<img src="<?php echo parse_video_url(esc_url($video), 'thumb'); ?>" width="<?php echo $height;?>" alt="" />
 	                </a>                               
 	            <?php endforeach;?> 
             <?php endif;?>                       
         </div>
-        <?php  wp_enqueue_script('prettyphoto');?>
-        <?php if($justify):?>
-        	<?php wp_enqueue_script('justifygallery');?>
-        <?php else:?>
-	        <script data-cfasync="false">
-	        jQuery(document).ready(function($) {
-	            'use strict'; 
-	            $('.compare-full-thumbnails a').attr('rel', 'prettyPhoto[rehub_postthumb_gallery_<?php echo $random_key;?>]');
-	            $(".compare-full-thumbnails a[rel^='prettyPhoto']").prettyPhoto({social_tools:false, default_width: 854,default_height: 480});
-	        });
-	        </script>        	
-        <?php endif;?>
-        
+        <?php $random_key = rand(0, 50); wp_enqueue_script('prettyphoto');?>
+        <script data-cfasync="false">
+        jQuery(document).ready(function($) {
+            'use strict'; 
+            $('.compare-full-thumbnails a').attr('rel', 'prettyPhoto[rehub_postthumb_gallery_<?php echo $random_key;?>]');
+            $(".compare-full-thumbnails a[rel^='prettyPhoto']").prettyPhoto({social_tools:false, default_width: 854,default_height: 480});
+        });
+        </script>        
     <?php endif;?>   
 	<?php
 	$output = ob_get_contents();
@@ -4176,191 +4145,4 @@ function rh_get_post_thumbnails($atts, $content = NULL){
 	return $output; 
 }
 add_shortcode('rh_get_post_thumbnails', 'rh_get_post_thumbnails');
-}
-
-if( !function_exists('rh_get_profile_data') ) {
-function rh_get_profile_data($atts, $content = NULL){
-	extract(shortcode_atts(array(
-        'name' => '',
-        'type' => '',
-        'userid' =>'',
-    ), $atts));	
-	if(!$name || !bp_is_active( 'xprofile' )) return;
-	if(bp_get_profile_field_data('field='.$name.'&user_id='.$userid.'')){
-		$data = bp_get_profile_field_data('field='.$name.'');
-		if($type == 'text'){
-			$data = esc_html($data);
-		}
-		elseif ($type=='link'){
-			$data = esc_url($data);
-		}
-		return $data;
-	}
-
-}
-add_shortcode('rh_get_profile_data', 'rh_get_profile_data');
-}
-
-
-if( !function_exists('rh_is_bpmember_type') ) {
-function rh_is_bpmember_type($atts, $content = NULL){
-	extract(shortcode_atts(array(
-        'type' => '',
-        'current' => '',
-    ), $atts));	
-
-	if(!$type || !function_exists('bp_get_member_type')) return;
-	if($current){
-		$userid = get_current_user_id();
-		if(!$userid) return;
-	}
-	else{
-		$userid = bp_displayed_user_id();
-		if(!$userid) return;
-	}
-	$usertype = bp_get_member_type($userid);
-	if(($usertype == $type) && !is_null( $content )){		
-		$content = do_shortcode($content);
-		$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
-		$Old     = array( '<br />', '<br>' );
-		$New     = array( '','' );
-		$content = str_replace( $Old, $New, $content );
-		return $content;
-	}
-	else{
-		return false;
-	}
-}
-add_shortcode('rh_is_bpmember_type', 'rh_is_bpmember_type');
-}
-
-if( !function_exists('rh_bpmember_type') ) {
-function rh_bpmember_type($atts, $content = NULL){
-	extract(shortcode_atts(array(
-        'bp_user' => '',
-    ), $atts));	
-
-	if(!function_exists('bp_get_member_type')) return;
-	if($bp_user){
-		$userid = bp_displayed_user_id();
-		if(!$userid) return;
-	}
-	else{
-		$userid = get_current_user_id();
-		if(!$userid) return;
-	}
-	$usertype = bp_get_member_type($userid);
-	$membertype_object = bp_get_member_type_object($usertype);
-	$membertype_label = (!empty($membertype_object) && is_object($membertype_object)) ? $membertype_object->labels['singular_name'] : '';	
-	return $membertype_label;
-
-}
-add_shortcode('rh_bpmember_type', 'rh_bpmember_type');
-}
-
-if( !function_exists('rh_is_bpmember_role') ) {
-function rh_is_bpmember_role($atts, $content = NULL){
-	extract(shortcode_atts(array(
-        'role' => '',
-    ), $atts));	
-
-	if(!$role || !function_exists('bp_displayed_user_id')) return;
-	$userid = bp_displayed_user_id();
-	$user = get_userdata($userid);
-	if (!empty($user)){
-		if(in_array( $role, (array)$user->roles) && !is_null( $content )){		
-			$content = do_shortcode($content);
-			$content = preg_replace( '%<p>&nbsp;\s*</p>%', '', $content ); 
-			$Old     = array( '<br />', '<br>' );
-			$New     = array( '','' );
-			$content = str_replace( $Old, $New, $content );
-			return $content;
-		}
-		else{
-			return false;
-		}		
-	}
-	else{
-		return false;
-	}
-}
-add_shortcode('rh_is_bpmember_role', 'rh_is_bpmember_role');
-}
-
-if( !function_exists('rh_is_bpmember_profile') ) {
-function rh_is_bpmember_profile($atts, $content = NULL){	
-	if(!function_exists('bp_is_my_profile')) return;
-	if (bp_is_my_profile()){		
-		$content = do_shortcode($content);
-		return $content;	
-	}
-	else{
-		return false;
-	}
-}
-add_shortcode('rh_is_bpmember_profile', 'rh_is_bpmember_profile');
-}
-
-
-if( !function_exists('rh_get_group_admins') ) {
-function rh_get_group_admins($atts, $content = NULL){
-	extract(shortcode_atts(array(
-        'text' => '',
-    ), $atts));	
-    if(!bp_is_group_single()) return;
-	global $groups_template;
-	$output = '';
-	if ( empty( $group ) ) {
-		$group =& $groups_template->group;
-	}
-	$txt = ($text) ? $text : __('Write message', 'rehub_framework') ;
-	if ( ! empty( $group->admins ) ) { 
-		$output .= '<ul class="buddypress widget">';
-			foreach( (array) $group->admins as $admin ) {
-				$output .= '<li class="vcard mb15">';
-					$output .= '<div class="item-avatar"><a href="'.bp_core_get_user_domain( $admin->user_id, $admin->user_nicename, $admin->user_login ).'">'.bp_core_fetch_avatar( array( 'item_id' => $admin->user_id, 'email' => $admin->user_email, 'alt' => sprintf( __( 'Profile picture of %s', 'rehub_framework' ), bp_core_get_user_displayname( $admin->user_id ) ) ) ).'</a></div>';
-					$link = (is_user_logged_in()) ? wp_nonce_url( bp_loggedin_user_domain() . bp_get_messages_slug() . '/compose/?r=' . bp_core_get_username( $admin->user_id) .'&ref='. urlencode(get_permalink())) : '#';
-					$class = (!is_user_logged_in() && rehub_option('userlogin_enable') == '1') ? ' act-rehub-login-popup' : '';
-					$output .='<div class="item"><div class="item-title-bpadmin"><a href="'.bp_core_get_user_domain( $admin->user_id, $admin->user_nicename, $admin->user_login ).'">'.$admin->user_nicename.'</a></div><a href="'.$link.'" class="vendor_store_owner_contactlink'.$class.'"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span>'. $txt .'</span></a></div>';					
-				$output .= '</li>';
-			} 
-		$output .= '</ul>';
-	}
-	return $output; 
-}
-add_shortcode('rh_get_group_admins', 'rh_get_group_admins');
-}
-
-
-if( !function_exists('rh_get_group_admin_shop') ) {
-function rh_get_group_admin_shop($atts, $content = NULL){	
-	global $groups_template;
-	$output = '';
-	if ( empty( $group ) ) {
-		$group =& $groups_template->group;
-	}
-
-	if (defined('wcv_plugin_dir')):
-		foreach( (array) $group->admins as $admin ) {
-			if(WCV_Vendors::is_vendor( $admin->user_id )):
-				$output .='<div class="user-profile-div">';
-					$output .='<div class="mb20 text-center">';
-						$output .='<a href="'.WCV_Vendors::get_vendor_shop_page( $admin->user_id ).'"><img src="'. rh_show_vendor_avatar($admin->user_id, 150, 150).'" class="vendor_store_image_single" width=150 height=150 /></a>';
-					$output .='</div>';
-					$output .='<div class="profile-usertitle-name mb20 text-center">';
-						$output .='<a href="'.WCV_Vendors::get_vendor_shop_page( $admin->user_id ).'">'.WCV_Vendors::get_vendor_sold_by( $admin->user_id ).'</a>';
-					$output .='</div>';	
-					$output .='<div class="profile-stats">';
-						if (rehub_option('woo_thumb_enable') == '1') :
-							$output .='<div><i class="fa fa-heartbeat"></i>'.__( 'Product Votes', 'rehub_framework' ).': ' . get_user_meta( $admin->user_id, 'overall_post_likes', true).'</div>';					
-						endif;
-						$output .='<div><i class="fa fa-briefcase"></i>'.__( 'Total products', 'rehub_framework' ).': ' . count_user_posts( $admin->user_id, $post_type = 'product' ).'</div>';
-					$output .='</div>';	
-				$output .='</div>';
-				return $output;							
-			endif;
-		}
-	endif; 
-}
-add_shortcode('rh_get_group_admin_shop', 'rh_get_group_admin_shop');
 }

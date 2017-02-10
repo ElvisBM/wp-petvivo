@@ -70,7 +70,13 @@
                 <!-- top -->  
                 <div class="header_top_wrap<?php echo $header_topline_style;?>">
                     <div class="rh-container">
-                        <div class="header-top clearfix">    
+                        <div class="header-top clearfix"> 
+                        <?php if(rehub_option('header_six_login') == 1) : ?>
+                                <?php $rtlclass = (is_rtl()) ? 'mr10' : 'ml10'; ?>
+                                <?php $loginurl = (rehub_option('custom_login_url')) ? esc_url(rehub_option('custom_login_url')) : '';?>
+                                <?php $classmenu = 'mobileinmenu floatright '.$rtlclass;?>
+                                <?php echo wpsm_user_modal_shortcode(array('as_btn'=> 1, 'class' =>$classmenu, 'loginurl'=>$loginurl));?>
+                            <?php endif; ?>    
                             <div class="top-social"> 
                                 <?php if(rehub_option('rehub_login_icon') == 'top' && rehub_option('userlogin_enable') == '1') : ?>
                                     <?php $loginurl = (rehub_option('custom_login_url')) ? esc_url(rehub_option('custom_login_url')) : '';?>
@@ -124,12 +130,7 @@
                                     </div>
                                 <?php endif ;?>                                       
                             <?php endif; ?>
-                            <?php if(rehub_option('header_six_login') == 1) : ?>
-                                <?php $rtlclass = (is_rtl()) ? 'mr10' : 'ml10'; ?>
-                                <?php $loginurl = (rehub_option('custom_login_url')) ? esc_url(rehub_option('custom_login_url')) : '';?>
-                                <?php $classmenu = 'mobileinmenu floatright '.$rtlclass;?>
-                                <?php echo wpsm_user_modal_shortcode(array('as_btn'=> 1, 'class' =>$classmenu, 'loginurl'=>$loginurl));?>
-                            <?php endif; ?> 
+                            
                             <?php if(rehub_option('header_six_btn') == 1) : ?>
                                 <?php $btnlink = rehub_option('header_six_btn_url'); ?>
                                 <?php $btnlabel = rehub_option('header_six_btn_txt'); ?>
