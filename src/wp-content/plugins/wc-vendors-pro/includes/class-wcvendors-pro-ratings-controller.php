@@ -194,12 +194,7 @@ class WCVendors_Pro_Ratings_Controller {
 		}
 
 		wc_add_notice( $notice, 'success' );
-
-		$orders_endpoint = get_option( 'woocommerce_myaccount_orders_endpoint' ); 
-		wp_safe_redirect( apply_filters( 'wcv_ratings_redirect', get_permalink( wc_get_page_id( 'myaccount' ) )  . $orders_endpoint ) );
-		
-  		exit; 
-
+	
 	} // process_form_submission() 
 
 	/**
@@ -212,7 +207,7 @@ class WCVendors_Pro_Ratings_Controller {
 		if ( ! class_exists( 'WC_Vendors' ) ) return;
 
 		if ( ! isset( $_GET[ 'wcv_order_id' ] ) || ! is_user_logged_in() || ! isset( $_GET[ '_wpnonce' ] ) || ! wp_verify_nonce( $_GET[ '_wpnonce' ], 'wcv-leave_feedback' ) ) {
-			echo sprintf( apply_filters( 'wcv_feedback_page_error_msg', __( '<p>This page should not be accessed directly. Please return to the <a href="%s">my account page</a> and select an order to leave feedback. </p>', 'wcvendors-pro' ) ), get_permalink( wc_get_page_id( 'myaccount' ) ) ); 
+			echo sprintf( apply_filters( 'wcv_feedback_page_error_msg', __( '<p>This page should not be accessed directly. Please return to the <a href="%s">my account page</a> and select an order to leave feedback. </p>', 'wcvendors-pro' ), get_permalink( woocommerce_get_page_id( 'myaccount' ) ) ) ); 
 			return;
 		}
 
@@ -483,7 +478,6 @@ class WCVendors_Pro_Ratings_Controller {
 		);
 
 		include('class-wcvendors-pro-ratings-admin-table.php'); 
-		
 		add_filter( 'set-screen-option', array( $this, 'ratings_set_option') , 10, 3);
 
 		add_action( "load-$hook", array( 'WCVendors_Pro_Ratings_Admin_Table' , 'add_options' ) );
@@ -502,11 +496,11 @@ class WCVendors_Pro_Ratings_Controller {
 	 */
 	public function ratings_admin_page() { 
 
-		include_once( 'class-wcvendors-pro-ratings-admin-table.php' ); 
+		include_once('class-wcvendors-pro-ratings-admin-table.php'); 
 
 		$ratings_table = new WCVendors_Pro_Ratings_Admin_Table( $this->wcvendors_pro, $this->version, $this->debug, self::$table_name ); 
 		
-		include( apply_filters( 'wcvendors_pro_ratings_admin_page_table_title_path', 'partials/ratings/admin/wcvendors-pro-ratings-table-title.php' ) ); 
+		include('partials/ratings/admin/wcvendors-pro-ratings-table-title.php'); 
 		
 		//  Display the edit form without the items table 
 		if ( 'edit' === $ratings_table->current_action() ) { 
@@ -534,7 +528,7 @@ class WCVendors_Pro_Ratings_Controller {
 
 				if ( $result ) { 
 	    			$message =  __( 'Vendor rating updated.', 'wcvendors-pro' ); 
-	    	 		include( apply_filters( 'wcvendors_pro_ratings_admin_page_table_notice_path', 'partials/ratings/admin/wcvendors-pro-ratings-table-notice.php' ) ); 
+	    			include('partials/ratings/admin/wcvendors-pro-ratings-table-notice.php'); 
 	    		}
 
 			} elseif ('delete' === $ratings_table->current_action()) { 
@@ -547,16 +541,16 @@ class WCVendors_Pro_Ratings_Controller {
 
 					if ( $result ) { 
 		    			$message = __( 'Vendor rating deleted.', 'wcvendors-pro' ); 
-		    			include( apply_filters( 'wcvendors_pro_ratings_admin_page_table_notice_path', 'partials/ratings/admin/wcvendors-pro-ratings-table-notice.php' ) ); 
+		    			include('partials/ratings/admin/wcvendors-pro-ratings-table-notice.php'); 
 		    		}
 				}
 			} 
 
-			include( apply_filters( 'wcvendors_pro_ratings_admin_page_table_path', 'partials/ratings/admin/wcvendors-pro-ratings-table.php' ) ); 
+			include('partials/ratings/admin/wcvendors-pro-ratings-table.php'); 
 	
 		}
 
-		include( apply_filters( 'wcvendors_pro_ratings_admin_page_table_end_path', 'partials/ratings/admin/wcvendors-pro-ratings-table-end.php' ) ); 
+		include('partials/ratings/admin/wcvendors-pro-ratings-table-end.php'); 
 
 	} // ratings_admin_page() 
 

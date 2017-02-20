@@ -216,7 +216,7 @@ class WCVendors_Pro_Shipping_Controller {
 	public function get_user_meta_fields( $user ){ 
 
 		$vendor_meta 		= array_map( function( $a ){ return $a[0]; }, get_user_meta( $user->ID ) );
-		$vendor_shipping	= array_key_exists('_wcv_shipping', $vendor_meta ) ? unserialize( $vendor_meta['_wcv_shipping'] ) : self::get_shipping_defaults();  
+		$vendor_shipping	= unserialize( $vendor_meta['_wcv_shipping'] ); 
 
 		return $fields = apply_filters( 'wcv_custom_user_shiping_fields', array( 
 			'shipping_address' => array( 
@@ -430,12 +430,12 @@ class WCVendors_Pro_Shipping_Controller {
 		// Flat Rate 	
 		$shipping_fee_national				= ( isset( $_POST[ '_wcv_vendor_national' ] ) ) 					? trim( $_POST[ '_wcv_vendor_national' ] ) 						: '';
 		$shipping_fee_international			= ( isset( $_POST[ '_wcv_vendor_international' ] ) ) 				? trim( $_POST[ '_wcv_vendor_international' ] ) 				: '';
-		$shipping_fee_national_qty			= ( isset( $_POST[ '_wcv_vendor_national_qty_override' ] ) ) 		? 'yes'		: '';
-		$shipping_fee_international_qty		= ( isset( $_POST[ '_wcv_vendor_international_qty_override' ] ) ) 	? 'yes'		: '';
-		$shipping_fee_national_free			= ( isset( $_POST[ '_wcv_vendor_national_free' ] ) ) 				? 'yes'		: '';
-		$shipping_fee_international_free	= ( isset( $_POST[ '_wcv_vendor_international_free' ] ) ) 			? 'yes'		: '';
-		$shipping_fee_national_disable		= ( isset( $_POST[ '_wcv_vendor_national_disable' ] ) ) 			? 'yes'		: '';
-		$shipping_fee_international_disable	= ( isset( $_POST[ '_wcv_vendor_international_disable' ] ) ) 		? 'yes'		: '';
+		$shipping_fee_national_qty			= ( isset( $_POST[ '_wcv_vendor_national_qty_override' ] ) ) 		? trim( $_POST[ '_wcv_vendor_national_qty_override' ] ) 		: '';
+		$shipping_fee_international_qty		= ( isset( $_POST[ '_wcv_vendor_international_qty_override' ] ) ) 	? trim( $_POST[ '_wcv_vendor_international_qty_override' ] ) 	: '';
+		$shipping_fee_national_free			= ( isset( $_POST[ '_wcv_vendor_national_free' ] ) ) 				? trim( $_POST[ '_wcv_vendor_national_free' ] ) 				: '';
+		$shipping_fee_international_free	= ( isset( $_POST[ '_wcv_vendor_international_free' ] ) ) 			? trim( $_POST[ '_wcv_vendor_international_free' ] ) 			: '';
+		$shipping_fee_national_disable		= ( isset( $_POST[ '_wcv_vendor_national_disable' ] ) ) 			? trim( $_POST[ '_wcv_vendor_national_disable' ] ) 				: '';
+		$shipping_fee_international_disable	= ( isset( $_POST[ '_wcv_vendor_international_disable' ] ) ) 		? trim( $_POST[ '_wcv_vendor_international_disable' ] ) 		: '';
 		
 		// Shipping General 
 		$product_handling_fee   			= ( isset( $_POST[ '_wcv_vendor_product_handling_fee' ] ) ) 		? trim( $_POST[ '_wcv_vendor_product_handling_fee' ] ) 			: '';
@@ -470,7 +470,7 @@ class WCVendors_Pro_Shipping_Controller {
 				'postcode' => 	$shipping_postcode,
 			); 
 
-			$wcvendors_shipping[ 'shipping_address' ] = $shipping_address;  
+			$wcvendors_shipping[ 'shipping_address' ] = $shipping_address; 
 		} 
 
 		update_user_meta( $vendor_id, '_wcv_shipping', 	$wcvendors_shipping ); 	
@@ -481,6 +481,8 @@ class WCVendors_Pro_Shipping_Controller {
 		if ( isset( $_POST['_wcv_shipping_fees'] ) ) {
 			$shipping_countries    	= isset( $_POST['_wcv_shipping_countries'] ) 	? $_POST['_wcv_shipping_countries'] : array(); 
 			$shipping_states    	= isset( $_POST['_wcv_shipping_states'] ) 		? $_POST['_wcv_shipping_states'] : array();
+			$shipping_citys    	= isset( $_POST['_wcv_shipping_citys'] ) 		? $_POST['_wcv_shipping_citys'] : array();
+			$shipping_districts    	= isset( $_POST['_wcv_shipping_districts'] ) 		? $_POST['_wcv_shipping_districts'] : array();
 			$shipping_fees     		= isset( $_POST['_wcv_shipping_fees'] )  		? $_POST['_wcv_shipping_fees'] : array();
 			$shipping_fee_count 	= sizeof( $shipping_fees );
 
@@ -489,10 +491,14 @@ class WCVendors_Pro_Shipping_Controller {
 				if ( $shipping_fees[ $i ] != '' ) {
 					$country       = wc_clean( $shipping_countries[ $i ] ); 
 					$state         = wc_clean( $shipping_states[ $i ] );
+					$city          = wc_clean( $shipping_citys[ $i ] );
+					$district      = wc_clean( $shipping_districts[ $i ] );
 					$fee           = wc_format_decimal( $shipping_fees[ $i ] );
 					$shipping_rates[ $i ] = array(
 						'country'	=> $country,
-						'state' 	=> $state, 
+						'state' 	=> $state,
+						'city' 		=> $city,
+						'district' 	=> $district, 
 						'fee' 		=> $fee,
 					);
 				}
@@ -541,9 +547,7 @@ class WCVendors_Pro_Shipping_Controller {
 		$helper_text 			= apply_filters( 'wcv_shipping_rate_table_msg', __( 'Countries must use the international standard for two letter country codes. eg. AU for Australia.', 'wcvendors-pro' ) );
  		$shipping_rates 		= get_post_meta( $post->ID, '_wcv_shipping_rates', true ); 
  		$shipping_details 		= get_post_meta( $post->ID, '_wcv_shipping_details', true ); 
-
- 		$handling_fee 			= ( $shipping_type == 'flat' ) ? ( !empty( $shipping_details ) ? $shipping_details['handling_fee'] : '' ) : ( !empty( $shipping_rates ) ? $shipping_rates['handling_fee'] : '' ); 
-
+ 		
  		include( apply_filters( 'wcv_partial_path_pro_product_vendor_shipping_panel', 'partials/product/wcvendors-pro-vendor-shipping-panel.php' ) ); 
  		
 
@@ -580,37 +584,37 @@ class WCVendors_Pro_Shipping_Controller {
 		}
 
 		if ( isset( $_POST[ '_shipping_fee_national_qty' ] ) && '' != $_POST[ '_shipping_fee_national_qty' ] ) {
-			$shipping_details[ 'national_qty_override' ] = 'yes'; 
+			$shipping_details[ 'national_qty_override' ] = $_POST[ '_shipping_fee_national_qty' ]; 
 		} else { 
 			$shipping_details[ 'national_qty_override' ] = ''; 
 		}
 
 		if ( isset( $_POST[ '_shipping_fee_national_disable' ] ) && '' != $_POST[ '_shipping_fee_national_disable' ] ) {
-			$shipping_details[ 'national_disable' ] = 'yes'; 
+			$shipping_details[ 'national_disable' ] = $_POST[ '_shipping_fee_national_disable' ]; 
 		} else { 
 			$shipping_details[ 'national_disable' ] = ''; 
 		}
 
 		if ( isset( $_POST[ '_shipping_fee_national_free' ] ) && '' != $_POST[ '_shipping_fee_national_free' ] ) {
-			$shipping_details[ 'national_free' ] = 'yes'; 
+			$shipping_details[ 'national_free' ] = $_POST[ '_shipping_fee_national_free' ]; 
 		} else { 
 			$shipping_details[ 'national_free' ] = ''; 
 		}
 
 		if ( isset( $_POST[ '_shipping_fee_international_qty' ] ) && '' != $_POST[ '_shipping_fee_international_qty' ] ) {
-			$shipping_details[ 'international_qty_override' ] = 'yes'; 
+			$shipping_details[ 'international_qty_override' ] = $_POST[ '_shipping_fee_international_qty' ]; 
 		} else { 
 			$shipping_details[ 'international_qty_override' ] = ''; 
 		}
 
 		if ( isset( $_POST[ '_shipping_fee_international_disable' ] ) && '' != $_POST[ '_shipping_fee_international_disable' ] ) {
-			$shipping_details[ 'international_disable' ] = 'yes'; 
+			$shipping_details[ 'international_disable' ] = $_POST[ '_shipping_fee_international_disable' ]; 
 		} else { 
 			$shipping_details[ 'international_disable' ] = ''; 
 		}
 
 		if ( isset( $_POST[ '_shipping_fee_international_free' ] ) && '' != $_POST[ '_shipping_fee_international_free' ] ) {
-			$shipping_details[ 'international_free' ] = 'yes'; 
+			$shipping_details[ 'international_free' ] = $_POST[ '_shipping_fee_international_free' ]; 
 		} else { 
 			$shipping_details[ 'international_free' ] = ''; 
 		}
@@ -627,6 +631,8 @@ class WCVendors_Pro_Shipping_Controller {
 		if ( isset( $_POST[ '_wcv_shipping_fees' ] ) ) {
 			$shipping_countries    	= isset( $_POST[ '_wcv_shipping_countries' ] ) ? $_POST[ '_wcv_shipping_countries' ] : array(); 
 			$shipping_states    	= isset( $_POST[ '_wcv_shipping_states' ] ) ? $_POST[ '_wcv_shipping_states' ] : array();
+			$shipping_citys    	= isset( $_POST[ '_wcv_shipping_citys' ] ) ? $_POST[ '_wcv_shipping_citys' ] : array();
+			$shipping_districts    	= isset( $_POST[ '_wcv_shipping_districts' ] ) ? $_POST[ '_wcv_shipping_districts' ] : array();
 			$shipping_fees     		= isset( $_POST[ '_wcv_shipping_fees' ] )  ? $_POST[ '_wcv_shipping_fees' ] : array();
 			$shipping_fee_count 	= sizeof( $shipping_fees );
 
@@ -634,10 +640,14 @@ class WCVendors_Pro_Shipping_Controller {
 				if ( $shipping_fees[ $i ] != '' ) {
 					$country       = wc_clean( $shipping_countries[ $i ] ); 
 					$state         = wc_clean( $shipping_states[ $i ] );
+					$city          = wc_clean( $shipping_citys[ $i ] );
+					$district      = wc_clean( $shipping_districts[ $i ] );
 					$fee           = wc_format_decimal( $shipping_fees[ $i ] );
 					$shipping_rates[ $i ] = array(
 						'country'	=> $country,
-						'state' 	=> $state, 
+						'state' 	=> $state,
+						'city' 		=> $city,
+						'district' 	=> $district, 
 						'fee' 		=> $fee,
 					);
 				}
@@ -653,31 +663,5 @@ class WCVendors_Pro_Shipping_Controller {
 
 	} // save_vendor_shipping() 
 
-	/**
-	 * Return an empty array of the shipping defaults 
-	 * 
-	 * @since 1.3.6
-	 * @access public 
-	 */
-	public static function get_shipping_defaults(){ 
 
-		return apply_filters( 'wcv_shipping_default_options', 
-			array( 
-			'product_handling_fee' 			=> '', 
-			'shipping_policy' 				=> '', 
-			'return_policy' 				=> '', 
-			'shipping_from' 				=> '', 
-			'national' 						=> '', 
-			'national_free' 				=> '', 
-			'national_qty_override' 		=> '', 
-			'national_disable' 				=> '', 
-			'international' 				=> '', 
-			'international_free'			=> '', 
-			'international_qty_override' 	=> '', 
-			'international_disable' 		=> '', 
-			)
-		); 
-
-	} // get_shipping_defaults() 
-
-} // WCVendors_Pro_Shipping_Controller
+}

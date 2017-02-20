@@ -265,7 +265,7 @@ class WCVendors_Pro_Coupon_Form {
 			'placeholder'	=> 'YYYY-MM-DD',  
 			'custom_attributes' => array(
 				'maxlenth' 	=> '10', 
-				'pattern' 	=> '[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])'
+				'pattern' 	=> '(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}'
 				),
 			) )
 		);

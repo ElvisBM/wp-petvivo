@@ -124,91 +124,91 @@ class WCVendors_Pro_Order_Controller {
 
 		self::$billing_fields = apply_filters( 'wcv_order_billing_fields', array(
 			'first_name' => array(
-				'label' => __( 'First Name', 'wcvendors-pro' ),
+				'label' => __( 'First Name', 'woocommerce' ),
 				'show'  => false
 			),
 			'last_name' => array(
-				'label' => __( 'Last Name', 'wcvendors-pro' ),
+				'label' => __( 'Last Name', 'woocommerce' ),
 				'show'  => false
 			),
 			'company' => array(
-				'label' => __( 'Company', 'wcvendors-pro' ),
+				'label' => __( 'Company', 'woocommerce' ),
 				'show'  => false
 			),
 			'address_1' => array(
-				'label' => __( 'Address 1', 'wcvendors-pro' ),
+				'label' => __( 'Address 1', 'woocommerce' ),
 				'show'  => false
 			),
 			'address_2' => array(
-				'label' => __( 'Address 2', 'wcvendors-pro' ),
+				'label' => __( 'Address 2', 'woocommerce' ),
 				'show'  => false
 			),
 			'city' => array(
-				'label' => __( 'City', 'wcvendors-pro' ),
+				'label' => __( 'City', 'woocommerce' ),
 				'show'  => false
 			),
 			'postcode' => array(
-				'label' => __( 'Postcode', 'wcvendors-pro' ),
+				'label' => __( 'Postcode', 'woocommerce' ),
 				'show'  => false
 			),
 			'country' => array(
-				'label'   => __( 'Country', 'wcvendors-pro' ),
+				'label'   => __( 'Country', 'woocommerce' ),
 				'show'    => false,
 				'class'   => 'js_field-country select short',
 				'type'    => 'select',
-				'options' => array( '' => __( 'Select a country&hellip;', 'wcvendors-pro' ) ) + WCVendors_Pro_Form_Helper::countries()
+				'options' => array( '' => __( 'Select a country&hellip;', 'woocommerce' ) ) + WCVendors_Pro_Form_Helper::countries()
 			),
 			'state' => array(
-				'label' => __( 'State/County', 'wcvendors-pro' ),
+				'label' => __( 'State/County', 'woocommerce' ),
 				'class'   => 'js_field-state select short',
 				'show'  => false
 			),
 			'email' => array(
-				'label' => __( 'Email', 'wcvendors-pro' ),
+				'label' => __( 'Email', 'woocommerce' ),
 			),
 			'phone' => array(
-				'label' => __( 'Phone', 'wcvendors-pro' ),
+				'label' => __( 'Phone', 'woocommerce' ),
 			),
 		) );
 
 		self::$shipping_fields = apply_filters( 'wcv_order_shipping_fields', array(
 			'first_name' => array(
-				'label' => __( 'First Name', 'wcvendors-pro' ),
+				'label' => __( 'First Name', 'woocommerce' ),
 				'show'  => false
 			),
 			'last_name' => array(
-				'label' => __( 'Last Name', 'wcvendors-pro' ),
+				'label' => __( 'Last Name', 'woocommerce' ),
 				'show'  => false
 			),
 			'company' => array(
-				'label' => __( 'Company', 'wcvendors-pro' ),
+				'label' => __( 'Company', 'woocommerce' ),
 				'show'  => false
 			),
 			'address_1' => array(
-				'label' => __( 'Address 1', 'wcvendors-pro' ),
+				'label' => __( 'Address 1', 'woocommerce' ),
 				'show'  => false
 			),
 			'address_2' => array(
-				'label' => __( 'Address 2', 'wcvendors-pro' ),
+				'label' => __( 'Address 2', 'woocommerce' ),
 				'show'  => false
 			),
 			'city' => array(
-				'label' => __( 'City', 'wcvendors-pro' ),
+				'label' => __( 'City', 'woocommerce' ),
 				'show'  => false
 			),
 			'postcode' => array(
-				'label' => __( 'Postcode', 'wcvendors-pro' ),
+				'label' => __( 'Postcode', 'woocommerce' ),
 				'show'  => false
 			),
 			'country' => array(
-				'label'   => __( 'Country', 'wcvendors-pro' ),
+				'label'   => __( 'Country', 'woocommerce' ),
 				'show'    => false,
 				'type'    => 'select',
 				'class'   => 'js_field-country select short',
-				'options' => array( '' => __( 'Select a country&hellip;', 'wcvendors-pro' ) ) + WCVendors_Pro_Form_Helper::countries()
+				'options' => array( '' => __( 'Select a country&hellip;', 'woocommerce' ) ) + WCVendors_Pro_Form_Helper::countries()
 			),
 			'state' => array(
-				'label' => __( 'State/County', 'wcvendors-pro' ),
+				'label' => __( 'State/County', 'woocommerce' ),
 				'class'   => 'js_field-state select short',
 				'show'  => false
 			),
@@ -354,7 +354,7 @@ class WCVendors_Pro_Order_Controller {
 			'after'  => date( 'Y-m-d', $this->start_date ), 
 		); 
 
-		$all_orders = WCVendors_Pro_Vendor_Controller::get_orders2( get_current_user_id(), $date_range, false ); 
+		$all_orders = WCVendors_Pro_Vendor_Controller::get_orders2( get_current_user_id(), $date_range ); 
 
 		$rows = array(); 
 
@@ -368,63 +368,59 @@ class WCVendors_Pro_Order_Controller {
 				$needs_to_ship 	= false; 
 				$downloadable 	= false; 		
 
-				if ( !empty( $_order->order_items ) ){ 
+				foreach ( $_order->order_items as $item ) { 
+				
+					$product_id = !empty( $item['variation_id'] ) ? $item['variation_id'] : $item['product_id'];
+					$_product = new WC_Product( $product_id );
 
-					foreach ( $_order->order_items as $item ) { 
-					
-						$product_id = !empty( $item['variation_id'] ) ? $item['variation_id'] : $item['product_id'];
-						$_product = new WC_Product( $product_id );
+					$needs_shipping 	= $_product->is_virtual(); 
+					if ( !$needs_shipping ) $needs_shipping = 0; 
 
-						$needs_shipping 	= $_product->is_virtual(); 
-						if ( !$needs_shipping ) $needs_shipping = 0; 
+					$downloadable 		= ( $_product->is_downloadable('yes') ) ?  true: false; 
+					if ( $downloadable == null )  $downloadable = 0; 
+					$products_html .= '<strong>'. $item['qty'] . ' x ' . $item['name'] . '</strong><br />'; 
 
-						$downloadable 		= ( $_product->is_downloadable('yes') ) ?  true: false; 
-						if ( $downloadable == null )  $downloadable = 0; 
-						$products_html .= '<strong>'. $item['qty'] . ' x ' . $item['name'] . '</strong><br />'; 
+					if ( ! empty( $item[ 'item_meta_array' ] ) ) { 
 
-						if ( ! empty( $item[ 'item_meta_array' ] ) ) { 
+						foreach ( $item[ 'item_meta_array' ] as $meta ) {
 
-							foreach ( $item[ 'item_meta_array' ] as $meta ) {
-
-								// Skip hidden core fields
-								if ( in_array( $meta->key, apply_filters( 'woocommerce_hidden_order_itemmeta', array(
-									'_qty',
-									'_tax_class',
-									'_product_id',
-									'_variation_id',
-									'_line_subtotal',
-									'_line_subtotal_tax',
-									'_line_total',
-									'_line_tax',
-									'method_id', 
-									'cost', 
-									WC_Vendors::$pv_options->get_option( 'sold_by_label' ), 
-								) ) ) ) {
-									continue;
-								}
-
-								// Skip serialised meta
-								if ( is_serialized( $meta->value ) ) {
-									continue;
-								}
-
-								// Get attribute data
-								if ( taxonomy_exists( wc_sanitize_taxonomy_name( $meta->key ) ) ) {
-									$term           = get_term_by( 'slug', $meta->value, wc_sanitize_taxonomy_name( $meta->key ) );
-									$meta->key  	= wc_attribute_label( wc_sanitize_taxonomy_name( $meta->key ) );
-									$meta->value 	= isset( $term->name ) ? $term->name : $meta->value;
-								} else {
-									$meta->key   	= apply_filters( 'woocommerce_attribute_label', wc_attribute_label( $meta->key, $_product ), $meta->key );
-								}
-
-								$products_html .= '<strong>' . wp_kses_post( rawurldecode( $meta->key ) ) . '</strong> : ' . wp_kses_post( rawurldecode( $meta->value ) ) . '<br />';
+							// Skip hidden core fields
+							if ( in_array( $meta->key, apply_filters( 'woocommerce_hidden_order_itemmeta', array(
+								'_qty',
+								'_tax_class',
+								'_product_id',
+								'_variation_id',
+								'_line_subtotal',
+								'_line_subtotal_tax',
+								'_line_total',
+								'_line_tax',
+								'method_id', 
+								'cost', 
+								WC_Vendors::$pv_options->get_option( 'sold_by_label' ), 
+							) ) ) ) {
+								continue;
 							}
+
+							// Skip serialised meta
+							if ( is_serialized( $meta->value ) ) {
+								continue;
+							}
+
+							// Get attribute data
+							if ( taxonomy_exists( wc_sanitize_taxonomy_name( $meta->key ) ) ) {
+								$term           = get_term_by( 'slug', $meta->value, wc_sanitize_taxonomy_name( $meta->key ) );
+								$meta->key  	= wc_attribute_label( wc_sanitize_taxonomy_name( $meta->key ) );
+								$meta->value 	= isset( $term->name ) ? $term->name : $meta->value;
+							} else {
+								$meta->key   	= apply_filters( 'woocommerce_attribute_label', wc_attribute_label( $meta->key, $_product ), $meta->key );
+							}
+
+							$products_html .= '<strong>' . wp_kses_post( rawurldecode( $meta->key ) ) . '</strong> : ' . wp_kses_post( rawurldecode( $meta->value ) ) . '<br />';
 						}
-
-
-						$needs_to_ship = ( $needs_shipping || !$downloadable ) ? true : false; 
 					}
 
+
+					$needs_to_ship = ( $needs_shipping || !$downloadable ) ? true : false; 
 				}
 
 				$shippers = (array) get_post_meta( $order->id, 'wc_pv_shipped', true ); 
@@ -463,7 +459,7 @@ class WCVendors_Pro_Order_Controller {
 									),
 							),		
 
-				), $order->get_order_number() ); 
+				)	); 
 
 				if ( !$needs_to_ship ) { 
 					unset( $row_actions['print_label'] ); 
@@ -478,27 +474,6 @@ class WCVendors_Pro_Order_Controller {
 					); 
 				} 
 
-
-				// If the order is any of the following status, remove order actions. 
-				if ( in_array( $order->get_status(), apply_filters( 'wcv_order_status_action_hide', array( 'refunded', 'cancelled' ) ) ) ) { 
-					unset( $row_actions['print_label'] ); 
-					unset( $row_actions['add_note'] ); 
-					unset( $row_actions['add_tracking'] ); 
-					unset( $row_actions['mark_shipped'] ); 
-				}
-
-				$hide_view_details 		= WC_Vendors::$pv_options->get_option( 'hide_order_view_details' );
-				$hide_shipping_label 	= WC_Vendors::$pv_options->get_option( 'hide_order_shipping_label' );
-				$hide_order_note 		= WC_Vendors::$pv_options->get_option( 'hide_order_order_note' );
-				$hide_tracking_number	= WC_Vendors::$pv_options->get_option( 'hide_order_tracking_number' );
-				$hide_mark_shipped		= WC_Vendors::$pv_options->get_option( 'hide_order_mark_shipped' );
-
-				if ( $hide_view_details && array_key_exists( 'view_details', $row_actions ) ){  unset( $row_actions[ 'view_details' ] );  }
-				if ( $hide_shipping_label && array_key_exists( 'print_label', $row_actions ) ){  unset( $row_actions[ 'print_label' ] ); }
-				if ( $hide_order_note && array_key_exists( 'add_note', $row_actions ) ){  unset( $row_actions[ 'add_note' ] );  }
-				if ( $hide_tracking_number && array_key_exists( 'add_tracking', $row_actions ) ){  unset( $row_actions[ 'add_tracking' ] );  }
-				if ( $hide_mark_shipped && array_key_exists( 'mark_shipped', $row_actions ) ){  unset( $row_actions[ 'mark_shipped' ] );  }
-
 				$commission_due 	= sprintf( get_woocommerce_price_format(), get_woocommerce_currency_symbol( $order->get_order_currency() ), $_order->total_due );
 				$shipping_due 		= sprintf( get_woocommerce_price_format(), get_woocommerce_currency_symbol( $order->get_order_currency() ), $_order->total_shipping );
 				$tax_due 			= sprintf( get_woocommerce_price_format(), get_woocommerce_currency_symbol( $order->get_order_currency() ), $_order->total_tax );
@@ -506,18 +481,9 @@ class WCVendors_Pro_Order_Controller {
 
 				$new_row = new stdClass(); 
 
-				$can_view_emails 	= WC_Vendors::$pv_options->get_option( 'can_view_order_emails' );
-				$hide_phone 		= WC_Vendors::$pv_options->get_option( 'hide_order_customer_phone' );
+				$can_view_emails = WC_Vendors::$pv_options->get_option( 'can_view_order_emails' );
 
-				$customer_details = $order->get_formatted_shipping_address().'<br />'; 
-
-				if ( $can_view_emails ) { 
-					$customer_details .= $order->billing_email . '<br />'; 
-				}
-
-				if ( ! $hide_phone ){ 
-					$customer_details .= $order->billing_phone; 
-				}
+				$customer_details = ( $can_view_emails ) ? $order->get_formatted_shipping_address().'<br />'.$order->billing_email : $order->get_formatted_shipping_address(); 
 
 				$new_row->ID			= $order->get_order_number(); 
 				$new_row->order_number	= $order->get_order_number(); 
@@ -525,7 +491,7 @@ class WCVendors_Pro_Order_Controller {
 				$new_row->products 		= $products_html;
 				$new_row->total 		= $total_text;
 				$new_row->status 		= $shipped;
-				$new_row->order_date	= date_i18n( wc_date_format(), strtotime( $order->order_date ) ) . '<br /><strong>' . ucfirst( $order->get_status() ) . '</strong>'; 
+				$new_row->order_date	= date_i18n( wc_date_format(), strtotime( $order->order_date ) ); 
 				$new_row->row_actions 	= $row_actions; 
 				$new_row->action_after 	= $this->order_details_template( $_order ) . $this->order_note_template( $order->get_order_number() ) . $this->tracking_number_template( $order->get_order_number(), get_current_user_id() ); 
 
@@ -562,12 +528,9 @@ class WCVendors_Pro_Order_Controller {
 	 */
 	public function table_actions() {
 
-		$can_export_csv  = WC_Vendors::$pv_options->get_option( 'can_export_csv' );
-
 		$add_url = '?wcv_export_orders'; 
-		include( apply_filters( 'wcvendors_pro_table_actions_path', 'partials/order/wcvendors-pro-order-table-actions.php' ) );		
-		
-	} // table_actions()
+		include('partials/order/wcvendors-pro-order-table-actions.php');
+	}
 
 	/**
 	 *  Change the column that actions are displayed in 
@@ -611,6 +574,7 @@ class WCVendors_Pro_Order_Controller {
 
 			wc_add_notice( __( 'Order marked shipped.', 'wcvendors' ), 'success' );
 
+			$order->add_order_note( apply_filters( 'wcvendors_pro_vendor_shipped_note', __( $store_name . ' has marked as shipped. ', 'wcvendors') ), $vendor_id ) ; 
 		}
 
 		update_post_meta( $order_id, 'wc_pv_shipped', $shippers );
@@ -762,7 +726,7 @@ class WCVendors_Pro_Order_Controller {
 			$order_taxes         = $order->get_taxes();
 			$tax_classes         = WC_Tax::get_tax_classes();
 			$classes_options     = array();
-			$classes_options[''] = __( 'Standard', 'wcvendors-pro' );
+			$classes_options[''] = __( 'Standard', 'woocommerce' );
 
 			if ( ! empty( $tax_classes ) ) {
 				foreach ( $tax_classes as $class ) {
@@ -867,7 +831,7 @@ class WCVendors_Pro_Order_Controller {
 	 */
 	public function export_csv() {
 
-		include_once( 'class-wcvendors-pro-export-helper.php' ); 
+		include_once('class-wcvendors-pro-export-helper.php'); 
 
 		$date_range = array( 
 			'before' => date( 'Y-m-d', $this->end_date ), 
@@ -942,7 +906,7 @@ class WCVendors_Pro_Order_Controller {
 	 * 
 	 * @since    1.0.0
 	 */
-	public function update_shipment_tracking( ) { 
+	public function update_shipment_tracking() { 
 
 		$order_id = $_POST['_wcv_order_id' ]; 
 		$order_tracking_details = get_post_meta( $order_id, '_wcv_tracking_details', true ); 
@@ -985,9 +949,6 @@ class WCVendors_Pro_Order_Controller {
 		$this->add_order_note( $order_id, $order_note ); 
 
 		update_post_meta( $order_id, '_wcv_tracking_details', $order_tracking_details ); 
-
-		// Mark as shipped as tracking information has been added
-		self::mark_shipped( $vendor_id, $order_id ); 
 
 	} // update_shipment_tracking()
 
@@ -1035,7 +996,7 @@ class WCVendors_Pro_Order_Controller {
 						'Fastways' => 'http://www.fastway.co.nz/courier-services/track-your-parcel?l=%1$s',
 						'PBT Couriers' => 'http://www.pbt.com/nick/results.cfm?ticketNo=%1$s',
 					),
-					'South Africa' => array(
+					'South African' => array(
 						'SAPO' => 'http://sms.postoffice.co.za/TrackingParcels/Parcel.aspx?id=%1$s',
 					),
 					'United Kingdom' => array(
@@ -1059,66 +1020,5 @@ class WCVendors_Pro_Order_Controller {
 
 	}
 
-
-	/**
-	 * Filter the customers shipping address for the order table and view order details 
-	 * 
-	 * @since 1.3.6 
-	 * @access public 
-	 */
-	public function filter_formatted_shipping_address( $address ){ 
-
-		$hide_name 				= WC_Vendors::$pv_options->get_option( 'hide_order_customer_name' );
-		$hide_shipping_address 	= WC_Vendors::$pv_options->get_option( 'hide_order_customer_shipping_address' );
-
-		if ( $hide_name ) { 
-			unset( $address['first_name'] ); 
-			unset( $address['last_name'] ); 
-		}
-
-		if ( $hide_shipping_address ) { 
-			unset( $address[ 'company' ] ); 
-			unset( $address[ 'address_1' ] ); 
-			unset( $address[ 'address_2' ] ); 
-			unset( $address[ 'city' ] ); 
-			unset( $address[ 'state' ] ); 
-			unset( $address[ 'postcode' ] ); 
-			unset( $address[ 'country' ] ); 
-		}
-
-		return $address; 
-
-	} // filter_formatted_shipping_address
-
-
-	/**
-	 * Filter the customers billing address for view order details
-	 * 
-	 * @since 1.3.6 
-	 * @access public 
-	 */
-	public function filter_formatted_billing_address( $address ){ 
-
-		$hide_name 				= WC_Vendors::$pv_options->get_option( 'hide_order_customer_name' );
-		$hide_billing_address 	= WC_Vendors::$pv_options->get_option( 'hide_order_customer_billing_address' );
-
-		if ( $hide_name ) { 
-			unset( $address['first_name'] ); 
-			unset( $address['last_name'] ); 
-		}
-
-		if ( $hide_billing_address ) { 
-			unset( $address[ 'company' ] ); 
-			unset( $address[ 'address_1' ] ); 
-			unset( $address[ 'address_2' ] ); 
-			unset( $address[ 'city' ] ); 
-			unset( $address[ 'state' ] ); 
-			unset( $address[ 'postcode' ] ); 
-			unset( $address[ 'country' ] ); 
-		}
-
-		return $address; 
-
-	} // filter_formatted_billing_address
 
 }

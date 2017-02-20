@@ -617,24 +617,33 @@ class WCVendors_Pro_Form_Helper {
 
 		if ( ! $media_options[ 'featured' ]  ) {
 
-			echo '<div class="all-33 small-100 tiny-100">'; 
+			echo '<div class="all-100 small-100 tiny-100">'; 
+			
+			echo '<div class="all-15 small-100 text-label">';
 
 			echo '<h6>'.__('Featured Image', 'wcvendors-pro').'</h6>';
+			echo '<p>Especificações<br >Largura, Altura: 520x520<br >Tamanho: até 4mb <br >Formato: JPEG ou PNG </p>';
+
+			echo '</div>';
+			echo '<div class="all-80 small-100">';
 			$post_thumb 	= has_post_thumbnail( $post_id ); 
+			
 
 		  	echo '<div class="wcv-featuredimg" data-title="'.__('Select or Upload a Feature Image', 'wcvendors-pro').'" data-button_text="'.__('Set Product Feature Image', 'wcvendors-pro').'">'; 
 		    if ( $post_thumb ) { 
-		    	$image_attributes = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id), array(150,150) ); 
+		    	$image_attributes = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id) ); 
 		    	echo '<img src="'.$image_attributes[0].'" width="'.$image_attributes[1].'" height="'.$image_attributes[2].'">'; 
 		    }
-		    echo '</div>'; 
+		    echo '</div>';
+	
 		   	echo '<input type="hidden" id="_featured_image_id" name="_featured_image_id" value="'.( $post_thumb ? get_post_thumbnail_id( $post_id) : '' ). '" />'; 
 
 
 		    // echo '<p>'; 
-		  	echo '<a class="wcv-media-uploader-featured-add ' . ( $post_thumb ? 'hidden' : '' ) . '" href="#" >'.__('Set featured image', 'wcvendors-pro').'</a><br />'; 
+		  	echo '<a class="wcv-media-uploader-featured-add ' . ( $post_thumb ? 'hidden' : '' ) . '" href="#" >'.__('Set featured image', 'wcvendors-pro').'</a>'; 
 		  	echo '<a class="wcv-media-uploader-featured-delete ' . ( !$post_thumb ? 'hidden' : '' )  . '" href="#" >'.__('Remove featured image', 'wcvendors-pro').'</a><br />'; 
 		  	// echo '</p>'; 
+		  	echo '</div>'; 
 
 		  	echo '</div>'; 
 
@@ -650,10 +659,15 @@ class WCVendors_Pro_Form_Helper {
 			 			'notice' => __( 'You have reached the maximum number of gallery images.', 'wcvendors-pro' )
 			 		)
 			 	); 
+			 	echo '<span class="clear"></span><br />';
 
-			 	echo '<div class="all-66 small-100 tiny-100" >'; 
+			 	echo '<div class="all-100 small-100 tiny-100 galeria-product" >'; 
+			 	echo '<div class="all-15 small-100 text-label">';
 
 			 	echo '<h6>'.__('Gallery', 'wcvendors-pro').'</h6>';
+			 	echo '<p>Especificações<br >Largura, Altura: 520x520<br >Tamanho: até 4mb <br >Formato: JPEG ou PNG </p>';
+			 	echo '</div>';
+			 	echo '<div class="all-80 small-100 text-label">';
 			   	
 			   	echo '<div id="product_images_container" data-gallery_max_upload="'. $gallery_options[ 'max_upload' ] .'" data-gallery_max_notice="'.$gallery_options[ 'notice' ].'">'; 
 			   	echo '<ul class="product_images inline">';
@@ -670,9 +684,11 @@ class WCVendors_Pro_Form_Helper {
 				echo '</ul>'; 
 				echo '<input type="hidden" id="product_image_gallery" name="product_image_gallery" value="'. ( ( sizeof( $attachment_ids ) > 0 ) ? $product->product_image_gallery : '' ). '">'; 
 				echo '</div>'; 
+				echo '<p class="descri">Adicione até 5 imagens para a galeria de imagem do produto</p>';
 				echo '<p class="wcv-media-uploader-gallery"><a href="#" data-choose="' .__( 'Add Images to Product Gallery', 'wcvendors-pro'). '" data-update="' .__( 'Add to gallery', 'wcvendors-pro'). '" data-delete="Delete image" data-text="Delete">' .__( 'Add product gallery images', 'wcvendors-pro'). '</a></p>'; 
 
 				echo '</div>'; 
+				echo '</div>';
 
 			} 
 
@@ -812,7 +828,6 @@ class WCVendors_Pro_Form_Helper {
 				'AX' => __( '&#197;land Islands', 'wcvendors-pro' ),
 				'AL' => __( 'Albania', 'wcvendors-pro' ),
 				'DZ' => __( 'Algeria', 'wcvendors-pro' ),
-				'AS' => __( 'American Samoa', 'wcvendors-pro' ),
 				'AD' => __( 'Andorra', 'wcvendors-pro' ),
 				'AO' => __( 'Angola', 'wcvendors-pro' ),
 				'AI' => __( 'Anguilla', 'wcvendors-pro' ),
@@ -866,7 +881,7 @@ class WCVendors_Pro_Form_Helper {
 				'CR' => __( 'Costa Rica', 'wcvendors-pro' ),
 				'HR' => __( 'Croatia', 'wcvendors-pro' ),
 				'CU' => __( 'Cuba', 'wcvendors-pro' ),
-				'CW' => __( 'Cura&ccedil;ao', 'wcvendors-pro' ),
+				'CW' => __( 'Cura&Ccedil;ao', 'wcvendors-pro' ),
 				'CY' => __( 'Cyprus', 'wcvendors-pro' ),
 				'CZ' => __( 'Czech Republic', 'wcvendors-pro' ),
 				'DK' => __( 'Denmark', 'wcvendors-pro' ),
@@ -898,7 +913,6 @@ class WCVendors_Pro_Form_Helper {
 				'GL' => __( 'Greenland', 'wcvendors-pro' ),
 				'GD' => __( 'Grenada', 'wcvendors-pro' ),
 				'GP' => __( 'Guadeloupe', 'wcvendors-pro' ),
-				'GU' => __( 'Guam', 'wcvendors-pro' ),
 				'GT' => __( 'Guatemala', 'wcvendors-pro' ),
 				'GG' => __( 'Guernsey', 'wcvendors-pro' ),
 				'GN' => __( 'Guinea', 'wcvendors-pro' ),
@@ -964,6 +978,7 @@ class WCVendors_Pro_Form_Helper {
 				'NR' => __( 'Nauru', 'wcvendors-pro' ),
 				'NP' => __( 'Nepal', 'wcvendors-pro' ),
 				'NL' => __( 'Netherlands', 'wcvendors-pro' ),
+				'AN' => __( 'Netherlands Antilles', 'wcvendors-pro' ),
 				'NC' => __( 'New Caledonia', 'wcvendors-pro' ),
 				'NZ' => __( 'New Zealand', 'wcvendors-pro' ),
 				'NI' => __( 'Nicaragua', 'wcvendors-pro' ),
@@ -971,7 +986,6 @@ class WCVendors_Pro_Form_Helper {
 				'NG' => __( 'Nigeria', 'wcvendors-pro' ),
 				'NU' => __( 'Niue', 'wcvendors-pro' ),
 				'NF' => __( 'Norfolk Island', 'wcvendors-pro' ),
-				'MP' => __( 'Northern Mariana Islands', 'wcvendors-pro' ),
 				'KP' => __( 'North Korea', 'wcvendors-pro' ),
 				'NO' => __( 'Norway', 'wcvendors-pro' ),
 				'OM' => __( 'Oman', 'wcvendors-pro' ),
@@ -985,7 +999,6 @@ class WCVendors_Pro_Form_Helper {
 				'PN' => __( 'Pitcairn', 'wcvendors-pro' ),
 				'PL' => __( 'Poland', 'wcvendors-pro' ),
 				'PT' => __( 'Portugal', 'wcvendors-pro' ),
-				'PR' => __( 'Puerto Rico', 'wcvendors-pro' ),
 				'QA' => __( 'Qatar', 'wcvendors-pro' ),
 				'RE' => __( 'Reunion', 'wcvendors-pro' ),
 				'RO' => __( 'Romania', 'wcvendors-pro' ),
@@ -1043,8 +1056,6 @@ class WCVendors_Pro_Form_Helper {
 				'AE' => __( 'United Arab Emirates', 'wcvendors-pro' ),
 				'GB' => __( 'United Kingdom (UK)', 'wcvendors-pro' ),
 				'US' => __( 'United States (US)', 'wcvendors-pro' ),
-				'UM' => __( 'United States (US) Minor Outlying Islands', 'wcvendors-pro' ),
-				'VI' => __( 'United States (US) Virgin Islands', 'wcvendors-pro' ),
 				'UY' => __( 'Uruguay', 'wcvendors-pro' ),
 				'UZ' => __( 'Uzbekistan', 'wcvendors-pro' ),
 				'VU' => __( 'Vanuatu', 'wcvendors-pro' ),
@@ -1053,10 +1064,10 @@ class WCVendors_Pro_Form_Helper {
 				'VN' => __( 'Vietnam', 'wcvendors-pro' ),
 				'WF' => __( 'Wallis and Futuna', 'wcvendors-pro' ),
 				'EH' => __( 'Western Sahara', 'wcvendors-pro' ),
-				'WS' => __( 'Samoa', 'wcvendors-pro' ),
+				'WS' => __( 'Western Samoa', 'wcvendors-pro' ),
 				'YE' => __( 'Yemen', 'wcvendors-pro' ),
 				'ZM' => __( 'Zambia', 'wcvendors-pro' ),
-				'ZW' => __( 'Zimbabwe', 'wcvendors-pro' ),
+				'ZW' => __( 'Zimbabwe', 'wcvendors-pro' )
 			) );
 	}
 

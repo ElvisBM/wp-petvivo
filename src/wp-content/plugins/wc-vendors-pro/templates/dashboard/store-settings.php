@@ -5,7 +5,7 @@
  * Override this template by copying it to yourtheme/wc-vendors/dashboard/
  *
  * @package    WCVendors_Pro
- * @version    1.3.7
+ * @version    1.3.3
  */
 
 $settings_social 		= (array) WC_Vendors::$pv_options->get_option( 'hide_settings_social' );
@@ -105,17 +105,9 @@ foreach ( $settings_social as $value) { if ( 1 == $value ) $social_count +=1;  }
 
 		<!-- Shipping Rates -->
 		<?php WCVendors_Pro_Store_Form::shipping_rates( ); ?>
-
+		
 		<?php do_action( 'wcvendors_settings_after_shipping' ); ?>
 
-		<!-- Shiping Information  -->
-
-		<?php WCVendors_Pro_Store_Form::product_handling_fee( $shipping_details ); ?>
-		<?php WCVendors_Pro_Store_Form::shipping_policy( $shipping_details ); ?>
-		<?php WCVendors_Pro_Store_Form::return_policy( $shipping_details ); ?>
-		<?php WCVendors_Pro_Store_Form::shipping_from( $shipping_details ); ?>
-		<?php WCVendors_Pro_Store_Form::shipping_address( $shipping_details ); ?>
-		
 	</div>
 
 	<?php if ( $social_count != $social_total ) :  ?> 

@@ -48,10 +48,7 @@ $post_status				= ( isset($product) && null !== $product ) ? $product->post->pos
 	<div class="all-100"> 
     	<!-- Media uploader -->
 		<div class="wcv-product-media">
-			<?php do_action( 'wcv_before_media', $object_id ); ?>
-				<?php WCVendors_Pro_Form_helper::product_media_uploader( $object_id ); ?>
-			<?php do_action( 'wcv_after_media', $object_id ); ?>
-
+			<?php WCVendors_Pro_Form_helper::product_media_uploader( $object_id ); ?>
 		</div>
 	</div>
 

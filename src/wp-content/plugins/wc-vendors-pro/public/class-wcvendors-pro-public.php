@@ -106,12 +106,6 @@ class WCVendors_Pro_Public {
 
 			} 
 
-			// Load jquery-ui-datepicker style
-    		wp_enqueue_style( 'wcv-datepicker-style', $this->base_dir . 'assets/lib/jquery-ui/jquery-ui' . $this->suffix . '.css');
-
-    		// load jquery-ui-datetimepicker style 
-    		wp_enqueue_style( 'wcv-datetimepicker-style', $this->base_dir . 'assets/lib/jquery-ui/jquery-ui-timepicker.css');
-
 		} 
 
 		//font awesome 
@@ -119,33 +113,6 @@ class WCVendors_Pro_Public {
 
 
 	}
-
-	/**
-	 * Add custom wcvendors pro css classes 
-	 *
-	 * @since    1.0.0
-	 * @access public 
-	 * 
-	 * @param array $classes - body css classes 
-	 * @return array $classes - body css classes 
-	 */
-	public function body_class( $classes ){ 
-
-		$dashboard_page_id 	= WCVendors_Pro::get_option( 'dashboard_page_id' ); 
-		$feedback_page_id 	= WCVendors_Pro::get_option( 'feedback_page_id' );  
-
-		if ( is_page( $dashboard_page_id ) ){ 
-			$classes[] = 'wcvendors wcvendors-pro wcv-pro-dashboard'; 
-		}
-
-		if ( is_page( $feedback_page_id ) ){ 
-			$classes[] = 'wcvendors wcvendors-pro wcv-ratings-page'; 
-		}
-
-		return $classes; 
-
-
-	} // body_class() 
 
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
@@ -160,7 +127,6 @@ class WCVendors_Pro_Public {
 
 		$dashboard_page_id 	= WCVendors_Pro::get_option( 'dashboard_page_id' );
 		$file_display 		= WCVendors_Pro::get_option( 'file_display' );
-		$tag_separator 		= WCVendors_Pro::get_option( 'tag_separator' ) ? WCVendors_Pro::get_option( 'tag_separator' ) : 'both';
 		$disable_select2 	= WCVendors_Pro::get_option( 'disable_select2' );  
 		$view_dashboard		= apply_filters( 'wcv_view_dashboard', 	$current_page_id == $dashboard_page_id ? true : false ); 
 
@@ -217,15 +183,13 @@ class WCVendors_Pro_Public {
 
 				// Product search
 				wp_register_script( 'wcv-product-search', 	$this->base_dir . 'assets/js/select' . $this->suffix . '.js', array( 'jquery' ), '3.5.2', true );
-				$localize_search_args[ 'nonce' ] 		= wp_create_nonce( 'wcv-search-products' ); 
-				$localize_search_args[ 'separator' ] 	= apply_filters( 'wcv_product_search_args_separator', array( ',', ' ' ) ); 
+				$localize_search_args['nonce'] = wp_create_nonce( 'wcv-search-products' ); 
 				wp_localize_script( 'wcv-product-search', 'wcv_product_select_params', $localize_search_args );
 				wp_enqueue_script( 'wcv-product-search' );
 
 				// Tag search 
 				wp_register_script( 'wcv-tag-search', 	$this->base_dir . 'assets/js/tags' . $this->suffix . '.js', array( 'jquery' ), WCV_PRO_VERSION, true );
 				$localize_search_args['nonce'] = wp_create_nonce( 'wcv-search-product-tags' ); 
-				$localize_search_args[ 'separator' ] 	= apply_filters( 'wcv_tag_search_args_separator', $this->select2_separator( $tag_separator ) ); 
 				wp_localize_script( 'wcv-tag-search', 'wcv_tag_search_params', $localize_search_args ); 
 				wp_enqueue_script( 'wcv-tag-search' );
 
@@ -292,52 +256,14 @@ class WCVendors_Pro_Public {
 				wp_register_script( 'wcv-frontend-order', $this->base_dir . 'assets/js/order' . $this->suffix	 . '.js', array( 'jquery' ), WCV_PRO_VERSION, true ); 				
 				wp_enqueue_script( 'wcv-frontend-order' );
 		
-				$general_settings_params = array( 
-					'date_format' => apply_filters( 'wcv-datepicker-dateformat', get_option( 'date_format' ) ), 
-				); 
-
 				// General settings 
 				wp_register_script( 'wcv-frontend-general', $this->base_dir . 'assets/js/general' . $this->suffix	 . '.js', array( 'jquery', 'select2' ), WCV_PRO_VERSION, true ); 				
-				wp_localize_script( 'wcv-frontend-general', 'wcv_frontend_general',  $general_settings_params );
 				wp_enqueue_script( 'wcv-frontend-general' );
-
-				// Jquery-ui datepicker 
-	    		wp_enqueue_script( 'jquery-ui-datepicker' );
-	    		wp_enqueue_script( 'jquery-ui-slider' );
-
-	    		// Load jquery-datepicker-timepicker 
-	    		wp_enqueue_script( 'wcv-timepicker',  $this->base_dir . 'assets/lib/jquery-ui/jquery-ui-timepicker.js', array('jquery', 'jquery-ui-core', 'jquery-ui-slider', 'jquery-ui-datepicker' ), '1.6.3', true );	
-
-
 
 			}  // user logged in check 
 		
 		} // on dashboard page 
 
 	}
-
-
-	/**
-	 * Select 2 seperator options for tag search 
-	 * 
-	 * @since 1.3.6
-	 * @access public 
-	 * @return array separator types 
-	 */
-	public function select2_separator( $option ){ 
-
-		switch ( $option ) {
-			case 'space':
-				return array( ' ' ); 
-				break;
-			case 'comma':
-				return array( ',' ); 
-				break;
-			default:
-			 	return apply_filters( 'wcv_tag_separator_defaults', array( ',', ' ' ) ); 
-				break;
-		}
-
-	} // select2_separator() 
 
 }

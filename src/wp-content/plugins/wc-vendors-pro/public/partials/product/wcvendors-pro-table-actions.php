@@ -15,7 +15,7 @@
 
 <div class="wcv_dashboard_table_header wcv-cols-group"> 
 	<div class="all-50">
-		<a href="<?php echo $add_url; ?>" class="wcv-button button"><?php echo __('Add Product', 'wcvendors-pro' ); ?></a>
+		<a href="<?php echo $add_url; ?>" class="wcv-button button"><?php echo __('Add Product', $this->wcvendors_pro ); ?></a>
 	</div>
 	<div class="all-50">
 	<?php 

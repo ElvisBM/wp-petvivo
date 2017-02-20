@@ -77,33 +77,10 @@ class WCVendors_Pro_API_Manager_Menu {
 		register_setting( wcvendors_pro_api_manager_instance()->ame_data_key, wcvendors_pro_api_manager_instance()->ame_data_key, array( $this, 'validate_options' ) );
 
 		// API Key
-		add_settings_section( 
-			wcvendors_pro_api_manager_instance()->ame_api_key, 
-			__( 'License Activation', wcvendors_pro_api_manager_instance()->text_domain ), 
-			array( $this, 'wc_am_api_key_text' ), 
-			wcvendors_pro_api_manager_instance()->ame_activation_tab_key 
-		);
-		add_settings_field( 
-			'status', 
-			__( 'License Key Status', wcvendors_pro_api_manager_instance()->text_domain ), 
-			array( $this, 'wc_am_api_key_status' ), 
-			wcvendors_pro_api_manager_instance()->ame_activation_tab_key, 
-			wcvendors_pro_api_manager_instance()->ame_api_key 
-		);
-		add_settings_field( 
-			wcvendors_pro_api_manager_instance()->ame_api_key, 
-			__( 'License Key', wcvendors_pro_api_manager_instance()->text_domain ), 
-			array( $this, 'wc_am_api_key_field' ), 
-			wcvendors_pro_api_manager_instance()->ame_activation_tab_key, 
-			wcvendors_pro_api_manager_instance()->ame_api_key 
-		);
-		add_settings_field( 
-			wcvendors_pro_api_manager_instance()->ame_activation_email, 
-			__( 'License email', wcvendors_pro_api_manager_instance()->text_domain ), 
-			array( $this, 'wc_am_api_email_field' ), 
-			wcvendors_pro_api_manager_instance()->ame_activation_tab_key, 
-			wcvendors_pro_api_manager_instance()->ame_api_key 
-		);
+		add_settings_section( wcvendors_pro_api_manager_instance()->ame_api_key, __( 'License Activation', wcvendors_pro_api_manager_instance()->text_domain ), array( $this, 'wc_am_api_key_text' ), wcvendors_pro_api_manager_instance()->ame_activation_tab_key );
+		add_settings_field( 'status', __( 'License Key Status', wcvendors_pro_api_manager_instance()->text_domain ), array( $this, 'wc_am_api_key_status' ), wcvendors_pro_api_manager_instance()->ame_activation_tab_key, wcvendors_pro_api_manager_instance()->ame_api_key );
+		add_settings_field( wcvendors_pro_api_manager_instance()->ame_api_key, __( 'License Key', wcvendors_pro_api_manager_instance()->text_domain ), array( $this, 'wc_am_api_key_field' ), wcvendors_pro_api_manager_instance()->ame_activation_tab_key, wcvendors_pro_api_manager_instance()->ame_api_key );
+		add_settings_field( wcvendors_pro_api_manager_instance()->ame_activation_email, __( 'License email', wcvendors_pro_api_manager_instance()->text_domain ), array( $this, 'wc_am_api_email_field' ), wcvendors_pro_api_manager_instance()->ame_activation_tab_key, wcvendors_pro_api_manager_instance()->ame_api_key );
 
 		// Activation settings
 		register_setting( wcvendors_pro_api_manager_instance()->ame_deactivate_checkbox, wcvendors_pro_api_manager_instance()->ame_deactivate_checkbox, array( $this, 'wc_am_license_key_deactivation' ) );

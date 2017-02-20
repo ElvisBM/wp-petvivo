@@ -53,7 +53,7 @@ get_header( 'shop' ); ?>
 		}
 
 		
-	} else {  echo __( 'No ratings have been submitted for this vendor yet.', 'wcvendors-pro' ); }  ?>	
+	} else {  echo __( 'No ratings have been submitted for this vendor yet.', $this->wcvendors_pro ); }  ?>	
 
 	<h3><a href="<?php echo $vendor_shop_url; ?>"><?php _e( 'Return to store', 'wcvendors-pro' ); ?></a></h3>
 

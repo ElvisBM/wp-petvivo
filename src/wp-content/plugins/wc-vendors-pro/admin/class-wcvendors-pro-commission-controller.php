@@ -72,20 +72,13 @@ class WCVendors_Pro_Commission_Controller {
 	 */
 	public function process_commission(  $commission, $product_id, $product_price, $order, $qty ) { 
 
-		// Check if this is a variation and get the parent id, this ensures that the correct vendor id is retrieved 
-		if ( get_post_type( $product_id ) === 'product_variation' ) { 
-			$product_id = get_post_field( 'post_parent', $product_id );
-		}
-
 		// Product Commission 
 		$product_commission_type 	= get_post_meta( $product_id, 'wcv_commission_type', true ); 
 		$original_product_price 	= $product_price; 
-		$free_product_commission 	= get_post_meta( $product_id, 'pv_commission_rate', true ); 
 
 		// Store Commission 
 		$vendor_id 					= get_post_field( 'post_author', $product_id );
 	 	$store_commission_type 		= get_user_meta( $vendor_id, '_wcv_commission_type', true ); 
-	 	$store_free_commission 		= get_user_meta( $vendor_id, 'pv_custom_commission_rate', true ); 			
 
 	 	if ( '' != $product_commission_type ) { 
 	 		$commission_type 	= $product_commission_type; 
@@ -133,7 +126,7 @@ class WCVendors_Pro_Commission_Controller {
 	 	if ( 'no' == WCVendors_Pro::get_option( 'commission_coupon_action' ) ) {
 	 		$product_price = $product_price - $discount_amount; 
 	 	}
-	 	
+
 		switch ( $commission_type ) {
 			case 'fixed':
 				$commission      = round( $commission_amount, 2 );
@@ -191,13 +184,6 @@ class WCVendors_Pro_Commission_Controller {
 				delete_post_meta( $post_id, 'wcv_commission_amount'); 
 			}
 
-			// wcv_commission_fee
-			if ( isset( $_POST[ 'wcv_commission_fee' ] ) && '' !== $_POST[ 'wcv_commission_fee' ] ) {
-				update_post_meta( $post_id, 'wcv_commission_fee', ( float ) $_POST[ 'wcv_commission_fee' ] );	
-			} else { 
-				delete_post_meta( $post_id, 'wcv_commission_fee'); 
-			}
-
 		} else { 
 			delete_post_meta( $post_id, 'wcv_commission_type'); 
  			delete_post_meta( $post_id, 'wcv_commission_percent'); 
@@ -225,8 +211,7 @@ class WCVendors_Pro_Commission_Controller {
 		
 		if ( !current_user_can( 'manage_woocommerce' ) ) return;
 
-		include( apply_filters( 'wcvendors_pro_add_commission_tab_path', 'partials/product/wcvendors-pro-product-meta-tab.php' ) ); 
-
+		include('partials/product/wcvendors-pro-product-meta-tab.php'); 
 	} //add_commission_tab()
 
 	/**
@@ -245,7 +230,7 @@ class WCVendors_Pro_Commission_Controller {
 		$commission_amount 	= get_post_meta( $post->ID, 'wcv_commission_amount', 	true ); 
 		$commission_fee		= get_post_meta( $post->ID, 'wcv_commission_fee', 		true ); 
 
-		include( apply_filters( 'wcvendors_pro_add_commission_panel_path', 'partials/product/wcvendors-pro-commission-panel.php' ) ); 
+		include('partials/product/wcvendors-pro-commission-panel.php'); 
 
 	} //add_commission_panel()
 
@@ -274,15 +259,12 @@ class WCVendors_Pro_Commission_Controller {
 
 		if ( ! WCV_Vendors::is_vendor( $user->ID ) ) { return; } 
 
-		// Get the default commission rate 
-		$free_override_commission = get_user_meta( $user->ID, 'pv_custom_commission_rate', true ); 
-
 		$commission_type 	= get_user_meta( $user->ID, '_wcv_commission_type', 	true ); 
 		$commission_percent = get_user_meta( $user->ID, '_wcv_commission_percent', 	true );  
 		$commission_amount 	= get_user_meta( $user->ID, '_wcv_commission_amount', 	true ); 
 		$commission_fee		= get_user_meta( $user->ID, '_wcv_commission_fee', 		true ); 
 
-		include( apply_filters( 'wcvendors_pro_store_commission_meta_fields_path', 'partials/vendor/wcvendors-pro-vendor-commission-fields.php' ) ); 
+		include('partials/vendor/wcvendors-pro-vendor-commission-fields.php'); 
 
 	} // store_commission_meta_fields()
 
@@ -299,7 +281,6 @@ class WCVendors_Pro_Commission_Controller {
 		if ( ! WCV_Vendors::is_vendor( $vendor_id ) ) { return; } 
 
 		if ( isset( $_POST[ '_wcv_commission_type' ] ) && '' !== $_POST[ '_wcv_commission_type' ] ) {
-
 			update_user_meta( $vendor_id, '_wcv_commission_type', wc_clean( $_POST[ '_wcv_commission_type' ] ) );
 
 			// _wcv_commission_percent
@@ -386,15 +367,17 @@ class WCVendors_Pro_Commission_Controller {
 					$package[ 'destination' ][ 'state' ]    = $order->shipping_state;
 					$package[ 'destination' ][ 'postcode' ] = $order->shipping_postcode;
 
-					$product_id = $product['product_id'];
+					$product_id = !empty( $product['variation_id'] ) ? $product['variation_id'] : $product['product_id'];
 
-					// // Currently uses the parent's shipping costs for now.
-					// if ( ! empty( $product[ 'variation_id' ] ) ) {
-					// 	$rate = WCVendors_Pro_Shipping_Method::get_shipping_rate( $product_id, $vendor_id, $package, $settings ); 	
-					// } 					
-					
-					$rate = WCVendors_Pro_Shipping_Method::get_shipping_rate( $product_id, $vendor_id, $package, $settings ); 	
-			
+					// Currently uses the parent's shipping costs for now.
+					if ( ! empty( $product[ 'variation_id' ] ) ) {
+						$rate = WCVendors_Pro_Shipping_Method::get_shipping_rate( $product_id, $vendor_id, $package, $settings ); 	
+					} 					
+
+					if ( ! $rate ) {
+						$rate = WCVendors_Pro_Shipping_Method::get_shipping_rate( $product_id, $vendor_id, $package, $settings ); 	
+					}
+
 					if ( $rate ) {
 
 						$qty = ( $rate->qty_override == 'yes' ) ? 1 : $product[ 'qty' ];
@@ -434,67 +417,5 @@ class WCVendors_Pro_Commission_Controller {
 
 		return $fee;
 	} // get_fee() 
-
-
-	/**
-	 * Import the commission overrides for vendors 
-	 * 
-	 * @since 1.3.6
-	 * @access public 
-	 * @todo delete the free meta keys 
-	 */
-	public static function import_vendor_commission_overrides(){ 
-
-		$all_vendor_ids	= get_users(  array(  'role' => 'vendor',  'fields'	=> 'ID' ) );
-
-		if ( isset( $all_vendor_ids ) ){ 
-
-			foreach ( $all_vendor_ids as $vendor_id ) {
-	
-				$store_free_commission = get_user_meta( $vendor_id, 'pv_custom_commission_rate', true ); 			
-
-				// There is a free commission override. Import it into pro
-				if ( isset( $store_free_commission ) ) { 
-					update_user_meta( $vendor_id, '_wcv_commission_type', 	'percent' );
-					update_user_meta( $vendor_id, '_wcv_commission_percent', $store_free_commission );
-				}
-
-			}
-
-			echo '<div class="updated inline"><p>' . __( 'Vendor commission overrides successfully imported.', 'wcvendors-pro' ) . '</p></div>';
-
-		} 
-
-	} // import_vendor_commission_overrides() 
-
-	/**
-	 * Import the commission overrides for products 
-	 * 
-	 * @since 1.3.6
-	 * @access public 
-	 * @todo delete the free meta keys 
-	 */
-	public static function import_product_commission_overrides(){ 
-
-		$all_products = get_posts( array( 'post_type' => 'product' ) ); 
-
-		if ( isset( $all_products ) ){ 
-
-			foreach ( $all_products as $product ) {
-
-				$free_product_override_commission = get_post_meta( $product->ID, 'pv_commission_rate', true ); 
-
-				if ( isset( $free_product_override_commission ) ){ 
-					update_post_meta( $product->ID, 'wcv_commission_type', 'percent' );
-					update_post_meta( $product->ID, 'wcv_commission_percent', $free_product_override_commission );
-				}
-
-			}
-
-			echo '<div class="updated inline"><p>' . __( 'Product commission overrides successfully imported.', 'wcvendors-pro' ) . '</p></div>';
-
-		}
-
-	} // import_product_commission_overrides() 
 
 } 

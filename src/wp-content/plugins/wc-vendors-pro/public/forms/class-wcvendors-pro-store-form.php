@@ -309,7 +309,7 @@ class WCVendors_Pro_Store_Form {
 
 		if ( $shipping_disabled || ! $shipping_method_enabled ) { unset( $store_tabs[ 'shipping' ] );  }
 
-		include( apply_filters( 'wcvendors_pro_store_form_store_tabs_path', 'partials/wcvendors-pro-store-tabs.php' ) );
+		include('partials/wcvendors-pro-store-tabs.php');
 
 	} // form_tabs()
 
@@ -612,7 +612,7 @@ class WCVendors_Pro_Store_Form {
 			$country	= get_user_meta( get_current_user_id(), '_wcv_store_country', 	true ); 
 			$postcode	= get_user_meta( get_current_user_id(), '_wcv_store_postcode', 	true ); 
 
-			include( apply_filters( 'wcvendors_pro_store_form_store_address_path', 'wcvendors-pro-address.php' ) );
+			include( 'wcvendors-pro-address.php' );
 		} 
 
 	} // store_address()
@@ -741,8 +741,8 @@ class WCVendors_Pro_Store_Form {
 				'label' 		=> __( 'State / County', 'wcvendors-pro' ), 
 				'placeholder'	=> __( 'State / County', 'wcvendors-pro' ),  
 				'value' 		=> $state, 
-				'wrapper_start' => '<div class="wcv-cols-group wcv-horizontal-gutters"><div class="all-50 small-100">',
-				'wrapper_end' 	=> '</div>', 
+				'wrapper_start' => '',
+				'wrapper_end' 	=> '', 
 				) )
 			);
 
@@ -769,8 +769,8 @@ class WCVendors_Pro_Store_Form {
 				'label' 			=> __( 'Postcode / Zip', 'wcvendors-pro' ), 	
 				'placeholder'		=> __( 'Postcode / Zip', 'wcvendors-pro' ), 
 				'value' 			=> $postcode, 
-				'wrapper_start' => '<div class="all-50 small-100">',
-				'wrapper_end' 		=> '</div></div>', 
+				'wrapper_start' => '',
+				'wrapper_end' 		=> '</div>', 
 				) )
 			);
 
@@ -1065,8 +1065,8 @@ class WCVendors_Pro_Store_Form {
 			'description' 		=> __( 'The default shipping fee within your country, this can be overridden on a per product basis.', 'wcvendors-pro' ), 
 			'type' 				=> 'text', 
 			'class' 			=> 'wcv-disable-national-input',
-			'wrapper_start' 	=> '<div class="wcv-cols-group wcv-horizontal-gutters"><div class="all-50 small-100">', 
-			'wrapper_end' 		=>  '</div>', 
+			'wrapper_start' 	=> '', 
+			'wrapper_end' 		=>  '', 
 			'value'				=> $value, 
 			'custom_attributes' => array( 
 		 			'data-rules' => 'decimal', 
@@ -1285,19 +1285,13 @@ class WCVendors_Pro_Store_Form {
 
 		}
 
-		// Backwards compatability 
-		// This has been moved into the store-settings template for 1.3.7 and above. 
-		if ( version_compare( WCV_PRO_VERSION, '1.3.7', '<' ) ){ 
+		self::product_handling_fee( $shipping_details );
+		self::shipping_policy( $shipping_details );
+		self::return_policy( $shipping_details );
+		self::shipping_from( $shipping_details );
+		self::shipping_address( $shipping_details );
 
-			self::product_handling_fee( $shipping_details );
-			self::shipping_policy( $shipping_details );
-			self::return_policy( $shipping_details );
-			self::shipping_from( $shipping_details );
-			self::shipping_address( $shipping_details );
 
-		}
-
-		
 	} // shipping_rates() 
 
 	/**
@@ -1412,7 +1406,7 @@ class WCVendors_Pro_Store_Form {
 
 		$value = ( is_array( $shipping_details ) && array_key_exists( 'shipping_from', $shipping_details ) ) ? $shipping_details[ 'shipping_from' ] : ''; 
 
-		// shipping from
+		// Download Type
 		WCVendors_Pro_Form_Helper::select( apply_filters( 'wcv_vendor_shipping_from', array( 
 			'id' 				=> '_wcv_shipping_from', 
 			'class'				=> 'select2',
@@ -1448,7 +1442,7 @@ class WCVendors_Pro_Store_Form {
 		$country	= ( is_array( $value ) && array_key_exists( 'country', $value ) ) ? $value[ 'country' ] : ''; 
 		$postcode	= ( is_array( $value ) && array_key_exists( 'postcode', $value ) ) ? $value[ 'postcode' ] : ''; 
 
-		include( apply_filters( 'wcvendors_pro_store_form_shipping_address_path', 'wcvendors-pro-shipping-address.php' ) );
+		include( 'wcvendors-pro-shipping-address.php' );
 
 	} 
 
@@ -1463,7 +1457,7 @@ class WCVendors_Pro_Store_Form {
 
 		$shipping_rates = get_user_meta( get_current_user_id(), '_wcv_shipping_rates', true ); 
 
-		include_once( apply_filters( 'wcvendors_pro_store_form_shipping_rate_table_path', 'partials/wcvendors-pro-shipping-table.php' ) );
+		include_once('partials/wcvendors-pro-shipping-table.php');
 
 	} // download_files()
 
@@ -1483,7 +1477,7 @@ class WCVendors_Pro_Store_Form {
 			// Vacation Mode 
 			WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_vacation_mode', array( 
 						'id' 				=> '_wcv_vacation_mode', 
-						'label' 			=> __( 'Enable Vacation Mode', 'wcvendors-pro' ), 
+						'label' 			=> __( 'Ativar modo de férias', 'wcvendors-pro' ), 
 						'type' 				=> 'checkbox', 
 						'class' 			=> 'wcv-vacaction-mode',
 						'wrapper_start' 	=> '<div class="wcv-cols-group wcv-horizontal-gutters"><div class="all-100">', 
@@ -1514,17 +1508,15 @@ class WCVendors_Pro_Store_Form {
 	*/
 	public static function vendor_terms( ) { 
 
-		$terms_page = WC_Vendors::$pv_options->get_option( 'terms_to_apply_page' ); 
-
-		if ( ( $terms_page )  &&  ( ! isset( $_GET['terms'] ) ) ){ 
+		if ( $terms_page = WC_Vendors::$pv_options->get_option( 'terms_to_apply_page' ) && ! isset( $_GET['terms'] ) ){ 
 
 			// Vendor Terms checkbox 
-			WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_vendor_terms_args', array( 
+			WCVendors_Pro_Form_Helper::input( apply_filters( 'wcv_shipping_national_qty', array( 
 						'id' 				=> '_wcv_agree_to_terms', 
-						'label' 			=> sprintf( __( 'I have read and accepted the <a href="%s" target="_blank">terms and conditions</a>', 'wcvendors-pro' ), get_permalink( $terms_page ) ), 
+						'label' 			=> sprintf( __( 'I have read and accepted the <a href="%s">terms and conditions</a>', 'wcvendors-pro' ), get_permalink( $terms_page ) ), 
 						'type' 				=> 'checkbox', 
 						'class' 			=> '',
-						'wrapper_start' 	=> '<div class="wcv-cols-group wcv-horizontal-gutters"><div class="all-100">', 
+						'wrapper_start' 	=> '<div class="wcv-cols-group wcv-horizontal-gutters"><div class="all-100>', 
 						'wrapper_end' 		=>  '</div>', 
 						'value'				=> 1, 
 						'custom_attributes' => array(

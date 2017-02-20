@@ -1,7 +1,7 @@
 ﻿Plugin Name:       WC Vendors Pro
 Plugin URI:        http://www.wcvendors.com/wcvendors-pro/
 Description:       The WC Vendors Pro plugin 
-Version:           1.3.8
+Version:           1.3.3
 Author:            WC Vendors (support@wcvendors.com)
 Author URI:        http://www.wcvendors.com/
 License:           GPL-2.0+

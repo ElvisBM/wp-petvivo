@@ -176,7 +176,7 @@ class WCVendors_Pro_Table_Helper {
 	/**
 	 *  Set the table columns
 	 *  
-	 *  Associative array in the format 'name' => __('Label', 'wcvendors-pro' )
+	 *  Associative array in the format 'name' => __('Label', $this->wcvendors_pro )
 	 *
 	 * @since    1.0.0
 	 * @param    array     $columns     	The table columns
@@ -190,7 +190,7 @@ class WCVendors_Pro_Table_Helper {
 	/**
 	 *  Get the table columns
 	 *  
-	 *  Associative array in the format 'name' => __('Label', 'wcvendors-pro' )
+	 *  Associative array in the format 'name' => __('Label', $this->wcvendors_pro )
 	 *
 	 * @since    1.0.0
 	 * @return   array     $columns     	The table columns
@@ -304,9 +304,9 @@ class WCVendors_Pro_Table_Helper {
 		$no_data_notice = apply_filters('wcvendors_pro_table_no_data_notice_' . $this->id, __( "No " . $this->id . "'s found") ); 
 
 		if ( $this->has_rows() ) { 
-			include( apply_filters( 'wcvendors_pro_table_path', 'partials/helpers/table/wcvendors-pro-table.php' ) ); 
+			include('partials/helpers/table/wcvendors-pro-table.php'); 
 		} else { 
-			include( apply_filters( 'wcvendors_pro_table_no_data_path', 'partials/helpers/table/wcvendors-pro-table-nodata.php' ) ); 
+			include('partials/helpers/table/wcvendors-pro-table-nodata.php'); 
 		}
 
 		do_action( 'wcvendors_pro_table_after_' . $this->id ); 
@@ -320,12 +320,12 @@ class WCVendors_Pro_Table_Helper {
 	 */
 	public function display_columns() { 
 
-		include( apply_filters( 'wcvendors_pro_table_display_columns_path', 'partials/helpers/table/wcvendors-pro-table-columns.php' ) ); 
+		include('partials/helpers/table/wcvendors-pro-table-columns.php'); 
 	} 
 
 	public function display_rows() { 
 
-		include( apply_filters( 'wcvendors_pro_table_display_rows_path', 'partials/helpers/table/wcvendors-pro-table-data.php' ) ); 
+		include('partials/helpers/table/wcvendors-pro-table-data.php'); 
 		
 	}
 
@@ -336,7 +336,7 @@ class WCVendors_Pro_Table_Helper {
 	 */
 	public function display_actions( $object_id ) { 
 
-		include( apply_filters( 'wcvendors_pro_table_display_actions_path', 'partials/helpers/table/wcvendors-pro-table-actions.php' ) ); 				
+		include('partials/helpers/table/wcvendors-pro-table-actions.php'); 				
 	} 
 
 

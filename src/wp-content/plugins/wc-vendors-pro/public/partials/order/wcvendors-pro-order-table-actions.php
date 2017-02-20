@@ -6,7 +6,7 @@
  * This file is used to add the table actions before and after a table
  *
  * @link       http://www.wcvendors.com
- * @since      1.3.7
+ * @since      1.2.3
  *
  * @package    WCVendors_Pro
  * @subpackage WCVendors_Pro/public/partials/product
@@ -30,7 +30,7 @@
 					'wrapper_end' 		=> '</div>', 
 					'custom_attributes' => array(
 						'maxlenth' 	=> '10', 
-						'pattern' 	=> '[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])'
+						'pattern' 	=> '(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}'
 						),
 					) )
 				);
@@ -46,7 +46,7 @@
 					'wrapper_end' 		=> '</div></div></div>', 
 					'custom_attributes' => array(
 						'maxlenth' 	=> '10', 
-						'pattern' 	=> '[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])'
+						'pattern' 	=> '(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}'
 						),
 					) )
 				);
@@ -65,16 +65,8 @@
 			?>
 		</form>
 	</div>
-
-	<?php if ( $can_export_csv ) : ?>
-
-	<?php $export_btn_class = apply_filters( 'wcv_order_export_btn_class', '' ); ?>
-
 	<div class="all-50 align-right">
 		<br />
-		<a href="<?php echo $add_url; ?>" class="wcv-button button <?php echo $class; ?>"><?php echo __( 'Export Orders', 'wcvendors-pro' ); ?></a>
+		<a href="<?php echo $add_url; ?>" class="wcv-button button"><?php echo __('Export Orders', $this->wcvendors_pro ); ?></a>
 	</div>
-
-	<?php endif; ?>
-	
 </div>

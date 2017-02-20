@@ -339,9 +339,13 @@ $toast-pulls: true !default;
 }
 
 .wcv-store-address-container { 
+      clear: both; 
       width: 100%; 
+      line-height: 1.6em; 
+      height: 1.6em;
       background: #2c2d33; 
       margin-bottom:   25px; 
+
 
       .store-address address, .store-phone a { 
         margin:             0;
@@ -356,8 +360,7 @@ $toast-pulls: true !default;
       }
 
       .store-phone a { 
-        float: right; 
-        margin-right: 35px; 
+        float:          right; 
       }
   }
 

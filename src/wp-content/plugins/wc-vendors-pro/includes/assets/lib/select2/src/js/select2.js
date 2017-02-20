@@ -1928,6 +1928,8 @@ the specific language governing permissions and limitations under the Apache Lic
 
                     if (this.opts.width === "resolve") {
 
+                        console.log('getting here'); 
+
                         // next check if css('width') can resolve a width that is percent based, this is sometimes possible
                         // when attached to input type=hidden or elements hidden via css
                         style = this.opts.element.css('width');

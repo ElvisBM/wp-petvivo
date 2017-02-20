@@ -35,7 +35,7 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 	 * @access   private
 	 * @var      bool    $debug    plugin is in debug mode 
 	 */
-	private static $debug;
+	private $debug;
 
 	/**
 	 * Is the plugin base directory 
@@ -57,7 +57,7 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 
 		$this->wcvendors_pro 	= 'wcvendors-pro'; 
 		$this->version 			= '1.0.4';
-		self::$debug 			= false;
+		$this->debug 			= false; 
 		$this->base_dir			= plugin_dir_path( dirname(__FILE__) ); 
 
 		$this->id                 	= 'wcv_pro_vendor_shipping';
@@ -122,14 +122,13 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					'title' 		=> __( 'Shipping System', 'wcvendors-pro' ),
 					'type' 			=> 'select',
 					'default' 		=> 'flat',
-					'class'			=> 'wc-enhanced-select wcv-shipping-system',
+					'class'			=> 'wc-enhanced-select',
 					'description'	=> __( 'Your vendors have a simple flat rate for national and international shipping or a per country rate table. This can be overridden on a per vendor basis.', 'wcvendors-pro' ),
 					'options'		=> WCVendors_Pro_Shipping_Controller::shipping_types(), 
 				),
 			'national_cost' => array(
 					'title' 		=> __( 'Product Cost Nationally', 'wcvendors-pro' ),
 					'type' 			=> 'text',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Default per product cost excluding tax for products on a per vendor level. e.g. 5.50.', 'wcvendors-pro' ),
 					'default' 		=> '',
 				),
@@ -137,7 +136,6 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					'title' 		=> __( 'Free National shipping', 'wcvendors-pro' ),
 					'label' 		=> __( 'Enable store wide free national shipping', 'wcvendors-pro' ),
 					'type' 			=> 'checkbox',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Check this to enable free national shipping', 'wcvendors-pro' ),
 					'default' 		=> '',
 				),
@@ -145,7 +143,6 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					'title' 		=> __( 'Disable National shipping', 'wcvendors-pro' ),
 					'label' 		=> __( 'Disable national shipping', 'wcvendors-pro' ),
 					'type' 			=> 'checkbox',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Check this to disable national shipping', 'wcvendors-pro' ),
 					'default' 		=> '',
 				),
@@ -159,7 +156,6 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 			'international_cost' => array(
 					'title' 		=> __( 'Product Cost Internationally', 'wcvendors-pro' ),
 					'type' 			=> 'text',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Default per product cost excluding tax for products on a per vendor level. e.g. 5.50.', 'wcvendors-pro' ),
 					'default' 		=> '',
 				),
@@ -174,7 +170,6 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					'title' 		=> __( 'Disable International Shipping', 'wcvendors-pro' ),
 					'label' 		=> __( 'Disable store wide international shipping', 'wcvendors-pro' ),
 					'type' 			=> 'checkbox',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Check this to disable international shipping', 'wcvendors-pro' ),
 					'default' 		=> '',
 				),
@@ -182,28 +177,24 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					'title' 		=> __( 'Product Qty Override International', 'wcvendors-pro' ),
 					'label' 		=> __( 'Charge once for international shipping, even if more than one is purchased.', 'wcvendors-pro' ),
 					'type' 			=> 'checkbox',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Disable the product qty in shipping calculations on a per product basis.', 'wcvendors-pro' ),
 					'default' 		=> '',
 				),
 			'product_fee' => array(
 					'title' 		=> __( 'Default product Handling Fee (per vendor)', 'wcvendors-pro' ),
 					'type' 			=> 'text',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Product handling fee excluding tax. Fixed amount (5.00) or add a percentage sign for a percentage (5%). Leave blank to disable.', 'wcvendors-pro' ),
 					'default'		=> '',
 				),
 			'shipping_policy' => array(
 					'title' 		=> __( 'Default shipping policy', 'wcvendors-pro' ),
 					'type' 			=> 'textarea',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Default shipping policy, displayed if a vendor has not set a shipping policy at store level.', 'wcvendors-pro' ),
 					'default'		=> '',
 				),
 			'return_policy' => array(
 					'title' 		=> __( 'Default return policy', 'wcvendors-pro' ),
 					'type' 			=> 'textarea',
-					'class'         => 'wcv-flat-rate',
 					'description'	=> __( 'Default return policy, displayed if a vendor has not set a return policy at store level.', 'wcvendors-pro' ),
 					'default'		=> '',
 				),
@@ -211,7 +202,7 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 					'title' 		=> __( 'Method availability', 'wcvendors-pro' ),
 					'type' 			=> 'select',
 					'default' 		=> 'all',
-					'class'			=> 'availability wc-enhanced-select wcv-flat-rate',
+					'class'			=> 'availability wc-enhanced-select',
 					'options'		=> array(
 						'all' 		=> __('All allowed countries', 'wcvendors-pro' ),
 						'specific' 	=> __('Specific Countries',  'wcvendors-pro' )
@@ -227,6 +218,7 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 				)
 			);
     }
+
 
 	/**
 	 *  Calculate the shipping 
@@ -275,17 +267,17 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 
 						if ( $rate ) {
 
-							$qty = ( $rate->qty_override === 'yes' ) ? 1 : $cart_item[ 'quantity' ];
+							$qty = ( $rate->qty_override == 'yes' ) ? 1 : $cart_item[ 'quantity' ];
 
 							$item_shipping_cost += $rate->fee * $qty; 
-
+							
 							// Product handling fee. 
 							$product_fee = $this->get_fee( $rate->product_fee, $item_shipping_cost ) * $qty; 
 							$item_shipping_cost += $product_fee;
 					
 							$item_taxes = 0; 
 
-							if ( $this->tax_status === 'taxable' &&  wc_tax_enabled() ) {
+							if ( $this->tax_status == 'taxable' &&  wc_tax_enabled() ) {
 							
 								$tax_rates		= $_tax->get_shipping_tax_rates( $cart_item['data']->get_tax_class() );
 								$item_taxes 	= $_tax->calc_shipping_tax( $item_shipping_cost, $tax_rates );
@@ -312,17 +304,41 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 			}
 		}
 	
-		// // Add rate
+		// Add rate
 		$this->add_rate( array(
-			'id' 		=> $this->id,
-			'label' 	=> $this->title,
-			'cost' 		=> ( float ) $shipping_cost,
-			'taxes' 	=> $taxes,  // We calc tax in the method
-			'package' 	=> $package
+			'id' 	=> $this->id,
+			'label' => $this->title,
+			'cost' 	=> $shipping_cost,
+			'taxes' => $taxes // We calc tax in the method
 		));
-
+    
 	} // calculate_shipping() 
-	
+
+
+
+	/**
+	 * Get Endereço VIACEP
+	 */
+	public static function get_adress_viacep( $cep ){
+
+		$url_viacep = "viacep.com.br/ws/" . $cep .  "/json/";
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_URL, $url_viacep );
+
+		$result = curl_exec($ch);
+
+		curl_close($ch);
+
+		$endereco = json_decode($result);
+
+		return $endereco;
+	}
+
+
+
 	/**
 	 *  Get the shipping rate 
 	 * 
@@ -332,12 +348,19 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 	 */
 	public static function get_shipping_rate( $product_id, $vendor_id, $package, $settings ) {
 
+
+		$endereco = self::get_adress_viacep( $package[ 'destination' ][ 'postcode' ] );
+
 		$customer_country 		= strtolower( $package[ 'destination' ][ 'country' ] );
-		$customer_state			= strtolower( $package[ 'destination' ][ 'state' ] ); 
+		$customer_state			= strtolower( $package[ 'destination' ][ 'state' ] );
+		$customer_city			= strtolower( $endereco->localidade ); 
+		$customer_district		= strtolower( $endereco->bairro );  
 		$store_shipping_type	= get_user_meta( $vendor_id, '_wcv_shipping_type', true ); 
 		$store_rates			= get_user_meta( $vendor_id, '_wcv_shipping', true ); 
 		$store_country 			= ( $store_rates && $store_rates['shipping_from'] == 'other' ) ? strtolower( $store_rates['shipping_address']['country'] ) : strtolower( get_user_meta( $vendor_id, '_wcv_store_country', true ) ); 
 		$store_state 			= ( $store_rates && $store_rates['shipping_from'] == 'other' ) ? strtolower( $store_rates['shipping_address']['state'] ) : strtolower( get_user_meta( $vendor_id, '_wcv_store_state', true ) ); 
+		$store_city 			= ( $store_rates && $store_rates['shipping_from'] == 'other' ) ? strtolower( $store_rates['shipping_address']['city'] ) : strtolower( get_user_meta( $vendor_id, '_wcv_store_city', true ) );
+		$store_district 		= ( $store_rates && $store_rates['shipping_from'] == 'other' ) ? strtolower( $store_rates['shipping_address']['district'] ) : strtolower( get_user_meta( $vendor_id, '_wcv_store_district', true ) );
 		$shipping_rate 			= new stdClass(); 
 		$product_rates 			= get_post_meta( $product_id, '_wcv_shipping_details', true );  
 
@@ -353,32 +376,29 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 
 			if ( $customer_country == $store_country ) { 
 
-				if ( ( is_array( $product_rates ) && array_key_exists( 'national_disable', $product_rates ) && 'yes' === $product_rates[ 'national_disable'] ) || ( is_array( $store_rates ) && array_key_exists('national_disable', $store_rates ) && 'yes' ===  $store_rates['national_disable'] ) ) { 
+				if ( ( is_array( $product_rates ) && array_key_exists('international_disable', $product_rates ) && 'yes' == $product_rates['national_disable'] ) || ( is_array( $store_rates ) && array_key_exists('international_disable', $store_rates ) && 'yes' ==  $store_rates['national_disable'] ) ) { 
 					return $shipping_rate = false;
 				}
 				
 				if ( is_array( $product_rates ) && ( strlen( $product_rates['national_disable'] ) === 0 && ( strlen( trim( $product_rates['national'] ) ) > 0 || strlen( trim( $product_rates[ 'national_free' ] ) ) > 0 ) ) ) {
 					// Is free shipping enabled ?
-					if ( 'yes' === $product_rates[ 'national_free' ] ){ 
-						$shipping_rate->fee 			= 0; 
+					if ( strlen( $product_rates[ 'national_free' ] ) === 0 ){ 
+						$shipping_rate->fee 			= $product_rates['national'];  
 					} else { 
-						$shipping_rate->fee 			= $product_rates[ 'national' ];  
+						$shipping_rate->fee 			= 0; 
 					}
-					$shipping_rate->product_fee 	= $product_rates[ 'handling_fee' ]; 
-					$shipping_rate->qty_override 	= $product_rates[ 'national_qty_override' ]; 
-
-
-				} elseif( is_array( $store_rates ) && ( strlen( $store_rates[ 'national_disable' ] ) === 0 && ( strlen( trim( $store_rates['national'] ) ) > 0 || strlen( $store_rates[ 'national_free' ] ) > 0 ) ) ) {
-
+					$shipping_rate->product_fee 	= $product_rates['handling_fee']; 
+					$shipping_rate->qty_override 	= $product_rates['national_qty_override']; 
+				} elseif( is_array( $store_rates ) && ( strlen( $store_rates['national_disable'] ) === 0 && ( strlen( trim( $store_rates['national'] ) ) > 0 || strlen( $store_rates[ 'national_free' ] ) > 0 ) ) ) {
 					// Is free shipping enabled at store level?
-					if ( 'yes' === $store_rates[ 'national_free' ] ){ 
-						$shipping_rate->fee 			= 0; 
-					} else { 
+					if ( strlen( $store_rates[ 'national_free' ] ) === 0 ){ 
 						$shipping_rate->fee 			= $store_rates['national']; 
+					} else { 
+						$shipping_rate->fee 			= 0; 
 					}
-					$shipping_rate->product_fee 	= $store_rates[ 'product_handling_fee' ];
-					$shipping_rate->qty_override 	= $store_rates[ 'national_qty_override' ]; 
-				} elseif ( ( float ) trim( $settings[ 'national_cost' ] ) > 0 ) { 
+					$shipping_rate->product_fee 	= $store_rates['product_handling_fee'];
+					$shipping_rate->qty_override 	= $store_rates['national_qty_override']; 
+				} elseif ( strlen( $settings[ 'national_cost' ] ) > 0 ) { 
 					$shipping_rate->fee 			= $settings[ 'national_cost' ]; 
 					$shipping_rate->product_fee 	= $settings[ 'product_fee']; 
 					$shipping_rate->qty_override 	= $settings[ 'national_qty_override']; 
@@ -389,30 +409,28 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 			} else { 
 
 				// International shipping 
-				if ( ( is_array( $product_rates ) && array_key_exists('international_disable', $product_rates ) && 'yes' === $product_rates['international_disable'] ) || ( is_array( $store_rates ) && array_key_exists('international_disable', $store_rates ) &&  'yes' ===  $store_rates['international_disable'] ) ) { 
+				if ( ( is_array( $product_rates ) && array_key_exists('international_disable', $product_rates ) && 'yes' == $product_rates['international_disable'] ) || ( is_array( $store_rates ) && array_key_exists('international_disable', $store_rates ) &&  'yes' ==  $store_rates['international_disable'] ) ) { 
 					return $shipping_rate = false;
 				}
 
 				if ( is_array( $product_rates ) && ( strlen( $product_rates['international_disable'] ) === 0 && ( strlen( trim( $product_rates['international'] ) ) > 0 || strlen( $product_rates[ 'international_free' ] ) > 0 ) ) ) {
 					// Is free shipping enabled ?
-					if ( 'yes' === $product_rates[ 'international_free' ] ){  
-						$shipping_rate->fee 			= 0; 
-					} else { 
+					if ( strlen( $product_rates[ 'international_free' ] ) === 0 ){  
 						$shipping_rate->fee 			= $product_rates[ 'international' ]; 
+					} else { 
+						$shipping_rate->fee 			= 0; 
 					}
 					$shipping_rate->product_fee 	= $product_rates[ 'handling_fee' ];
 					$shipping_rate->qty_override 	= $product_rates[ 'international_qty_override' ]; 
 				} elseif( is_array( $store_rates ) && ( strlen( $store_rates['international_disable'] ) === 0 && ( strlen( trim( $store_rates['international'] ) ) > 0 || strlen( $store_rates[ 'international_free' ] ) > 0 ) ) ) {
-
-					if ( 'yes' === $store_rates[ 'international_free' ] ){ 
-						$shipping_rate->fee 			= 0; 
-					} else { 
+					if ( strlen( $store_rates[ 'international_free' ] ) === 0 ){ 
 						$shipping_rate->fee 			= $store_rates[ 'international' ];
-
+					} else { 
+						$shipping_rate->fee 			= 0; 
 					}	
 					$shipping_rate->product_fee 	= $store_rates[ 'product_handling_fee' ]; 
 					$shipping_rate->qty_override 	= $store_rates[ 'international_qty_override']; 
-				} elseif ( ( float ) trim( $settings[ 'international_cost' ] ) > 0 ) { 
+				} elseif ( strlen( trim( $settings[ 'international_cost' ] ) ) > 0 ) { 
 					$shipping_rate->fee 			= $settings[ 'international_cost' ]; 
 					$shipping_rate->product_fee 	= $settings[ 'product_fee' ]; 
 					$shipping_rate->qty_override 	= $settings[ 'international_qty_override']; 
@@ -430,24 +448,36 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 			if ( is_array( $product_shipping_table ) ) {  
 
 				$shipping_rate->product_fee = ( is_array( $product_rates ) && array_key_exists( 'handling_fee', $product_rates ) ) ? $product_rates['handling_fee'] : 0; 
-				$shipping_rate->qty_override = ''; 
+				$shipping_rate->qty_override = 0; 
 
 				foreach ( $product_shipping_table as $rate ) {
 
-					//  Country and state match 
-					if ( strtolower( $customer_country ) === strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) === strtolower( $rate[ 'state' ] ) ) { 
+					//  Country and state and city and district match 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) == strtolower( $rate[ 'state' ] ) && strtolower( $customer_city ) == strtolower( $rate[ 'city' ] ) && strtolower( $customer_district ) == strtolower( $rate[ 'district' ] ) ) { 
+						$shipping_rate->fee = $rate[ 'fee' ]; 
+						return $shipping_rate; 
+					}
+
+					// Country and state and city and district is any 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) == strtolower( $rate[ 'state' ] ) && strtolower( $customer_city ) == strtolower( $rate[ 'city' ] ) && empty( $rate[ 'district' ] ) ) { 
+						$shipping_rate->fee = $rate[ 'fee' ]; 
+						return $shipping_rate; 
+					}
+
+					// Country and state and city is any 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) == strtolower( $rate[ 'state' ] ) && empty( $rate[ 'city' ] ) ) { 
 						$shipping_rate->fee = $rate[ 'fee' ]; 
 						return $shipping_rate; 
 					}
 
 					// Country and state is any 
-					if ( strtolower( $customer_country ) === strtolower( $rate[ 'country' ] ) && empty( $rate[ 'state' ] ) ) { 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && empty( $rate[ 'state' ] ) ) { 
 						$shipping_rate->fee = $rate[ 'fee' ]; 
 						return $shipping_rate; 
 					}
 
 					// Country and state is any 
-					if ( $rate[ 'country' ] === '' && $rate[ 'state' ] === '' ) { 
+					if ( $rate[ 'country' ] == '' && $rate[ 'state' ] == '' ) { 
 						$shipping_rate->fee = $rate[ 'fee' ]; 
 						return $shipping_rate; 
 					} 
@@ -464,23 +494,35 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 
 				foreach ( $store_shipping_table as $rate ) {
 
-					// Country and state 
-					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) == strtolower( $rate[ 'state' ] ) ) { 
+					//  Country and state and city and district match 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) == strtolower( $rate[ 'state' ] ) && strtolower( $customer_city ) == strtolower( $rate[ 'city' ] ) && strtolower( $customer_district ) == strtolower( $rate[ 'district' ] ) ) { 
+						$shipping_rate->fee = $rate[ 'fee' ]; 
+						return $shipping_rate; 
+					}
+
+					// Country and state and city and district is any 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) == strtolower( $rate[ 'state' ] ) && strtolower( $customer_city ) == strtolower( $rate[ 'city' ] ) && empty( $rate[ 'district' ] ) ) { 
+						$shipping_rate->fee = $rate[ 'fee' ]; 
+						return $shipping_rate; 
+					}
+
+					// Country and state and city is any 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && strtolower( $customer_state ) == strtolower( $rate[ 'state' ] ) && empty( $rate[ 'city' ] ) ) { 
 						$shipping_rate->fee = $rate[ 'fee' ]; 
 						return $shipping_rate; 
 					}
 
 					// Country and state is any 
-					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && empty( $rate[ 'state' ] )  ) { 
-						$shipping_rate->fee = $rate[ 'fee' ]; 
-						return $shipping_rate;  
-					}
-
-					// Country is any and state is any 
-					if ( $rate[ 'country' ] == '' && $rate[ 'state' ] == '' ) { 
+					if ( strtolower( $customer_country ) == strtolower( $rate[ 'country' ] ) && empty( $rate[ 'state' ] ) ) { 
 						$shipping_rate->fee = $rate[ 'fee' ]; 
 						return $shipping_rate; 
 					}
+
+					// Country and state is any 
+					if ( $rate[ 'country' ] == '' && $rate[ 'state' ] == '' ) { 
+						$shipping_rate->fee = $rate[ 'fee' ]; 
+						return $shipping_rate; 
+					} 
 
 				}
 
@@ -517,22 +559,4 @@ class WCVendors_Pro_Shipping_Method extends WC_Shipping_Method {
 		return $shipping_rate; 
 
 	} // get_shipping_rate() 
-
-	/**
-	 * Class logger so that we can keep our debug and logging information cleaner 
-	 *
-	 * @since 1.3.4
-	 * @access public
-	 * 
-	 * @param mixed - $data the data to go to the error log could be string, array or object
-	 */
-	public static function log( $data ){ 
-
-		if ( is_array( $data ) || is_object( $data ) ) { 
-			error_log( print_r( $data, true ) ); 
-		} else { 
-			error_log( $data );
-		}
-
-	} // log() 
 }

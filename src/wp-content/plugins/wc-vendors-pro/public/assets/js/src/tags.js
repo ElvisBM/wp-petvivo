@@ -62,7 +62,7 @@ jQuery( function( $ ) {
             allowClear:  $( this ).data( 'allow_clear' ) ? true : false,
             placeholder: $( this ).data( 'placeholder' ),
             tags:        $( this ).data( 'tags' ), 
-            tokenSeparators:  wcv_tag_search_params.separator,
+            tokenSeparators: [",", " "],
             minimumInputLength: $( this ).data( 'minimum_input_length' ) ? $( this ).data( 'minimum_input_length' ) : '2',
             escapeMarkup: function( m ) {
               return m;

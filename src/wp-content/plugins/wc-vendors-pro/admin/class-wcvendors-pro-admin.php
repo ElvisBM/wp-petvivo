@@ -200,20 +200,15 @@ class WCVendors_Pro_Admin {
 
 		$woocommerce_override   = locate_template( 'woocommerce.php' );
 
-		include_once( apply_filters( 'wcv_wcvendors_pro_system_status_path', 'partials/wcvendors-pro-system-status.php') ); 
+		include_once('partials/wcvendors-pro-system-status.php'); 
 
 	} // wcvendors_pro_system_status() 
 
-	/**
-	 * Template for system status information for pro 
-	 *
-	 * @since    1.0.3
-	*/
 	public function wcvendors_pro_template_status() { 
 
-		include_once( apply_filters( 'wcvendors_pro_template_status', 'partials/wcvendors-pro-template-status.php' ) ); 
 
-	} // wcvendors_pro_template_status() 
+		include_once( 'partials/wcvendors-pro-template-status.php' ); 
+	}
 
 	/**
 	 * Load the new wc vendors shipping module 
@@ -223,7 +218,7 @@ class WCVendors_Pro_Admin {
 	public function wcvendors_pro_shipping_init( ){ 
 
 		if ( ! class_exists( 'WCVendors_Pro_Shipping_Method' ) ){ 
-			include( 'class-wcvendors-pro-shipping.php' ); 
+			include('class-wcvendors-pro-shipping.php'); 
 		} 
 
 	} // wcvendors_pro_shipping_init()
@@ -291,31 +286,5 @@ class WCVendors_Pro_Admin {
 		}
 
 	} //options_updated ()
-
-	/**
-	 * WooCommerce Tools for Pro this will allow admins to import commission overrides from free. 
-	 * 
-	 * @since 1.3.6 
-	 * @access public 
-	 */
-	public function wc_pro_tools( $tools ){ 
-
-		$tools[ 'import_vendor_commissions' ] = array(
-				'name'    => __( 'Import Vendor Commission Overrides', 'wcvendors' ),
-				'button'  => __( 'Import vendor commission overrides', 'wcvendors' ),
-				'desc'    => __( 'This will import all the commission overrides for vendors.', 'wcvendors' ),
-				'callback' => array( 'WCVendors_Pro_Commission_Controller', 'import_vendor_commission_overrides' )
-			); 
-
-		$tools[ 'import_product_commissions' ] = array(
-				'name'    => __( 'Import Product Commission Overrides', 'wcvendors' ),
-				'button'  => __( 'Import product commission overrides', 'wcvendors' ),
-				'desc'    => __( 'This will import all the commission overrides for products.', 'wcvendors' ),
-				'callback' => array( 'WCVendors_Pro_Commission_Controller', 'import_product_commission_overrides' )
-			); 
-
-		return $tools; 
-
-	} // wc_pro_tools() 
 
 }

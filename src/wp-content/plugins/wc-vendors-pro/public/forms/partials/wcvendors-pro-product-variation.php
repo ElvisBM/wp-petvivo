@@ -141,7 +141,7 @@ extract( $variation_data );
 						<div class="control-group"> 
 							<label><?php _e( 'Sale start date:', 'wcvendors-pro' ); ?></label>
 							<div class="control"> 
-							<input type="text" class="sale_price_dates_from wcv-datepicker" name="variable_sale_price_dates_from[<?php echo $loop; ?>]" value="<?php echo ! empty( $_sale_price_dates_from ) ? date_i18n( 'Y-m-d', $_sale_price_dates_from ) : ''; ?>" placeholder="<?php echo esc_attr_x( 'From&hellip;', 'placeholder', 'wcvendors-pro' ) ?> YYYY-MM-DD" maxlength="10" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" />
+							<input type="text" class="sale_price_dates_from wcv-datepicker" name="variable_sale_price_dates_from[<?php echo $loop; ?>]" value="<?php echo ! empty( $_sale_price_dates_from ) ? date_i18n( 'Y-m-d', $_sale_price_dates_from ) : ''; ?>" placeholder="<?php echo esc_attr_x( 'From&hellip;', 'placeholder', 'wcvendors-pro' ) ?> YYYY-MM-DD" maxlength="10" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}" />
 							</div>
 						</div>
 					</div>
@@ -150,7 +150,7 @@ extract( $variation_data );
 						<div class="control-group"> 
 							<label><?php _e( 'Sale end date:', 'wcvendors-pro' ); ?></label>
 							<div class="control"> 
-								<input type="text" class="sale_price_dates_to wcv-datepicker" name="variable_sale_price_dates_to[<?php echo $loop; ?>]" value="<?php echo ! empty( $_sale_price_dates_to ) ? date_i18n( 'Y-m-d', $_sale_price_dates_to ) : ''; ?>" placeholder="<?php echo esc_attr_x('To&hellip;', 'placeholder', 'wcvendors-pro') ?> YYYY-MM-DD" maxlength="10" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" />
+								<input type="text" class="sale_price_dates_to wcv-datepicker" name="variable_sale_price_dates_to[<?php echo $loop; ?>]" value="<?php echo ! empty( $_sale_price_dates_to ) ? date_i18n( 'Y-m-d', $_sale_price_dates_to ) : ''; ?>" placeholder="<?php echo esc_attr_x('To&hellip;', 'placeholder', 'wcvendors-pro') ?> YYYY-MM-DD" maxlength="10" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}" />
 							</div>
 							<p class="tip"><a href="#" class="cancel_sale_schedule" style="display:none"><?php _e( 'Cancel schedule', 'wcvendors-pro' ); ?></a></p>
 						</div>

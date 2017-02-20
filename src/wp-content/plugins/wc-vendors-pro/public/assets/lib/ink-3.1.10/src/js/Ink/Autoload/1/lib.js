@@ -35,7 +35,7 @@ Ink.createModule('Ink.Autoload', 1, ['Ink.Dom.Selector_1', 'Ink.Util.Array_1', '
              * which get the UI modules instantiated automatically. */
             // 'Animate_1'     : '.wcv-animate',
             // 'Carousel_1'    : '.wcv-carousel',
-            // 'DatePicker_1'  : '.wcv-datepicker',
+            'DatePicker_1'  : '.wcv-datepicker',
             // 'DragDrop_1'    : '.wcv-dragdrop',
             // 'Draggable_1'   : '.wcv-draggable',
             // 'Dropdown_1'    : '.wcv-dropdown',

@@ -349,7 +349,7 @@ class WCVendors_Pro_API_Manager {
 		<?php if ( ! current_user_can( 'manage_options' ) ) return; ?>
 		<?php if ( isset( $_GET['page'] ) && 'wcvendors_pro_api_manager_dashboard' == $_GET['page'] ) return; ?>
 		<div id="message" class="error">
-			<p><?php printf( __( 'The WC Vendors Pro license key has not been activated, so you will be unable to get automatic updates or support! %sClick here%s to activate your support and updates license key.', 'wcvendors-pro' ), '<a href="' . esc_url( admin_url( 'options-general.php?page=wcvendors_pro_api_manager_dashboard' ) ) . '">', '</a>' ); ?></p>
+			<p><?php printf( __( 'The WC Vendors Pro license key has not been activated, so the plugin is inactive! %sClick here%s to activate the license key and the plugin.', 'wcvendors-pro' ), '<a href="' . esc_url( admin_url( 'options-general.php?page=wcvendors_pro_api_manager_dashboard' ) ) . '">', '</a>' ); ?></p>
 		</div>
 		<?php
 	}
