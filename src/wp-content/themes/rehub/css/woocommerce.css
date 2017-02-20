@@ -2,7 +2,7 @@
 .post .woocommerce .newscom_detail ul li{list-style: disc;}
 .nobr { white-space: nowrap; }
 .single-product .post { overflow: visible; }
-.wc_vendors_dash_links a.button, .woocommerce a.button, .woocommerce-page a.button, .woocommerce button.button, .woocommerce-page button.button, .woocommerce input.button, .woocommerce-page input.button, .woocommerce #content input.button, .woocommerce-page #content input.button { padding: 8px 14px; font-size: 14px; font-weight: bold; line-height: 14px; text-transform:uppercase;  color: #111; text-align: center; text-shadow: 0 1px 1px #fff; vertical-align: middle; cursor: pointer;  border-radius: 3px;
+.wc_vendors_dash_links a.button, .woocommerce a.button, .woocommerce-page a.button, .woocommerce button.button, .woocommerce-page button.button, .woocommerce input.button, .woocommerce-page input.button, .woocommerce #content input.button, .woocommerce-page #content input.button { padding: 8px 14px; font-size: 14px; font-weight: bold; line-height: 14px; text-transform:uppercase;  color: #111; text-align: center;vertical-align: middle; cursor: pointer;  border-radius: 3px;
 background-color: #ebebeb;
 background: -webkit-linear-gradient(top, #fff 1px, #f9f9f9 1px, #ebebeb);
 background: linear-gradient(to bottom, #fff 1px, #f9f9f9 1px, #ebebeb);
@@ -376,7 +376,7 @@ p.demo_store { position: fixed; top: 0; left: 0; right: 0; margin: 0; width: 100
 .woocommerce form .form-row label.inline{ float: right;}
 .woocommerce form.register .editfield .datebox-selects select{float: left; width: 31%; margin: 0 2% 0 0}
 .woocommerce form .form-row label.hidden, .woocommerce-page form .form-row label.hidden { visibility: hidden; }
-.woocommerce form .form-row select, .woocommerce-page form .form-row select { width: 100%; cursor: pointer; margin: 0;border: 1px solid #ccc; }
+.woocommerce form .form-row select, .woocommerce-page form .form-row select { width: 100%; cursor: pointer; margin: 0;border: 1px solid #ccc;height: 40px;font-size: 1em;}
 .woocommerce form .form-row .required, .woocommerce-page form .form-row .required { color: red; font-weight: bold; border: 0; }
 .woocommerce form .form-row .input-checkbox, .woocommerce-page form .form-row .input-checkbox, .woocommerce form.register .editfield input[type="checkbox"] { display: inline; margin: -2px 8px 0 0; text-align: center; vertical-align: middle; }
 .woocommerce form .form-row label.checkbox, .woocommerce-page form .form-row label.checkbox { display: inline; }

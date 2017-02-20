@@ -38,7 +38,12 @@ a:focus { outline: thin dotted; }
 a:hover, a:active { outline: 0; color: #000;}
 h1, h2, h3, h4, h5, h6 { font-weight: 700; line-height: 1em; }
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: #111; text-decoration: none !important; }
-h1 { font: 700 28px/38px 'Roboto', trebuchet ms, arial; color: #111111;  margin: 12px 0 15px 0; letter-spacing: -0.5px }
+h1 { margin: 0 0 28px 0;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 2em;
+    font-weight: 600;
+    color: #5c860b;
+    text-transform: uppercase; }
 h2 { font: 700 25px/30px 'Roboto', trebuchet ms; color: #111111; margin: 25px 0 30px 0;  }
 h3 { font: 700 21px/25px 'Roboto', trebuchet ms; color: #111111; margin: 20px 0 25px 0;  }
 h4 { font: 700 18px/21px 'Roboto', trebuchet ms; color: #111111; margin: 15px 0 18px 0  }

@@ -5,7 +5,7 @@
 /*Vendors*/
 .wcvendors-pro-dashboard-wrapper *{}
 .wcvendors-pro-dashboard-wrapper {font-size: 15px;line-height: 22px;}
-.wcv-grid .wcv_dashboard_overview {background-color: #fff;border: 1px solid #e1e1e1;padding: 20px 2em 20px 0;margin: 10px 0 30px 0 !important;}
+.wcv-grid .wcv_dashboard_overview {background-color: #fff;border: 1px solid #e1e1e1;padding: 20px 2em 20px 0;margin: 10px 0 30px 0 !important;padding:10px;}
 .wcv-grid h3{font-size: 19px !important}
 .wcv-datepicker-calendar ul{margin: 0}
 .wcv-datepicker-calendar ul li, .wcv-tabs ul.tabs-nav li, .wcv-grid ul li{list-style: none !important;}
@@ -40,7 +40,7 @@ small.wcvendors_sold_by_in_loop {font-size: 12px;margin-bottom: 10px;display: in
 .form-row #rememberme{ margin-top: 10px}
 .wcv_shop_description{ margin-bottom: 15px}
 .wcv_vendorslist{ overflow: hidden; margin: 0 -1% 30px -1%;}
-.wcv_vendorslist a.wcv-grid-shop-name{ text-decoration: none; font-size: 16px; font-weight: bold; display: inline-block;}
+.wcv_vendorslist a.wcv-grid-shop-name{font-family: 'Open Sans', sans-serif;font-weight: 600;color: #709b1d;text-decoration: none; font-size: 1em; font-weight: bold; display: inline-block;}
 .wcv_vendorslist:not(.rh-flex-eq-height){display: -webkit-flex; -webkit-flex-wrap:wrap;display: -ms-flexbox; -ms-flex-wrap:wrap;display: flex; flex-wrap: wrap;flex-direction: row;}
 .wcv_vendorslist:not(.rh-flex-eq-height) li{ float: left; width: 23%; margin: 0 1% 28px 1% !important; }
 .wcv_vendorslist li{position: relative;text-align: center;box-shadow: rgba(0,0,0,0.15) 0px 1px 2px;background: white;list-style: none !important; }
@@ -59,7 +59,7 @@ span.product_count_in_member { position: absolute; bottom: 0; right: 0; backgrou
 .rh_vendors_listflat .rh-user-favor-shop .count, #buddypress .rh-user-favor-shop .count{width: 20px; height: 20px; line-height: 20px; left: 22px; right: auto;}
 .wcv_vendorslist .rh-user-favor-shop:hover .count{opacity: 1; font-size: 12px;   right:100%;}
 .rh_vendors_listflat .rh-user-favor-shop:hover .count, #buddypress .rh-user-favor-shop:hover .count{opacity: 1; font-size: 12px; top: -10px}
-.wcv_vendorslist .member-details{overflow: hidden; padding: 50px 0 0 0}
+.wcv_vendorslist .member-details{overflow: hidden; padding: 50px 0 0 0;background: #f3f3f3}
 #buddypress .rh-user-favor-shop{position: relative}
 .table-vendor-sales-report .product a{ text-decoration: none; }
 .table-vendor-sales-report.table-condensed th, .table-vendor-sales-report.table-condensed td{ padding: 10px 8px}

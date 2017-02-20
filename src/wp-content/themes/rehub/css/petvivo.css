@@ -29,14 +29,34 @@
 
 
 .header_top_wrap{ background: #709b1d; }
-.titulo-banner{display: inline-block;
-    font-size: 2em;
-    margin: 0 auto;
-    margin-left: 30%;
+.banner-home {text-align: center;}
+.banner-home h3{display: inline-block;
+    font-size: 1.8em;
     padding: 10px 20px;
     margin-bottom: 40px;
-    border-bottom: 4px solid #709b1d;}
+    border-bottom: 4px solid #709b1d;
+    background-color: rgba(153,185,51,0.62);
+    color: #fff;
+    font-family: Open Sans;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;}
+.banner-home a{border-top-color: #709b1d;
+    background: #709b1d;
+    color: #fff!important;
+    border-radius: 5px;
+    border-bottom: 3px solid #9cbb3a;
+    text-transform: uppercase;
+    padding: 10px;
+    letter-spacing: 0.5px;
+    font-size: 1.3em;
+    font-family: Open Sans;
+    font-weight: 200;
+    text-decoration: none;}
 
+.banner-home a:hover{}
 
 
 .button-head{ font-family: 'Open Sans', sans-serif;
@@ -83,6 +103,8 @@
     font-style: normal;
     font-size: 1.2em;}
 
+.seja-pet a{background-color: #6DAB3C;font-family: Open Sans;font-weight: 400;letter-spacing: 1px;padding: 14px 20px;font-size: 1.2em;color: #fff!important;text-decoration: none;}
+
 .seja-pet article p{margin-top: 10px;font-weight: 200;
     font-family: Open Sans; }
 .seja-pet img{max-width: 400px!important;}
@@ -92,19 +114,29 @@
 
 .receba-novidades h3{font-family: Open Sans;font-weight: 400;}
 .receba-novidades article{text-align: center;margin-top: 15px;}
-.receba-novidades input{border: 4px solid #7f9d44;border-radius: 10px;color: #7f9d44;}
-.receba-novidades input[type="text"]{background: rgba(210, 222, 186, 0.70);width: 400px;}
+.receba-novidades input{border: 4px solid #7f9d44;border-radius: 10px;color: #fff;font-size: 1em;}
+.receba-novidades input[type="text"]{background: rgba(210, 222, 186, 0.70);width: 350px;}
 .receba-novidades input[type="button"]{color:#557c08;background: rgb(210, 222, 186);text-transform: uppercase;font-weight: 600;letter-spacing: 1px;padding: 10px;}
-
+.receba-novidades .es_msg{    font-size: 1.5em;
+    text-transform: uppercase;
+    font-family: 'Open Sans', sans-serif;
+}
+.receba-novidades .es_textbox{display: inline-block;}
+.receba-novidades .es_button{display: inline-block;}
 
 .parceiros .text-oncarousel{display: none;}
 
 .adress-user-geo{display: none;}
 
+#ship-to-different-address label{font-family: 'Open Sans', sans-serif;
+    font-size: 1.5em;
+    font-weight: 300;
+    color: #5c860b; }
+#ship-to-different-address input{font-size: 2.5em; margin: 0px;
+    height: 30px;
+    width: 30px;}
 
 
 
-
-
-
-
+.checkbox input{font-size: 2.5em;margin: 0px;}
+label.montar-loja{color: #709b1d;text-transform: uppercase;}
